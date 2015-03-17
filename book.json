@@ -1,4 +1,14 @@
 {
+    "gitbook": ">=2.0.0",
+    
+    "title": "rust book 中文翻译",
+    
+    "structure": {
+        "readme": ""
+    },
+    
+    "language": "zh",
+    
     "pluginsConfig": {
         "fontSettings": {
             "theme": "white",
