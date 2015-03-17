@@ -2,7 +2,7 @@
     "title": "rust book 中文翻译",
     
     "structure": {
-        "readme": ""
+        "readme": "preface.md"
     },
     
     "language": "zh",
