@@ -1,1 +1,9 @@
-{}
+{
+  "pluginsConfig": {
+        "fontSettings": {
+            "theme": "white",
+            "family": "Microsoft YaHei",
+            "size": 1
+        }
+    },
+}
