@@ -1,7 +1,7 @@
 # Summary
 
 * [1.介绍](content/1.介绍.md)
-* [2.基础](content/1.介绍.md)
+* [2.基础](content/2.Basics 基础.md)
  * [2.1.安装Rust](content/2.1.Installing Rust 安装Rust.md)
  * [2.2.Hello, world!](content/2.2.Hello, world!.md)
  * [2.3.Hello, Cargo!](content/2.3.Hello, Cargo!.md)
@@ -16,7 +16,7 @@
  * [2.12.数组，向量和片段](content/2.12.Arrays, Vectors, and Slices 数组，向量和片段.md)
  * [2.13.标准输入](content/2.13.Standard Input 标准输入.md)
  * [2.14.猜猜看](content/2.14.Guessing Game 猜猜看.md)
-* [3.中级](content/1.介绍.md)
+* [3.中级](content/3.Intermediate 中级.md)
  * [3.1.包装箱和模块](content/3.1.Crates and Modules 包装箱和模块.md)
  * [3.2.测试](content/3.2.Testing 测试.md)
  * [3.3.指针](content/3.3.Pointers 指针.md)
@@ -33,5 +33,5 @@
  * [3.14.并发](content/3.14.Concurrency 并发.md)
  * [3.15.错误处理](content/3.15.Error Handling 错误处理.md)
  * [3.16.文档](content/3.16.Documentation 文档.md)
-* [4.进阶](content/1.介绍.md)
+* [4.进阶](content/4.Advanced 进阶.md)
  * [4.1.外部语言接口](content/4.1.Foreign Function Interface 外部语言接口.md)
