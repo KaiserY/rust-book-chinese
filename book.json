@@ -2,8 +2,8 @@
     "pluginsConfig": {
         "fontSettings": {
             "theme": "white",
-            "family": "Microsoft YaHei",
-            "size": 1
+            "family": "sans",
+            "size": 4
         }
     }
 }
