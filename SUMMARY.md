@@ -1,5 +1,6 @@
 # Summary
 
+* [前言](preface.md)
 * [1.介绍](content/1.介绍.md)
 * [2.基础](content/2.Basics 基础.md)
  * [2.1.安装Rust](content/2.1.Installing Rust 安装Rust.md)
@@ -35,3 +36,5 @@
  * [3.16.文档](content/3.16.Documentation 文档.md)
 * [4.进阶](content/4.Advanced 进阶.md)
  * [4.1.外部语言接口](content/4.1.Foreign Function Interface 外部语言接口.md)
+* [5.总结](content/5.Conclusion 总结.md)
+* [6.词汇表](content/6.Glossary 词汇表.md)
