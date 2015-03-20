@@ -37,5 +37,6 @@
  * [4.1.外部语言接口](content/4.1.Foreign Function Interface 外部语言接口.md)
  * [4.2.不安全代码](content/4.2.Unsafe Code 不安全代码.md)
  * [4.3.宏进阶](content/4.3.Advanced macros 宏进阶.md)
+ * [4.4.编译器插件](content/4.4.Compiler Plugins 编译器插件.md)
 * [5.总结](content/5.Conclusion 总结.md)
 * [6.词汇表](content/6.Glossary 词汇表.md)
