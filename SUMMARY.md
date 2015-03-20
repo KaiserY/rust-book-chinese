@@ -1,5 +1,5 @@
 # Summary
-
+* [前言](preface.md)
 * [1.介绍](content/1.介绍.md)
 * [2.基础](content/2.Basics 基础.md)
  * [2.1.安装Rust](content/2.1.Installing Rust 安装Rust.md)
