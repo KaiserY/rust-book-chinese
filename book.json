@@ -10,7 +10,7 @@
     "pluginsConfig": {
         "fontSettings": {
             "theme": "white",
-            "family": "sans",
+            "family": "cns11643-kai",
             "size": 4
         }
     }
