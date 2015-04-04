@@ -1,4 +1,6 @@
 {
+	"gitbook": ">=2.0.0",
+
     "title": "rust book 中文翻译",
     
     "structure": {
@@ -10,7 +12,7 @@
     "pluginsConfig": {
         "fontSettings": {
             "theme": "white",
-            "family": "cns11643-kai",
+            "family": "sans",
             "size": 4
         }
     }
