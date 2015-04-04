@@ -6,3 +6,5 @@ rust book 中文翻译
 * QQ群: 144605258
 
 GitBook.com目前中文字体有问题，需要电子书版本的在release目录里
+
+## Rust 1.0.0 Beta出了，考虑入坑的同学们可以开始了！
