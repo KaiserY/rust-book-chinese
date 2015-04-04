@@ -45,5 +45,7 @@
  * [5.4.固有功能](content/5.4.Intrinsics 固有功能.md)
  * [5.5.语言项](content/5.5.Lang items 语言项.md)
  * [5.6.链接参数](content/5.6.Link args 链接参数.md)
+ * [5.7.基准测试](content/5.7.Benchmark tests 基准测试.md)
+ * [5.8.装箱语法和模式](content/5.8.Box Syntax and Patterns 装箱语法和模式.md)
 * [6.总结](content/6.Conclusion 总结.md)
 * [7.词汇表](content/7.Glossary 词汇表.md)
