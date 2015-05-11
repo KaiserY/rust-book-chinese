@@ -33,16 +33,12 @@
  * [5.14.结构体](content/5.14.Structs 结构体.md)
  * [5.15.模式](content/5.15.Patterns 模式.md)
  * [5.16.方法语法](content/5.16.Method Syntax 方法语法.md)
- * 
  * [5.17.向量](content/5.17.Vectors 向量.md)
  * [5.18.字符串](content/5.18.Strings 字符串.md)
  * [5.19.泛型](content/5.19.Generics 泛型.md)
  * [5.20.特性](content/5.20.Traits 特性.md)
  * [5.21.Drop](content/5.21.Drop.md)
  * [5.22.if let](content/5.22.if let.md)
- * 
- * 
- * 
  * [5.23.特性对象](content/5.23.Trait Objects 特性对象.md)
  * [5.24.闭包](content/5.24.Closures 闭包.md)
  * [5.25.通用函数调用语法](content/5.25.Universal Function Call Syntax 通用函数调用语法.md)
