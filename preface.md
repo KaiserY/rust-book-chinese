@@ -6,3 +6,11 @@
 * QQ群: 144605258
 
 ## 1.0.0-stable！！！同学们还不入坑！！！
+
+### 贡献者
+> 惯例排名不分先后
+
+* [Bluek404](https://github.com/Bluek404)
+* [hczhcz](https://github.com/hczhcz)
+* [JaySon-Huang](https://github.com/JaySon-Huang)
+* [KaiserY](https://github.com/KaiserY)
