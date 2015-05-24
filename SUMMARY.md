@@ -71,3 +71,4 @@
  * [6.10.关联常量](content/6.10.Associated Constants 关联常量.md)
 * [7.词汇表](content/7.Glossary 词汇表.md)
 * [8.学院派研究](content/8.Academic Research 学院派研究.md)
+* [勘误](Errata 勘误.md)
