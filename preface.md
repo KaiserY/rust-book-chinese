@@ -14,5 +14,6 @@
 * [hczhcz](https://github.com/hczhcz)
 * [JaySon-Huang](https://github.com/JaySon-Huang)
 * [KaiserY](https://github.com/KaiserY)
+* [leqinotes](https://github.com/leqinotes)
 * [ustcscgy](https://github.com/ustcscgy)
 * [1989car](https://github.com/1989car)
