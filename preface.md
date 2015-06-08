@@ -10,6 +10,7 @@
 ### 贡献者
 > 惯例排名不分先后
 
+* [armink](https://github.com/armink)
 * [Bluek404](https://github.com/Bluek404)
 * [hczhcz](https://github.com/hczhcz)
 * [JaySon-Huang](https://github.com/JaySon-Huang)
