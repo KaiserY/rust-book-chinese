@@ -18,5 +18,6 @@ rust book 中文翻译
 * [JaySon-Huang](https://github.com/JaySon-Huang)
 * [KaiserY](https://github.com/KaiserY)
 * [leqinotes](https://github.com/leqinotes)
+* [liubin](https://github.com/liubin)
 * [ustcscgy](https://github.com/ustcscgy)
 * [1989car](https://github.com/1989car)
