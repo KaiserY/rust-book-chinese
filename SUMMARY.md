@@ -17,7 +17,7 @@
  * [4.5.迭代器](content/4.5.Iterators 迭代器.md)
  * [4.6.并发](content/4.6.Concurrency 并发.md)
  * [4.7.错误处理](content/4.7.Error Handling 错误处理.md)
- * [4.8.外部语言接口](content/4.8.Foreign Function Interface 外部语言接口.md)
+ * [4.8.外部函数接口](content/4.8.Foreign Function Interface 外部函数接口.md)
  * [4.9.Borrow 和 AsRef](content/4.9.Borrow and AsRef Borrow 和 AsRef.md)
  * [4.10.发布途径](content/4.10.Release Channels 发布途径.md)
 * [5.语法和语义](content/5.Syntax and Semantics 语法和语义.md)
