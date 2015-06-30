@@ -7,7 +7,7 @@ rust book 中文翻译
 
 ## 要生成电子书的话请使用[gitbook](https://github.com/GitbookIO/gitbook)
 
-## 1.1.0-stable 仍在施工中
+## 1.1.0-stable
 
 ### 贡献者
 > 惯例排名不分先后
