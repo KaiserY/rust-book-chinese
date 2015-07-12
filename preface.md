@@ -18,5 +18,6 @@
 * [kenshinji](https://github.com/kenshinji)
 * [leqinotes](https://github.com/leqinotes)
 * [liubin](https://github.com/liubin)
+* [liuzhe0223](https://github.com/liuzhe0223)
 * [ustcscgy](https://github.com/ustcscgy)
 * [1989car](https://github.com/1989car)
