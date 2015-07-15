@@ -10,7 +10,7 @@
     "language": "zh",
 
     "plugins": [
-        "gitbook-plugin-yahei"
+        "betterchinese"
     ],
 
     "pluginsConfig": {
