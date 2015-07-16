@@ -1,23 +1,22 @@
 {
-    "gitbook": ">=2.0.0",
+	"gitbook": ">=2.0.0",
 
-    "title": "rust book 中文翻译",
+	"title": "rust book 中文翻译",
 
-    "structure": {
-        "readme": "preface.md"
-    },
+	"structure": {
+		"readme": "preface.md"
+	},
 
-    "language": "zh",
+	"language": "zh",
 
-    "plugins": [
-        "betterchinese"
-    ],
+	"styles": {
+		"pdf": "styles/pdf.css"
+	},
 
-    "pluginsConfig": {
-        "fontSettings": {
-            "theme": "white",
-            "family": "sans",
-            "size": 4
-        }
-    }
+	"plugins": [
+		"betterchinese"
+	],
+
+	"pluginsConfig": {
+	}
 }
