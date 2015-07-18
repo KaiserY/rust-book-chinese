@@ -6,6 +6,7 @@ rust book 中文翻译
 * QQ群: 144605258
 
 ## 要生成电子书的话请使用[gitbook](https://github.com/GitbookIO/gitbook)
+## ebook文件夹里有pdf版
 
 ## 1.1.0-stable
 
