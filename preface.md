@@ -17,6 +17,7 @@
 * [KaiserY](https://github.com/KaiserY)
 * [kenshinji](https://github.com/kenshinji)
 * [leqinotes](https://github.com/leqinotes)
+* [linjx](https://github.com/linjx)
 * [liubin](https://github.com/liubin)
 * [liuzhe0223](https://github.com/liuzhe0223)
 * [ustcscgy](https://github.com/ustcscgy)
