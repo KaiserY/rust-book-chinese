@@ -23,5 +23,6 @@ rust book 中文翻译
 * [linjx](https://github.com/linjx)
 * [liubin](https://github.com/liubin)
 * [liuzhe0223](https://github.com/liuzhe0223)
+* [mapx](https://github.com/mapx)
 * [ustcscgy](https://github.com/ustcscgy)
 * [1989car](https://github.com/1989car)
