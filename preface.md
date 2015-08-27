@@ -16,6 +16,7 @@
 * [JaySon-Huang](https://github.com/JaySon-Huang)
 * [KaiserY](https://github.com/KaiserY)
 * [kenshinji](https://github.com/kenshinji)
+* [kimw](https://github.com/kimw)
 * [leqinotes](https://github.com/leqinotes)
 * [linjx](https://github.com/linjx)
 * [liubin](https://github.com/liubin)
