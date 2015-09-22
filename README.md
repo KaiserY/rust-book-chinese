@@ -10,7 +10,7 @@ rust book 中文翻译
 ## 要生成电子书的话请使用[gitbook](https://github.com/GitbookIO/gitbook)
 ## ebook文件夹里有pdf版
 
-## 1.3.0-stable 施工中...
+## 1.3.0-stable
 
 ### 贡献者
 > 惯例排名不分先后
