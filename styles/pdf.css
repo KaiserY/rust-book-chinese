@@ -1,3 +1,7 @@
+body {
+    fontFamily: "DejaVu sans mono, WenQuanYi Micro Hei"
+}
+
 pre {
   	word-break: break-all;
   	/* Non standard for webkit, but it does work on the Mac when generating the PDF */
