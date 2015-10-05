@@ -16,6 +16,7 @@
 * [BingCheung](https://github.com/BingCheung)
 * [Bluek404](https://github.com/Bluek404)
 * [hczhcz](https://github.com/hczhcz)
+* [honorabrutroll](https://github.com/honorabrutroll)
 * [JaySon-Huang](https://github.com/JaySon-Huang)
 * [KaiserY](https://github.com/KaiserY)
 * [kenshinji](https://github.com/kenshinji)
