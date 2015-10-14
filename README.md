@@ -1,21 +1,26 @@
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />  
+[![相同方式共享 4.0](https://i.creativecommons.org/l/by-sa/4.0/88x31.png "相同方式共享 4.0")](http://creativecommons.org/licenses/by-sa/4.0/)
 
-本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a>进行许可。
+本作品采用 [知识共享署名 - 相同方式共享 4.0 国际许可协议](https://creativecommons.org/licenses/by-sa/4.0/) 进行许可。
 
-# rust-book-chinese
-Rust Book 中文版
+# Rust 语言教程
+本文档为 [*The Rust Programming Language*](https://doc.rust-lang.org/book/) 的中文翻译。  
+欢迎为本文档的做出贡献。
 
+## 版本
+1.3.0-stable
+
+## 电子书
+* 请使用 [GitBook](https://github.com/GitbookIO/gitbook) 来生成电子书。
+* 在 ebook 文件夹里可以找到 pdf 版本。
+
+## 相关资源
 * GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
 * Rust 中文社区: http://rust.cc/
-* QQ群: 144605258
+* QQ 群: 144605258
 
-## 要生成电子书的话请使用 [GitBook](https://github.com/GitbookIO/gitbook)
-## ebook 文件夹里有 pdf 版
+## 贡献者
 
-## 1.3.0-stable
-
-### 贡献者
-> 惯例排名不分先后
+*惯例排名不分先后*
 
 * [armink](https://github.com/armink)
 * [BingCheung](https://github.com/BingCheung)
