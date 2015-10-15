@@ -4,7 +4,7 @@
 
 # Rust 语言教程
 本文档为 [*The Rust Programming Language*](https://doc.rust-lang.org/book/) 的中文翻译。  
-欢迎在 [GitHub](https://github.com/KaiserY/rust-book-chinese) 上为本文档的做出贡献。
+欢迎在 [GitHub](https://github.com/KaiserY/rust-book-chinese) 上为本文档做出贡献。
 
 ## 版本
 1.3.0-stable
