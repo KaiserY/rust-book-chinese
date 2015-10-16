@@ -2,7 +2,7 @@
 
 本作品采用 [知识共享署名 - 相同方式共享 4.0 国际许可协议](https://creativecommons.org/licenses/by-sa/4.0/) 进行许可。
 
-# Rust 语言教程
+# Rust 官方教程 中文版
 本文档为 [*The Rust Programming Language*](https://doc.rust-lang.org/book/) 的中文翻译。  
 欢迎在 [GitHub](https://github.com/KaiserY/rust-book-chinese) 上为本文档的做出贡献。
 
