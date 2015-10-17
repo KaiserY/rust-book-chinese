@@ -1,7 +1,7 @@
 {
     "gitbook": ">=2.0.0",
 
-    "title": "Rust 语言教程",
+    "title": "rust 官方教程 中文版",
 
     "structure": {
         "readme": "preface.md"
