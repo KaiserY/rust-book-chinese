@@ -2,9 +2,9 @@
 
 本作品采用 [知识共享署名 - 相同方式共享 4.0 国际许可协议](https://creativecommons.org/licenses/by-sa/4.0/) 进行许可。
 
-# Rust 语言教程
+# Rust 官方教程 中文版
 本文档为 [*The Rust Programming Language*](https://doc.rust-lang.org/book/) 的中文翻译。  
-欢迎为本文档的做出贡献。
+欢迎为本翻译文档做出贡献。
 
 ## 版本
 1.3.0-stable
@@ -14,7 +14,7 @@
 * 在 ebook 文件夹里可以找到 pdf 版本。
 
 ## 相关资源
-* GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
+* 本文档 GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
 * Rust 中文社区: http://rust.cc/
 * QQ 群: 144605258
 
