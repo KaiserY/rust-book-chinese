@@ -38,6 +38,7 @@
 * [liuzhe0223](https://github.com/liuzhe0223)
 * [LuoZijun](https://github.com/LuoZijun)
 * [mapx](https://github.com/mapx)
+* [NemoAlex](https://github.com/NemoAlex)
 * [t123yh](https://github.com/t123yh)
 * [ustcscgy](https://github.com/ustcscgy)
 * [1989car](https://github.com/1989car)
