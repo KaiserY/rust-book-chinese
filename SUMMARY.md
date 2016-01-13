@@ -1,5 +1,6 @@
 # Summary
 * [前言](preface.md)
+* [贡献者](CONTRIBUTING.md)
 * [1.介绍](content/1.介绍.md)
 * [2.准备](content/2.Getting Started 准备.md)
  * [2.1.安装Rust](content/2.1.Installing Rust 安装Rust.md)

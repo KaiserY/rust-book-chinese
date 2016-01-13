@@ -14,29 +14,3 @@
 * GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
 * Rust 中文社区: http://rust.cc/
 * QQ 群: 144605258
-
-## 贡献者
-
-*惯例排名不分先后*
-
-* [armink](https://github.com/armink)
-* [BingCheung](https://github.com/BingCheung)
-* [Bluek404](https://github.com/Bluek404)
-* [hczhcz](https://github.com/hczhcz)
-* [honorabrutroll](https://github.com/honorabrutroll)
-* [hy0kl](https://github.com/hy0kl)
-* [JaySon-Huang](https://github.com/JaySon-Huang)
-* [KaiserY](https://github.com/KaiserY)
-* [kenshinji](https://github.com/kenshinji)
-* [kimw](https://github.com/kimw)
-* [leqinotes](https://github.com/leqinotes)
-* [linjx](https://github.com/linjx)
-* [liubin](https://github.com/liubin)
-* [liuzhe0223](https://github.com/liuzhe0223)
-* [LuoZijun](https://github.com/LuoZijun)
-* [mapx](https://github.com/mapx)
-* [NemoAlex](https://github.com/NemoAlex)
-* [peng1999](https://github.com/peng1999)
-* [t123yh](https://github.com/t123yh)
-* [ustcscgy](https://github.com/ustcscgy)
-* [1989car](https://github.com/1989car)

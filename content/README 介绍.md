@@ -1,25 +1,26 @@
 # Rust编程语言
 
-> Translated from [README.md](https://github.com/rust-lang/rust/blob/8091cb139fe162f7a1b39b5330b557d55d48d672/src/doc/trpl/README.md)
-> commit: 8091cb139fe162f7a1b39b5330b557d55d48d672
+> [README.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/README.md)
+> commit 3a6dbb30a21be8d237055479af613e30415b0c56
 
-欢迎阅读！这本书将教会你使用[Rust编程语言](http://www.rust-lang.org/)。Rust 是一个注重安全与速度的现代系统编程语言，通过在没有垃圾回收的情况下保证内存安全来实现它的目标，这使它成为一个在很多其它语言不适合的用例中大展身手的语言：嵌入到其它语言中，在特定的时间和空间要求下编程，和编写底层代码，例如设备驱动和操作系统。它通过一系列的不产生运行时开销的编译时安全检查来提升目前语言所关注的领域，同时消除一切数据竞争。Rust同时也意在实现“零开销抽象”，即便在这些抽象看起来比较像一个高级语言的特性。即便如此，Rust也允许你像一个底层语言那样进行精确的控制。
+欢迎阅读！这本书将教会你使用[Rust编程语言](http://www.rust-lang.org/)。Rust 是一个注重安全与速度的现代系统编程语言，通过在没有垃圾回收的情况下保证内存安全来实现它的目标，这使它成为一个在能够许多其它语言并不适合的用例中大展身手的语言：嵌入到其它语言中，在特定的时间和空间要求下编程，和编写例如设备驱动和操作系统这样的底层代码。它通过一系列的不产生运行时开销的编译时安全检查来提升目前语言所关注的领域，同时消除一切数据竞争。Rust同时也意在实现“零开销抽象”，即便在这些抽象看起来比较像一个高级语言的特性。即便如此，Rust也允许你像一个底层语言那样进行精确的控制。
 
-《Rust编程语言》被分为 8 个部分。这个介绍是第一部分。之后是：
+《Rust编程语言》被分为数个部分。这个介绍是第一部分。之后是：
 
-* [准备](./2.Getting Started 准备.md) - 为你的电脑安装 Rust 开发环境
-* [学习Rust](./3.Learn Rust 学习Rust.md) - 通过小项目来学习 Rust 编程
-* [高效Rust](./4.Effective Rust 高效Rust.md) - 编写优秀 Rust 代码的高级内容
-* [语法和语义](./5.Syntax and Semantics 语法和语义.md) - Rust 各个部分，被拆分成小的部分讲解
-* [Rust开发版](./6.Nightly Rust Rust开发版.md) - 还未出现在稳定版本中的最新功能
-* [词汇表](./7.Glossary 词汇表.md) - 书中使用的术语的参考
-* [学院派研究](./8.Academic Research 学院派研究.md) - 影响过 Rust 的文献
+* [准备](./Getting Started 准备.md) - 为你的电脑安装 Rust 开发环境
+* [学习Rust](./Learn Rust 学习Rust.md) - 通过一个小项目来学习 Rust 编程
+* [语法和语义](./Syntax and Semantics 语法和语义.md) - Rust 各个部分，被拆分成小的部分讲解
+* [高效Rust](./Effective Rust 高效Rust.md) - 编写优秀 Rust 代码的高级内容
+* [Rust开发版](./Nightly Rust Rust开发版.md) - 还未出现在稳定版本中的最新功能
+* [词汇表](./Glossary 词汇表.md) - 书中使用的术语的参考
+* [参考文献](./bibliography 参考文献.md) - 影响过 Rust 的文献，关于 Rust 的论文
 
 在阅读了介绍这部分之后，你可以根据喜好深入到“学习Rust”或“语法和语义”部分：如果你想通过项目深入了解，可以先选择“学习 Rust”;如果你想从头开始，并且学习一个完整的内容再学习另一个，你可以从“语法和语义”开始。丰富的交叉连接将这些部分联系到一起。
 
 ## 贡献
-生成这本书（英文版）的源文件可以在 GitHub 上找到：[github.com/rust-lang/rust/tree/master/src/doc/trpl](https://github.com/rust-lang/rust/tree/master/src/doc/trpl)
+生成这本书（英文版）的源文件可以在 [GitHub](https://github.com/rust-lang/rust/tree/master/src/doc/book) 上找到。
 
+> 以下内容在最新版中并未出现，暂时保留
 ## Rust 简介
 Rust 是你会感兴趣的语言吗？让我们检查一些小的代码例子来展示它的部分威力。
 
