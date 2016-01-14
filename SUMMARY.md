@@ -1,11 +1,8 @@
 # Summary
 * [前言](preface.md)
 * [贡献者](CONTRIBUTING.md)
-* [1.介绍](content/1.介绍.md)
-* [2.准备](content/2.Getting Started 准备.md)
- * [2.1.安装Rust](content/2.1.Installing Rust 安装Rust.md)
- * [2.2.Hello, world!](content/2.2.Hello, world!.md)
- * [2.3.Hello, Cargo!](content/2.3.Hello, Cargo!.md)
+* [1.介绍](content\README 介绍.md)
+* [2.准备](content\Getting Started 准备.md)
 * [3.学习Rust](content/3.Learn Rust 学习Rust.md)
   * [3.1.猜猜看](content/3.1.Guessing Game 猜猜看.md)
   * [3.2.哲学家就餐问题](content/3.2.Dining Philosophers 哲学家就餐问题.md)
