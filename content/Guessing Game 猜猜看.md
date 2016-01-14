@@ -1,9 +1,10 @@
 # 猜猜看
 
-> Translated from [guessing-game.md](https://github.com/rust-lang/rust/blob/22fbbd4b5c57f03fa729e233c47bb5d8ff867de3/src/doc/trpl/guessing-game.md)
-> commit: 6d9502d35b4b0bc41bee1bd3acc0d75bf2cfd835
+> [guessing-game.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/guessing-game.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
-作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是大了还是小了。猜对了，它会祝贺我们。听起来如何？
+让我学习一些 Rust！作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是太大了还是太小了。猜对了，它会祝贺我们。听起来如何？
 
 ## 准备
 我们准备一个新项目。进入到你的项目目录。还记得曾经创建`hello_world`的项目目录和`Cargo.toml`文件吗？Cargo 有一个命令来为我们做这些。让我们试试：
