@@ -169,6 +169,8 @@ $ cd hello_world
 
 现在打开你刚创建的`main.rs`源文件，键入如下代码：
 
++[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%7D%0A)
+
 ```rust
 fn main() {
     println!("Hello, world!");
@@ -189,6 +191,8 @@ Hello, world!
 
 现在，让我们回过头来仔细看看你的“Hello, world!”程序到底发生了什么。这里是拼图的第一片：
 
++[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%0A%7D%0A)
+
 ```rust
 fn main() {
 
@@ -200,6 +204,8 @@ fn main() {
 同时注意函数体被包裹在大括号（`{`和`}`）中。Rust 要求所有函数体都位于其中。将前一个大括号与函数声明置于一行，并留有一个空格被认为是一个好的代码风格。
 
 在`main()`函数中：
+
++[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%20%20%20%20%0A%7D)
 
 ```rust
 println!("Hello, world!");
