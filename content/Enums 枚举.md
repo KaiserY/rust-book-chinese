@@ -1,5 +1,10 @@
 # 枚举
-Rust中的一个`enum`是一个代表数个可能变量的数据的类型：
+
+> [enums.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/enums.md)
+> <br>
+> commit 31e39cd05c9b28c78b087aa9314f246b0b0b5cfa
+
+Rust 中的一个`enum`是一个代表数个可能变量的数据的类型。每个变量都可选是否关联数据：
 
 ```rust
 enum Message {
@@ -10,7 +15,7 @@ enum Message {
 }
 ```
 
-每个变量都可选关联数据。定义变量的语法与用来定义结构体的语法类似：你可以有不带数据的变量（像类单元结构体），带有命名数据的变量，和带有未命名数据的变量（像元组结构体）。然而，不像单独的结构体定义，一个`enum`是一个单独的类型。一个枚举的值可以匹配任何一个变量。因为这个原因，枚举有时被叫做“集合类型”：枚举可能值的集合是每一个变量可能值的集合的总和。
+定义变量的语法与用来定义结构体的语法类似：你可以有不带数据的变量（像类单元结构体），带有命名数据的变量，和带有未命名数据的变量（像元组结构体）。然而，不像单独的结构体定义，一个`enum`是一个单独的类型。一个枚举的值可以匹配任何一个变量。因为这个原因，枚举有时被叫做“集合类型”：枚举可能值的集合是每一个变量可能值的集合的总和。
 
 我们使用`::`语法来使用每个变量的名字：它们包含在`enum`名字自身中。这样的话，以下的情况都是可行的：
 
@@ -41,12 +46,18 @@ fn process_color_change(msg: Message) {
 一个枚举的构造器总是可以像函数一样使用。例如：
 
 ```rust
+# enum Message {
+# Write(String),
+# }
 let m = Message::Write("Hello, world".to_string());
 ```
 
 与下面是一样的：
 
 ```rust
+# enum Message {
+# Write(String),
+# }
 fn foo(x: String) -> Message {
     Message::Write(x)
 }
@@ -57,6 +68,10 @@ let x = foo("Hello, world".to_string());
 这对我们没有什么直接的帮助，直到我们要用到[闭包](https://doc.rust-lang.org/stable/book/closures.html)时，这时我们要考虑将函数作为参数传递给其他函数。例如，使用[迭代器](https://doc.rust-lang.org/stable/book/iterators.html)，我们可以这样把一个`String`的vector转换为一个`Message::Write`的vector：
 
 ```rust
+# enum Message {
+# Write(String),
+# }
+
 let v = vec!["Hello".to_string(), "World".to_string()];
 
 let v1: Vec<Message> = v.into_iter().map(Message::Write).collect();

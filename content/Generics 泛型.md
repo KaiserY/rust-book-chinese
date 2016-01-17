@@ -1,7 +1,10 @@
 # 泛型
+
+> [generics.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/generics.md)
+
 有时，当你编写函数或数据类型时，我们可能会希望它能处理多种类型的参数。幸运的是，Rust有一个能给我们更好选择的功能：泛型。泛型在类型理论中叫做*参数多态*（*parametric polymorphism*），它意味着它们是对于给定参数（parametric）能够有多种形式（`poly`是多，`morph`是形态）的函数或类型。
 
-不管怎么样，类型理论就说这么多，现在我们来看些泛型代码。Rust标准库提供了一个类型，`Option<T>`，它是泛型的：
+不管怎么样，类型理论就说这么多，现在我们来看些泛型代码。Rust 标准库提供了一个类型，`Option<T>`，它是泛型的：
 
 ```rust
 enum Option<T> {
@@ -31,7 +34,7 @@ let x: Option<i32> = Some(5);
 let y: Option<f64> = Some(5.0f64);
 ```
 
-这样就好了。一个定义，多种用途。
+这样就好了。一个定义，到处使用。
 
 不一定只有一个类型是泛型的。考虑下Rust内建的`Result<T, E>`类型：
 
@@ -82,8 +85,6 @@ fn takes_two_things<T, U>(x: T, y: U) {
 }
 ```
 
-泛型函数结合“特性约束”时最有用，我们会在[特性部分](http://doc.rust-lang.org/nightly/book/traits.html)涉及到它。
-
 ## 泛型结构体（Generic structs）
 你也可以在一个`struct`中储存泛型类型：
 
@@ -98,3 +99,20 @@ let float_origin = Point { x: 0.0, y: 0.0 };
 ```
 
 与函数类似，`<T>`是我们声明的泛型参数，而我们也接着在类型定义中使用`x: T`。
+
+当你想要给泛型`struct`增加一个实现时，你可以在`impl`声明类型参数：
+
+```rust
+# struct Point<T> {
+#     x: T,
+#     y: T,
+# }
+#
+impl<T> Point<T> {
+    fn swap(&mut self) {
+        std::mem::swap(&mut self.x, &mut self.y);
+    }
+}
+```
+
+目前为止你已经见过了支持几乎任何类型的泛型。他们在很多地方都是有用的：你已经见过了`Option<T>`，接下来你还将见到像[`Vec<T>`](https://github.com/rust-lang/rust/blob/master/src/doc/std/vec/struct.Vec.html)这样的通用容器类型。另一方面，通常你想要用灵活性去换取更强的表现力。阅读[trait bound](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.html)章节来了解为什么和如何做。

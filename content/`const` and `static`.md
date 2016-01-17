@@ -1,4 +1,9 @@
 # `const` 和 `static`
+
+> [const-and-static.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/const-and-static.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 Rust有一个用`const`关键字定义常量的方法：
 
 ```rust
@@ -21,7 +26,7 @@ static N: i32 = 5;
 
 与[let](http://doc.rust-lang.org/nightly/book/variable-bindings.html)绑定不同，你必须标注一个`static`的类型。
 
-静态量贯穿于整个程序的生命周期，因此任何存储在常量中的引用有一个[`'static`生命周期](http://doc.rust-lang.org/nightly/book/lifetimes.html)： 
+静态量贯穿于整个程序的生命周期，因此任何存储在常量中的引用有一个[`'static`生命周期](http://doc.rust-lang.org/nightly/book/lifetimes.html)：
 
 ```rust
 static NAME: &'static str = "Steve";

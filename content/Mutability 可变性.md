@@ -1,4 +1,9 @@
 # 可变性
+
+> [mutability.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/mutability.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
 ```rust
@@ -16,7 +21,7 @@ x = 6; // no problem!
 
 这是一个可变的[变量绑定](http://doc.rust-lang.org/nightly/book/variable-bindings.html)。当一个绑定是可变的，它意味着你可以改变它指向的内容。所以在上面的例子中，`x`的值并没有多大的变化，不过这个绑定从一个`i32`变成了另外一个。
 
-如果你想改变绑定指向的东西（注：原文跟上面一样，有冲突啊。），你将会需要一个[可变引用](http://doc.rust-lang.org/nightly/book/references-and-borrowing.html)：
+如果你想改变绑定指向的东西，你将会需要一个[可变引用](http://doc.rust-lang.org/nightly/book/references-and-borrowing.html)：
 
 ```rust
 let mut x = 5;

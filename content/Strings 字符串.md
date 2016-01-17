@@ -1,4 +1,9 @@
 # 字符串
+
+> [strings.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/strings.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+
 对于每一个程序，字符串都是需要掌握的重要内容。由于Rust主要着眼于系统编程，所以它的字符串处理系统与其它语言有些许区别。每当你碰到一个可变大小的数据结构时，情况都会变得很微妙，而字符串正是可变大小的数据结构。这也就是说，Rust的字符串与一些像C这样的系统编程语言也不相同。
 
 让我们进一步了解一下。一个*字符串*是一串UTF-8字节编码的Unicode量级值的序列。所有的字符串都确保是有效编码的UTF-8序列。另外，字符串并不以null结尾并且可以包含null字节。
@@ -9,9 +14,27 @@ Rust有两种主要的字符串类型：`&str`和`String`。让我们先看看`&
 let greeting = "Hello there."; // greeting: &'static str
 ```
 
-这个字符串是静态分配的，也就是说它储存在我们编译好的程序中，并且整个程序的运行过程中一直存在。这个`greeting`绑定了一个静态分配的字符串的引用。字符串片段是固定大小的并且不能改变。
+`"Hello there."`是一个字符串常量而它的类型是`&'static str`。字符串常量是静态分配的字符串切片，也就是说它储存在我们编译好的程序中，并且整个程序的运行过程中一直存在。这个`greeting`绑定了一个静态分配的字符串的引用。任何接受一个字符串切片的函数也接受一个字符串常量。
 
-一个`String`，相反，是一个在堆上分配的字符串。这个字符串可以增长，并且也保证是UTF-8编码的。`String`通常通过一个字符串片段调用`to_string`方法转换而来。
+字符串常量可以跨多行。这里有两种形式。第一种会包含新行符和之前的空格：
+
+```rust
+let s = "foo
+    bar";
+
+assert_eq!("foo\n        bar", s);
+```
+
+第二种，带有`\`，会去掉空格和新行符：
+
+```rust
+let s = "foo\
+    bar";
+
+assert_eq!("foobar", s);
+```
+
+Rust 当然不仅仅只有`&str`。一个`String`，是一个在堆上分配的字符串。这个字符串可以增长，并且也保证是UTF-8编码的。`String`通常通过一个字符串片段调用`to_string`方法转换而来。
 
 ```rust
 let mut s = "Hello".to_string(); // mut s: String
@@ -48,6 +71,7 @@ TcpStream::connect(&*addr_string); // convert addr_string to &str
 把`String`转换为`&str`的代价很小，不过从`&str`转换到`String`涉及到分配内存。除非必要，没有理由这样做！
 
 ## 索引（Indexing）
+
 因为字符串是有效UTF-8编码的，它不支持索引：
 
 ```rust
@@ -77,8 +101,8 @@ println!("");
 这会打印：
 
 ```rust
-229, 191, 160, 231, 138, 172, 227, 131, 143, 227, 131, 129, 229, 133, 172, 
-忠, 犬, ハ, チ, 公, 
+229, 191, 160, 231, 138, 172, 227, 131, 143, 227, 131, 129, 229, 133, 172,
+忠, 犬, ハ, チ, 公,
 ```
 
 如你所见，这里有比`char`更多的字节。
@@ -92,6 +116,7 @@ let dog = hachiko.chars().nth(1); // kinda like hachiko[1]
 这强调了我们不得不遍历整个`char`的列表。
 
 ## 切片（Slicing）
+
 你可以使用切片语法来获取一个字符串的切片：
 
 ```rust
@@ -114,6 +139,7 @@ character boundary'
 ```
 
 ## 连接（Concatenation）
+
 如果你有一个`String`，你可以在它后面接上一个`&str`：
 
 ```rust

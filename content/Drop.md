@@ -1,5 +1,10 @@
 # `Drop`
-现在我们讨论了trait，让我们看看一个由Rust标准库提供的特殊trait，[`Drop`](http://doc.rust-lang.org/nightly/std/ops/trait.Drop.html)。`Drop`trait提供了一个当一个值离开作用域后运行一些代码的方法。例如：
+
+> [drop.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/drop.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
+现在我们讨论了 trait，让我们看看一个由 Rust 标准库提供的特殊 trait，[`Drop`](http://doc.rust-lang.org/nightly/std/ops/trait.Drop.html)。`Drop` trait提供了一个当一个值离开作用域后运行一些代码的方法。例如：
 
 ```rust
 struct HasDrop;
@@ -46,6 +51,6 @@ BOOM times 100!!!
 BOOM times 1!!!
 ```
 
-`tnt`在`firecracker`之前离开作用域（原文大意：TNT在爆竹之前爆炸），因为它在之后被声明。先进，后出。
+`tnt`在`firecracker`之前离开作用域（原文大意：TNT在爆竹之前爆炸），因为它在之后被声明。后进先出。
 
 那么`Drop`有什么好处呢？通常来说，`Drop`用来清理任何与`struct`关联的资源。例如，[`Arc<T>`类型](http://doc.rust-lang.org/nightly/std/sync/struct.Arc.html)是一个引用计数类型。当`Drop`被调用，它会减少引用计数，并且如果引用的总数为0，将会清除底层的值。

@@ -1,4 +1,9 @@
 # 方法语法
+
+> [method-syntax.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/method-syntax.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+
 函数是伟大的，不过如果你在一些数据上调用了一堆函数，这将是令人尴尬的。
 考虑下面代码：
 
@@ -12,9 +17,10 @@ baz(bar(foo(x)));
 x.foo().bar().baz();
 ```
 
-幸运的是，正如对上面那个问题的猜测，你可以！Rust通过`impl`关键字提供了使用*方法调用语法*（*method call syntax*）。
+幸运的是，正如对上面那个问题的猜测，你可以！Rust 通过`impl`关键字提供了使用*方法调用语法*（*method call syntax*）。
 
 ## 方法调用
+
 这是它如何工作的：
 
 ```rust
@@ -53,15 +59,43 @@ struct Circle {
 
 impl Circle {
     fn reference(&self) {
-       println!("taking self by reference!"); 
+       println!("taking self by reference!");
     }
 
     fn mutable_reference(&mut self) {
-       println!("taking self by mutable reference!"); 
+       println!("taking self by mutable reference!");
     }
 
     fn takes_ownership(self) {
-       println!("taking ownership of self!"); 
+       println!("taking ownership of self!");
+    }
+}
+```
+
+你可以有任意多个`impl`块。上面的例子也可以被写成这样：
+
+```rust
+struct Circle {
+    x: f64,
+    y: f64,
+    radius: f64,
+}
+
+impl Circle {
+    fn reference(&self) {
+       println!("taking self by reference!");
+    }
+}
+
+impl Circle {
+    fn mutable_reference(&mut self) {
+       println!("taking self by mutable reference!");
+    }
+}
+
+impl Circle {
+    fn takes_ownership(self) {
+       println!("taking ownership of self!");
     }
 }
 ```
@@ -131,7 +165,7 @@ fn main() {
 这个*关联函数*（*associated function*）为我们构建了一个新的`Circle`。注意静态函数是通过`Struct::method()`语法调用的，而不是`ref.method()`语法。
 
 ## 创建者模式（Builder Pattern）
-我们说我们需要我们的用户可以创建圆，不过我们只允许他们设置他们关心的属性。否则，`x`和`y`将是`0.0`，并且`radius`将是`1.0`。Rust并没有方法重载，命名参数或者可变参数。我们利用创建者模式来代替。它看起像这样：
+我们说我们需要我们的用户可以创建圆，不过我们只允许他们设置他们关心的属性。否则，`x`和`y`将是`0.0`，并且`radius`将是`1.0`。Rust 并没有方法重载，命名参数或者可变参数。我们利用创建者模式来代替。它看起像这样：
 
 ```rust
 struct Circle {

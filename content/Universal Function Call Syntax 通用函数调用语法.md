@@ -1,4 +1,9 @@
 # 通用函数调用语法
+
+> [ufcs.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/ufcs.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 有时，函数可能有相同的名字。就像下面这些代码：
 
 ```rust
@@ -42,6 +47,20 @@ note: candidate #2 is defined in an impl of the trait `main::Bar` for the type
 我们需要一个区分我们需要调用哪一函数的方法。这个功能叫做“通用函数调用语法”（universal function call syntax），这看起来像这样：
 
 ```rust
+# trait Foo {
+#     fn f(&self);
+# }
+# trait Bar {
+#     fn f(&self);
+# }
+# struct Baz;
+# impl Foo for Baz {
+#     fn f(&self) { println!("Baz’s impl of Foo"); }
+# }
+# impl Bar for Baz {
+#     fn f(&self) { println!("Baz’s impl of Bar"); }
+# }
+# let b = Baz;
 Foo::f(&b);
 Bar::f(&b);
 ```
@@ -95,4 +114,4 @@ impl Foo for Bar {
 }
 ```
 
-这会调用`Clone`trait的`clone()`方法，而不是`Foo`的。
+使用尖括号语法让你可以调用 trait 方法而不是继承一个。

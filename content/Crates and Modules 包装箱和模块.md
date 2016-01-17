@@ -1,9 +1,13 @@
 # 包装箱和模块
 
-当一个项目开始变得更大，把它分为一堆更小的部分然后再把它们装配到一起被认为是一个好的软件工程实践。另外定义良好的接口也非常重要，这样有些函数是私有的而有些是公有的。Rust有一个模块系统来帮助我们处理这些工作。
+> [crates-and-modules.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/crates-and-modules.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+
+当一个项目开始变得更大，把它分为一堆更小的部分然后再把它们装配到一起被认为是一个好的软件工程实践。另外定义良好的接口也非常重要，这样有些函数是私有的而有些是公有的。Rust 有一个模块系统来帮助我们处理这些工作。
 
 ## 基础术语：包装箱和模块
-Rust有两个不同的术语与模块系统有关：*包装箱*（*crate*）和*模块*（*module*）。包装箱是其它语言中*库(library)*或*包(package)*的同义词。因此“Cargo”则是Rust包管理工具的名字：你通过Cargo把你当包装箱交付给别人。包装箱可以根据项目的不同生成可执行文件或库文件。 
+Rust有两个不同的术语与模块系统有关：*包装箱*（*crate*）和*模块*（*module*）。包装箱是其它语言中*库(library)*或*包(package)*的同义词。因此“Cargo”则是Rust包管理工具的名字：你通过Cargo把你当包装箱交付给别人。包装箱可以根据项目的不同生成可执行文件或库文件。
 
 每个包装箱有一个隐含的*根模块*（*root module*）包含模块的代码。你可以在根模块下定义一个子模块树。模块允许你为自己模块的代码分区。
 
@@ -216,6 +220,8 @@ fn main() {
 
 `extern crate`声明告诉Rust我们需要编译和链接`phrases`包装箱。然后我们就可以在这里使用`phrases`的模块了。就想我们之前提到的，你可以用双冒号引用子模块和之中的函数。
 
+（注意：当导入像“like-this”名字中包含连字符的 crate时，这样的名字并不是一个有效的 Rust 标识符，它可以通过将连字符变为下划线来转换，所以你应该写成`extern crate like_this;`）
+
 另外，Cargo假设`src/main.rs`是二进制包装箱的根，而不是库包装箱的。现在我们的包中有两个包装箱：`src/lib.rs`和`src/main.rs`。这种模式在可执行包装箱中非常常见：大部分功能都在库包装箱中，而可执行包装箱使用这个库。这样，其它程序可以只使用我们的库，另外这也是各司其职的良好分离。
 
 现在它还不能很好的工作。我们会得到4个错误，它们看起来像：
@@ -234,7 +240,7 @@ note: in expansion of format_args!
 phrases/src/main.rs:4:5: 4:76 note: expansion site
 ```
 
-Rust的一切默认都是私有的。让我们深入了解一下这个。
+Rust 默认一切都是私有的。让我们深入了解一下这个。
 
 ## 导出公用接口
 Rust允许你严格的控制你的接口哪部分是公有的，所以它们默认都是私有的。你需要使用`pub`关键字，来公开它。让我们先关注`english`模块，所以让我们像这样减少`src/main.rs`的内容：
@@ -439,3 +445,40 @@ Goodbye in English: Goodbye.
 Hello in Japanese: こんにちは
 Goodbye in Japanese: さようなら
 ```
+
+## 复杂的导入
+
+Rust 提供了多种高级选项来让你的`extern crate`和`use`语句变得简洁方便。这是一个例子：
+
+```rust
+extern crate phrases as sayings;
+
+use sayings::japanese::greetings as ja_greetings;
+use sayings::japanese::farewells::*;
+use sayings::english::{self, greetings as en_greetings, farewells as en_farewells};
+
+fn main() {
+    println!("Hello in English; {}", en_greetings::hello());
+    println!("And in Japanese: {}", ja_greetings::hello());
+    println!("Goodbye in English: {}", english::farewells::goodbye());
+    println!("Again: {}", en_farewells::goodbye());
+    println!("And in Japanese: {}", goodbye());
+}
+```
+
+这里发生了什么？
+
+首先，`extern crate`和`use`都允许重命名导入的项。所以 crate 仍然叫“phrases”，不过这里我们以“sayings”来引用它。类似的，第一个`use`语句从 crate 中导入`japanese::greetings`，不过作为`ja_greetings`而不是简单的`greetings`。这可以帮助我们消除来自不同包中相似名字的项的歧义。
+
+第二个`use`语句用了一个星号来引入`sayings::japanese::farewells`模块中的所有符号。如你所见之后我们可以不用模块标识来引用日语的`goodbye`函数。这类全局引用要保守使用。
+
+
+第三个`use`语句需要更多的解释。它使用了“大括号扩展（brace expansion）”来将三条`use`语句压缩成了一条（这类语法对曾经写过 Linux shell 脚本的人应该很熟悉）。语句的非压缩形式应该是：
+
+```rust
+use sayings::english;
+use sayings::english::greetings as en_greetings;
+use sayings::english::farewells as en_farewells;
+```
+
+如你所见，大括号压缩了位于同一位置的多个项的`use`语句，而且在这里`self`指向这个位置。注意：大括号不用与星号嵌套或混合。

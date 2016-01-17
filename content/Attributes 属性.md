@@ -1,14 +1,22 @@
 # 属性
+
+> [attributes.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/attributes.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 在Rust中声明可以用“属性”标注，它们看起来像：
 
 ```rust
 #[test]
+# fn foo() {}
 ```
 
 或像这样：
 
 ```rust
+# mod foo {
 #![test]
+# }
 ```
 
 这两者的区别是`!`，它改变了属性作用的对象：
@@ -40,6 +48,7 @@ fn check() {
 ```rust
 #[inline(always)]
 fn super_fast_fn() {
+# }
 ```
 
 或者甚至是键值：
@@ -47,6 +56,7 @@ fn super_fast_fn() {
 ```rust
 #[cfg(target_os = "macos")]
 mod macos_only {
+# }
 ```
 
 Rust属性被用在一系列不同的地方。在[参考手册](http://doc.rust-lang.org/nightly/reference.html#attributes)中有一个属性的全表。目前，你不能创建你自己的属性，Rust编译器定义了它们。

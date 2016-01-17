@@ -1,5 +1,10 @@
 # Traits
-trait是一个告诉Rust编译器一个类型必须提供哪些功能语言特性。
+
+> [traits.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+
+trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 
 你还记得`impl`关键字吗，曾用[方法语法](https://doc.rust-lang.org/stable/book/method-syntax.html)调用方法的那个？
 
@@ -17,7 +22,7 @@ impl Circle {
 }
 ```
 
-trait也很类似，除了我们用函数标记来定义一个trait，然后为结构体实现trait。例如：
+trait 也很类似，除了我们用函数标记来定义一个 trait，然后为结构体实现 trait。例如，我们为`Circle`实现`HasArea` trait：
 
 ```rust
 struct Circle {
@@ -39,7 +44,9 @@ impl HasArea for Circle {
 
 如你所见，`trait`块与`impl`看起来很像，不过我们没有定义一个函数体，只是函数标记。当我们`impl`一个trait时，我们使用`impl Trait for Item`，而不是仅仅`impl Item`。
 
-你可以用trait来限制我们的泛型。考虑这个函数，它并不能编译：
+## 泛型函数的 trait bound（Trait bounds on generic functions）
+
+trait 很有用是因为他们允许一个类型对它的行为提供特定的承诺。泛型函数可以显式的限制，或者叫 [bound](https://github.com/rust-lang/rust/blob/master/src/doc/book/glossary.html#bounds)，它接受的类型。考虑这个函数，它并不能编译：
 
 ```rust
 fn print_area<T>(shape: T) {
@@ -54,7 +61,7 @@ error: no method named `area` found for type `T` in the current scope
 ```
 
 
-因为`T`可以是任何类型，我们不能确定它实现了`area`方法。不过我们可以在泛型`T`添加一个*trait约束*（*trait constraint*），来确保它实现了对应方法：
+因为`T`可以是任何类型，我们不能确定它实现了`area`方法。不过我们可以在泛型`T`添加一个 trait bound，来确保它实现了对应方法：
 
 ```rust
 fn print_area<T: HasArea>(shape: T) {
@@ -62,7 +69,7 @@ fn print_area<T: HasArea>(shape: T) {
 }
 ```
 
-`<T: HasArea>`语法是指`any type that implements the HasArea trait`（任何实现了`HasArea`trait的类型）。因为trait定义了函数类型标记，我们可以确定任何实现`HasArea`将会拥有一个`.area()`方法。
+`<T: HasArea>`语法是指`any type that implements the HasArea trait`（任何实现了`HasArea`trait的类型）。因为 trait 定义了函数类型标记，我们可以确定任何实现`HasArea`将会拥有一个`.area()`方法。
 
 这是一个扩展的例子演示它如何工作：
 
@@ -133,10 +140,55 @@ print_area(5);
 我们会得到一个编译时错误：
 
 ```bash
-error: failed to find an implementation of trait main::HasArea for int
+error: the trait `HasArea` is not implemented for the type `_` [E0277]
 ```
 
-目前为止，我们只在结构体上添加trait实现，不过你可以为任何类型实现一个trait。所以从技术上讲，你可以在`i32`上实现`HasArea`：
+## 泛型结构体的 trait bound（Trait bounds on generic structs）
+
+泛型结构体也从 trait bound 中获益。所有你需要做的就是在你声明类型参数时附加上 bound。这里有一个新类型`Rectangle<T>`和它的操作`is_square()`：
+
+```rust
+struct Rectangle<T> {
+    x: T,
+    y: T,
+    width: T,
+    height: T,
+}
+
+impl<T: PartialEq> Rectangle<T> {
+    fn is_square(&self) -> bool {
+        self.width == self.height
+    }
+}
+
+fn main() {
+    let mut r = Rectangle {
+        x: 0,
+        y: 0,
+        width: 47,
+        height: 47,
+    };
+
+    assert!(r.is_square());
+
+    r.height = 42;
+    assert!(!r.is_square());
+}
+```
+
+`is_square()`需要检查边是相等的，所以边必须是一个实现了[`core::cmp::PartialEq`](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialEq.html) trait 的类型：
+
+```rust
+impl<T: PartialEq> Rectangle<T> { ... }
+```
+
+现在，一个长方形可以用任何可以比较相等的类型定义了。
+
+这里我们定义了一个新的接受任何精度数字的`Rectangle`结构体——讲道理，很多类型——只要他们能够比较大小。我们可以对`HasArea`结构体，`Square`和`Circle`做同样的事吗？可以，不过他们需要乘法，而要处理它我们需要了解[运算符 trait](https://github.com/rust-lang/rust/blob/master/src/doc/book/operators-and-overloading.html)更多。
+
+## 实现 trait 的规则（Rules for implementing traits）
+
+目前为止，我们只在结构体上添加 trait 实现，不过你可以为任何类型实现一个 trait。所以从技术上讲，你可以在`i32`上实现`HasArea`：
 
 ```rust
 trait HasArea {
@@ -156,7 +208,7 @@ impl HasArea for i32 {
 
 在基本类型上实现方法被认为是不好的设计，即便这是可以的。
 
-这看起来有点像狂野西部（Wild West），不过这还有两个限制来避免情况失去控制。第一是如果trait并不定义在你的作用域，它并不能实现。这是个例子：为了进行文件I/O，标准库提供了一个[`Write`](http://doc.rust-lang.org/nightly/std/io/trait.Write.html)trait来为`File`增加额外的功能。默认，`File`并不会有这个方法：
+这看起来有点像狂野西部（Wild West），不过这还有两个限制来避免情况失去控制。第一是如果 trait 并不定义在你的作用域，它并不能实现。这是个例子：为了进行文件I/O，标准库提供了一个[`Write`](http://doc.rust-lang.org/nightly/std/io/trait.Write.html)trait来为`File`增加额外的功能。默认，`File`并不会有这个方法：
 
 ```rust
 let mut f = std::fs::File::open("foo.txt").ok().expect("Couldn’t open foo.txt");
@@ -172,14 +224,15 @@ let result = f.write(buf);
                ^~~~~~~~~~
 ```
 
-我们需要先`use` `Write`trait：
+我们需要先`use`这个`Write` trait：
 
 ```rust
 use std::io::Write;
 
-let mut f = std::fs::File::open("foo.txt").ok().expect("Couldn’t open foo.txt");
+let mut f = std::fs::File::open("foo.txt").expect("Couldn’t open foo.txt");
 let buf = b"whatever";
 let result = f.write(buf);
+# result.unwrap(); // ignore the error
 ```
 
 这样就能无错误的编译了。
@@ -190,7 +243,8 @@ let result = f.write(buf);
 
 关于trait的最后一点：带有trait限制的泛型函数是*单态*（*monomorphization*）（mono：单一，morph：形式）的，所以它是*静态分发*（*statically dispatched*）的。这是什么意思？查看[trait对象](http://doc.rust-lang.org/stable/book/trait-objects.html)来了解更多细节。
 
-## 多trait限定（Multiple trait bounds）
+## 多 trait bound（Multiple trait bounds）
+
 你已经见过你可以用一个trait限定一个泛型类型参数：
 
 ```rust
@@ -212,7 +266,8 @@ fn foo<T: Clone + Debug>(x: T) {
 
 `T`现在需要实现`Clone`和`Debug`。
 
-## where从句（Where clause）
+## where 从句（Where clause）
+
 编写只有少量泛型和trait的函数并不算太糟，不过当它们的数量增加，这个语法就看起来比较诡异了：
 
 ```rust
@@ -227,7 +282,7 @@ fn foo<T: Clone, K: Clone + Debug>(x: T, y: K) {
 
 函数的名字在最左边，而参数列表在最右边。限制写在中间。
 
-Rust有一个解决方案，它叫“where从句”：
+Rust有一个解决方案，它叫“where 从句”：
 
 ```rust
 use std::fmt::Debug;
@@ -294,6 +349,7 @@ fn inverse<T>() -> T
 这突显出了`where`从句的额外的功能：它允许限制的左侧可以是任意类型（在这里是`i32`），而不仅仅是一个类型参数（比如`T`）。
 
 ## 默认方法（Default methods）
+
 关于trait还有最后一个我们需要讲到的功能。它简单到只需我们展示一个例子：
 
 ```rust
@@ -307,6 +363,11 @@ trait Foo {
 `Foo`trait的实现者需要实现`is_valid()`，不过并不需要实现`is_invalid()`。它会使用默认的行为。你也可以选择覆盖默认行为：
 
 ```rust
+# trait Foo {
+#     fn is_valid(&self) -> bool;
+#
+#     fn is_invalid(&self) -> bool { !self.is_valid() }
+# }
 struct UseDefault;
 
 impl Foo for UseDefault {
@@ -326,7 +387,7 @@ impl Foo for OverrideDefault {
 
     fn is_invalid(&self) -> bool {
         println!("Called OverrideDefault.is_invalid!");
-        true // this implementation is a self-contradiction!
+        true // overrides the expected value of is_invalid()
     }
 }
 
@@ -369,3 +430,28 @@ impl FooBar for Baz {
 ```bash
 error: the trait `main::Foo` is not implemented for the type `main::Baz` [E0277]
 ```
+
+## Deriving
+
+重复的实现像`Debug`和`Default`这样的 trait 会变得很无趣。为此，Rust 提供了一个[属性](https://github.com/rust-lang/rust/blob/master/src/doc/book/attributes.html)来允许我们让 Rust 为我们自动实现 trait：
+
+```rust
+#[derive(Debug)]
+struct Foo;
+
+fn main() {
+    println!("{:?}", Foo);
+}
+```
+
+然而，deriving 限制为一些特定的 trait：
+
+* [Clone](https://github.com/rust-lang/rust/blob/master/src/doc/core/clone/trait.Clone.html)
+* [Copy](https://github.com/rust-lang/rust/blob/master/src/doc/core/marker/trait.Copy.html)
+* [Debug](https://github.com/rust-lang/rust/blob/master/src/doc/core/fmt/trait.Debug.html)
+* [Default](https://github.com/rust-lang/rust/blob/master/src/doc/core/default/trait.Default.html)
+* [Eq](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.Eq.html)
+* [Hash](https://github.com/rust-lang/rust/blob/master/src/doc/core/hash/trait.Hash.html)
+* [Ord](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.Ord.html)
+* [PartialEq](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialEq.html)
+* [PartialOrd](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialOrd.html)

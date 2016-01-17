@@ -1,5 +1,9 @@
 # 注释
 
+> [comments.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/comments.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 现在我们写了一些函数，是时候学习一下注释了。注释是你帮助其他程序员理解你的代码的备注。编译器基本上会忽略它们。
 
 Rust有两种需要你了解的注释格式：*行注释*（*line comments*）和*文档注释*（*doc comments*）。
