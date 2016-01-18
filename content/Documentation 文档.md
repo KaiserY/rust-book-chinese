@@ -1,7 +1,8 @@
 # 文档
 
-> [documentation.md](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/documentation.md)
-> commit 5ae1937129c8595075f32a1417d534297c9d78e5
+> [documentation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/documentation.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
 > **注意：**由于gitbook的markdown对代码块中的3重音符的解析与github不一致（估计是bug），故在本章中在其间加空格，届时会有说明
 
@@ -69,10 +70,12 @@ hello.rs:4 }
 这个[不幸的错误](https://github.com/rust-lang/rust/issues/22547)是有道理的：文档注释适用于它后面的内容，而在在最后的注释后面没有任何内容。
 
 ### 编写文档注释
+
 不管怎样，让我们来详细了解一下注释的每一部分：
 
 ```rust
 /// Constructs a new `Rc<T>`.
+# fn foo() {}
 ```
 
 文档注释的第一行应该是它功能的一个简要总结。一句话。只包括基础。高层次。
@@ -82,32 +85,32 @@ hello.rs:4 }
 /// Other details about constructing `Rc<T>`s, maybe describing complicated
 /// semantics, maybe additional options, all kinds of stuff.
 ///
+# fn foo() {}
 ```
 
 我们原始的例子只有一行总结，不过如果有更多东西要写，我们在一个新的段落增加更多解释。
 
 ### 特殊部分
 
-```rsut
-/// # Examples
-```
-
 下面，是特殊部分。它由一个标头表明，`#`。有三种经常使用的标头。它们不是特殊的语法，只是传统，目前为止。
 
 ```rust
 /// # Panics
+# fn foo() {}
 ```
 
 不可恢复的函数滥用（比如，程序错误）在Rust中通常用恐慌表明，它至少会杀死整个当前的线程。如果你的函数有这样有意义的被识别为或者强制为恐慌的约定，记录文档是非常重要的。
 
 ```rust
 /// # Failures
+# fn foo() {}
 ```
 
 如果你的函数或方法返回`Result<T, E>`，那么描述何种情况下它会返回`Err(E)`是件好事。这并不如`Panics`重要，因为失败被编码进了类型系统，不过仍旧是件好事。
 
 ```rust
 /// # Safety
+# fn foo() {}
 ```
 
 如果你的函是`unsafe`的，你应该解释调用者应该支持哪种不可变量。
@@ -120,6 +123,7 @@ hello.rs:4 }
 ///
 /// let five = Rc::new(5);
 /// ` ` ` 实际不应有空格
+# fn foo() {}
 ```
 
 第三个，`Examples`。包含一个或多个使用你函数的例子，这样你的用户会为此感（ai）谢（shang）你的。这些例子写在代码块注释中，我们稍后会讨论到，并且可以有不止一个部分：
@@ -140,17 +144,20 @@ hello.rs:4 }
 /// let v: Vec<&str> = "abc1def2ghi".split(|c: char| c.is_numeric()).collect();
 /// assert_eq!(v, vec!["abc", "def", "ghi"]);
 /// ` ` ` 实际不应有空格
+# fn foo() {}
 ```
 
 让我们聊聊这些代码块的细节。
 
 ### 代码块注释
+
 在注释中编写Rust代码，使用三重重音号：
 
 ```rust
 /// ` ` ` 实际不应有空格
 /// println!("Hello, world");
 /// ` ` ` 实际不应有空格
+# fn foo() {}
 ```
 
 如果你想要一些不是Rust的代码，你可以加上一个注释：
@@ -159,6 +166,7 @@ hello.rs:4 }
 /// ` ` `c  实际不应有空格
 /// printf("Hello, world\n");
 /// ` ` ` 实际不应有空格
+# fn foo() {}
 ```
 
 这回根据你选择的语言高亮代码。如果你只是想展示普通文本，选择`text`。
@@ -166,12 +174,14 @@ hello.rs:4 }
 选择正确的注释是很重要的，因为`rustdoc`用一种有意思的方法使用它：它可以用来实际测试你的代码，这样你的注释就不会过时。如果你写了些C代码不过`rustdoc`会认为它是Rust代码由于你忽略了注释，`rustdoc`会在你生成文档时提示。
 
 ## 文档作为测试
+
 让我们看看我的例子文档的样例：
 
 ```rust
 /// ` ` ` 实际不应有空格
 /// println!("Hello, world");
 /// ` ` ` 实际不应有空格
+# fn foo() {}
 ```
 
 你会注意到你并不需要`fn main()`或者别的什么函数。`rustdoc`会自动一个`main()`包装你的代码，并且在正确的位置。例如：
@@ -182,6 +192,7 @@ hello.rs:4 }
 ///
 /// let five = Rc::new(5);
 /// ` ` ` 实际不应有空格
+# fn foo() {}
 ```
 
 这会作为测试：
@@ -202,7 +213,7 @@ fn main() {
 
 有时，这是不够的。例如，我们已经考虑到了所有`///`开头的代码样例了吗？普通文本：
 
-```rust
+```
 /// Some documentation.
 # fn foo() {}
 ```
@@ -211,9 +222,12 @@ fn main() {
 
 ```rust
 /// Some documentation.
+# fn foo() {}
 ```
 
-是的，你猜对了：你写的以`#`开头的行会在输出中被隐藏，不过会在编译你的代码时被使用。你可以利用这一点。在这个例子中，文档注释需要适用于一些函数，所以我只想向你展示文档注释，我需要在下面增加一些函数定义。同时，这只是用来满足编译器的，所以省略它会使得例子看起来更清楚。你可以使用这个技巧来详细的解释较长的例子，同时保留你文档的可测试行。例如，这些代码：
+是的，你猜对了：你写的以`#`开头的行会在输出中被隐藏，不过会在编译你的代码时被使用。你可以利用这一点。在这个例子中，文档注释需要适用于一些函数，所以我只想向你展示文档注释，我需要在下面增加一些函数定义。同时，这只是用来满足编译器的，所以省略它会使得例子看起来更清楚。你可以使用这个技巧来详细的解释较长的例子，同时保留你文档的可测试行。
+
+例如，想象一下我们想要为如下代码写文档：
 
 ```rust
 let x = 5;
@@ -221,52 +235,64 @@ let y = 6;
 println!("{}", x + y);
 ```
 
-这是一个被渲染出来的解释：
+最终我们可能想要文档变成这样：
 
-首先，我们把`x`设置为`5`：
+> 首先，我们把`x`设置为`5`：
+>
+> ```rust
+> let x = 5;
+> # let y = 6;
+> # println!("{}", x + y);
+> ```
+>
+> 接着，我们把`y`设置为`6`：
+>
+> ```rust
+> # let x = 5;
+> let y = 6;
+> # println!("{}", x + y);
+> ```
+>
+> 最后，我们打印`x`和`y`的和：
+>
+> ```rust
+> # let x = 5;
+> # let y = 6;
+> println!("{}", x + y);
+> ```
 
-```rust
-let x = 5;
-```
+为了让每个代码块可以执行，我们想要每个代码块都有整个程序，不过我们并不想读者每回都看到所有的行。这是我们的源代码：
 
-接着，我们把`y`设置为`6`：
+```text
+    首先，我们把`x`设置为`5`：
 
-```rust
-let y = 6;
-```
-
-最后，我们打印`x`和`y`的和：
-
-```rust
-println!("{}", x + y);
-```
-
-这是同样的解释的原始文本：
-
-```
-首先，我们把`x`设置为`5`：
-
+    ```text
     let x = 5;
     # let y = 6;
     # println!("{}", x + y);
-    
-接着，我们把`y`设置为`6`：
+    ```
 
+    接着，我们把`y`设置为`6`：
+
+    ```text
     # let x = 5;
     let y = 6;
     # println!("{}", x + y);
-    
-最后，我们打印`x`和`y`的和：
+    ```
 
+    最后，我们打印`x`和`y`的和：
+
+    ```text
     # let x = 5;
     # let y = 6;
     println!("{}", x + y);
-    
+    ```
 ```
 
 通过重复例子的所有部分，你可以确保你的例子仍能编译，同时只显示与你解释相关的部分。
 
 ### 文档化宏
+
 下面是一个宏的文档例子：
 
 ```rust
@@ -293,13 +319,13 @@ macro_rules! panic_unless {
 }
 ```
 
-你会注意到3个地方：我们需要添加我们自己的`extern crate`行，这样我们可以添加`#[macro_use]`属性。第二，我们也需要添加我们自己的`main()`。最后，用`#`机智的注释掉这两个代码，这样它们不会出现在输出中。
+你会注意到3个地方：我们需要添加我们自己的`extern crate`行，这样我们可以添加`#[macro_use]`属性。第二，我们也需要添加我们自己的`main()`（为了上面讨论过的原因）。最后，用`#`机智的注释掉这两个代码，这样它们不会出现在输出中。
 
 另一个`#`好用的情况是当你想要忽略错误处理的时候。例如你想要如下情况。
 
 ```rust
 /// use std::io;
-/// let mut input = String::new(); 
+/// let mut input = String::new();
 /// try!(io::stdin().read_line(&mut input));
 ```
 
@@ -311,7 +337,7 @@ macro_rules! panic_unless {
 /// ` ` ` 实际不应有空格
 /// use std::io;
 /// # fn foo() -> io::Result<()> {
-/// let mut input = String::new(); 
+/// let mut input = String::new();
 /// try!(io::stdin().read_line(&mut input));
 /// # Ok(())
 /// # }
@@ -386,12 +412,14 @@ mod foo {
 ```
 
 ### 文档注释风格
+
 查看[RFC 505](https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md)以了解文档风格和格式的惯例。
 
 ### 其它文档
-所有这些行为都能在非Rust代码文件中工作。因为注释是用Markdown编写的，它们通常是`.md`文件。
 
-当你在Markdown文件中写文档时，你并不需要加上注释前缀。例如：
+所有这些行为都能在非 Rust 代码文件中工作。因为注释是用 Markdown 编写的，它们通常是`.md`文件。
+
+当你在 Markdown 文件中写文档时，你并不需要加上注释前缀。例如：
 
 ```rust
 /// # Examples
@@ -407,9 +435,9 @@ mod foo {
 
 > ```
 > # Examples
-> 
+>
 > use std::rc::Rc;
-> 
+>
 > let five = Rc::new(5);
 > ```
 
@@ -514,4 +542,5 @@ struct Hidden;
 
 ```rust
 /// <script>alert(document.cookie)</script>
+# fn foo() {}
 ```

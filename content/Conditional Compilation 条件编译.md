@@ -1,7 +1,8 @@
 # 条件编译
 
-> [conditional-compilation.md](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/conditional-compilation.md)
-> commit fcf8dedb99fa674a152b5625dd81938c4d8ff67b
+> [conditional-compilation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/conditional-compilation.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
 
 Rust有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编译器的标记编译代码。它有两种形式：
 

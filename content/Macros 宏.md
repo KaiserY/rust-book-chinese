@@ -1,4 +1,9 @@
 # 宏
+
+> [macros.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/macros.md)
+> <br>
+> commit ccaa7e5146ba0ee47d3b7301121a05da6e484f49
+
 到目前为止你已经学到了不少Rust提供的抽象和重用代码的工具了。这些代码重用单元有丰富的语义结构。例如，函数有类型标记，类型参数有特性限制并且能重载的函数必须属于一个特定的特性。
 
 这些结构意味着Rust核心抽象拥有强大的编译时正确性检查。不过作为代价的是灵活性的减少。如果你识别出一个重复代码的模式，你会发现把它们解释为泛型函数，特性或者任何Rust语义中的其它结构很难或者很麻烦。
@@ -14,6 +19,7 @@
 
 ```rust
 let x: Vec<u32> = vec![1, 2, 3];
+# assert_eq!(x, [1, 2, 3]);
 ```
 
 这不可能是一个常规函数，因为它可以接受任何数量的参数。不过我们可以想象的到它是这些代码的句法简写：
@@ -26,9 +32,12 @@ let x: Vec<u32> = {
     temp_vec.push(3);
     temp_vec
 };
+# assert_eq!(x, [1, 2, 3]);
 ```
 
-我们可以使用宏来实现这么一个简写：<sup>[1](#1)</sup>
+我们可以使用宏来实现这么一个简写：[^actual]
+
+[^actual]：`vec!`在 libcollections 中的实际定义跟这里的表现并不相同，出于效率和复用的考虑。
 
 ```rust
 macro_rules! vec {
@@ -42,6 +51,9 @@ macro_rules! vec {
         }
     };
 }
+# fn main() {
+#     assert_eq!(vec![1,2,3], [1, 2, 3]);
+# }
 ```
 
 哇哦，这里有好多新语法！让我们分开来看。
@@ -274,6 +286,7 @@ fn main() {
 一个宏扩展中可以包含更多的宏，包括被扩展的宏自身。这种宏对处理树形结构输入时很有用的，正如这这个（简化了的）HTML简写所展示的那样：
 
 ```rust
+# #![allow(unused_must_use)]
 macro_rules! write_html {
     ($w:expr, ) => (());
 
@@ -288,6 +301,7 @@ macro_rules! write_html {
 }
 
 fn main() {
+#   // FIXME(#21826)
     use std::fmt::Write;
     let mut out = String::new();
 
@@ -432,6 +446,7 @@ macro_rules! inc_a {
 macro_rules! inc_b {
     ($x:expr) => ( ::mylib::increment($x) )
 }
+# fn main() { }
 ```
 
 `inc_a`只能在`mylib`内工作，同时`inc_b`只能在库外工作。进一步说，如果用户有另一个名字导入`mylib`时`inc_b`将不能工作。

@@ -1,5 +1,10 @@
 # 裸指针
-Rust的标准库中有一系列不同的智能指针类型，不过这有两个类型是十分特殊的。Rust的安全大多来源于编译时检查，不过裸指针并没有这样的保证，使用它们是[`unsafe`](http://doc.rust-lang.org/nightly/book/unsafe.html)的。
+
+> [raw-pointers.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/raw-pointers.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
+Rust 的标准库中有一系列不同的智能指针类型，不过这有两个类型是十分特殊的。Rust的安全大多来源于编译时检查，不过裸指针并没有这样的保证，使用它们是[`unsafe`](http://doc.rust-lang.org/nightly/book/unsafe.html)的。
 
 `*const T`和`*mut T`在Rust中被称为“裸指针”。有时当编写特定类型的库时，为了某些原因你需要绕过Rust的安全保障。在这种情况下，你可以使用裸指针来实现你的库，同时暴露一个安全的接口给你的用户。例如，`*`指针允许别名，允许用来写共享所有权类型，甚至是内存安全的共享内存类型（`Rc<T>`和`Arc<T>`类型都是完全用Rust实现的）。
 
@@ -13,6 +18,7 @@ Rust的标准库中有一系列不同的智能指针类型，不过这有两个�
 * 除了通过`*const T`直接不允许改变外，没有别名或可变性的保障。
 
 ## 基础
+
 创建一个裸指针是非常安全的：
 
 ```rust
@@ -23,7 +29,7 @@ let mut y = 10;
 let raw_mut = &mut y as *mut i32;
 ```
 
-然而，解引用它则不行。这个不能工作：
+然而，解引用它则不行。这个并不能工作：
 
 ```rust
 let x = 5;
@@ -64,13 +70,12 @@ println!("raw points at {}", points_at);
 推荐的转换方法是
 
 ```rust
-let i: u32 = 1;
-
 // explicit cast
+let i: u32 = 1;
 let p_imm: *const u32 = &i as *const u32;
-let mut m: u32 = 2;
 
 // implicit coercion
+let mut m: u32 = 2;
 let p_mut: *mut u32 = &mut m;
 
 unsafe {

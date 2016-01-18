@@ -1,5 +1,9 @@
 # 关联类型
 
+> [associated-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/associated-types.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+
 关联类型是Rust类型系统中非常强大的一部分。它涉及到‘类型族’的概念，换句话说，就是把多种类型归于一类。这个描述可能比较抽象，所以让我们深入研究一个例子。如果你想编写一个`Graph`trait，你需要泛型化两个类型：点类型和边类型。所以你可能会像这样写一个trait，`Graph<N, E>`：
 
 ```rust
@@ -10,7 +14,7 @@ trait Graph<N, E> {
 }
 ```
 
-虽然这可以工作，不过显得很尴尬，例如，任何需要一个`Graph`作为参数的函数都需要泛型化的`N`ode和`E`dge类型： 
+虽然这可以工作，不过显得很尴尬，例如，任何需要一个`Graph`作为参数的函数都需要泛型化的`N`ode和`E`dge类型：
 
 ```rust
 fn distance<N, E, G: Graph<N, E>>(graph: &G, start: &N, end: &N) -> u32 { ... }
@@ -71,9 +75,16 @@ trait Graph {
 ```
 
 ## 实现关联类型
-就像任何trait，使用关联类型的trait用`impl`关键字来提供实现。下面是一个`Graph`的简单实现：
+
+就像任何 trait，使用关联类型的 trait 用`impl`关键字来提供实现。下面是一个`Graph`的简单实现：
 
 ```rust
+# trait Graph {
+#     type N;
+#     type E;
+#     fn has_edge(&self, &Self::N, &Self::N) -> bool;
+#     fn edges(&self, &Self::N) -> Vec<Self::E>;
+# }
 struct Node;
 
 struct Edge;
@@ -94,16 +105,36 @@ impl Graph for MyGraph {
 }
 ```
 
-这个可笑的实现总是返回`true`和一个空的`Vec<Edge>`，不过它提供了如何实现这类trait的思路。首先我们需要3个`struct`，一个代表图，一个代表点，还有一个代表边。如果使用别的类型更合理，也可以那样做，我们只是准备使用`struct`来代表这3个类型。
+这个可笑的实现总是返回`true`和一个空的`Vec<Edge>`，不过它提供了如何实现这类 trait 的思路。首先我们需要3个`struct`，一个代表图，一个代表点，还有一个代表边。如果使用别的类型更合理，也可以那样做，我们只是准备使用`struct`来代表这 3 个类型。
 
-接下来是`impl`行，它就像其它任何trait的实现。
+接下来是`impl`行，它就像其它任何 trait 的实现。
 
-在这里，我们使用`=`来定义我们的关联类型。trait使用的名字出现在`=`的左边，而我们`impl`的具体类型出现在右边。最后，我们在函数声明中使用具体类型。
+在这里，我们使用`=`来定义我们的关联类型。trait 使用的名字出现在`=`的左边，而我们`impl`的具体类型出现在右边。最后，我们在函数声明中使用具体类型。
 
-## trait对象和关联类型
+## trait 对象和关联类型
+
 这里还有另外一个我们需要讨论的语法：trait对象。如果你创建一个关联类型的trait对象，像这样：
 
 ```rust
+# trait Graph {
+#     type N;
+#     type E;
+#     fn has_edge(&self, &Self::N, &Self::N) -> bool;
+#     fn edges(&self, &Self::N) -> Vec<Self::E>;
+# }
+# struct Node;
+# struct Edge;
+# struct MyGraph;
+# impl Graph for MyGraph {
+#     type N = Node;
+#     type E = Edge;
+#     fn has_edge(&self, n1: &Node, n2: &Node) -> bool {
+#         true
+#     }
+#     fn edges(&self, n: &Node) -> Vec<Edge> {
+#         Vec::new()
+#     }
+# }
 let graph = MyGraph;
 let obj = Box::new(graph) as Box<Graph>;
 ```
@@ -124,6 +155,25 @@ let obj = Box::new(graph) as Box<Graph>;
 我们不能这样创建一个trait对象，因为我们并不知道关联的类型。相反，我们可以这样写：
 
 ```rust
+# trait Graph {
+#     type N;
+#     type E;
+#     fn has_edge(&self, &Self::N, &Self::N) -> bool;
+#     fn edges(&self, &Self::N) -> Vec<Self::E>;
+# }
+# struct Node;
+# struct Edge;
+# struct MyGraph;
+# impl Graph for MyGraph {
+#     type N = Node;
+#     type E = Edge;
+#     fn has_edge(&self, n1: &Node, n2: &Node) -> bool {
+#         true
+#     }
+#     fn edges(&self, n: &Node) -> Vec<Edge> {
+#         Vec::new()
+#     }
+# }
 let graph = MyGraph;
 let obj = Box::new(graph) as Box<Graph<N=Node, E=Edge>>;
 ```

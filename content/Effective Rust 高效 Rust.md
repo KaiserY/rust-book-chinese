@@ -1,8 +1,8 @@
-# 高效Rust
+# 高效 Rust
 
 > [effective-rust.md](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/effective-rust.md)
 > commit f01dbf21945aa4d1a11d0ba1695238c59bdf4a44
 
-那么你已经学会了如何写一些Rust代码了。不过能写*一些* Rust 代码和能写*好* Rust 代码还是有区别的。
+那么你已经学会了如何写一些 Rust 代码了。不过能写*一些* Rust 代码和能写*好* Rust 代码还是有区别的。
 
 这个部分包含一些相对独立的教程，它们向你展示如何将你的 Rust 带入下一个等级。常见模式和标准库功能将被介绍。你可以选择任意顺序阅读这一部分。

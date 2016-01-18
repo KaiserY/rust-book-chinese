@@ -1,7 +1,8 @@
 # 测试
 
-> [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/testing.md)
-> commit 898f3af1cea5c6e070e04844dda029cd3c540a1c
+> [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/testing.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 
@@ -14,14 +15,15 @@
 让我们讨论一下如何测试Rust代码。在这里我们不会讨论什么是测试Rust代码的正确方法。这里有很多关于写测试好坏方法的流派。所有的这些途径都使用相同的基本工具，所以我们会向你展示他们的语法。
 
 ## `test`属性（The test attribute）
-简单的说，测试是一个标记为`test`属性的函数。让我们用Cargo来创建一个叫`adder`的项目：
+
+简单的说，测试是一个标记为`test`属性的函数。让我们用 Cargo 来创建一个叫`adder`的项目：
 
 ```rust
 $ cargo new adder
 $ cd adder
 ```
 
-在你创建一个新项目时Cargo会自动生成一个简单的测试。下面是`src/lib.rs`的内容：
+在你创建一个新项目时 Cargo 会自动生成一个简单的测试。下面是`src/lib.rs`的内容：
 
 ```rust
 #[test]
@@ -48,7 +50,7 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
-Cargo编译和运行了我们的测试。这里有两部分输出：一个是我们写的测试，另一个是文档测试。我们稍后再讨论这些。现在，看看这行：
+Cargo 编译和运行了我们的测试。这里有两部分输出：一个是我们写的测试，另一个是文档测试。我们稍后再讨论这些。现在，看看这行：
 
 ```bash
 test it_works ... ok
@@ -275,6 +277,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 `--ignored`参数是 test 程序的参数，而不是 Cargo 的，这也是为什么命令是`cargo test -- --ignored`。
 
 ## `tests`模块
+
 然而以这样的方式来实现我们的测试的例子并不是地道的做法：它缺少`tests`模块。如果要实现我们的测试实例，一个比较惯用的做法应该是如下的：
 
 ```rust
