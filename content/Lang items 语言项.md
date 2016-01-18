@@ -1,12 +1,17 @@
 # 语言项
-> **注意**：语言项通常由Rust发行版的包装箱提供，并且它自身有一个不稳定的接口。建议使用官方发布的包装箱而不是定义自己的版本。
+
+> [lang-items.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/lang-items.md)
+> <br>
+> commit 464cdff102993ff1900eebbf65209e0a3c0be0d5
+
+> **注意**：语言项通常由Rust发行版的 crate 提供，并且它自身有一个不稳定的接口。建议使用官方发布的 crate 而不是定义自己的版本。
 
 `rustc`编译器有一些可插入的操作，也就是说，功能不是硬编码进语言的，而是在库中实现的，通过一个特殊的标记告诉编译器它存在。这个标记是`#[lang="..."]`属性并且有不同的值`...`,也就是不同的“语言项”。
 
 例如，`Box`指针需要两个语言项，一个用于分配，一个用于释放。下面是一个独立的程序使用`Box`语法糖进行动态分配，通过`malloc`和`free`：
 
 ```rust
-#![feature(lang_items, box_syntax, start, no_std, libc)]
+#![feature(lang_items, box_syntax, start, libc)]
 #![no_std]
 
 extern crate libc;
@@ -18,7 +23,7 @@ extern {
 #[lang = "owned_box"]
 pub struct Box<T>(*mut T);
 
-#[lang="exchange_malloc"]
+#[lang = "exchange_malloc"]
 unsafe fn allocate(size: usize, _align: usize) -> *mut u8 {
     let p = libc::malloc(size as libc::size_t) as *mut u8;
 
@@ -29,7 +34,7 @@ unsafe fn allocate(size: usize, _align: usize) -> *mut u8 {
 
     p
 }
-#[lang="exchange_free"]
+#[lang = "exchange_free"]
 unsafe fn deallocate(ptr: *mut u8, _size: usize, _align: usize) {
     libc::free(ptr as *mut libc::c_void)
 }
@@ -41,9 +46,11 @@ fn main(argc: isize, argv: *const *const u8) -> isize {
     0
 }
 
-#[lang = "stack_exhausted"] extern fn stack_exhausted() {}
 #[lang = "eh_personality"] extern fn eh_personality() {}
 #[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
+# #[lang = "eh_unwind_resume"] extern fn rust_eh_unwind_resume() {}
+# #[no_mangle] pub extern fn rust_eh_register_frames () {}
+# #[no_mangle] pub extern fn rust_eh_unregister_frames () {}
 ```
 
 注意`abort`的使用：`exchange_malloc`语言项假设返回一个有效的指针，所以需要在内部进行检查。

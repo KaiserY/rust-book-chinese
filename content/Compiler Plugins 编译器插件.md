@@ -1,5 +1,11 @@
 # 编译器插件
+
+> [compiler-plugins.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/compiler-plugins.md)
+> <br>
+> commit 1430a3500076ad504a0b30be77fd2ad4468ea769
+
 ## 介绍
+
 `rustc`可以加载编译器插件，它是由用户提供的库用来扩充编译器的行为，例如新的语法扩展，lint检查等。
 
 一个插件是带有设计好的用来在`rustc`中注册扩展的*注册*（*registrar*）函数的一个动态库包装箱。其它包装箱可以使用`#![plugin(...)]`属性来装载这个扩展。查看[rustc::plugin](http://doc.rust-lang.org/rustc/plugin/)文档来获取更多关于定义和装载插件的机制。
@@ -8,10 +14,11 @@
 
 在绝大多数情况中，一个插件应该*只*通过`#![plugin]`而不通过`extern crate`来使用。链接一个插件会将`libsyntax`和`librustc`加入到你的包装箱的依赖中。基本上你不会希望如此除非你在构建另一个插件。`plugin_as_library`lint会检查这些原则。
 
-通常的做法是将插件放到它们自己的包装箱中，与任何那些会被库的调用者使用的`macro_rules!`宏或Rust代码分开。
+通常的做法是将插件放到它们自己的包装箱中，与任何那些会被库的调用者使用的`macro_rules!`宏或 Rust 代码分开。
 
 ## 语法扩展
-插件可以有多种方法来扩展Rust的语法。一种语法扩展是宏过程。它们与[普通宏](5.35.Macros 宏.md)的调用方法一样，不过扩展是通过执行任意Rust代码在编译时操作[语法树](http://doc.rust-lang.org/syntax/ast/)进行的。
+
+插件可以有多种方法来扩展 Rust 的语法。一种语法扩展是宏过程。它们与[普通宏](5.35.Macros 宏.md)的调用方法一样，不过扩展是通过执行任意Rust代码在编译时操作[语法树](http://doc.rust-lang.org/syntax/ast/)进行的。
 
 让我们写一个实现了罗马数字的插件[roman_numerals.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/roman_numerals.rs)。
 
@@ -90,6 +97,7 @@ fn main() {
 除了宏过程，你可以定义新的类[derive](http://doc.rust-lang.org/reference.html#derive)属性和其它类型的扩展。查看[Registry::register_syntax_extension](http://doc.rust-lang.org/rustc/plugin/registry/struct.Registry.html#method.register_syntax_extension)和[SyntaxExtension enum](http://doc.rust-lang.org/syntax/ext/base/enum.SyntaxExtension.html)。对于更复杂的宏例子，查看[regex_macros](https://github.com/rust-lang/regex/blob/master/regex_macros/src/lib.rs)。
 
 ## 提示与技巧
+
 这里提供一些[宏调试的提示](5.35.Macros 宏.md#debugging-macro-code)。
 
 你可以使用[syntax::parse](http://doc.rust-lang.org/syntax/parse/)来将记号树转换为像表达式这样的更高级的语法元素：
@@ -114,6 +122,7 @@ fn expand_foo(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
 上面的例子使用[AstBuilder::expr_usize](http://doc.rust-lang.org/syntax/ext/build/trait.AstBuilder.html#tymethod.expr_usize)产生了一个普通整数。作为一个`AstBuilder`特性的额外选择，`libsyntax`提供了一个[准引用宏](http://doc.rust-lang.org/syntax/ext/quote/)的集合。它们并没有文档并且非常边缘化。然而，这些将会是实现一个作为一个普通插件库的改进准引用的好的出发点。
 
 ## Lint插件
+
 插件可以扩展[Rust Lint基础设施](http://doc.rust-lang.org/reference.html#lint-check-attributes)来添加额外的代码风格，安全检查等。你可以查看[src/test/auxiliary/lint_plugin_test.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/lint_plugin_test.rs)来了解一个完整的例子，我们在这里重现它的核心部分：
 
 ```rust

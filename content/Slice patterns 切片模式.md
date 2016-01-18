@@ -1,4 +1,9 @@
 # 切片模式
+
+> [slice-patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/slice-patterns.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 如果你想在一个切片或数组上匹配，你可以通过`slice_patterns`功能使用`&`：
 
 ```rust
@@ -14,7 +19,7 @@ fn main() {
 }
 ```
 
-`advanced_slice_patterns`通道让你使用`..`表明在一个切片的模式匹配中任意数量的元素。这个通配符对一个给定的数组只能只用一次。如果在`..`之前有一个标识符，结果会被绑定到那个名字上。例如：
+`advanced_slice_patterns`gate 让你使用`..`表明在一个切片的模式匹配中任意数量的元素。这个通配符对一个给定的数组只能只用一次。如果在`..`之前有一个标识符，结果会被绑定到那个名字上。例如：
 
 ```rust
 #![feature(advanced_slice_patterns, slice_patterns)]

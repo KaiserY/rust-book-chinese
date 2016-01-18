@@ -1,5 +1,10 @@
 # 基准测试
-Rust也支持基准测试，它可以测试代码的性能。让我们把`src/lib.rs`修改成这样（省略注释）：
+
+> [benchmark-tests.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/benchmark-tests.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
+Rust 也支持基准测试，它可以测试代码的性能。让我们把`src/lib.rs`修改成这样（省略注释）：
 
 ```rust
 #![feature(test)]
@@ -11,7 +16,7 @@ pub fn add_two(a: i32) -> i32 {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
     use test::Bencher;
 
@@ -27,9 +32,9 @@ mod test {
 }
 ```
 
-注意`test`功能通道，它启用了这个不稳定功能。
+注意`test`功能 gate，它启用了这个不稳定功能。
 
-我们导入了`test`包装箱，它包含了对基准测试的支持。我们也定义了一个新函数，带有`bench`属性。与一般的不带参数的测试不同，基准测试有一个`&mut Bencher`参数。`Bencher`提供了一个`iter`方法，它接收一个闭包。这个闭包包含我们想要测试的代码。
+我们导入了`test`crate，它包含了对基准测试的支持。我们也定义了一个新函数，带有`bench`属性。与一般的不带参数的测试不同，基准测试有一个`&mut Bencher`参数。`Bencher`提供了一个`iter`方法，它接收一个闭包。这个闭包包含我们想要测试的代码。
 
 我们可以用`cargo bench`来运行基准测试：
 
@@ -84,6 +89,8 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 1 measured
 基准测试运行器提供两种方法来避免这个问题：要么传递给`iter`的闭包可以返回一个随机的值这样强制优化器认为结果有用并确保它不会移除整个计算部分。这可以通过修改上面例子中的`b.iter`调用：
 
 ```rust
+# struct X;
+# impl X { fn iter<T, F>(&self, _: F) where F: FnMut() -> T {} } let b = X;
 b.iter(|| {
     // note lack of `;` (could also use an explicit `return`).
     (0..1000).fold(0, |old, new| old ^ new)
@@ -91,16 +98,21 @@ b.iter(|| {
 ```
 
 要么，另一个选择是调用通用的`test::black_box`函数，它会传递给优化器一个不透明的“黑盒”这样强制它考虑任何它接收到的参数。
+
 ```rust
 #![feature(test)]
 
 extern crate test;
 
+# fn main() {
+# struct X;
+# impl X { fn iter<T, F>(&self, _: F) where F: FnMut() -> T {} } let b = X;
 b.iter(|| {
     let n = test::black_box(1000);
 
     (0..n).fold(0, |a, b| a ^ b)
 })
+# }
 ```
 上述两种方法均未读取或修改值，并且对于小的值来说非常廉价。对于大的只可以通过间接传递来减小额外开销（例如：`black_box(&huge_struct)`）。
 

@@ -1,8 +1,12 @@
 # 选择你的保证
 
-作为语言Rust的一个重要特性是允许我们控制一个程序的开销和（安全）保证。
+> [choosing-your-guarantees.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/choosing-your-guarantees.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
-Rust标准库中有多种“包装类型”的抽象，他们代表了大量在开销，工程学和安全保证之间的权衡。很多让你在运行时和编译时增强之间选择。这一部分将会详细解释一些特定的抽象。
+Rust 的一个重要特性是允许我们控制一个程序的开销和（安全）保证。
+
+Rust 标准库中有多种“wrapper 类型”的抽象，他们代表了大量在开销，工程学和安全保证之间的权衡。很多让你在运行时和编译时增强之间选择。这一部分将会详细解释一些特定的抽象。
 
 在开始之前，强烈建议你阅读Rust的[所有权](https://doc.rust-lang.org/stable/book/ownership.html)和[借用](https://doc.rust-lang.org/stable/book/references-and-borrowing.html)。
 
@@ -61,7 +65,7 @@ let y = x;
 
 `Rc<T>`分别在拷贝和离开作用域时会产生递增/递减引用计数的计算型开销。注意拷贝将不会进行一次深度复制，相反它会简单的递增内部引用计数并返回一个`Rc<T>`的拷贝。
 
-## Cell类型
+## Cell 类型
 
 `Cell`提供内部可变性。换句话说，他们包含的数据可以被修改，即便是这个类型并不能以可变形式获取（例如，当他们位于一个`&`指针或`Rc<T>`之后时）。
 
@@ -108,6 +112,8 @@ println!("{}", x);
 这个类型放宽了当没有必要时“没有因可变性导致的混淆”的限制。然而，这也放宽了这个限制提供的保证；所以当你的不可变量依赖存储在`Cell`中的数据，你应该多加小心。
 
 这对改变基本类型和其他`Copy`类型非常有用，当通过`&`和`&mut`的静态规则并没有其他简单合适的方法改变他们的值时。
+
+`Cell`并不让你获取数据的内部引用，它让我们可以自由改变值。
 
 #### 开销
 
@@ -160,7 +166,9 @@ let x = RefCell::new(vec![1,2,3,4]);
 
 [Arc\<T\>](https://doc.rust-lang.org/stable/std/sync/struct.Arc.html)就是一个使用原子引用计数版本的`Rc<T>`（因此是“Arc”）。它可以在线程间自由的传递。
 
-C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是可以改变的。为了语义上与C++的形式相似，我们应该使用`Arc<Mutex<T>>`，`Arc<RwLock<T>>`，或者`Arc<UnsafeCell<T>>`<a name="ref1"></a>[<sup>1</sup>](#1)（`UnsafeCell<T>`是一个可以用来包含任何数据并没有运行时开销的cell类型，不过需要`unsafe`来访问它）。最后一个应该只被用在我们能确定使用它并不会造成内存不安全性的情况下。记住写入一个结构体不是一个原子操作，并且很多像`vec.push()`这样的函数可以在内部重新分配内存并产生不安全的行为，所以即便是单一环境也不足以证明`UnsafeCell`是安全的。
+C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是可以改变的。为了语义上与C++的形式相似，我们应该使用`Arc<Mutex<T>>`，`Arc<RwLock<T>>`，或者`Arc<UnsafeCell<T>>`[^4]。最后一个应该只被用在我们能确定使用它并不会造成内存不安全性的情况下。记住写入一个结构体不是一个原子操作，并且很多像`vec.push()`这样的函数可以在内部重新分配内存并产生不安全的行为，所以即便是单一环境也不足以证明`UnsafeCell`是安全的。
+
+[^4]: `Arc<UnsafeCell<T>>`实际上并不能编译因为`UnsafeCell<T>`并不是`Send`或`Sync`的，不过我们可以把它 wrap 进一个类型并且手动为其实现`Send`/`Sync`来获得`Arc<Wrapper<T>>`，它的`Wrapper`是`struct Wrapper<T>(UnsafeCell<T>)`。
 
 #### 保证
 
@@ -212,7 +220,4 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 当选择一个组合类型的时候，我们必须反过来思考；搞清楚我们需要何种保证，以及在组合中的何处我们需要他们。例如，如果面对一个`Vec<RefCell<T>>`和`RefCell<Vec<T>>`之间的选择，我们需要明确像上面讲到的那样的权衡并选择其一。
 
----
-
-1. <a name="1"></a>`Arc<UnsafeCell<T>>`通常并不能编译因为`UnsafeCell<T>`并不是`Send`或`Sync`的，不过我们可以封装进一个类型并手动实现`Send`/`Sync`来获取`Arc<Wrapper<T>>`，这里的`Wrapper`是`struct Wrapper<T>(UnsafeCell<T>)`。[↩](#ref1)
 2. <a name="2"></a>`&[T]`和`&mut [T]`是*切片*（slice）；他们包含一个指针和一个长度并可以引用一个vector或数组的一部分。`&mut [T]`能够改变它的元素，不过长度不能改变。[↩](#ref2)

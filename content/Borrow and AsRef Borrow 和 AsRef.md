@@ -1,7 +1,13 @@
 # `Borrow` 和 `AsRef`
+
+> [borrow-and-asref.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/borrow-and-asref.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+
 [`Borrow`](http://doc.rust-lang.org/std/borrow/trait.Borrow.html)和[`AsRef`](http://doc.rust-lang.org/std/convert/trait.AsRef.html)特性非常相似。这是一个快速的关于这两个特性意义的复习。
 
 ## `Borrow`
+
 `Borrow`特性用于当你处于某种目的写了一个数据结构，并且你想要使用一个要么拥有要么借用的类型作为它的同义词。
 
 例如，[`HashMap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/collections/struct.HashMap.html)有一个用了`Borrow`的[`get`方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/collections/struct.HashMap.html#method.get)：

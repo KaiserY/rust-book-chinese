@@ -1,4 +1,9 @@
 # Rust开发版
+
+> [nightly-rust.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/nightly-rust.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+
 Rust提供了3种发行渠道：开发版（每日构建），beta版和稳定版。不稳定功能只在Rust开发版中可用。对于这个进程的更多细节，查看[作为可支付的稳定性](http://blog.rust-lang.org/2014/10/30/Stability.html)。
 
 要安装Rust开发版，你可以使用`rustup.sh`：
@@ -18,7 +23,6 @@ $ sudo sh rustup.sh
 
 ## 卸载
 
-
 如果不幸的，你再也不想使用Rust了:(，当然这不要紧。也许Rust不是你的菜（原文：不是所有人都会认为什么语言非常好）。运行下面的卸载脚本：
 
 ```bash
@@ -37,7 +41,7 @@ $ sudo /usr/local/lib/rustlib/uninstall.sh
 * Linux (2.6.18 or later, various distributions), x86 and x86-64
 * OSX 10.7 (Lion) or greater, x86 and x86-64
 
-Rust在以上平台进行了广泛的测试，当然还在一些其他平台，比如Android。不过进行了越多测试的环境，越有可能正常工作。
+Rust 在以上平台进行了广泛的测试，当然还在一些其他平台，比如Android。不过进行了越多测试的环境，越有可能正常工作。
 
 最后，关于Windows。Rust将Windows作为第一级平台来发布，不过说实话，WIndows的集成体验并没有Linux/OS X那么好。我们正在改善它！如果有情况它不能工作了，这是一个bug。如果这种发生了，请让我知道。任何一次提交都在Windows下进行了测试，就像其它平台一样。
 
