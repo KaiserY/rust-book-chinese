@@ -1,4 +1,4 @@
-# Rust编程语言
+# Rust 编程语言
 
 > [README.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/README.md)
 > <br>
