@@ -48,7 +48,7 @@
  * [5.4.文档](content/Documentation 文档.md)
  * [5.5.迭代器](content/Iterators 迭代器.md)
  * [5.6.并发](content/Concurrency 并发.md)
- * [5.7.错误处理](content/4.7.Error Handling 错误处理.md)
+ * [5.7.错误处理](content/Error Handling 错误处理.md)
  * [5.8.选择你的保证](content/Choosing your Guarantees 选择你的保证.md)
  * [5.9.外部函数接口](content/Foreign Function Interface 外部函数接口.md)
  * [5.10.Borrow 和 AsRef](content/Borrow and AsRef Borrow 和 AsRef.md)
