@@ -7,7 +7,7 @@
 欢迎为本翻译文档做出贡献。
 
 ## 版本
-1.3.0-stable （1.5.0-stable 施工中...）
+nightly
 
 ## 电子书
 * 请使用 [GitBook](https://github.com/GitbookIO/gitbook) 来生成电子书。
