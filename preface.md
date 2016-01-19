@@ -7,7 +7,7 @@
 欢迎在 [GitHub](https://github.com/KaiserY/rust-book-chinese) 上为本文档做出贡献。
 
 ## 版本
-1.3.0-stable （1.4.0-stable 施工中...）
+nightly
 
 ## 相关资源
 * GitHub: https://github.com/KaiserY/rust-book-chinese
