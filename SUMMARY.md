@@ -29,7 +29,7 @@
  * [4.22.trait 对象](content/Trait Objects trait 对象.md)
  * [4.23.闭包](content/Closures 闭包.md)
  * [4.24.通用函数调用语法](content/Universal Function Call Syntax 通用函数调用语法.md)
- * [4.25.包装箱和模块](content/Crates and Modules 包装箱和模块.md)
+ * [4.25.crate 和模块](content/Crates and Modules crate 和模块.md)
  * [4.26.`const`和`static`](content/`const` and `static`.md)
  * [4.27.属性](content/Attributes 属性.md)
  * [4.28.`type`别名](content/`type` Aliases `type`别名.md)

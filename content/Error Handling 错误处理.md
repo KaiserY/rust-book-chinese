@@ -428,11 +428,81 @@ fn double_number(number_str: &str) -> Result<i32> {
 然而，`unwrap`仍然可以被明智的使用。具体如何正当化`unwrap`的使用是一个灰色区域并且理性的人可能不会同意。我会简述这个问题的一些个人看法。
 
 * **在例子和简单快速的编码中。**有时你要写一个例子或小程序，这时错误处理一点也不重要。这种情形要击败`unwrap`的方便易用是很难的，所以它显得很合适。
-* **当 panic 意味着程序中有 bug 的时候。**
+* **当 panic 就意味着程序中有 bug 的时候。**当你代码中的不变量应该阻止特定情况发生的时候（比如，从一个空的栈上弹出一个值），那么 panic 就是可行的。这是因为它暴露了程序的一个 bug。这可以是显式的，例如一个`assert!`失败，或者因为一个数组越界。
+
+这可能并不是一个完整的列表。另外，当使用`Option`的时候，通常使用[`expect`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.expect)方法更好。`expect`做了`unwrap`同样的工作，除了`expect`会打印你给它的信息。这让 panic 的结果更容易处理，因为相比“called unwrap on a None value.”会提供一个信息。
+
+我的建议浓缩如下：运用你良好的判断。我的文字中并没有出现“永远不要做 X”或“Y 被认为是有害的”是有原因的。所有这些都是权衡取舍，并且这是你们程序猿的工作去决定在你的用例中哪个是可以接受的。我们目标只是尽可能的帮助你进行权衡。
+
+现在我们介绍了 Rust 的基本的错误处理，并解释了 unwrap，让我们开始更多的探索标准库。
 
 ## <a name="working-with-multiple-error-types"></a>处理多种错误类型
+
+到目前为止，我看到了不是`Option<T>`就是`Result<T, SomeError>`的错误处理。不过当你同时使用`Option`和`Result`时会发生什么呢？或者如果你使用`Result<T, Error1>`和`Result<T, Error2>`呢？我们接下来的挑战是处理*不同错误类型的组合*，这将会是贯穿本章余下部分的主要主题。
+
 ### <a name="composing-option-and-result"></a>组合`Option`和`Result`
+
+到目前为止，我们讲到了为`Option`和`Result`定义的组合。我们可以用这些组合来处理不同的计算结果而不用进行显式的 case analysis。
+
+当然，在实际的代码中，事情并不总是这么明显。有时你遇到一个`Option`和`Result`的混合类型。我们是必须求助于显式 case analysis，或者我们可以使用组合呢？
+
+现在，让我们重温这一部分的第一个例子：
+
+```rust
+use std::env;
+
+fn main() {
+    let mut argv = env::args();
+    let arg: String = argv.nth(1).unwrap(); // error 1
+    let n: i32 = arg.parse().unwrap(); // error 2
+    println!("{}", 2 * n);
+}
+```
+
+基于我们新掌握的关于`Opation`，`Result`和他们的组合的知识，我们应该尝试重写它来适当的处理错误这样出错时程序就不会 panic 了。
+
+这里的坑是`argv.nth(1)`产生一个`Option`而`arg.parse()`产生一个`Result`。他们不是直接可组合的。当同时遇到`Option`和`Result`的时候，解决办法通常是把`Option`转换为一个`Result`。在我们的例子中，缺少命令行参数（来自`env::args()`）意味着我们的用户没有正确调用我们的程序。我们可以用一个`String`来描述这个错误。让我们试试：
+
+
+```rust
+use std::env;
+
+fn double_arg(mut argv: env::Args) -> Result<i32, String> {
+    argv.nth(1)
+        .ok_or("Please give at least one argument".to_owned())
+        .and_then(|arg| arg.parse::<i32>().map_err(|err| err.to_string()))
+        .map(|n| 2 * n)
+}
+
+fn main() {
+    match double_arg(env::args()) {
+        Ok(n) => println!("{}", n),
+        Err(err) => println!("Error: {}", err),
+    }
+}
+```
+
+这个例子中有几个新东西。第一个是使用了[`Option::ok_or`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.ok_or)组合。这是一个把`Option`转换为`Result`的方法。这个转换要求你指定当`Option`为`None`时的错误。就像我们见过的其他组合一样，它的定义是非常简单的：
+
+```rust
+fn ok_or<T, E>(option: Option<T>, err: E) -> Result<T, E> {
+    match option {
+        Some(val) => Ok(val),
+        None => Err(err),
+    }
+}
+```
+
+另一个新使用的组合是[`Result::map_err`](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.map_err)。这就像`Result::map`，除了它映射一个函数到`Result`的 error 部分。如果`Result`是一个`Ok(...)`，那么它什么也不修改。
+
+这里我们使用`map_err`是因为它对保证相同的错误类型（因为我们使用了`and_then`）是必要的。因为我们选择把`Option<String>`（来自`argv.nth(1)`）转换为`Result<String, String>`，我们也必须把来自`arg.parse()`的`ParseIntError`转换为`String`。
+
 ### <a name="the-limits-of-combinators"></a>组合的限制
+
+IO 和 解析输入是非常常见的任务，这也是我个人在 Rust 经常做的。因此，我们将使用（并一直使用）IO 和多种解析工作作为例子讲解错误处理。
+
+让我们从简单的开始。
+
 ### <a name="early-returns"></a>提早返回
 ### <a name="the-try-macro"></a>`try!`宏
 ### <a name="defining-your-own-error-type"></a>定义你自己的错误类型
