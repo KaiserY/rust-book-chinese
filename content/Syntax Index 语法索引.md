@@ -161,24 +161,24 @@
 <!-- Various things involving parens and tuples -->
 
 * `()`: 空元组（也就是单元），常量和类型。
-* `(expr)`: parenthesized expression.
-* `(expr,)`: single-element tuple expression.  See [Primitive Types (Tuples)].
-* `(type,)`: single-element tuple type.  See [Primitive Types (Tuples)].
-* `(expr, …)`: tuple expression.  See [Primitive Types (Tuples)].
-* `(type, …)`: tuple type.  See [Primitive Types (Tuples)].
-* `expr(expr, …)`: function call expression.  Also used to initialize tuple `struct`s and tuple `enum` variants.  See [Functions].
-* `ident!(…)`, `ident!{…}`, `ident![…]`: macro invocation.  See [Macros].
-* `expr.0`, `expr.1`, …: tuple indexing.  See [Primitive Types (Tuple Indexing)].
+* `(expr)`: 自带括号的表达式。
+* `(expr,)`: 单元素元组表达式。详见[原生类型（元组）](Primitive Types 原生类型.md)。
+* `(type,)`: 单元素元组类型。详见[原生类型（元组）](Primitive Types 原生类型.md)。
+* `(expr, …)`: 元组类型。详见[原生类型（元组）](Primitive Types 原生类型.md)。
+* `(type, …)`: 元组类型。详见[原生类型（元组）](Primitive Types 原生类型.md)。
+* `expr(expr, …)`: 函数调用表达式。也用于初始化元组`struct`和元组`enum`变量。详见[函数](Functions 函数.md)。
+* `ident!(…)`, `ident!{…}`, `ident![…]`: 宏调用。详见[宏](Macros 宏.md)。
+* `expr.0`, `expr.1`, …: 元组索引。详见[原生类型（元组索引）](Primitive Types 原生类型.md)。
 
 <!-- Bracey things -->
 
-* `{…}`: block expression.
-* `Type {…}`: `struct` literal.  See [Structs].
+* `{…}`: 表达式块
+* `Type {…}`: `struct`常量。详见[结构体](Structs 结构体.md)。
 
 <!-- Brackety things -->
 
-* `[…]`: array literal.  See [Primitive Types (Arrays)].
-* `[expr; len]`: array literal containing `len` copies of `expr`.  See [Primitive Types (Arrays)].
-* `[type; len]`: array type containing `len` instances of `type`.  See [Primitive Types (Arrays)].
-* `expr[expr]`: collection indexing.  Overloadable (`Index`, `IndexMut`).
-* `expr[..]`, `expr[a..]`, `expr[..b]`, `expr[a..b]`: collection indexing pretending to be collection slicing, using `Range`, `RangeFrom`, `RangeTo`, `RangeFull` as the "index".
+* `[…]`: 数组常量。详见[原生类型（数组）](Primitive Types 原生类型.md)。
+* `[expr; len]`: 包含`expr`的`len`次拷贝的数组常量。详见[原生类型（数组）](Primitive Types 原生类型.md)。
+* `[type; len]`: 包含`len`个`type`实例的数组类型。详见[原生类型（数组）](Primitive Types 原生类型.md)。
+* `expr[expr]`: 集合索引。可重载（`Index`，`IndexMut`）。
+* `expr[..]`, `expr[a..]`, `expr[..b]`, `expr[a..b]`: 用来生成集合切片的集合索引，分别使用`Range`，`RangeFrom`，`RangeTo`，`RangeFull`作为“索引”。

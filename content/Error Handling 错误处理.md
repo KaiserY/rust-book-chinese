@@ -501,7 +501,38 @@ fn ok_or<T, E>(option: Option<T>, err: E) -> Result<T, E> {
 
 IO 和 解析输入是非常常见的任务，这也是我个人在 Rust 经常做的。因此，我们将使用（并一直使用）IO 和多种解析工作作为例子讲解错误处理。
 
-让我们从简单的开始。
+让我们从简单的开始。我们的任务是打开一个文件，读取所有的内容并把他们转换为一个数字。接着我们把它乘以`2`并打印结果。
+
+虽然我们劝告过你不要用`unwrap`，不过开始写代码的时候`unwrap`也是有用的。它允许你关注你的问题而不是错误处理，并且暴露出需要错误处理的点。让我们开始试试手感，再接着用更好的错误处理重构。
+
+```rust
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
+fn file_double<P: AsRef<Path>>(file_path: P) -> i32 {
+    let mut file = File::open(file_path).unwrap(); // error 1
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).unwrap(); // error 2
+    let n: i32 = contents.trim().parse().unwrap(); // error 3
+    2 * n
+}
+
+fn main() {
+    let doubled = file_double("foobar");
+    println!("{}", doubled);
+}
+```
+
+（附注：`AsRef<Path>`被使用是因为它与[`std::fs::File::open`有着相同的 bound](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)。这让我们可以用任何类型的字符串作为一个文件路径。）
+
+这里可能出现三个不同错误：
+
+1. 打开文件出错。
+2. 从文件读数据出错。
+3. 将数据解析为数字出错。
+
+头两个错误被描述为[`std::io::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/struct.Error.html)类型。我们知道这些因为返回类型是[`std::fs::File::open`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)和[`std::io::Read::read_to_string`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/trait.Read.html#method.read_to_string)。（注意他们都使用了之前描述的[`Result`类型别名习惯](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-result-type-alias-idiom)。如果你点击`Result`类型，你将会[看到这个类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)，以及底层的`io::Error`类型。）第三个问题被描述为[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。特别的`io::Error`被广泛的用于标准库中。你会一次又一次的看到它。
 
 ### <a name="early-returns"></a>提早返回
 ### <a name="the-try-macro"></a>`try!`宏
