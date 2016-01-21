@@ -913,10 +913,141 @@ fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, Box<Error>> {
 }
 ```
 
-我们已经非常接近理想的错误处理了。我们的代码
+我们已经非常接近理想的错误处理了。我们的代码处理错误只造成了很小的成本，因为`try!`宏同时封装了三个东西：
+
+* case analysis。
+* 控制流。
+* 错误类型转换。
+
+当结合所有这些东西，我们的代码不再受组合，`unwrap`调用或 case analysis 的困扰了。
+
+这里还剩一点东西：`Box<Error>`是不透明的。如果我们返回一个`Box<Error>`给调用者，调用者并不能（轻易地）观察底层错误类型。当然这种情形比`String`要好，因为调用者可以调用像[`description`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html#tymethod.description)和[`cause`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html#method.cause)这样的方法，不过这是有限制的：`Box<Error>`是不透明的。（附注：这并不是完全正确，因为 Rust 并没有运行时反射，这在某些场景是有用的不过[超出了本部分的范畴](https://crates.io/crates/error)。）
+
+是时候重写我们的`CliError`类型并将一切连起来了。
 
 ### <a name="composing-custom-error-types"></a>组合自定义错误类型
+
+在这最后一部分，我们看看真正的`try!`宏以及如何通过调用`From::from`自动转换错误类型。具体的，我们把错误转换为`Box<Error>`，这是可以的，不过这个类型对调用者是不透明的。
+
+为了修改这个问题，我们使用我们已经熟知的补救方法：一个自定义错误类型。再一次，这是读取文件内容并将其转换为数字的代码：
+
+```rust
+use std::fs::File;
+use std::io::{self, Read};
+use std::num;
+use std::path::Path;
+
+// We derive `Debug` because all types should probably derive `Debug`.
+// This gives us a reasonable human readable description of `CliError` values.
+#[derive(Debug)]
+enum CliError {
+    Io(io::Error),
+    Parse(num::ParseIntError),
+}
+
+fn file_double_verbose<P: AsRef<Path>>(file_path: P) -> Result<i32, CliError> {
+    let mut file = try!(File::open(file_path).map_err(CliError::Io));
+    let mut contents = String::new();
+    try!(file.read_to_string(&mut contents).map_err(CliError::Io));
+    let n: i32 = try!(contents.trim().parse().map_err(CliError::Parse));
+    Ok(2 * n)
+}
+```
+
+注意我们仍然有`map_err`的调用。为神马？好吧，回忆[`try!`](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-try-def)和[`From`](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-from-def)的定义。问题是这里并没有`impl`的实现允许我们将一些像`io::Error`和`num::ParseIntError`这样的错误类型转换为我们的自定义类型`CliError`。当然，这个问题很好修改！`CliError`都是我们定义的，我们可以为其实现`From`。
+
+```rust
+# #[derive(Debug)]
+# enum CliError { Io(io::Error), Parse(num::ParseIntError) }
+use std::io;
+use std::num;
+
+impl From<io::Error> for CliError {
+    fn from(err: io::Error) -> CliError {
+        CliError::Io(err)
+    }
+}
+
+impl From<num::ParseIntError> for CliError {
+    fn from(err: num::ParseIntError) -> CliError {
+        CliError::Parse(err)
+    }
+}
+```
+
+所有这些实现都是告诉`From`如何从其他类型创建一个`CliError`。在我们的例子中，构造函数就像调用相应的值构造器那样简单。讲道理，这确实很简单。
+
+最后我们可以重写`file_double`：
+
+```rust
+# use std::io;
+# use std::num;
+# enum CliError { Io(::std::io::Error), Parse(::std::num::ParseIntError) }
+# impl From<io::Error> for CliError {
+#     fn from(err: io::Error) -> CliError { CliError::Io(err) }
+# }
+# impl From<num::ParseIntError> for CliError {
+#     fn from(err: num::ParseIntError) -> CliError { CliError::Parse(err) }
+# }
+
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
+fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, CliError> {
+    let mut file = try!(File::open(file_path));
+    let mut contents = String::new();
+    try!(file.read_to_string(&mut contents));
+    let n: i32 = try!(contents.trim().parse());
+    Ok(2 * n)
+}
+```
+
+我们做的唯一一件事就是去掉了`map_err`调用。他们不再必要因为`try!`宏对错误类型调用了`From::from`。这一切可以工作因为我们对所有可能出现的错误类型提供了`From`实现。
+
+如果我们修改我们的`file_double`函数来进行一些其他操作，例如，把自付出转换为浮点，那么我们需要给我们的错误类型增加一个新变量：
+
+```rust
+use std::io;
+use std::num;
+
+enum CliError {
+    Io(io::Error),
+    ParseInt(num::ParseIntError),
+    ParseFloat(num::ParseFloatError),
+}
+```
+
+并增加一个新的`From`实现：
+
+```rust
+# enum CliError {
+#     Io(::std::io::Error),
+#     ParseInt(num::ParseIntError),
+#     ParseFloat(num::ParseFloatError),
+# }
+
+use std::num;
+
+impl From<num::ParseFloatError> for CliError {
+    fn from(err: num::ParseFloatError) -> CliError {
+        CliError::ParseFloat(err)
+    }
+}
+```
+
+一切搞定！
+
 ### <a name="advice-for-library-writers"></a>给库编写者的建议
+
+如果你的库需要报告一些自定义错误，那么你可能应该定义你自己的错误类型。由你决定是否暴露它的表示（例如[`ErrorKind`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/enum.ErrorKind.html)）或者把它隐藏起来（例如[`ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)）。不过你怎么做，相比`String`表示多少提供一些关于错误的信息通常是好的实践。不过说实话，这根据使用情况大有不同。
+
+最少，你可能应该实现[`Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)trait。这会给你的库的用户以[处理错误](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-real-try-macro)的最小灵活性。实现`Error`trait 也意味着可以确保用户能够获得一个错误的字符串表示（因为它实现了`fmt::Debug`和`fmt::Display`）。
+
+不仅如此，为你的错误类型提供`From`实现也是很有用的。这允许你（库作者）和你的用户[组合更详细的错误](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#composing-custom-error-types)。例如，[`csv::Error`](http://burntsushi.net/rustdoc/csv/enum.Error.html)提供了`io::Error`和`byteorder::Error`。
+
+最后，根据你的风格，你也许想要定义一个[`Result`类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-result-type-alias-idiom)，尤其是如果你的库定义了一个单一的错误类型。这被用在了标准库的[`io::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)和[`fmt::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/type.Result.html)中。
+
 ## <a name="case-study-a-program-to-read-population-data"></a>案例学习：一个读取人口数据的程序
 ### <a name="initial-setup"></a>初始化
 ### <a name="argument-parsing"></a>参数解析
