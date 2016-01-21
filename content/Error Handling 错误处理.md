@@ -31,7 +31,7 @@ Rust 的错误处理天生是冗长而烦人的。这一部分将会探索这些
 * [用于错误处理的标准库 trait](#standard-library-traits-used-for-error-handling)
     * [`Error`trait](#the-error-trait)
     * [`From`trait](#the-from-trait)
-    * [真正的`try!`macro](#the-real-try-macro)
+    * [真正的`try!`宏](#the-real-try-macro)
     * [组合自定义错误类型](#composing-custom-error-types)
     * [给库编写者的建议](#advice-for-library-writers)
 * [案例学习：一个读取人口数据的程序](#case-study-a-program-to-read-population-data)
@@ -759,8 +759,162 @@ enum CliError {
 }
 ```
 
+这个特定的错误类型表示出现两种错误类型的可能性：一个进行 I/O 操作的错误或者一个把字符串转换为数字的错误。这个类型可以表示任何你想要添加的错误类型，通过向`enum`定义添加变量。
+
+实现`Error`是非常直观的。这会有很多的显式 case analysis。
+
+```rust
+use std::error;
+use std::fmt;
+
+impl fmt::Display for CliError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            // Both underlying errors already impl `Display`, so we defer to
+            // their implementations.
+            CliError::Io(ref err) => write!(f, "IO error: {}", err),
+            CliError::Parse(ref err) => write!(f, "Parse error: {}", err),
+        }
+    }
+}
+
+impl error::Error for CliError {
+    fn description(&self) -> &str {
+        // Both underlying errors already impl `Error`, so we defer to their
+        // implementations.
+        match *self {
+            CliError::Io(ref err) => err.description(),
+            CliError::Parse(ref err) => err.description(),
+        }
+    }
+
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {
+            // N.B. Both of these implicitly cast `err` from their concrete
+            // types (either `&io::Error` or `&num::ParseIntError`)
+            // to a trait object `&Error`. This works because both error types
+            // implement `Error`.
+            CliError::Io(ref err) => Some(err),
+            CliError::Parse(ref err) => Some(err),
+        }
+    }
+}
+```
+
+我们注意到这是一个非常典型的`Error`的实现：为你不同的错误类型做匹配并满足`description`和`cause`定义的限制。
+
 ### <a name="the-from-trait"></a>`From`trait
-### <a name="the-real-try-macro"></a>真正的`try!`macro
+
+`std::convert::From` trait [定义于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)：
+
+```rust
+trait From<T> {
+    fn from(T) -> Self;
+}
+```
+
+非常简单吧？`From`很有用因为它给了我们一个通用的方式来处理从一个特定类型`T`到其他类型的转换（在这个例子中，“其他类型”是实现的主体，或者`Self`）。`From`的核心是[标准库提供的一系列实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)。
+
+这里是几个展示`From`如何工作的小例子：
+
+```rust
+let string: String = From::from("foo");
+let bytes: Vec<u8> = From::from("foo");
+let cow: ::std::borrow::Cow<str> = From::from("foo");
+```
+
+好的，这么说`From`用来处理字符串转换，那么错误怎么办？他被证明是一个关键实现：
+
+```rust
+impl<'a, E: Error + 'a> From<E> for Box<Error + 'a>
+```
+
+这个实现说任何实现了`Error`的类型，我们可以把它转换一个 trait 对象`Box<Error>`。这可能看起来并不怎么令人吃惊，不过它在泛型环境中很有用。
+
+记的我们之前处理的两个错误吗？`io::Error`和`num::ParseIntError`。因为他们都实现了`Error`，他们也能用于`From`：
+
+```rust
+use std::error::Error;
+use std::fs;
+use std::io;
+use std::num;
+
+// We have to jump through some hoops to actually get error values.
+let io_err: io::Error = io::Error::last_os_error();
+let parse_err: num::ParseIntError = "not a number".parse::<i32>().unwrap_err();
+
+// OK, here are the conversions.
+let err1: Box<Error> = From::from(io_err);
+let err2: Box<Error> = From::from(parse_err);
+```
+
+这里有一个非常重要的模式。`err1`和`err2`有着相同的类型。这是因为他们实际上是定量类型，或者 trait 对象。尤其是，对编译器来说他们的底层类型被抹掉了，所以编译器认为`err1`和`err2`是完全一样的。另外，我们用完全一样的函数调用构建`err1`和`err2`：`From::from`。这是因为`From::from`的参数和返回值都可以重载。
+
+这个模式很重要，因为它解决了一个我们之前遇到过的问题：它给了我们一个可靠的用相同的函数把错误转换为相同类型的方法。
+
+是时候重新看看我们的老朋友：`try!`宏了。
+
+### <a name="the-real-try-macro"></a>真正的`try!`宏
+
+之前我们展示了`try!`的定义：
+
+```rust
+macro_rules! try {
+    ($e:expr) => (match $e {
+        Ok(val) => val,
+        Err(err) => return Err(err),
+    });
+}
+```
+
+这并不是它真正的定义。它的实际定义[位于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.try!.html)：
+
+```rust
+macro_rules! try {
+    ($e:expr) => (match $e {
+        Ok(val) => val,
+        Err(err) => return Err(::std::convert::From::from(err)),
+    });
+}
+```
+
+这是一个很小但很有效的修改：错误值被通过`From::from`传递。这让`try!`宏变得更强大了一点，因为它免费提供给你自动类型转换。
+
+有了更强大的`try!`宏的支持，让我们再看一眼我们之前写的读一个文件并把内容转换为数字的代码：
+
+```rust
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
+fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, String> {
+    let mut file = try!(File::open(file_path).map_err(|e| e.to_string()));
+    let mut contents = String::new();
+    try!(file.read_to_string(&mut contents).map_err(|e| e.to_string()));
+    let n = try!(contents.trim().parse::<i32>().map_err(|e| e.to_string()));
+    Ok(2 * n)
+}
+```
+
+之前，我们承诺我们可以去掉`map_err`调用。实际上，所有我们需要做的就是选一个可以用于`From`的类型。一如我们在上一个部分看到的，`From`有一个可以转换任意错误类型为`Box<Error>`的实现：
+
+```rust
+use std::error::Error;
+use std::fs::File;
+use std::io::Read;
+use std::path::Path;
+
+fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, Box<Error>> {
+    let mut file = try!(File::open(file_path));
+    let mut contents = String::new();
+    try!(file.read_to_string(&mut contents));
+    let n = try!(contents.trim().parse::<i32>());
+    Ok(2 * n)
+}
+```
+
+我们已经非常接近理想的错误处理了。我们的代码
+
 ### <a name="composing-custom-error-types"></a>组合自定义错误类型
 ### <a name="advice-for-library-writers"></a>给库编写者的建议
 ## <a name="case-study-a-program-to-read-population-data"></a>案例学习：一个读取人口数据的程序
