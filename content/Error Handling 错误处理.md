@@ -1049,9 +1049,160 @@ impl From<num::ParseFloatError> for CliError {
 最后，根据你的风格，你也许想要定义一个[`Result`类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-result-type-alias-idiom)，尤其是如果你的库定义了一个单一的错误类型。这被用在了标准库的[`io::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)和[`fmt::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/type.Result.html)中。
 
 ## <a name="case-study-a-program-to-read-population-data"></a>案例学习：一个读取人口数据的程序
+
+这一部分很长，并且根据你的背景，它可能显得更加复杂。虽然这里有很多示例代码以及散文一样的解释，但大部分都被设计为教科书式的。那么，我们要开始点新东西了：一个案例学习。
+
+为此，为此我们将要建立一个可以让你查询真实世界人口数据的命令行程序。目标是简单的：你给出一个地点接着它会告诉你人口。虽然这很简单，但仍有很多地方我们可能犯错。
+
+我们将使用的数据来自[Data Science Toolkit](https://github.com/petewarden/dstkdata)。我为这个练习准备了一些数据。你要么可以获取[世界人口数据](http://burntsushi.net/stuff/worldcitiespop.csv.gz)（41 MB gzip 压缩，145 MB 未压缩）或者只使用[US 人口数据](http://burntsushi.net/stuff/uscitiespop.csv.gz)（2.2 MB gzip 压缩，7.2 MB 未压缩）。
+
+直到目前为止，我们的代码一直限制在 Rust 标准库之内。但是对于一个像这样的真实的任务，我们至少想要一些解析 CSV 数据，解析程序参数以及将其自动转换为 Rust 类型的东西。为此，我们将使用[`csv`](https://crates.io/crates/csv)，以及[`rustc-serialize`](https://crates.io/crates/rustc-serialize)crate。
+
 ### <a name="initial-setup"></a>初始化
+
+我们不打算花很多时间在使用 Cargo 创建一个项目上，因为这在 [Cargo 部分](https://github.com/rust-lang/rust/blob/master/src/doc/book/hello-cargo.html)和 [Cargo 文档](http://doc.crates.io/guide.html)中已被讲解。
+
+为了从头开始，运行`cargo new --bin city-pop`并确保你的`Cargo.toml`看起来像这样：
+
+```toml
+[package]
+name = "city-pop"
+version = "0.1.0"
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+
+[[bin]]
+name = "city-pop"
+
+[dependencies]
+csv = "0.*"
+rustc-serialize = "0.*"
+getopts = "0.*"
+```
+
+你应该已经可以运行了：
+
+```text
+cargo build --release
+./target/release/city-pop
+# Outputs: Hello, world!
+```
+
 ### <a name="argument-parsing"></a>参数解析
+
+让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过这里有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，我们可以解码程序参数到一个 Rust 结构体中。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
+
+```rust
+extern crate getopts;
+extern crate rustc_serialize;
+
+use getopts::Options;
+use std::env;
+
+fn print_usage(program: &str, opts: Options) {
+    println!("{}", opts.usage(&format!("Usage: {} [options] <data-path> <city>", program)));
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let program = args[0].clone();
+
+    let mut opts = Options::new();
+    opts.optflag("h", "help", "Show this usage message.");
+
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m)  => { m }
+        Err(e) => { panic!(e.to_string()) }
+    };
+    if matches.opt_present("h") {
+        print_usage(&program, opts);
+        return;
+    }
+    let data_path = args[1].clone();
+    let city = args[2].clone();
+
+    // Do stuff with information
+}
+```
+
+首先，我们获取一个传递给我们程序的 vector。接着我们我们储存第一个参数，因为我们知道那是程序名。当一切搞定，我们设置我们的参数 flag，在这里是一个简单的提示信息 flag。当我们设置了参数 flag 之后，我们使用`Options.parse`解析参数列表（从 1 开始，因为 0 是程序名）。如果这成功了，我们被解析的对象赋值给`matches`，如果失败了，我们 panic。接着，我们检查用户是否传递了帮助 flag，如果是就打印使用帮助信息。帮助信息选项是 Getopts 构建的，所以为了打印用法信息所有我们需要做的就是告诉它我们想要打印什么名字和模板。如果用户并没有传递帮助 flag，我们把相应的参数赋值给合适的变量。
+
 ### <a name="writing-the-logic"></a>编写逻辑
+
+每个人写代码的方式各有不同，不过一般错误处理都是我们最后会思考的事情。这对程序整体的设计并不好，不过它对快速原型有帮助。因为 Rust 强制我们进行显示的错误处理（通过让我们调用`unwrap`），这样很容易看出我们的程序的那一部分可以造成错误。
+
+在这个案例学习中，逻辑真的很简单。所有我们要做的就是解析给我们的 CSV 数据并打印出匹配的行的一个字段。让我们开始吧。（确保在你的文件开头加上`extern crate csv;`。）
+
+```rust
+use std::fs::File;
+use std::path::Path;
+
+// This struct represents the data in each row of the CSV file.
+// Type based decoding absolves us of a lot of the nitty gritty error
+// handling, like parsing strings as integers or floats.
+#[derive(Debug, RustcDecodable)]
+struct Row {
+    country: String,
+    city: String,
+    accent_city: String,
+    region: String,
+
+    // Not every row has data for the population, latitude or longitude!
+    // So we express them as `Option` types, which admits the possibility of
+    // absence. The CSV parser will fill in the correct value for us.
+    population: Option<u64>,
+    latitude: Option<f64>,
+    longitude: Option<f64>,
+}
+
+fn print_usage(program: &str, opts: Options) {
+    println!("{}", opts.usage(&format!("Usage: {} [options] <data-path> <city>", program)));
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let program = args[0].clone();
+
+    let mut opts = Options::new();
+    opts.optflag("h", "help", "Show this usage message.");
+
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m)  => { m }
+        Err(e) => { panic!(e.to_string()) }
+    };
+
+    if matches.opt_present("h") {
+        print_usage(&program, opts);
+        return;
+    }
+
+    let data_file = args[1].clone();
+    let data_path = Path::new(&data_file);
+    let city = args[2].clone();
+
+    let file = File::open(data_path).unwrap();
+    let mut rdr = csv::Reader::from_reader(file);
+
+    for row in rdr.decode::<Row>() {
+        let row = row.unwrap();
+
+        if row.city == city {
+            println!("{}, {}: {:?}",
+                row.city, row.country,
+                row.population.expect("population count"));
+        }
+    }
+}
+```
+
+让我们概括下错误。我们可以从明显的开始：三个`unwrap`被调用的地方：
+
+1. [`File::open`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)可能返回[`io::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/struct.Error.html)。
+2. [`csv::Reader::decode`](http://burntsushi.net/rustdoc/csv/struct.Reader.html#method.decode)一次解码一行，而且[解码一个记录](http://burntsushi.net/rustdoc/csv/struct.DecodedRecords.html)（查看`Iterator`实现的关联类型`Item`）可能产生一个[`csv::Error`](http://burntsushi.net/rustdoc/csv/enum.Error.html)。
+
+3. 如果`row.population`是`None`，那么调用`expect`会 panic。
+
+还有其他的吗？如果我们无法找到一个匹配的城市呢？想`grep`这样的工具会返回一个错误码，所以可能我们也应该这么做。
+
 ### <a name="error-handling-with-boxerror"></a>使用`Box<Error>`处理错误
 ### <a name="reading-from-stdin"></a>从标准输入读取
 ### <a name="error-handling-with-a-custom-type"></a>用自定义类型处理错误
