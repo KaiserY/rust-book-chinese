@@ -3,7 +3,6 @@
 * [贡献者](CONTRIBUTING.md)
 * [1.介绍](content/README 介绍.md)
 * [2.准备](content/Getting Started 准备.md)
-<!-- * [3.教程：猜猜看](content/Guessing Game 猜猜看.md) -->
 * [3.学习 Rust](content/Learn Rust 学习 Rust.md)
  * [3.1.猜猜看](content/Guessing Game 猜猜看.md)
  * [3.2.哲学家就餐问题](content/Dining Philosophers 哲学家就餐问题.md)
