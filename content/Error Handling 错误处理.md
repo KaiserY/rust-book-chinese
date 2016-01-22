@@ -1201,10 +1201,371 @@ fn main() {
 
 3. 如果`row.population`是`None`，那么调用`expect`会 panic。
 
-还有其他的吗？如果我们无法找到一个匹配的城市呢？想`grep`这样的工具会返回一个错误码，所以可能我们也应该这么做。
+还有其他的吗？如果我们无法找到一个匹配的城市呢？想`grep`这样的工具会返回一个错误码，所以可能我们也应该这么做。所以我们有特定于我们的问题，IO 错误和 CSV 解析错误的逻辑错误。我们将探索两个不同方式来处理这个问题。
+
+我像从`Box<Error>`开始。接着，我们看看如何定义有用的自定义错误类型。
 
 ### <a name="error-handling-with-boxerror"></a>使用`Box<Error>`处理错误
+
+`Box<Error>`的好处是它刚刚够用。你并不需要定义你自己的错误类型而且也不需要任何`From`实现。缺点是因为`Box<Error>`是一个 trait 对象，这意味着编译器无法再推导出底层类型。
+
+[之前](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-limits-of-combinators)我们开始了把我们函数类型从`T`变成`Result<T, OurErrorType>`的重构。在这个例子中，`OurErrorType`就是`Box<Error>`。不过`T`是什么？或者我们可以给`main`添加一个返回类型吗？
+
+第二个问题的答案是不行，我们不能这么做。这意味着我们需要写一个新函数。不过`T`是什么？最简单的办法是返回一个作为`Vec<Row>`的匹配上的`Row`的值。（更好的代码会返回一个迭代器，不过这是一个留给读者的练习。）
+
+让我们重构函数，不过保持对`unwrap`的调用。注意我们选择处理一个不存在的人口数行的方式是单纯的忽略它。
+
+```rust
+struct Row {
+    // unchanged
+}
+
+struct PopulationCount {
+    city: String,
+    country: String,
+    // This is no longer an `Option` because values of this type are only
+    // constructed if they have a population count.
+    count: u64,
+}
+
+fn print_usage(program: &str, opts: Options) {
+    println!("{}", opts.usage(&format!("Usage: {} [options] <data-path> <city>", program)));
+}
+
+fn search<P: AsRef<Path>>(file_path: P, city: &str) -> Vec<PopulationCount> {
+    let mut found = vec![];
+    let file = File::open(file_path).unwrap();
+    let mut rdr = csv::Reader::from_reader(file);
+    for row in rdr.decode::<Row>() {
+        let row = row.unwrap();
+        match row.population {
+            None => { } // skip it
+            Some(count) => if row.city == city {
+                found.push(PopulationCount {
+                    city: row.city,
+                    country: row.country,
+                    count: count,
+                });
+            },
+        }
+    }
+    found
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let program = args[0].clone();
+
+    let mut opts = Options::new();
+    opts.optflag("h", "help", "Show this usage message.");
+
+    let matches = match opts.parse(&args[1..]) {
+        Ok(m)  => { m }
+        Err(e) => { panic!(e.to_string()) }
+    };
+    if matches.opt_present("h") {
+        print_usage(&program, opts);
+        return;
+    }
+
+    let data_file = args[1].clone();
+    let data_path = Path::new(&data_file);
+    let city = args[2].clone();
+    for pop in search(&data_path, &city) {
+        println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+    }
+}
+```
+
+虽然我们去掉了一个`expect`调用（它是一个比`unwrap`要好的变体），我们仍要处理任何不存在的搜索结果。
+
+为了把这转化为合适的错误处理，我们需要做如下事情：
+
+1. 把`search`的返回值类型改为`Result<Vec<PopulationCount>, Box<Error>>`.
+2.  使用[`try!`宏]()这样会返回错误给调用者而不是使程序 panic。
+3. 处理`mian`中的错误。
+
+让我们试试：
+
+```rust
+use std::error::Error;
+
+// The rest of the code before this is unchanged
+
+fn search<P: AsRef<Path>>
+         (file_path: P, city: &str)
+         -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
+    let mut found = vec![];
+    let file = try!(File::open(file_path));
+    let mut rdr = csv::Reader::from_reader(file);
+    for row in rdr.decode::<Row>() {
+        let row = try!(row);
+        match row.population {
+            None => { } // skip it
+            Some(count) => if row.city == city {
+                found.push(PopulationCount {
+                    city: row.city,
+                    country: row.country,
+                    count: count,
+                });
+            },
+        }
+    }
+    if found.is_empty() {
+        Err(From::from("No matching cities with a population were found."))
+    } else {
+        Ok(found)
+    }
+}
+```
+
+现在我们用`try!(x)`代替了`x.unwrap()`。因为我们的函数返回一个`Result<T, E>`，`try!`宏在出现错误时会提早返回。
+
+代码中还有另一个大的需要注意的地方：我们用了`Box<Error + Send + Sync>`而不是`Box<Error>`。这么做是因为我们可以把一个字符串转换为一个错误类型。我们需要这些额外的 bound，这样我们就可以使用[相应的`From`实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)了：
+
+```rust
+// We are making use of this impl in the code above, since we call `From::from`
+// on a `&'static str`.
+impl<'a, 'b> From<&'b str> for Box<Error + Send + Sync + 'a>
+
+// But this is also useful when you need to allocate a new string for an
+// error message, usually with `format!`.
+impl From<String> for Box<Error + Send + Sync>
+```
+
+因为`search`现在返回`Result<T, E>`，`main`应该在调用`search`时使用 case analysis：
+
+```rust
+...
+match search(&data_file, &city) {
+    Ok(pops) => {
+        for pop in pops {
+            println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+        }
+    }
+    Err(err) => println!("{}", err)
+}
+...
+```
+
+现在你看到了我们如何正确的处理`Box<Error>`，让我们尝试一种使用我们自定义错误类型的不同方式。不过首先，让我们先放下错误处理并快速的添加从`stdin`读取的功能。
+
 ### <a name="reading-from-stdin"></a>从标准输入读取
+
+在我们的程序中，我们接受一个单文件输入并进行一次数据解析。这意味着我们可能需要能够接受标准输入。不过你可能也喜欢现在的格式——所以让我们同时拥有两者吧！
+
+添加标准输入支持是非常简单的。我们只必需做三件事：
+
+1. 修改程序参数，这样一个单独的参数——城市——可以被接受，同时人口数据从标准输入读取。
+2. 修改程序，这样一个`-f`选项可以接受文件，如果它没有从标准输入传递。
+3. 修改`search`函数接受一个可选的文件路径。当为`None`时，它应该知道从标准输入读取。
+
+首先，这是新的使用方法函数：
+
+```rust
+fn print_usage(program: &str, opts: Options) {
+    println!("{}", opts.usage(&format!("Usage: {} [options] <city>", program)));
+}
+```
+
+下一部分只会变得稍微难一点：
+
+```rust
+...
+let mut opts = Options::new();
+opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
+opts.optflag("h", "help", "Show this usage message.");
+...
+let file = matches.opt_str("f");
+let data_file = file.as_ref().map(Path::new);
+
+let city = if !matches.free.is_empty() {
+    matches.free[0].clone()
+} else {
+    print_usage(&program, opts);
+    return;
+};
+
+match search(&data_file, &city) {
+    Ok(pops) => {
+        for pop in pops {
+            println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+        }
+    }
+    Err(err) => println!("{}", err)
+}
+...
+```
+
+在这段代码中，我们获取`file`（它的类型是`Option<String>`），并转换为一个`search`可用的类型，在这个例子中，是`&Option<AsRef<Path>>`。为此，我们获取一个文件的引用，并执行映射`Path::new`。在这里，`as_ref()`把`Option<String>`转换为`Option<&str>`，而且从这开始，我们可以对内容的`Option`执行`Path::new`，并返回新值的`Option`。当一切搞定，这就变为简单的获取`city`参数并执行`search`函数了。
+
+修改`search`需要一点技巧。`csv`crate 可以用[任何实现了`io::Read`的类型]()构建一个解析器。不过我们如何对这两个类型（注：因该是`Option`的两个值）使用相同的代码呢？事实上这里有多种方法可以做到。其中之一是重写`search`为接受一个满足`io::Read`的`R`类型参数的泛型。另一个办法是使用 trait 对象：
+
+```rust
+use std::io;
+
+// The rest of the code before this is unchanged
+
+fn search<P: AsRef<Path>>
+         (file_path: &Option<P>, city: &str)
+         -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
+    let mut found = vec![];
+    let input: Box<io::Read> = match *file_path {
+        None => Box::new(io::stdin()),
+        Some(ref file_path) => Box::new(try!(File::open(file_path))),
+    };
+    let mut rdr = csv::Reader::from_reader(input);
+    // The rest remains unchanged!
+}
+```
+
 ### <a name="error-handling-with-a-custom-type"></a>用自定义类型处理错误
+
+之前，我们学习了如何[用自定义错误类型组合错误](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#composing-custom-error-types)。我们定义了一个`enum`的错误类型并实现了`Error`和`From`。
+
+因为我们有三个不同的错误（IO，CSV 解析和未找到），让我们定义一个三个变体的`enum`：
+
+```rust
+#[derive(Debug)]
+enum CliError {
+    Io(io::Error),
+    Csv(csv::Error),
+    NotFound,
+}
+```
+
+现在让我们实现`Display`和`Error`：
+
+```rust
+impl fmt::Display for CliError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            CliError::Io(ref err) => err.fmt(f),
+            CliError::Csv(ref err) => err.fmt(f),
+            CliError::NotFound => write!(f, "No matching cities with a \
+                                             population were found."),
+        }
+    }
+}
+
+impl Error for CliError {
+    fn description(&self) -> &str {
+        match *self {
+            CliError::Io(ref err) => err.description(),
+            CliError::Csv(ref err) => err.description(),
+            CliError::NotFound => "not found",
+        }
+    }
+}
+```
+
+在我们可以在`search`函数中使用`CliError`之前，我们需要提供一系列的`From`实现。我们如何知晓该提供那个实现呢？好吧，我们得把`io::Error`和`csv::Error`都转换为`CliError`。他们都只是外部错误，所以目前我们只需要两个`From`实现：
+
+```rust
+impl From<io::Error> for CliError {
+    fn from(err: io::Error) -> CliError {
+        CliError::Io(err)
+    }
+}
+
+impl From<csv::Error> for CliError {
+    fn from(err: csv::Error) -> CliError {
+        CliError::Csv(err)
+    }
+}
+```
+
+因为[`try!`的定义](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-try-def)`From`的实现是很重要的。尤其是在这个例子中，如果出现错误，错误的`From::from`被调用，将被转换为我们的错误类型`CliError`。
+
+当实现了`From`，我们只需要对`search`函数进行两个小的修改：返回值类型和“未找到”错误。这是全部的代码：
+
+```rust
+fn search<P: AsRef<Path>>
+         (file_path: &Option<P>, city: &str)
+         -> Result<Vec<PopulationCount>, CliError> {
+    let mut found = vec![];
+    let input: Box<io::Read> = match *file_path {
+        None => Box::new(io::stdin()),
+        Some(ref file_path) => Box::new(try!(File::open(file_path))),
+    };
+    let mut rdr = csv::Reader::from_reader(input);
+    for row in rdr.decode::<Row>() {
+        let row = try!(row);
+        match row.population {
+            None => { } // skip it
+            Some(count) => if row.city == city {
+                found.push(PopulationCount {
+                    city: row.city,
+                    country: row.country,
+                    count: count,
+                });
+            },
+        }
+    }
+    if found.is_empty() {
+        Err(CliError::NotFound)
+    } else {
+        Ok(found)
+    }
+}
+```
+
+不再需要其他的修改。
+
 ### <a name="adding-functionality"></a>增加功能
+
+编写泛型代码是很好的，因为泛用性是很酷的，并且之后会变得很有用。不过有时并不值得这么做。看看我们上一部分我们是怎么做的：
+
+1. 定义了一个新的错误类型。
+2.增加`Error`，`Display`和两个`From`实现。
+
+这里最大的缺点是我们的程序并没有改进多少。这里仍然有很多用`enum`代表错误的额外操作，特别是在这样短小的程序里。
+
+像我们这样使用自定义错误类型的一个有用的方面是`main`函数现在可以选择不同的处理错误的方式。之前使用`Box<Error>`的时候并没有什么选择：只能打印信息。我们现在仍可以这么做，不过只是在我们想这么做的时候，例如，添加一个`--quiet` flag？`--quiet` flag 应该能够消除任何冗余的输出。
+
+现在如果程序不能匹配一个城市，它会打印一个信息说它不能。这可能有点蠢，尤其是你想要你的程序能在 shell 脚本中使用的时候。
+
+所以让我们开始增加 flag。就像之前一样，我们需要修改用法字符串，并给选项变量添加 flag。当我们写完这些，Getopts 会搞定剩下的操作：
+
+```rust
+...
+let mut opts = Options::new();
+opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
+opts.optflag("h", "help", "Show this usage message.");
+opts.optflag("q", "quiet", "Silences errors and warnings.");
+...
+```
+
+现在我们只需要实现我们的“安静”功能。这要求我们修改`mian`中的 case analysis：
+
+```rust
+match search(&args.arg_data_path, &args.arg_city) {
+    Err(CliError::NotFound) if args.flag_quiet => process::exit(1),
+    Err(err) => panic!("{}", err),
+    Ok(pops) => for pop in pops {
+        println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+    }
+}
+```
+
+当然，在出现 IO 错误或者数据解析失败时我们并不想变得安静。因此，我们用 case analysis 来检查错误类型是否是`NotFound`以及`--quiet`是否被启用。如果，搜索失败了，我们仍然使用一个错误码退出（使用`grep`的传统）。
+
+如果我们还在用`Box<Error>`，那么实现`--quiet`功能将变得很复杂。
+
+我们的案例学习讲了很多东西。从这时起，你应该能够在现实生活中编写带有合适错误处理的程序和库了。
+
 ## <a name="the-short-story"></a>精简版
+
+因为这个章节很长，有一个 Rust 错误处理的快速总结是很有帮助的。这里有很多好的“拇指规则”。他们是强调而非教条。这里每一个建议都可能有适当的理由予以反驳！
+
+* 如果你在写小的事例代码这时错误处理显得负担过重，可能使用`unwrap`（[`Result::unwrap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.unwrap)，[`Option::unwrap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.unwrap)，或是更可取的[`Option::expect`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.expect)）是足够的。你的代码的客户应该知道如何正确的处理错误。（如果他们并不知道，教会他们吧！）
+
+* 如果你在 hack（quick 'n' dirty）程序，不要为你使用`unwrap`而感羞愧。不过你被警告过了：如果别人踩到了坑，不要因为他们对糟糕的错误信息火冒三丈而感到惊讶！
+
+* 如果你在 hack 程序并对 panic 感到羞愧，那么使用`String`或者`Box<Error + Send + Sync>`作为你的错误类型（选择`Box<Error + Send + Sync>`是因为它有[可用的`From`实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)）。
+
+* 否则，在程序中，定义你自己的错误类型并实现合适的[`From`](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)和[`Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)来让[`try!`](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.try!.html)宏变得更工程化。
+
+* 如果你在写一个库并且它可能产生错误，定义你自己的错误类型并实现[`std::error::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html) trait。如果可以的话，实现[`From`](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)来让你的库代码和调用者的代码更加容易编写。（因为 Rust 的一致性规则，调用者不能为你的错误类型实现`From`，所以你的库应该实现。）
+
+* 学习定义于[`Option`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html)和[`Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html)中的组合。只使用他们有时可能比较累人，不过我个人发现合理的结合`try!`和组合是比较诱人的。`and_then`，`map`和`unwrap_or`是我们的最爱。

@@ -1,7 +1,8 @@
-# 其他语言中的Rust
+# 其他语言中的 Rust
 
-> [rust-inside-other-languages.md](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/rust-inside-other-languages.md)
-> commit 900f36fde3c8cc78db1d889e9543aa522cd326da
+> [rust-inside-other-languages.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/rust-inside-other-languages.md)
+> <br>
+> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
 
 作为我们的第三个项目，我们决定选择一个可以展示Rust最强实力的功能：缺少实质的运行时。
 

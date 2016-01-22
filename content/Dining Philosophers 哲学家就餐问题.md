@@ -1,6 +1,7 @@
 # 哲学家就餐问题
 
-> [dining-philosophers.md](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/dining-philosophers.md)
+> [dining-philosophers.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/dining-philosophers.md)
+> <br>
 > commit c618c5f36a3260351a09f4b4dc51b2e5d1359fbc
 
 作为我们的第二个项目，让我们看看一个经典的并发问题。它叫做“进餐（ji）的哲学家”。它最初由 Dijkstra 于 1965 年（网上一说 1971 年←_←）提出，不过我们将使用 Tony Hoare 写于 1985 年的[这篇论文](http://www.usingcsp.com/cspbook.pdf)的版本
@@ -23,7 +24,15 @@
 5. 哲学家 5 开始算法，拿起他左手边的叉子
 6. 。。。？所有的叉子都被拿走了，不过没人在吃（意大利面）！
 
-有不同方法可以解决这个问题。在教程中我们用我们自己的解决办法。现在，让我们自己来为问题建模。我将从哲学家开始：
+有不同方法可以解决这个问题。在教程中我们用我们自己的解决办法。现在，让我们开始并用`cargo`创建一个新项目：
+
+```rust
+$ cd ~/projects
+$ cargo new dining_philosophers --bin
+$ cd dining_philosophers
+```
+
+现在我们可以对问题进行建模了。让我们在`src/main.rs`中从哲学家开始：
 
 ```rust
 struct Philosopher {
@@ -39,11 +48,11 @@ impl Philosopher {
 }
 
 fn main() {
-    let p1 = Philosopher::new("Baruch Spinoza");        // 译者注：朱迪斯·巴特勒
-    let p2 = Philosopher::new("Gilles Deleuze");        // 译者注：吉尔·德勒兹
-    let p3 = Philosopher::new("Karl Marx");             // 译者注：卡尔·马克思
-    let p4 = Philosopher::new("Friedrich Nietzsche");   // 译者注：弗里德里希·威廉·尼采
-    let p5 = Philosopher::new("Michel Foucault");       // 译者注：米歇尔·福柯
+    let p1 = Philosopher::new("Judith Butler");     // 译者注：朱迪斯·巴特勒
+    let p2 = Philosopher::new("Gilles Deleuze");    // 译者注：吉尔·德勒兹
+    let p3 = Philosopher::new("Karl Marx");         // 译者注：卡尔·马克思
+    let p4 = Philosopher::new("Emma Goldman");      // 译者注：爱玛·戈德曼
+    let p5 = Philosopher::new("Michel Foucault");   // 译者注：米歇尔·福柯
 }
 ```
 
@@ -145,13 +154,13 @@ struct Philosopher {
     name: String,
 }   
 
-impl Philosopher { 
+impl Philosopher {
     fn new(name: &str) -> Philosopher {
         Philosopher {
             name: name.to_string(),
         }
     }
-    
+
     fn eat(&self) {
         println!("{} is done eating.", self.name);
     }
@@ -185,10 +194,10 @@ fn eat(&self) {
 在 Rust 中，方法显式获取一个`self`参数。这就是为什么`eat()`是一个方法，而`new`是一个关联函数：`new()`没有用到`self`。在我们第一个版本的`eat()`，我们仅仅打印出哲学家的名字，并提到他们吃完了。运行这个程序应该会给你如下的输出：
 
 ```bash
-Baruch Spinoza is done eating.
+Judith Butler is done eating.
 Gilles Deleuze is done eating.
 Karl Marx is done eating.
-Friedrich Nietzsche is done eating.
+Emma Goldman is done eating.
 Michel Foucault is done eating.
 ```
 
@@ -202,15 +211,15 @@ use std::time::Duration;
 
 struct Philosopher {
     name: String,
-}   
+}
 
-impl Philosopher { 
+impl Philosopher {
     fn new(name: &str) -> Philosopher {
         Philosopher {
             name: name.to_string(),
         }
     }
-    
+
     fn eat(&self) {
         println!("{} is eating.", self.name);
 
@@ -222,10 +231,10 @@ impl Philosopher {
 
 fn main() {
     let philosophers = vec![
-        Philosopher::new("Baruch Spinoza"),
+        Philosopher::new("Judith Butler"),
         Philosopher::new("Gilles Deleuze"),
         Philosopher::new("Karl Marx"),
-        Philosopher::new("Friedrich Nietzsche"),
+        Philosopher::new("Emma Goldman"),
         Philosopher::new("Michel Foucault"),
     ];
 
@@ -258,14 +267,14 @@ use std::thread;
 如果你运行这个程序，你应该会看到每个哲学家依次进餐：
 
 ```bash
-Baruch Spinoza is eating.
-Baruch Spinoza is done eating.
+Judith Butler is eating.
+Judith Butler is done eating.
 Gilles Deleuze is eating.
 Gilles Deleuze is done eating.
 Karl Marx is eating.
 Karl Marx is done eating.
-Friedrich Nietzsche is eating.
-Friedrich Nietzsche is done eating.
+Emma Goldman is eating.
+Emma Goldman is done eating.
 Michel Foucault is eating.
 Michel Foucault is done eating.
 ```
@@ -280,9 +289,9 @@ use std::time::Duration;
 
 struct Philosopher {
     name: String,
-}   
+}
 
-impl Philosopher { 
+impl Philosopher {
     fn new(name: &str) -> Philosopher {
         Philosopher {
             name: name.to_string(),
@@ -300,10 +309,10 @@ impl Philosopher {
 
 fn main() {
     let philosophers = vec![
-        Philosopher::new("Baruch Spinoza"),
+        Philosopher::new("Judith Butler"),
         Philosopher::new("Gilles Deleuze"),
         Philosopher::new("Karl Marx"),
-        Philosopher::new("Friedrich Nietzsche"),
+        Philosopher::new("Emma Goldman"),
         Philosopher::new("Michel Foucault"),
     ];
 
@@ -332,7 +341,7 @@ let handles: Vec<_> = philosophers.into_iter().map(|p| {
 虽然这只有 5 行，它们有 4 行密集的代码。让我们分开看。
 
 ```rust
-let handles: Vec<_> = 
+let handles: Vec<_> =
 ```
 
 我们引入了一个新的绑定，叫做`handles`。我们用这个名字因为我们将创建一些新的线程，并且它们会返回一些这些线程句柄来让我们控制它们的行为。然而这里我们需要显式注明类型，因为一个我们之后会介绍的问题。`_`是一个类型占位符。我们是在说“`handles`是一些东西的 vector，不过Rust你自己应该能发现这些东西是什么"。
@@ -369,16 +378,16 @@ for h in handles {
 
 如果你运行这个程序，你将会看到哲学家们无序的进餐！我们有了多线程！
 
-```bash
+```text
+Judith Butler is eating.
 Gilles Deleuze is eating.
-Gilles Deleuze is done eating.
-Friedrich Nietzsche is eating.
-Friedrich Nietzsche is done eating.
-Michel Foucault is eating.
-Baruch Spinoza is eating.
-Baruch Spinoza is done eating.
 Karl Marx is eating.
+Emma Goldman is eating.
+Michel Foucault is eating.
+Judith Butler is done eating.
+Gilles Deleuze is done eating.
 Karl Marx is done eating.
+Emma Goldman is done eating.
 Michel Foucault is done eating.
 ```
 
@@ -445,10 +454,10 @@ fn main() {
     ]});
 
     let philosophers = vec![
-        Philosopher::new("Baruch Spinoza", 0, 1),
+        Philosopher::new("Judith Butler", 0, 1),
         Philosopher::new("Gilles Deleuze", 1, 2),
         Philosopher::new("Karl Marx", 2, 3),
-        Philosopher::new("Friedrich Nietzsche", 3, 4),
+        Philosopher::new("Emma Goldman", 3, 4),
         Philosopher::new("Michel Foucault", 0, 4),
     ];
 
@@ -532,12 +541,12 @@ fn eat(&self, table: &Table) {
 
 ```rust
 let philosophers = vec![
-    Philosopher::new("Baruch Spinoza", 0, 1),
+    Philosopher::new("Judith Butler", 0, 1),
     Philosopher::new("Gilles Deleuze", 1, 2),
     Philosopher::new("Karl Marx", 2, 3),
-    Philosopher::new("Friedrich Nietzsche", 3, 4),
+    Philosopher::new("Emma Goldman", 3, 4),
     Philosopher::new("Michel Foucault", 0, 4),
-];
+];  
 ```
 
 我们需要传递我们的`left`和`right`的值给我们的`Philosopher`们的构造函数。不过这里有另一个细节，并且是“非常”重要。如果你观察它的模式，它们从头到尾全是连续的。米歇尔·福柯应该使用`4`，`0`作为参数，不过我们用了`0`，`4`。这事实上是为了避免死锁：我们的哲学家中有一个左撇子！这是解决这个问题的一个方法，并且在我看来，是最简单的方法。
@@ -556,14 +565,14 @@ let handles: Vec<_> = philosophers.into_iter().map(|p| {
 
 通过这些，我们的程序能工作了！任何同一时刻只有两名哲学家能进餐，因此你会得到像这样的输出：
 
-```bash
+```text
 Gilles Deleuze is eating.
-Friedrich Nietzsche is eating.
-Friedrich Nietzsche is done eating.
+Emma Goldman is eating.
+Emma Goldman is done eating.
 Gilles Deleuze is done eating.
-Baruch Spinoza is eating.
+Judith Butler is eating.
 Karl Marx is eating.
-Baruch Spinoza is done eating.
+Judith Butler is done eating.
 Michel Foucault is eating.
 Karl Marx is done eating.
 Michel Foucault is done eating.
