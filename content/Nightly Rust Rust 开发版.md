@@ -9,14 +9,14 @@ Rust提供了3种发行渠道：开发版（每日构建），beta版和稳定�
 要安装Rust开发版，你可以使用`rustup.sh`：
 
 ```bash
-$ curl -s https://static.rust-lang.org/rustup.sh | sudo sh -s -- --channel=nightly
+$ curl -s https://static.rust-lang.org/rustup.sh | sh -s -- --channel=nightly
 ```
 
-如果你担心使用`curl | sudo sh`的[潜在不安全性](http://curlpipesh.tumblr.com)，请继续阅读并查看我们下面的免责声明。并且你也可以随意使用下面这个两步安装脚本以便可以检查我们的安装脚本：
+如果你担心使用`curl | sh`的[潜在不安全性](http://curlpipesh.tumblr.com)，请继续阅读并查看我们下面的免责声明。并且你也可以随意使用下面这个两步安装脚本以便可以检查我们的安装脚本：
 
 ```bash
-$ curl -L https://static.rust-lang.org/rustup.sh -O
-$ sudo sh rustup.sh
+$ curl -f -L https://static.rust-lang.org/rustup.sh -O
+$ sh rustup.sh --channel=nightly
 ```
 
 如果你用Windows，请直接下载[32位](https://static.rust-lang.org/dist/rust-nightly-i686-pc-windows-gnu.exe)或者[64位](https://static.rust-lang.org/dist/rust-nightly-x86_64-pc-windows-gnu.exe)安装包然后运行即可。

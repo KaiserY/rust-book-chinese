@@ -24,7 +24,7 @@ fn main() {
 
 任何`Foo`的定义都必须定义`ID`，不定义的话：
 
-```rust
+```rust,ignore
 #![feature(associated_consts)]
 
 trait Foo {
@@ -37,7 +37,7 @@ impl Foo for i32 {
 
 会给出
 
-```bash
+```text
 error: not all trait items implemented, missing: `ID` [E0046]
      impl Foo for i32 {
      }
@@ -75,6 +75,6 @@ fn main() {
 struct Foo;
 
 impl Foo {
-    pub const FOO: u32 = 3;
+    const FOO: u32 = 3;
 }
 ```

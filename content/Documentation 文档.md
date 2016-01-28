@@ -16,20 +16,20 @@ Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rus
 ### 文档化源代码
 文档化Rust项目的主要方法是在源代码中添加注释。为了这个目标你可以这样使用文档注释：
 
-```rust
+~~~rust,ignore
 /// Constructs a new `Rc<T>`.
 ///
 /// # Examples
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// use std::rc::Rc;
 ///
 /// let five = Rc::new(5);
-/// ` ` ` 实际不应有空格
+/// ```
 pub fn new(value: T) -> Rc<T> {
     // implementation goes here
 }
-```
+~~~
 
 这段代码产生像[这样](http://doc.rust-lang.org/nightly/std/rc/struct.Rc.html#method.new)的文档。我忽略了函数的实现，而是留下了一个标准的注释。
 
@@ -51,7 +51,7 @@ enum Option<T> {
 
 上面的代码可以工作，但这个不行：
 
-```rust
+```rust,ignore
 /// The `Option` type. See [the module level documentation](../) for more.
 enum Option<T> {
     None, /// No value
@@ -61,7 +61,7 @@ enum Option<T> {
 
 你会得到一个错误：
 
-```bash
+```text
 hello.rs:4:1: 4:2 error: expected ident, found `}`
 hello.rs:4 }
            ^
@@ -115,37 +115,37 @@ hello.rs:4 }
 
 如果你的函是`unsafe`的，你应该解释调用者应该支持哪种不可变量。
 
-```rust
+~~~rust
 /// # Examples
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// use std::rc::Rc;
 ///
 /// let five = Rc::new(5);
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 第三个，`Examples`。包含一个或多个使用你函数的例子，这样你的用户会为此感（ai）谢（shang）你的。这些例子写在代码块注释中，我们稍后会讨论到，并且可以有不止一个部分：
 
-```rust
+~~~rust
 /// # Examples
 ///
 /// Simple `&str` patterns:
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// let v: Vec<&str> = "Mary had a little lamb".split(' ').collect();
 /// assert_eq!(v, vec!["Mary", "had", "a", "little", "lamb"]);
-/// ` ` ` 实际不应有空格
+/// ```
 ///
 /// More complex patterns with a lambda:
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// let v: Vec<&str> = "abc1def2ghi".split(|c: char| c.is_numeric()).collect();
 /// assert_eq!(v, vec!["abc", "def", "ghi"]);
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 让我们聊聊这些代码块的细节。
 
@@ -153,21 +153,21 @@ hello.rs:4 }
 
 在注释中编写Rust代码，使用三重重音号：
 
-```rust
-/// ` ` ` 实际不应有空格
+~~~rust
+/// ```
 /// println!("Hello, world");
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 如果你想要一些不是Rust的代码，你可以加上一个注释：
 
-```rust
-/// ` ` `c  实际不应有空格
+~~~rust
+/// ```c
 /// printf("Hello, world\n");
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 这回根据你选择的语言高亮代码。如果你只是想展示普通文本，选择`text`。
 
@@ -177,23 +177,23 @@ hello.rs:4 }
 
 让我们看看我的例子文档的样例：
 
-```rust
-/// ` ` ` 实际不应有空格
+~~~rust
+/// ```
 /// println!("Hello, world");
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 你会注意到你并不需要`fn main()`或者别的什么函数。`rustdoc`会自动一个`main()`包装你的代码，并且在正确的位置。例如：
 
-```rust
-/// ` ` ` 实际不应有空格
+~~~rust
+/// ```
 /// use std::rc::Rc;
 ///
 /// let five = Rc::new(5);
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 这会作为测试：
 
@@ -213,7 +213,7 @@ fn main() {
 
 有时，这是不够的。例如，我们已经考虑到了所有`///`开头的代码样例了吗？普通文本：
 
-```
+```text
 /// Some documentation.
 # fn foo() {}
 ```
@@ -263,7 +263,7 @@ println!("{}", x + y);
 
 为了让每个代码块可以执行，我们想要每个代码块都有整个程序，不过我们并不想读者每回都看到所有的行。这是我们的源代码：
 
-```text
+~~~text
     首先，我们把`x`设置为`5`：
 
     ```text
@@ -287,7 +287,7 @@ println!("{}", x + y);
     # let y = 6;
     println!("{}", x + y);
     ```
-```
+~~~
 
 通过重复例子的所有部分，你可以确保你的例子仍能编译，同时只显示与你解释相关的部分。
 
@@ -295,29 +295,30 @@ println!("{}", x + y);
 
 下面是一个宏的文档例子：
 
-```rust
+~~~rust
 /// Panic with a given message unless an expression evaluates to true.
 ///
 /// # Examples
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// # #[macro_use] extern crate foo;
 /// # fn main() {
 /// panic_unless!(1 + 1 == 2, “Math is broken.”);
 /// # }
-/// ` ` ` 实际不应有空格
+/// ```
 ///
-/// ` ` `should_panic 实际不应有空格
+/// ```should_panic
 /// # #[macro_use] extern crate foo;
 /// # fn main() {
 /// panic_unless!(true == false, “I’m broken.”);
 /// # }
-/// ` ` ` 实际不应有空格
+/// ```
 #[macro_export]
 macro_rules! panic_unless {
     ($condition:expr, $($rest:expr),+) => ({ if ! $condition { panic!($($rest),+); } });
 }
-```
+# fn main() {}
+~~~
 
 你会注意到3个地方：我们需要添加我们自己的`extern crate`行，这样我们可以添加`#[macro_use]`属性。第二，我们也需要添加我们自己的`main()`（为了上面讨论过的原因）。最后，用`#`机智的注释掉这两个代码，这样它们不会出现在输出中。
 
@@ -331,19 +332,19 @@ macro_rules! panic_unless {
 
 问题是`try!`返回一个`Result<T, E>`而测试函数并不返回任何值所以这会产生一个类型不匹配错误。
 
-```rust
+~~~rust
 /// A doc test using try!
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// use std::io;
 /// # fn foo() -> io::Result<()> {
 /// let mut input = String::new();
 /// try!(io::stdin().read_line(&mut input));
 /// # Ok(())
 /// # }
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 你可以将代码放进函数里来解决这个问题。在运行文档测试时它捕获并返回`Result<T, E>`。这种模式不时出现在标准库中。
 
@@ -361,32 +362,32 @@ $ cargo test
 
 这还有一些注释有利于帮助`rustdoc`在测试你的代码时正常工作：
 
-```rust
-/// ` ` `ignore 实际不应有空格
+~~~rust
+/// ```ignore
 /// fn foo() {
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 `ignore`指令告诉Rust忽略你的代码。这几乎不会是你想要的，因为这是最不受支持的。相反，如果不是代码的话考虑注释为`text`，或者使用`#`来形成一个只显示你关心部分的例子。
 
-```rust
-/// ` ` `should_panic 实际不应有空格
+~~~rust
+/// ```should_panic
 /// assert!(false);
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 `should_panic`告诉`rustdoc`这段代码应该正确编译，但是作为一个测试则不能通过。
 
-```rust
-/// ` ` `no_run 实际不应有空格
+~~~rust
+/// ```no_run
 /// loop {
 ///     println!("Hello, world");
 /// }
-/// ` ` ` 实际不应有空格
+/// ```
 # fn foo() {}
-```
+~~~
 
 `no_run`属性会编译你的代码，但是不运行它。这对像如“如何开始一个网络服务”这样的例子很重要，你会希望确保它能够编译，不过它可能会无限循环的执行！
 
@@ -421,29 +422,32 @@ mod foo {
 
 当你在 Markdown 文件中写文档时，你并不需要加上注释前缀。例如：
 
-```rust
+~~~rust
 /// # Examples
 ///
-/// ` ` ` 实际不应有空格
+/// ```
 /// use std::rc::Rc;
 ///
 /// let five = Rc::new(5);
-/// ` ` ` 实际不应有空格
-```
+/// ```
+# fn foo() {}
+~~~
 
 就是
 
-> ```
-> # Examples
->
-> use std::rc::Rc;
->
-> let five = Rc::new(5);
-> ```
+~~~markdown
+# Examples
+
+```
+use std::rc::Rc;
+
+let five = Rc::new(5);
+```
+~~~
 
 当在一个Markdown文件中。不过这里有个窍门：Markdown文件需要有一个像这样的标题：
 
-```
+```markdown
 % The title
 
 This is the example documentation.
@@ -456,8 +460,10 @@ This is the example documentation.
 
 ```rust
 /// this
+# fn foo() {}
 
 #[doc="this"]
+# fn bar() {}
 ```
 
 跟下面这个是相同的：
@@ -465,7 +471,7 @@ This is the example documentation.
 ```rust
 //! this
 
-#![doc="/// this"]
+#![doc="this"]
 ```
 
 写文档时你不会经常看见这些属性，不过当你要改变一些选项，或者写一个宏的时候比较有用。
@@ -474,7 +480,7 @@ This is the example documentation.
 
 `rustdoc`会将公有部分的文档重导出：
 
-```rust
+```rust,ignore
 extern crate foo;
 
 pub use foo::bar;
@@ -484,7 +490,7 @@ pub use foo::bar;
 
 这种行文可以通过`no_inline`来阻止：
 
-```rust
+```rust,ignore
 extern crate foo;
 
 #[doc(no_inline)]
@@ -501,7 +507,7 @@ pub use foo::bar;
 
 而为了生成错误你需要使用`deny`：
 
-```rust
+```rust,ignore
 #![deny(missing_docs)]
 ```
 
@@ -523,12 +529,24 @@ struct Hidden;
 你可以通过`#![doc]`属性控制`rustdoc`生成的THML文档的一些方面：
 
 ```rust
-#![doc(html_logo_url = "http://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png",
-       html_favicon_url = "http://www.rust-lang.org/favicon.ico",
-       html_root_url = "http://doc.rust-lang.org/")];
+#![doc(html_logo_url = "https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png",
+       html_favicon_url = "https://www.rust-lang.org/favicon.ico",
+       html_root_url = "https://doc.rust-lang.org/")]
 ```
 
 这里设置了一些不同的选项，带有一个logo，一个收藏夹，和一个根URL。
+
+### Configuring documentation tests
+
+You can also configure the way that `rustdoc` tests your documentation examples
+through the `#![doc(test(..))]` attribute.
+
+```rust
+#![doc(test(attr(allow(unused_variables), deny(warnings))))]
+```
+
+This allows unused variables within the examples, but will fail the test for any
+other lint warning thrown.
 
 ## 通用选项
 `rustdoc`也提供了一些其他命令行选项，以便进一步自定义：

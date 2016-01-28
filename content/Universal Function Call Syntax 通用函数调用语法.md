@@ -30,7 +30,7 @@ let b = Baz;
 
 如果我们尝试调用`b.f()`，我们会得到一个错误：
 
-```bash
+```text
 error: multiple applicable methods in scope [E0034]
 b.f();
   ^~~
@@ -67,14 +67,14 @@ Bar::f(&b);
 
 让我们拆开来看。
 
-```rust
+```rust,ignore
 Foo::
 Bar::
 ```
 
 调用的这一半是两个traits的类型：`Foo`和`Bar`。这样实际上就区分了这两者：Rust调用你使用的trait里面的方法。
 
-```rust
+```rust,ignore
 f(&b)
 ```
 
@@ -83,13 +83,13 @@ f(&b)
 ## 尖括号形式（Angle-bracket Form）
 我们刚才讨论的通用函数调用语法的形式：
 
-```rust
+```rust,ignore
 Trait::method(args);
 ```
 
 上面的形式其实是一种缩写。这是在一些情况下需要使用的扩展形式：
 
-```rust
+```rust,ignore
 <Type as Trait>::method(args);
 ```
 
@@ -99,18 +99,26 @@ Trait::method(args);
 
 ```rust
 trait Foo {
-    fn clone(&self);
+    fn foo() -> i32;
 }
 
-#[derive(Clone)]
 struct Bar;
 
-impl Foo for Bar {
-    fn clone(&self) {
-        println!("Making a clone of Bar");
-
-        <Bar as Clone>::clone(self);
+impl Bar {
+    fn foo() -> i32 {
+        20
     }
+}
+
+impl Foo for Bar {
+    fn foo() -> i32 {
+        10
+    }
+}
+
+fn main() {
+    assert_eq!(10, <Bar as Foo>::foo());
+    assert_eq!(20, Bar::foo());
 }
 ```
 

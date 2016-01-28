@@ -9,7 +9,7 @@ Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`wh
 ## loop
 无限`loop`是 Rust 提供的最简单的循环。使用`loop`关键字，Rust 提供了一个直到一些终止语句被执行的循环方法。Rust 的无限`loop`看起来像这样：
 
-```rust
+```rust,ignore
 loop {
     println!("Loop forever!");
 }
@@ -19,7 +19,7 @@ loop {
 Rust 也有一个`while`循环。它看起来像：
 
 ```rust
-let mut x = 5; // mut x: u32
+let mut x = 5; // mut x: i32
 let mut done = false; // mut done: bool
 
 while !done {
@@ -37,13 +37,13 @@ while !done {
 
 如果你需要一个无限循环，你可能想要这么写：
 
-```rust
+```rust,ignore
 while true {
 ```
 
 然而，`loop`远比它适合处理这个情况：
 
-```rust
+```rust,ignore
 loop {
 ```
 
@@ -69,7 +69,7 @@ for x in 0..10 {
 
 更抽象的形式：
 
-```rust
+```rust,ignore
 for var in expression {
     code
 }
@@ -94,7 +94,7 @@ for (i,j) in (5..10).enumerate() {
 
 输出：
 
-```bash
+```text
 i = 0 and j = 5
 i = 1 and j = 6
 i = 2 and j = 7
@@ -107,6 +107,7 @@ i = 4 and j = 9
 ### 对迭代器（On iterators）:
 
 ```rust
+# let lines = "hello\nworld".lines();
 for (linenumber, line) in lines.enumerate() {
     println!("{}: {}", linenumber, line);
 }
@@ -114,10 +115,10 @@ for (linenumber, line) in lines.enumerate() {
 
 输出：
 
-```bash
+```text
 0: Content of line one
 1: Content of line two
-2: Content of line tree
+2: Content of line three
 3: Content of line four
 ```
 ## 提早结束迭代（Ending iteration early）
@@ -147,7 +148,9 @@ let mut x = 5;
 
 loop {
     x += x - 3;
+
     println!("{}", x);
+
     if x % 5 == 0 { break; }
 }
 ```
@@ -157,7 +160,7 @@ loop {
 `continue`比较类似，不过不是退出循环，它直接进行下一次迭代。下面的例子只会打印奇数：
 
 ```rust
-for x in 0u32..10 {
+for x in 0..10 {
     if x % 2 == 0 { continue; }
 
     println!("{}", x);

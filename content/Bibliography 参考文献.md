@@ -34,7 +34,7 @@
 * [非阻塞半work stealing队列（Non-blocking steal-half work queues）](http://www.cs.bgu.ac.il/~hendlerd/papers/p280-hendler.pdf)
 * [Reagents：表现和编写细粒度的并发（Reagents: expressing and composing fine-grained concurrency）](http://www.mpi-sws.org/~turon/reagents.pdf)
 * [用于共享内存多处理器的可扩展同步性的算法（Algorithms for scalable synchronization of shared-memory multiprocessors）](https://www.cs.rochester.edu/u/scott/papers/1991_TOCS_synch.pdf)
-
+* [Epoc-based reclamation](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-579.pdf).
 
 ## 其它
 
@@ -54,3 +54,10 @@
 * [Nom, a byte oriented, streaming, zero copy, parser combinators library in Rust](http://spw15.langsec.org/papers/couprie-nom.pdf)。Geoffroy Couprie著，关于VLC的研究。
 * [Graph-Based Higher-Order Intermediate Representation](http://compilers.cs.uni-saarland.de/papers/lkh15_cgo.pdf)。一个用Impala（一个类似Rust的语言）实现的实验性的IR。
 * [Code Refinement of Stencil Codes](http://compilers.cs.uni-saarland.de/papers/ppl14_web.pdf)。另一个使用Impala的论文。
+* [Parallelization in Rust with fork-join and
+  friends](http://publications.lib.chalmers.se/records/fulltext/219016/219016.pdf). Linus
+  Farnstrand's master's thesis.
+* [Session Types for
+  Rust](http://munksgaard.me/papers/laumann-munksgaard-larsen.pdf). Philip
+  Munksgaard's master's thesis. Research for Servo.
+* [Ownership is Theft: Experiences Building an Embedded OS in Rust - Amit Levy, et. al.](http://amitlevy.com/papers/tock-plos2015.pdf)

@@ -10,7 +10,7 @@ Rust 的常用链接形式在本书的之前部分已经介绍过了，不过支
 
 这里还有一个方法来告诉 rustc 如何自定义链接，这就是通过`link_args`属性。这个属性作用于`extern`块并指定当产生构件时需要传递给连接器的原始标记。一个用例将是：
 
-```rust
+```rust,no_run
 #![feature(link_args)]
 
 #[link_args = "-foo -bar -baz"]

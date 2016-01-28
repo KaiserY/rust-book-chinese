@@ -101,7 +101,7 @@ let b = a as u32;
 
 `as`只允许安全的转换，并会拒绝例如尝试将 4 个字节转换为一个`u32`：
 
-```rust
+```rust,ignore
 let a = [0u8, 0u8, 0u8, 0u8];
 
 let b = a as u32; // four eights makes 32
@@ -109,7 +109,7 @@ let b = a as u32; // four eights makes 32
 
 这个错误为：
 
-```bash
+```text
 error: non-scalar cast: `[u8; 4]` as `u32`
 let b = a as u32; // four eights makes 32
         ^~~~~~~~
@@ -135,7 +135,7 @@ unsafe {
 
 虽然`transmute`做了非常少的检查，至少它确保了这些类型是相同大小的，这个错误：
 
-```rust
+```rust,ignore
 use std::mem;
 
 unsafe {
@@ -147,8 +147,8 @@ unsafe {
 
 和：
 
-```rust
-error: transmute called on types with different sizes: [u8; 4] (32 bits) to u64
+```text
+error: transmute called with differently sized types: [u8; 4] (32 bits) to u64
 (64 bits)
 ```
 

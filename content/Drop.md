@@ -46,7 +46,7 @@ fn main() {
 
 这会输出：
 
-```bash
+```text
 BOOM times 100!!!
 BOOM times 1!!!
 ```

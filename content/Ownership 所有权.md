@@ -47,7 +47,7 @@ let v2 = v;
 
 不过，如果之后我们尝试使用`v`，我们得到一个错误：
 
-```rust
+```rust,ignore
 let v = vec![1, 2, 3];
 
 let v2 = v;
@@ -57,7 +57,7 @@ println!("v[0] is: {}", v[0]);
 
 它看起来像这样：
 
-```bash
+```text
 error: use of moved value: `v`
 println!("v[0] is: {}", v[0]);
                         ^
@@ -65,7 +65,7 @@ println!("v[0] is: {}", v[0]);
 
 当我们定义了一个取得所有权的函数，并尝试在我们把变量作为参数传递给函数之后使用这个变量时，会发生相似的事情：
 
-```rust
+```rust,ignore
 fn take(v: Vec<i32>) {
     // what happens here isn’t important.
 }
@@ -135,7 +135,7 @@ fn change_truth(x: bool) -> bool {
 
 如果我们使用了没有实现`Copy`trait的类型，我们会得到一个编译错误，因为我们尝试使用一个移动了的值。
 
-```rust
+```text
 error: use of moved value: `a`
 println!("{}", a);
                ^

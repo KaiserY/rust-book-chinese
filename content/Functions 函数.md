@@ -20,7 +20,7 @@ fn foo() {
 
 那么有参数是什么样的呢？下面这个函数打印一个数字：
 
-```rsut
+```rust
 fn print_number(x: i32) {
     println!("x is: {}", x);
 }
@@ -56,7 +56,7 @@ fn print_sum(x: i32, y: i32) {
 
 与`let`不同，你*必须*为函数参数声明类型。下面代码将不能工作：
 
-```rust
+```rust,ignore
 fn print_sum(x, y) {
     println!("sum is: {}", x + y);
 }
@@ -64,7 +64,7 @@ fn print_sum(x, y) {
 
 你会获得如下错误：
 
-```bash
+```text
 expected one of `!`, `:`, or `@`, found `)`
 fn print_number(x, y) {
 ```
@@ -83,7 +83,7 @@ Rust 函数确实返回一个值，并且你需要在一个“箭头”后面声
 
 注意这里并没有一个分号。如果你把它加上：
 
-```rust
+```rust,ignore
 fn add_one(x: i32) -> i32 {
     x + 1;
 }
@@ -91,7 +91,7 @@ fn add_one(x: i32) -> i32 {
 
 你将会得到一个错误：
 
-```bash
+```text
 error: not all control paths return a value
 fn add_one(x: i32) -> i32 {
      x + 1;
@@ -117,7 +117,7 @@ x = y = 5
 
 在 Rust 中，然而，使用`let`引入一个绑定并*不是*一个表达式。下面的代码会产生一个编译时错误：
 
-```rust
+```rust,ignore
 let x = (let y = 5); // expected identifier, found keyword `let`
 ```
 
@@ -178,7 +178,7 @@ fn diverges() -> ! {
 
 如果你添加一个叫做`diverges()`的函数并运行，你将会得到一些像这样的输出：
 
-```bash
+```text
 thread ‘<main>’ panicked at ‘This function never returns!’, hello.rs:2
 ```
 
@@ -227,7 +227,7 @@ stack backtrace:
 
 发散函数可以被用作任何类型：
 
-```rust
+```rust,should_panic
 # fn diverges() -> ! {
 #    panic!("This function never returns!");
 # }

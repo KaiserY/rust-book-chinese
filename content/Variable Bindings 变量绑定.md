@@ -52,14 +52,14 @@ fn main() {
 
 绑定默认是*不可变的*（*immutable*）。下面的代码将不能编译：
 
-```rust
+```rust,ignore
 let x = 5;
 x = 10;
 ```
 
 它会给你如下错误：
 
-```bash
+```text
 error: re-assignment of immutable variable `x`
      x = 10;
      ^~~~~~~
@@ -92,7 +92,7 @@ fn main() {
 
 你可以用`cargo build`命令去构建它。它依然会输出“Hello, world!”，不过你会得到一个警告：
 
-```bash
+```text
    Compiling hello_world v0.0.1 (file:///home/you/projects/hello_world)
 src/main.rs:2:9: 2:10 warning: unused variable: `x`, #[warn(unused_variable)] on by default
 src/main.rs:2     let x: i32;
@@ -101,7 +101,7 @@ src/main.rs:2     let x: i32;
 
 Rust 警告我们从未使用过这个变量绑定，但是因为我们从未用过它，无害不罚。然而，如果你确实想使用`x`，事情就不一样了。让我们试一下。修改代码如下：
 
-```rust
+```rust,ignore
 fn main() {
     let x: i32;
 
@@ -135,7 +135,7 @@ Rust 是不会让我们使用一个没有经过初始化的值的。接下来，
 
 让我们回到绑定。变量绑定有一个作用域 - 他们被限制只能在他们被定义的块中存在。一个块是一个被`{`和`}`包围的语句集合。函数定义也是块！在下面的例子中我们定义了两个变量绑定，`x`和`y`，他们位于不同的作用域中。`x`可以在`fn main() {}`块中被访问，而`y`只能在内部块内访问：
 
-```rust
+```rust,ignore
 fn main() {
     let x: i32 = 17;
     {
@@ -169,7 +169,7 @@ To learn more, run the command again with --verbose.
 
 另外，变量可以被隐藏。这意味着一个后声明的并位于同一作用域的相同名字的变量绑定将会覆盖前一个变量绑定：
 
-```bash
+```rust
 let x: i32 = 8;
 {
     println!("{}", x); // Prints "8"
@@ -183,7 +183,7 @@ println!("{}", x); // Prints "42"
 
 隐藏和可变绑定可能作为同一枚硬币的两面出现，不过他们是两个并不总是能交替使用的不同的概念。作为其中之一，隐藏允许我们重绑定一个值为不同的类型。它也可以改变一个绑定的可变性：
 
-```bash
+```rust
 let mut x: i32 = 1;
 x = 7;
 let x = x; // x is now immutable and is bound to 7

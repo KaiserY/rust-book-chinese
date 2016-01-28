@@ -78,12 +78,13 @@ pub extern fn main(argc: i32, argv: *const *const u8) -> i32 {
 例如，下面是一个计算由C提供的两个向量的数量积的函数，使用常见的Rust实现。
 
 ```rust
-#![feature(lang_items, start, no_std, core, libc)]
+# #![feature(libc)]
+#![feature(lang_items)]
+#![feature(start)]
+#![feature(raw)]
 #![no_std]
 
-extern crate core;
-
-use core::prelude::*;
+extern crate libc;
 
 use core::mem;
 
@@ -121,8 +122,12 @@ extern fn panic_fmt(args: &core::fmt::Arguments,
     loop {}
 }
 
-#[lang = "stack_exhausted"] extern fn stack_exhausted() {}
 #[lang = "eh_personality"] extern fn eh_personality() {}
+# #[start] fn start(argc: isize, argv: *const *const u8) -> isize { 0 }
+# #[lang = "eh_unwind_resume"] extern fn rust_eh_unwind_resume() {}
+# #[no_mangle] pub extern fn rust_eh_register_frames () {}
+# #[no_mangle] pub extern fn rust_eh_unregister_frames () {}
+# fn main() {}
 ```
 注意这里有一个额外的`lang`项与之前的例子不同，`panic_fmt`。它必须由libcore的调用者定义因为核心库声明了恐慌，但没有定义它。`panic_fmt`项是这个包装箱的恐慌定义，并且它必须确保不会返回。
 

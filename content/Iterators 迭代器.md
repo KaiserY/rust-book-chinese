@@ -85,7 +85,7 @@ for num in &nums {
 
 *消费者*操作一个迭代器，返回一些值或者几种类型的值。最常见的消费者是`collect()`。这个代码还不能编译，不过它表明了我们的意图：
 
-```rust
+```rust,ignore
 let one_to_one_hundred = (1..101).collect();
 ```
 
@@ -110,8 +110,8 @@ let greater_than_forty_two = (0..100)
                              .find(|x| *x > 42);
 
 match greater_than_forty_two {
-    Some(_) => println!("We got some numbers!"),
-    None => println!("No numbers found :("),
+    Some(_) => println!("Found a match!"),
+    None => println!("No match found :("),
 }
 ```
 
@@ -127,7 +127,7 @@ let sum = (1..4).fold(0, |sum, x| sum + x);
 
 好吧，这有点混乱。让我们检查一下这个迭代器中所有这些值：
 
-| 基数 | 累计数 | 元素 | 闭包结果 |
+| 基数 | 累计数      | 元素    | 闭包结果       |
 |------|-------------|---------|----------------|
 | 0    | 0           | 1       | 1              |
 | 0    | 1           | 2       | 3              |
@@ -163,7 +163,7 @@ let nums = (1..100).collect::<Vec<i32>>();
 范围是你会见到的两个基本迭代器之一。另一个是`iter()`。`iter()`可以把一个向量转换为一个简单的按顺序给出每个值的迭代器：
 
 ```rust
-let nums = [1, 2, 3];
+let nums = vec![1, 2, 3];
 
 for num in nums.iter() {
    println!("{}", num);
@@ -178,7 +178,7 @@ for num in nums.iter() {
 
 *迭代适配器*（*Iterator adapters*）获取一个迭代器然后按某种方法修改它，并产生一个新的迭代器。最简单的是一个是`map`：
 
-```rust
+```rust,ignore
 (1..100).map(|x| x + 1);
 ```
 
@@ -209,7 +209,7 @@ for i in (1..).take(5) {
 
 这会打印：
 
-```bash
+```text
 1
 2
 3

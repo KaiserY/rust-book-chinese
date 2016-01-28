@@ -6,7 +6,7 @@
 
 Rust 也支持基准测试，它可以测试代码的性能。让我们把`src/lib.rs`修改成这样（省略注释）：
 
-```rust
+```rust,ignore
 #![feature(test)]
 
 extern crate test;
@@ -63,7 +63,7 @@ test result: ok. 0 passed; 0 failed; 1 ignored; 1 measured
 # Gocha：优化
 写基准测试有另一些比较微妙的地方：开启了优化编译的基准测试可能被优化器戏剧性的修改导致它不再是我们期望的基准测试了。举例来说，编译器可能认为一些计算并无外部影响并且整个移除它们。
 
-```rust
+```rust,ignore
 #![feature(test)]
 
 extern crate test;
@@ -79,7 +79,7 @@ fn bench_xor_1000_ints(b: &mut Bencher) {
 
 得到如下结果：
 
-```bash
+```text
 running 1 test
 test bench_xor_1000_ints ... bench:         0 ns/iter (+/- 0)
 
@@ -118,7 +118,7 @@ b.iter(|| {
 
 执行上面任何一种修改可以获得如下基准测试结果：
 
-```bash
+```text
 running 1 test
 test bench_xor_1000_ints ... bench:       131 ns/iter (+/- 3)
 

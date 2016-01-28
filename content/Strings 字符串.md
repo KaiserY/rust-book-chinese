@@ -29,7 +29,7 @@ assert_eq!("foo\n        bar", s);
 
 ```rust
 let s = "foo\
-    bar";
+    bar"; 
 
 assert_eq!("foobar", s);
 ```
@@ -59,7 +59,7 @@ fn main() {
 
 这种强制转换并不发生在接受`&str`的trait而不是`&str`本身作为参数的函数上。例如，[TcpStream::connect](https://doc.rust-lang.org/stable/std/net/struct.TcpStream.html#method.connect)，有一个`ToSocketAddrs`类型的参数。`&str`可以不用转换不过`String`必须使用`&*`显式转换。
 
-```rust
+```rust,no_run
 use std::net::TcpStream;
 
 TcpStream::connect("192.168.0.1:3000"); // &str parameter
@@ -74,7 +74,7 @@ TcpStream::connect(&*addr_string); // convert addr_string to &str
 
 因为字符串是有效UTF-8编码的，它不支持索引：
 
-```rust
+```rust,ignore
 let s = "hello";
 
 println!("The first letter of s is {}", s[0]); // ERROR!!!
@@ -86,13 +86,13 @@ println!("The first letter of s is {}", s[0]); // ERROR!!!
 let hachiko = "忠犬ハチ公";
 
 for b in hachiko.as_bytes() {
-print!("{}, ", b);
+    print!("{}, ", b);
 }
 
 println!("");
 
 for c in hachiko.chars() {
-print!("{}, ", c);
+    print!("{}, ", c);
 }
 
 println!("");
@@ -100,7 +100,7 @@ println!("");
 
 这会打印：
 
-```rust
+```text
 229, 191, 160, 231, 138, 172, 227, 131, 143, 227, 131, 129, 229, 133, 172,
 忠, 犬, ハ, チ, 公,
 ```
@@ -110,6 +110,7 @@ println!("");
 你可以这样来获取跟索引相似的东西：
 
 ```rust
+# let hachiko = "忠犬ハチ公";
 let dog = hachiko.chars().nth(1); // kinda like hachiko[1]
 ```
 
@@ -126,14 +127,14 @@ let hachi = &dog[0..5];
 
 注意这里是*字节*偏移，而不是*字符*偏移。所以如下代码在运行时会失败：
 
-```rust
+```rust,should_panic
 let dog = "忠犬ハチ公";
 let hachi = &dog[0..2];
 ```
 
 给出如下错误：
 
-```rust
+```text
 thread '<main>' panicked at 'index 0 and/or 2 in `忠犬ハチ公` do not lie on
 character boundary'
 ```

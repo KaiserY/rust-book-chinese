@@ -23,7 +23,7 @@ match x {
 
 那么这有什么巨大的优势呢？这确实有优势。第一，`match`强制*穷尽性检查*（*exhaustiveness checking*）。你看到了最后那个下划线开头的分支了吗？如果去掉它，Rust 将会给我们一个错误：
 
-```bash
+```text
 error: non-exhaustive patterns: `_` not covered
 ```
 

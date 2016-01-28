@@ -46,14 +46,14 @@ let y = 1.0; // y has type f64
 
 这里有一个不同数字类型的列表，以及它们在标注库中的文档：
 
+* [i8](http://doc.rust-lang.org/nightly/std/primitive.i8.html)
 * [i16](http://doc.rust-lang.org/nightly/std/primitive.i16.html)
 * [i32](http://doc.rust-lang.org/nightly/std/primitive.i32.html)
 * [i64](http://doc.rust-lang.org/nightly/std/primitive.i64.html)
-* [i8](http://doc.rust-lang.org/nightly/std/primitive.i8.html)
+* [u8](http://doc.rust-lang.org/nightly/std/primitive.u8.html)
 * [u16](http://doc.rust-lang.org/nightly/std/primitive.u16.html)
 * [u32](http://doc.rust-lang.org/nightly/std/primitive.u32.html)
 * [u64](http://doc.rust-lang.org/nightly/std/primitive.u64.html)
-* [u8](http://doc.rust-lang.org/nightly/std/primitive.u8.html)
 * [isize](http://doc.rust-lang.org/nightly/std/primitive.isize.html)
 * [usize](http://doc.rust-lang.org/nightly/std/primitive.usize.html)
 * [f32](http://doc.rust-lang.org/nightly/std/primitive.f32.html)
@@ -78,7 +78,7 @@ Rust 也有两个浮点类型：`f32`和`f64`。它们对应 IEEE-754 单精度�
 
 ```rust
 let a = [1, 2, 3]; // a: [i32; 3]
-let mut m = [1, 2, 3]; // mut m: [i32; 3]
+let mut m = [1, 2, 3]; // m: [i32; 3]
 ```
 
 数组的类型是`[T; N]`。我们会在[泛型部分](https://doc.rust-lang.org/stable/book/generics.html)的时候讨论这个`T`标记。`N`是一个编译时常量，代表数组的长度。
@@ -118,8 +118,8 @@ println!("The second name is: {}", names[1]);
 
 ```rust
 let a = [0, 1, 2, 3, 4];
-let middle = &a[1..4]; // A slice of a: just the elements 1, 2, and 3
 let complete = &a[..]; // A slice containing all of the elements in a
+let middle = &a[1..4]; // A slice of a: just the elements 1, 2, and 3
 ```
 
 片段拥有`&[T]`类型。当我们涉及到[泛型](https://doc.rust-lang.org/stable/book/generics.html)时会讨论这个`T`。

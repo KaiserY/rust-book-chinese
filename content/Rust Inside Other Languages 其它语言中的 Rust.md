@@ -71,18 +71,17 @@ fn process() {
     let handles: Vec<_> = (0..10).map(|_| {
         thread::spawn(|| {
             let mut x = 0;
-            for _ in (0..5_000_000) {
+            for _ in 0..5_000_000 {
                 x += 1
             }
-        x
+            x
         })
     }).collect();
 
     for h in handles {
         println!("Thread finished with count={}",
-        h.join().map_err(|_| "Could not join a thread!").unwrap());
+	    h.join().map_err(|_| "Could not join a thread!").unwrap());
     }
-    println!("done!");
 }
 ```
 
@@ -90,7 +89,7 @@ fn process() {
 
 然而现在，这是一个 Rust 库，而且它并没有暴露任何可以从C中调用的东西。如果现在我们尝试在别的语言中链接这个库，这并不能工作。我们只需做两个小的改变来修复这个问题，第一个是修改我们代码的开头：
 
-```rust
+```rust,ignore
 #[no_mangle]
 pub extern fn process() {
 ```
@@ -141,7 +140,7 @@ end
 
 Hello.process
 
-puts "done!”
+puts 'done!'
 ```
 
 在我们可以运行之前，我们需要安装`ffi`gem：
@@ -159,7 +158,7 @@ Done installing documentation for ffi after 0 seconds
 
 最后，我们可以尝试运行它：
 
-```rust
+```bash
 $ ruby embed.rb
 Thread finished with count=5000000
 Thread finished with count=5000000
@@ -205,7 +204,7 @@ Hello.process
 这是实际的Rust调用。我们的`module`和`attach_function`调用的组合设置了环境。它看起来像一个Ruby函数，不过它实际是Rust！
 
 ```ruby
-puts "done!"
+puts 'done!'
 ```
 
 最后，作为我们每个项目的要求，我们打印`done!`。
@@ -246,7 +245,7 @@ $ npm install ffi
 var ffi = require('ffi');
 
 var lib = ffi.Library('target/release/libembed', {
-  'process': [ 'void', []  ]
+  'process': ['void', []]
 });
 
 lib.process();

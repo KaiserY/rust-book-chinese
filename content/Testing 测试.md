@@ -1,3 +1,4 @@
+
 # 测试
 
 > [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/testing.md)
@@ -18,7 +19,7 @@
 
 简单的说，测试是一个标记为`test`属性的函数。让我们用 Cargo 来创建一个叫`adder`的项目：
 
-```rust
+```bash
 $ cargo new adder
 $ cd adder
 ```
@@ -52,7 +53,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 Cargo 编译和运行了我们的测试。这里有两部分输出：一个是我们写的测试，另一个是文档测试。我们稍后再讨论这些。现在，看看这行：
 
-```bash
+```text
 test it_works ... ok
 ```
 
@@ -60,6 +61,7 @@ test it_works ... ok
 
 ```rust
 fn it_works() {
+# }
 ```
 
 然后我们有一个总结行：
@@ -104,13 +106,13 @@ thread '<main>' panicked at 'Some tests failed', /home/steve/src/rust/src/libtes
 
 Rust指出我们的测试失败了：
 
-```bash
+```text
 test it_works ... FAILED
 ```
 
 这反映在了总结行上：
 
-```bash
+```text
 test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured
 ```
 
@@ -123,7 +125,7 @@ $ echo $?
 
 在 Windows 中，如果你使用`cmd`：
 
-```cmd
+```dos
 > echo %ERRORLEVEL%
 ```
 
@@ -177,7 +179,7 @@ fn it_works() {
 
 那个测试通过了吗？因为那个`should_panic`属性，它通过了：
 
-```
+```bash
 $ cargo test
    Compiling adder v0.0.1 (file:///home/you/projects/adder)
      Running target/adder-91b3e234d4ed382a
@@ -206,7 +208,7 @@ fn it_works() {
 
 这就是全部的基础内容！让我们写一个“真实”的测试：
 
-```rust
+```rust,ignore
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -238,7 +240,7 @@ fn expensive_test() {
 
 现在我们运行测试并发现`it_works`被执行了，而`expensive_test`没有
 
-```rust
+```bash
 $ cargo test
    Compiling adder v0.0.1 (file:///home/you/projects/adder)
      Running target/adder-91b3e234d4ed382a
@@ -258,7 +260,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 耗时的测试可以通过调用`cargo test -- --ignored`来执行：
 
-```rust
+```bash
 $ cargo test -- --ignored
      Running target/adder-91b3e234d4ed382a
 
@@ -280,7 +282,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 然而以这样的方式来实现我们的测试的例子并不是地道的做法：它缺少`tests`模块。如果要实现我们的测试实例，一个比较惯用的做法应该是如下的：
 
-```rust
+```rust,ignore
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -300,7 +302,7 @@ mod tests {
 
 第二个变化是`use`声明。因为我们在一个内部模块中，我们需要把我们要测试的函数导入到当前空间中。如果你有一个大型模块的话这会非常烦人，所以这里有经常使用一个`glob`功能。让我们修改我们的`src/lib.rs`来使用这个：
 
-```rust
+```rust,ignore
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -325,7 +327,7 @@ $ cargo test
      Running target/adder-91b3e234d4ed382a
 
 running 1 test
-test test::it_works ... ok
+test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -343,7 +345,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ## `tests`目录
 为了进行集成测试，让我们创建一个`tests`目录，然后放一个`tests/lib.rs`文件进去，输入如下内容：
 
-```rust
+```rust,ignore
 extern crate adder;
 
 #[test]
@@ -362,7 +364,7 @@ $ cargo test
      Running target/adder-91b3e234d4ed382a
 
 running 1 test
-test test::it_works ... ok
+test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -389,24 +391,24 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ## 文档测试
 没有什么是比带有例子的文档更好的了。当然也没有什么比不能工作的例子更糟的，因为文档完成之后代码已经被改写。为此，Rust支持自动运行你文档中的例子（**注意：**这只在库 crate中有用，而在二进制 crate 中没用）。这是一个完整的有例子的`src/lib.rs`：
 
-```rust
+~~~rust,ignore
 //! The `adder` crate provides functions that add numbers to other numbers.
 //!
 //! # Examples
 //!
-//! ` ` ` 因为gitbook排版问题，这里多写了两个空格
+//! ```
 //! assert_eq!(4, adder::add_two(2));
-//! ` ` ` 因为gitbook排版问题，这里多写了两个空格
+//! ```
 
 /// This function adds two to its argument.
 ///
 /// # Examples
 ///
-/// ` ` ` 因为gitbook排版问题，这里多写了两个空格
+/// ```
 /// use adder::add_two;
 ///
 /// assert_eq!(4, add_two(2));
-/// ` ` ` 因为gitbook排版问题，这里多写了两个空格
+/// ```
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -420,7 +422,7 @@ mod tests {
         assert_eq!(4, add_two(2));
     }
 }
-```
+~~~
 
 注意模块级的文档以`//!`开头然后函数级的文档以`///`开头。Rust文档在注释中支持Markdown语法，所以它支持3个反单引号代码块语法。想上面例子那样，加入一个`# Examples`部分被认为是一个惯例。
 
@@ -432,7 +434,7 @@ $ cargo test
      Running target/adder-91b3e234d4ed382a
 
 running 1 test
-test test::it_works ... ok
+test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 

@@ -87,14 +87,14 @@ impl Foo {
     fn foo(&self) { println!("Foo"); }
 }
 
-let f = Foo;
+let f = &&Foo;
 
 f.foo();
 ```
 
 即便`f`不是一个引用，而`foo`获取`&self`，这也是可以工作的。因为这些都是一样的：
 
-```rust
+```rust,ignore
 f.foo();
 (&f).foo();
 (&&f).foo();
