@@ -245,7 +245,7 @@ let result = f.write(buf);
 
 这还有一个实现trait的限制。不管是trait还是你写的`impl`都只能在你自己的包装箱内生效。所以，我们可以为`i32`实现`HasArea`trait，因为`HasArea`在我们的包装箱中。不过如果我们想为`i32`实现`Float`trait，它是由Rust提供的，则无法做到，因为这个trait和类型都不在我们的包装箱中。
 
-关于trait的最后一点：带有trait限制的泛型函数是*单态*（*monomorphization*）（mono：单一，morph：形式）的，所以它是*静态分发*（*statically dispatched*）的。这是什么意思？查看[trait对象](http://doc.rust-lang.org/stable/book/trait-objects.html)来了解更多细节。
+关于trait的最后一点：带有trait限制的泛型函数是*单态*（*monomorphization*）（mono：单一，morph：形式）的，所以它是*静态分发*（*statically dispatched*）的。这是什么意思？查看[trait对象](Trait Objects trait 对象.md)来了解更多细节。
 
 ## 多 trait bound（Multiple trait bounds）
 

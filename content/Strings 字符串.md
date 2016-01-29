@@ -159,4 +159,4 @@ let world = "world!".to_string();
 let hello_world = hello + &world;
 ```
 
-这是因为`&String`可以自动转换为一个`&str`。这个功能叫做[`Deref`转换](http://doc.rust-lang.org/stable/book/deref-coercions.html)。
+这是因为`&String`可以自动转换为一个`&str`。这个功能叫做[`Deref`转换](`Deref` coercions `Deref`强制多态.md)。

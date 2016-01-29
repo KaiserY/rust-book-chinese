@@ -30,7 +30,7 @@ impl<T> Foo for [T] {
 impl Foo for &str {
 ```
 
-意味深长的是，这个实现将只能用于[引用](http://doc.rust-lang.org/stable/book/references-and-borrowing.html)，并且不能用于其它类型的指针。通过`impl for str`，所有指针，包括（在一些地方，这里会有bug需要修复）用户自定义的智能指针，可以使用这个`impl`。
+意味深长的是，这个实现将只能用于[引用](References and Borrowing 引用和借用.md)，并且不能用于其它类型的指针。通过`impl for str`，所有指针，包括（在一些地方，这里会有bug需要修复）用户自定义的智能指针，可以使用这个`impl`。
 
 ## `?Sized`
 如果你想要写一个接受动态大小类型的函数，你可以使用这个特殊的限制，`?Sized`：
