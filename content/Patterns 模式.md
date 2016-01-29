@@ -60,7 +60,7 @@ match x {
 这会输出`one or two`。
 
 ## 解构（Destructuring）
-如果你有一个复合数据类型，例如一个[结构体](http://doc.rust-lang.org/stable/book/structs.html)，你可以在模式中解构它：
+如果你有一个复合数据类型，例如一个[结构体](Structs 结构体.md)，你可以在模式中解构它：
 
 ```rust
 struct Point {

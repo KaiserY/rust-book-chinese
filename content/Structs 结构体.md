@@ -134,7 +134,7 @@ let point = Point3d { z: 1, x: 2, .. origin };
 ```
 
 ## 元组结构体
-Rust有像另一个[元组](http://doc.rust-lang.org/stable/book/primitive-types.html#tuples)和结构体的混合体的数据类型。元组结构体有一个名字，不过它的字段没有。他们用`struct`关键字声明，并元组前面带有一个名字：
+Rust有像另一个[元组](Primitive Types 原生类型.md#tuples)和结构体的混合体的数据类型。元组结构体有一个名字，不过它的字段没有。他们用`struct`关键字声明，并元组前面带有一个名字：
 
 ```rust
 struct Color(i32, i32, i32);

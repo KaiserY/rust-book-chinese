@@ -22,7 +22,7 @@ Rust 注重安全和速度。它通过很多*零开销抽象*（*zero-cost abstr
 记住这些之后，让我们来学习关于所有权的内容。
 
 ## 所有权（Ownership）
-Rust 中的[变量绑定](http://doc.rust-lang.org/stable/book/variable-bindings.html)有一个属性：它们有它们所绑定的的值的*所有权*。这意味着当一个绑定离开作用域，它们绑定的资源就会被释放。例如：
+Rust 中的[变量绑定](Variable Bindings 变量绑定.md)有一个属性：它们有它们所绑定的的值的*所有权*。这意味着当一个绑定离开作用域，它们绑定的资源就会被释放。例如：
 
 ```rust
 fn foo() {
@@ -30,7 +30,7 @@ fn foo() {
 }
 ```
 
-当`v`进入作用域，一个新的[Vec<T>](http://doc.rust-lang.org/stable/std/vec/struct.Vec.html)被创建，向量（vector）也在[堆](http://doc.rust-lang.org/stable/book/the-stack-and-the-heap.html)上为它的3个元素分配了空间。当`v`在`foo()`的末尾离开作用域，Rust将会清理掉与向量（vector）相关的一切，甚至是堆上分配的内存。这在作用域的结尾是一定（deterministically）会发生的。
+当`v`进入作用域，一个新的[Vec<T>](http://doc.rust-lang.org/stable/std/vec/struct.Vec.html)被创建，向量（vector）也在[堆](The Stack and the Heap 栈和堆.md)上为它的3个元素分配了空间。当`v`在`foo()`的末尾离开作用域，Rust将会清理掉与向量（vector）相关的一切，甚至是堆上分配的内存。这在作用域的结尾是一定（deterministically）会发生的。
 
 我们将会在本章的后面详细介绍[vector](https://github.com/rust-lang/rust/blob/master/src/doc/book/vectors.html)；这里我们只是用它来作为一个在运行时在堆上分配内存的类型的例子。他们表现起来像[数组](https://github.com/rust-lang/rust/blob/master/src/doc/book/primitive-types.html#arrays)，除了通过`push()`更多元素他们的大小会改变。
 
@@ -88,12 +88,12 @@ let v = vec![1, 2, 3];
 let v2 = v;
 ```
 
-第一行为 vector 对象`v`和它包含的数据分配了内存。向量对象储存在[栈](http://doc.rust-lang.org/stable/book/the-stack-and-the-heap.html)上并包含一个指向[堆](http://doc.rust-lang.org/stable/book/the-stack-and-the-heap.html)上`[1, 2, 3]`内容的指针。当我们从`v`移动到`v2`，它为`v2`创建了一个那个指针的拷贝。这意味着这将会有两个指向向量内容的指针。这将会因为引入了一个数据竞争而违反 Rust 的安全保证。因此，Rust 禁止我们在移动后使用`v`。
+第一行为 vector 对象`v`和它包含的数据分配了内存。向量对象储存在[栈](The Stack and the Heap 栈和堆.md)上并包含一个指向[堆](The Stack and the Heap 栈和堆.md)上`[1, 2, 3]`内容的指针。当我们从`v`移动到`v2`，它为`v2`创建了一个那个指针的拷贝。这意味着这将会有两个指向向量内容的指针。这将会因为引入了一个数据竞争而违反 Rust 的安全保证。因此，Rust 禁止我们在移动后使用`v`。
 
 注意到优化可能会根据情况移除栈上字节（例如上面的向量）的实际拷贝也是很重要的。所以它也许并不像它开始看起来那样没有效率。
 
 ## `Copy`类型
-我们已经知道了当所有权被转移给另一个绑定以后，你不能再使用原始绑定。然而，这里有一个[trait](http://doc.rust-lang.org/stable/book/traits.html)会改变这个行为，它叫做`Copy`。我们还没有讨论到 trait，不过目前，你可以理解为一个为特定类型增加额外行为的标记。例如：
+我们已经知道了当所有权被转移给另一个绑定以后，你不能再使用原始绑定。然而，这里有一个[trait](Traits.md)会改变这个行为，它叫做`Copy`。我们还没有讨论到 trait，不过目前，你可以理解为一个为特定类型增加额外行为的标记。例如：
 
 ```rust
 let v = 1;
@@ -141,7 +141,7 @@ println!("{}", a);
                ^
 ```
 
-我们会在[trait](http://doc.rust-lang.org/stable/book/traits.html)部分讨论如何编写你自己类型的`Copy`。
+我们会在[trait](Traits.md)部分讨论如何编写你自己类型的`Copy`。
 
 ## 所有权之外（More than ownership）
 当然，如果我们不得不在每个我们写的函数中交还所有权：
