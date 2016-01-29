@@ -35,9 +35,9 @@ map.insert("Foo".to_string(), 42);
 assert_eq!(map.get("Foo"), Some(&42));
 ```
 
-这是因为标准库`为 String 实现了Borrow<str>`。
+这是因为标准库中有`impl Borrow<str> for String`（为 String 实现了Borrow<str>)。
 
-对于多数类型，当你想要获取一个自我拥有或借用的类型，`&T`就足够了。不过一个地方`Borrow`是有效的是当这里有多于一种借用的值。片段就是一个这一点特别正确的地方：你可以有`&[T]`或者`&mut [T]`。如果我们想接受这两种类型，`Borrow`就是你需要的：
+对于多数类型，当你想要获取一个自我拥有或借用的类型，`&T`就足够了。不过当有多于一种借用的值时，`Borrow`就能起作用了。引用和`slice`就是一个能体现这一点的地方：你可以有`&[T]`或者`&mut [T]`。如果我们想接受这两种类型，`Borrow`就是你需要的：
 
 ```rust
 use std::borrow::Borrow;
