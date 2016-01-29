@@ -32,7 +32,7 @@ Rust 发布有3种途径：
 
 作为一个例子，很多Rust程序猿使用[Travis](https://travis-ci.org/)来测试他们的crate，这是一个开源的免费项目。Travis[直接支持Rust](http://docs.travis-ci.com/user/languages/rust/)，并且你可以用类似这样的一个`.travis.yml`文件来测试所有的版本：
 
-```yml
+```yaml
 language: rust
 rust:
   - nightly

@@ -18,7 +18,7 @@
 
 虽然编译器默认的选择大部分情况工作良好，也经常需要定制特定的方面。覆盖编译器关于使用哪个分配器的选择可以简单的通过链接到期望的分配器实现：
 
-```rust
+```rust,no_run
 #![feature(alloc_system)]
 
 extern crate alloc_system;
@@ -31,7 +31,7 @@ fn main() {
 
 在这个例子中生成的二进制文件并不会默认链接到 jemalloc 而是使用了系统分配器。同理生成一个默认使用 jemalloc 的动态库可以写成：
 
-```rust
+```rust,ignore
 #![feature(alloc_jemalloc)]
 #![crate_type = "dylib"]
 
@@ -48,7 +48,7 @@ pub fn foo() {
 
 有时甚至 jemalloc 与系统分配器之间的选择都是不够的并需要一个新的自定义的分配器。这种情况你要编写你自己实现了分配器 API（例如与`alloc_system`和`alloc_jemallo`相同）的 crate。作为一个例子，让我们看看一个简单的和声明化的`alloc_system`版本：
 
-```rust
+```rust,no_run
 # // only needed for rustdoc --test down below
 # #![feature(lang_items)]
 // The compiler needs to be instructed that this crate is an allocator in order
@@ -111,7 +111,7 @@ pub extern fn __rust_usable_size(size: usize, _align: usize) -> usize {
     size
 }
 
-# // only needed to get rustdoc to test this
+# // just needed to get rustdoc to test this
 # fn main() {}
 # #[lang = "panic_fmt"] fn panic_fmt() {}
 # #[lang = "eh_personality"] fn eh_personality() {}
@@ -122,7 +122,7 @@ pub extern fn __rust_usable_size(size: usize, _align: usize) -> usize {
 
 在我们编译了这个 crate 之后，他可以被如下使用：
 
-```rust
+```rust,ignore
 extern crate my_allocator;
 
 fn main() {

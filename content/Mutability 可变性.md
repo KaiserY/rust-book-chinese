@@ -6,7 +6,7 @@
 
 可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
-```rust
+```rust,ignore
 let x = 5;
 x = 6; // error!
 ```
@@ -45,6 +45,7 @@ let mut y = &mut x;
 let (mut x, y) = (5, 6);
 
 fn foo(mut x: i32) {
+# }
 ```
 
 ## 内部可变性 VS 外部可变性（Interior vs. Exterior Mutability）
@@ -80,13 +81,14 @@ let y = x.borrow_mut();
 
 `RefCell`使用`borrow_mut()`方法来分配它内部资源的`&mut`引用。这难道不危险吗？如果我们：
 
-```rust
+```rust,ignore
 use std::cell::RefCell;
 
 let x = RefCell::new(42);
 
 let y = x.borrow_mut();
 let z = x.borrow_mut();
+# (y, z);
 ```
 
 事实上这会在运行时引起恐慌。这是`RefCell`如何工作的：它在运行时强制使用Rust的借用规则，并且如果有违反就会`panic!`。这让我们绕开了Rust可变性规则的另一方面。让我先讨论一下它。
@@ -94,7 +96,7 @@ let z = x.borrow_mut();
 ## 字段级别可变性（Field-level mutability）
 可变性是一个不是借用（`&mut`）就是绑定的属性（`&mut`）。这意味着，例如，你不能拥有一个一些字段可变而一些字段不可变的[结构体](https://doc.rust-lang.org/stable/book/structs.html)：
 
-```rust
+```rust,ignore
 struct Point {
     x: i32,
     mut y: i32, // nope
@@ -103,7 +105,7 @@ struct Point {
 
 结构体的可变性位于它的绑定上：
 
-```rust
+```rust,ignore
 struct Point {
     x: i32,
     y: i32,
@@ -128,7 +130,7 @@ struct Point {
     y: Cell<i32>,
 }
 
-let mut point = Point { x: 5, y: Cell::new(6) };
+let point = Point { x: 5, y: Cell::new(6) };
 
 point.y.set(7);
 

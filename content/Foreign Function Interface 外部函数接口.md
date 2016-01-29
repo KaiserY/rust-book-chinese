@@ -23,7 +23,7 @@ libc = "0.2.0"
 
 下面是一个最简单的调用其它语言函数的例子，如果你安装了snappy的话它将能够编译：
 
-```rust
+```rust,no_run
 # #![feature(libc)]
 extern crate libc;
 use libc::size_t;
@@ -47,7 +47,7 @@ fn main() {
 
 `extern`块可以扩展以包括整个snappy API：
 
-```rust
+```rust,no_run
 # #![feature(libc)]
 extern crate libc;
 use libc::{c_int, size_t};
@@ -171,7 +171,7 @@ pub fn uncompress(src: &[u8]) -> Option<Vec<u8>> {
 
 Rust代码：
 
-```rust
+```rust,no_run
 extern fn callback(a: i32) {
     println!("I'm called from C with value {0}", a);
 }
@@ -215,7 +215,7 @@ void trigger_callback() {
 
 Rust代码：
 
-```rust
+```rust,no_run
 #[repr(C)]
 struct RustObject {
     a: i32,
@@ -250,7 +250,7 @@ fn main() {
 
 C代码：
 
-```rust
+```c
 typedef void (*rust_callback)(void*, int32_t);
 void* cb_target;
 rust_callback cb;
@@ -306,7 +306,7 @@ void trigger_callback() {
 不安全函数，另一方面，将它公布于众。一个不安全的函数这样写：
 
 ```rust
-unsafe fn kaboom(ptr: *const int) -> int { *ptr }
+unsafe fn kaboom(ptr: *const i32) -> i32 { *ptr }
 ```
 
 这个函数只能被从`unsafe`块中或者`unsafe`函数调用。
@@ -314,7 +314,7 @@ unsafe fn kaboom(ptr: *const int) -> int { *ptr }
 ## 访问外部全局变量（Accessing foreign globals）
 外部API经常导出一个全局变量来进行像记录全局状态这样的工作。为了访问这些变量，你可以在`extern`块中用`static`关键字声明它们：
 
-```rust
+```rust,no_run
 # #![feature(libc)]
 extern crate libc;
 
@@ -331,7 +331,7 @@ fn main() {
 
 另外，你可能想修改外部结接口提供的全局状态。为了做到这一点，声明为`mut`这样我们就可以改变它了。
 
-```rust
+```rust,no_run
 # #![feature(libc)]
 extern crate libc;
 
@@ -438,7 +438,7 @@ pub extern fn oh_no() -> i32 {
 
 有时一个 C 库想要提供某种指针，不过并不想让你知道它需要的内部细节。最简单的方法是使用一个`void *`参数：
 
-```rust
+```c
 void foo(void *arg);
 void bar(void *arg);
 ```

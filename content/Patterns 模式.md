@@ -36,7 +36,7 @@ println!("x: {}", x)
 
 这会打印：
 
-```bash
+```text
 x: c c: c
 x: 1
 ```
@@ -71,7 +71,7 @@ struct Point {
 let origin = Point { x: 0, y: 0 };
 
 match origin {
-    Point { x: x, y: y } => println!("({},{})", x, y),
+    Point { x, y } => println!("({},{})", x, y),
 }
 ```
 
@@ -101,7 +101,7 @@ struct Point {
 let origin = Point { x: 0, y: 0 };
 
 match origin {
-    Point { x: x, .. } => println!("x is {}", x),
+    Point { x, .. } => println!("x is {}", x),
 }
 ```
 
@@ -118,7 +118,7 @@ struct Point {
 let origin = Point { x: 0, y: 0 };
 
 match origin {
-    Point { y: y, .. } => println!("y is {}", y),
+    Point { y, .. } => println!("y is {}", y),
 }
 ```
 
@@ -145,6 +145,7 @@ match some_value {
 ```rust
 fn coordinate() -> (i32, i32, i32) {
     // generate and return some sort of triple tuple
+# (1, 2, 3)
 }
 
 let (x, _, z) = coordinate();
@@ -298,20 +299,20 @@ match x {
 
 这会打印`no`，因为`if`适用于整个` 4 | 5`，而不仅仅是`5`，换句话说，`if`语句的优先级是这样的：
 
-```rust
+```text
 (4 | 5) if y => ...
 ```
 
 而不是这样：
 
-```rust
+```text
 4 | (5 if y) => ...
 ```
 
 ## 混合与匹配（Mix and Match）
 (口哨)！根据你的需求，你可以对上面的多种匹配方法进行组合：
 
-```rust
+```rust,ignore
 match x {
     Foo { x: Some(ref name), y: None } => ...
 }

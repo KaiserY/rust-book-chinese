@@ -33,7 +33,7 @@ Cargo 从系统环境变量中获取这些信息。如果这不对，赶紧修�
 
 ```rust
 fn main() {
-    println!("Hello, world!")
+    println!("Hello, world!");
 }
 ```
 
@@ -60,7 +60,7 @@ Hello, world!
 ## 处理一次猜测
 让我们开始吧！我们需要做的第一件事是让我们的玩家输入一个猜测。把这些放入你的`src/main.rs`：
 
-```rust
+```rust,no_run
 use std::io;
 
 fn main() {
@@ -79,19 +79,19 @@ fn main() {
 
 这有好多东西！让我们一点一点地过一遍。
 
-```rust
+```rust,ignore
 use std::io;
 ```
 
 我们需要获取用户输入，并接着打印结果作为输出。为此，我们需要标准库的`io`库。Rust 为所有程序只导入了很少一些东西，[‘prelude’](http://doc.rust-lang.org/nightly/std/prelude/)。如果它不在预先导入中，你将不得不直接`use`它。这还有第二个"prelude",[`io`prelude](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/prelude/index.html)，它也起到了类似的作用：你引入它，它引入一系列拥有的 IO 相关的库。
 
-```rust
+```rust,ignore
 fn main() {
 ```
 
 就像你之前见过的，`main()`是你程序的入口点。`fn`语法声明了一个新函数，`()`表明这里没有参数，而`{`开始了函数体。因为不包含返回类型，它假设是`()`，一个空的[元组](5.3.Primitive Types 原生类型.md#tuples)。
 
-```rust
+```rust,ignore
     println!("Guess the number!");
 
     println!("Please input your guess.");
@@ -99,14 +99,14 @@ fn main() {
 
 我们之前学过`println!()`是一个在屏幕上打印[字符串](5.17.Strings 字符串.md)的[宏](5.34.Macros 宏.md)。
 
-```rust
+```rust,ignore
     let mut guess = String::new();
 ```
 
 
 现在我们遇到有意思的东西了！这一小行有很多内容。第一个我们需要注意到的是[let语句](5.1.Variable Bindings 变量绑定.md)，它用来创建“变量绑定”。它使用这个形式：
 
-```rust
+```rust,ignore
 let foo = bar;
 ```
 
@@ -131,14 +131,14 @@ let mut bar = 5; // mutable
 
 让我们继续：
 
-```rust
+```rust,ignore
     io::stdin().read_line(&mut guess)
         .expect("Failed to read line");
 ```
 
 这稍微有点多！让我们一点一点来。第一行有两部分。这是第一部分：
 
-```rust
+```rust,ignore
 io::stdin()
 ```
 
@@ -148,7 +148,7 @@ io::stdin()
 
 下一部分将用这个句柄去获取用户输入：
 
-```rust
+```rust,ignore
 .read_line(&mut guess)
 ```
 
@@ -160,13 +160,13 @@ io::stdin()
 
 不过我们还未完全看完这行代码。虽然它是单独的一行代码，但只是这个单独逻辑代码行的开头部分：
 
-```rust
+```rust,ignore
         .expect("Failed to read line");
 ```
 
 当你用`.foo()`语法调用一个函数的时候，你可能会引入一个新行符或其它空白。这帮助我们拆分长的行。我们*可以*这么干：
 
-```rust
+```rust,ignore
     io::stdin().read_line(&mut guess).expect("failed to read line");
 ```
 
@@ -176,7 +176,7 @@ io::stdin()
 
 如果我们去掉这两个函数调用，我们的程序会编译通过，不过我们会得到一个警告：
 
-```rust
+```bash
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
 src/main.rs:10:5: 10:39 warning: unused result which must be used,
@@ -189,7 +189,7 @@ Rust警告我们我们并未使用`Result`的值。这个警告来自`io::Result
 
 这是我们第一个例子仅剩的一行：
 
-```rust
+```rust,ignore
     println!("You guessed: {}", guess);
 }
 ```
@@ -207,7 +207,7 @@ println!("x and y: {} and {}", x, y);
 
 总而言之，这只是一个观光。我们可以用`cargo run`运行我们写的：
 
-```rust
+```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
      Running `target/debug/guessing_game`
@@ -273,7 +273,7 @@ $ cargo build
 
 让我们真正的*使用*`rand`，这是我们的下一步：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;
@@ -303,7 +303,7 @@ fn main() {
 
 这里还有两行我们增加的，在中间：
 
-```rust
+```rust,ignore
     let secret_number = rand::thread_rng().gen_range(1, 101);
 
     println!("The secret number is: {}", secret_number);
@@ -315,7 +315,7 @@ fn main() {
 
 尝试运行新程序几次：
 
-```rust
+```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
      Running `target/debug/guessing_game`
@@ -338,7 +338,7 @@ You guessed: 5
 ## 比较猜测
 现在我们得到了用户输入，让我们比较我们的猜测和随机值。这是我们的下一步，虽然它还不能正常工作：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;
@@ -371,7 +371,7 @@ fn main() {
 
 这有一些新东西。第一个是另一个`use`。我们带来了一个叫做`std::cmp::Ordering`类型到作用域中。接着，底部5行代码使用了它：
 
-```rust
+```rust,ignore
 match guess.cmp(&secret_number) {
     Ordering::Less    => println!("Too small!"),
     Ordering::Greater => println!("Too big!"),
@@ -392,7 +392,7 @@ enum Foo {
 
 [Ordering](https://doc.rust-lang.org/stable/std/cmp/enum.Ordering.html)枚举有3个可能的变量：`Less`，`Equal`和`Greater`。`match`语句获取类型的值，并让你为每个可能的值创建一个“分支”。因为有 3 种类型的`Ordering`，我们有 3 个分支：
 
-```rust
+```rust,ignore
 match guess.cmp(&secret_number) {
     Ordering::Less    => println!("Too small!"),
     Ordering::Greater => println!("Too big!"),
@@ -420,7 +420,7 @@ Could not compile `guessing_game`.
 
 噢！这是一个大错误。它的核心是我们有“不匹配的类型”。Rust 有一个强大的静态类型系统。然而，它也有类型推断。当我们写`let guess = String::new()`，Rust能够推断出`guess`应该是一个`String`，并因此不需要我们写出类型。而我们的`secret_number`，这有很多类型可以有从`1`到`100`的值：`i32`，一个 32 位数，或者`u32`，一个无符号的32位值，或者`i64`，一个 64 位值。或者其它什么的。目前为止，这并不重要，所以 Rust 默认为`i32`。然而，这里，Rust 并不知道如何比较`guess`和`secret_number`。它们必须是相同的类型。最终，我们想要我们作为输入读到的`String`转换为一个真正的数字类型，来进行比较。我们可以用额外 3 行来搞定它。这是我们的新程序：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;
@@ -456,7 +456,7 @@ fn main() {
 
 新的 3 行是：
 
-```rust
+```rust,ignore
     let guess: u32 = guess.trim().parse()
         .expect("Please type a number!");
 ```
@@ -465,7 +465,7 @@ fn main() {
 
 我们绑定`guess`到一个看起来像我们之前写的表达式：
 
-```rust
+```rust,ignore
 guess.trim().parse()
 ```
 
@@ -475,9 +475,9 @@ guess.trim().parse()
 
 让我们尝试下我们的程序！
 
-```rust
+```bash
 $ cargo run
-   Compiling guessing_game v0.0.1 (file:///home/you/projects/guessing_game)
+   Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
      Running `target/guessing_game`
 Guess the number!
 The secret number is: 58
@@ -494,7 +494,7 @@ Too big!
 ## 循环
 `loop`关键字给我们一个无限循环。让我们加上它：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;
@@ -557,7 +557,7 @@ thread '<main>' panicked at 'Please type a number!'
 
 啊哈！`quit`确实退出了。就像任何其它非数字输入。好吧，这至少不是最差的想法。首先，如果你赢得了游戏，那我们就真的退出它：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;
@@ -598,7 +598,7 @@ fn main() {
 
 通过在`You win!`后增加`break`，我们将在你赢了后退出循环。退出循环也意味着退出程序，因为它是`main()`中最后的东西。我们仅仅需要再做一个小修改：当谁输入了一个非数字，我们并不想退出，我们就想忽略它。我们可以这么做：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;
@@ -641,7 +641,7 @@ fn main() {
 
 这是改变了的行：
 
-```rust
+```rust,ignore
 let guess: u32 = match guess.trim().parse() {
     Ok(num) => num,
     Err(_) => continue,
@@ -652,9 +652,9 @@ let guess: u32 = match guess.trim().parse() {
 
 现在应该搞定了！试试看：
 
-```rust
+```bash
 $ cargo run
-   Compiling guessing_game v0.0.1 (file:///home/you/projects/guessing_game)
+   Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
      Running `target/guessing_game`
 Guess the number!
 The secret number is: 61
@@ -676,7 +676,7 @@ You win!
 
 狂拽炫酷！通过一个最后的修改，我们就完成了猜猜看游戏。你能想到它是什么吗？对了，我们并不想打印出秘密数字。它有利于测试，不过有点毁游（san）戏（guan）的味道。这是最终源码：
 
-```rust
+```rust,ignore
 extern crate rand;
 
 use std::io;

@@ -22,31 +22,39 @@
 
 让我们写一个实现了罗马数字的插件[roman_numerals.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/roman_numerals.rs)。
 
-```rust
+```rust,ignore
 #![crate_type="dylib"]
 #![feature(plugin_registrar, rustc_private)]
 
 extern crate syntax;
 extern crate rustc;
+extern crate rustc_plugin;
 
 use syntax::codemap::Span;
 use syntax::parse::token;
-use syntax::ast::{TokenTree, TtToken};
+use syntax::ast::TokenTree;
 use syntax::ext::base::{ExtCtxt, MacResult, DummyResult, MacEager};
 use syntax::ext::build::AstBuilder;  // trait for expr_usize
-use rustc::plugin::Registry;
+use rustc_plugin::Registry;
 
 fn expand_rn(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
         -> Box<MacResult + 'static> {
 
-    static NUMERALS: &'static [(&'static str, u32)] = &[
+    static NUMERALS: &'static [(&'static str, usize)] = &[
         ("M", 1000), ("CM", 900), ("D", 500), ("CD", 400),
         ("C",  100), ("XC",  90), ("L",  50), ("XL",  40),
         ("X",   10), ("IX",   9), ("V",   5), ("IV",   4),
         ("I",    1)];
 
-    let text = match args {
-        [TtToken(_, token::Ident(s, _))] => token::get_ident(s).to_string(),
+    if args.len() != 1 {
+        cx.span_err(
+            sp,
+            &format!("argument should be a single identifier, but got {} arguments", args.len()));
+        return DummyResult::any(sp);
+    }
+
+    let text = match args[0] {
+        TokenTree::Token(_, token::Ident(s, _)) => s.to_string(),
         _ => {
             cx.span_err(sp, "argument should be a single identifier");
             return DummyResult::any(sp);
@@ -68,7 +76,7 @@ fn expand_rn(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
         }
     }
 
-    MacEager::expr(cx.expr_u32(sp, total))
+    MacEager::expr(cx.expr_usize(sp, total))
 }
 
 #[plugin_registrar]
@@ -79,7 +87,7 @@ pub fn plugin_registrar(reg: &mut Registry) {
 
 我们可以像其它宏那样使用`rn!()`：
 
-```rust
+```rust,ignore
 #![feature(plugin)]
 #![plugin(roman_numerals)]
 
@@ -102,7 +110,7 @@ fn main() {
 
 你可以使用[syntax::parse](http://doc.rust-lang.org/syntax/parse/)来将记号树转换为像表达式这样的更高级的语法元素：
 
-```rust
+```rust,ignore
 fn expand_foo(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
         -> Box<MacResult+'static> {
 
@@ -125,9 +133,23 @@ fn expand_foo(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
 
 插件可以扩展[Rust Lint基础设施](http://doc.rust-lang.org/reference.html#lint-check-attributes)来添加额外的代码风格，安全检查等。你可以查看[src/test/auxiliary/lint_plugin_test.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/lint_plugin_test.rs)来了解一个完整的例子，我们在这里重现它的核心部分：
 
-```rust
-declare_lint!(TEST_LINT, Warn,
-              "Warn about items named 'lintme'")
+```rust,ignore
+#![feature(plugin_registrar)]
+#![feature(box_syntax, rustc_private)]
+
+extern crate syntax;
+
+// Load rustc as a plugin to get macros
+#[macro_use]
+extern crate rustc;
+extern crate rustc_plugin;
+
+use rustc::lint::{EarlyContext, LintContext, LintPass, EarlyLintPass,
+                  EarlyLintPassObject, LintArray};
+use rustc_plugin::Registry;
+use syntax::ast;
+
+declare_lint!(TEST_LINT, Warn, "Warn about items named 'lintme'");
 
 struct Pass;
 
@@ -135,10 +157,11 @@ impl LintPass for Pass {
     fn get_lints(&self) -> LintArray {
         lint_array!(TEST_LINT)
     }
+}
 
-    fn check_item(&mut self, cx: &Context, it: &ast::Item) {
-        let name = token::get_ident(it.ident);
-        if name.get() == "lintme" {
+impl EarlyLintPass for Pass {
+    fn check_item(&mut self, cx: &EarlyContext, it: &ast::Item) {
+        if it.ident.name.as_str() == "lintme" {
             cx.span_lint(TEST_LINT, it.span, "item is named 'lintme'");
         }
     }
@@ -146,13 +169,13 @@ impl LintPass for Pass {
 
 #[plugin_registrar]
 pub fn plugin_registrar(reg: &mut Registry) {
-    reg.register_lint_pass(box Pass as LintPassObject);
+    reg.register_early_lint_pass(box Pass as EarlyLintPassObject);
 }
 ```
 
 那么像这样的代码：
 
-```rust
+```rust,ignore
 #![plugin(lint_plugin_test)]
 
 fn lintme() { }
@@ -160,7 +183,7 @@ fn lintme() { }
 
 将产生一个编译警告：
 
-```bash
+```text
 foo.rs:4:1: 4:16 warning: item is named 'lintme', #[warn(test_lint)] on by default
 foo.rs:4 fn lintme() { }
          ^~~~~~~~~~~~~~~

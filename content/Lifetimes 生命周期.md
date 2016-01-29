@@ -47,7 +47,7 @@ fn bar<'a>(x: &'a i32) {
 
 `'a`读作“生命周期 a”。技术上讲，每一个引用都有一些与之相关的生命周期，不过编译器在通常情况让你可以省略（也就是，省略，查看下面的[生命周期省略](https://github.com/rust-lang/rust/blob/master/src/doc/book/lifetimes.md#lifetime-elision)）它们。在我们讲到它之前，让我们拆开显式的例子看看：
 
-```rust
+```rust,ignore
 fn bar<'a>(...)
 ```
 
@@ -55,19 +55,19 @@ fn bar<'a>(...)
 
 我们用`<>`声明了生命周期。这是说`bar`有一个生命周期`'a`。如果我们有两个引用参数，它应该看起来像这样：
 
-```rust
+```rust,ignore
 fn bar<'a, 'b>(...)
 ```
 
 接着在我们的参数列表中，我们使用了我们命名的生命周期：
 
-```rust
+```rust,ignore
 ...(x: &'a i32)
 ```
 
 如果我们想要一个`&mut`引用，我们这么做：
 
-```rust
+```rust,ignore
 ...(x: &'a mut i32)
 ```
 
@@ -180,7 +180,7 @@ fn main() {
 
 我们的`f`生存在`y`的作用域之中，所以一切正常。那么如果不是呢？下面的代码不能工作：
 
-```rust
+```rust,ignore
 struct Foo<'a> {
     x: &'a i32,
 }
@@ -223,19 +223,19 @@ Rust支持强大的在函数体中的局部类型推断，不过这在项签名�
 
 当我们讨论生命周期省略的时候，我们使用*输入生命周期和输出生命周期*（*input lifetime and output lifetime.*）。*输入生命周期*是关于函数参数的，而*输出生命周期*是关于函数返回值的。例如，这个函数有一个输入生命周期：
 
-```rust
+```rust,ignore
 fn foo<'a>(bar: &'a str)
 ```
 
 这个有一个输出生命周期：
 
-```rust
+```rust,ignore
 fn foo<'a>() -> &'a str
 ```
 
 这个两者皆有：
 
-```rust
+```rust,ignore
 fn foo<'a>(bar: &'a str) -> &'a str
 ```
 
@@ -250,7 +250,7 @@ fn foo<'a>(bar: &'a str) -> &'a str
 ## 例子
 这里有一些省略了生命周期的函数的例子。我们用它们的扩展形式配对了每个省略了生命周期的例子。
 
-```rust
+```rust,ignore
 fn print(s: &str); // elided
 fn print<'a>(s: &'a str); // expanded
 
@@ -267,14 +267,14 @@ fn substr<'a>(s: &'a str, until: u32) -> &'a str; // expanded
 fn get_str() -> &str; // ILLEGAL, no inputs
 
 fn frob(s: &str, t: &str) -> &str; // ILLEGAL, two inputs
-fn frob<'a, 'b>(s: &'a str, t: &'b str) -> &str; // Expanded: Output lifetime is unclear
+fn frob<'a, 'b>(s: &'a str, t: &'b str) -> &str; // Expanded: Output lifetime is ambiguous
 
 fn get_mut(&mut self) -> &mut T; // elided
 fn get_mut<'a>(&'a mut self) -> &'a mut T; // expanded
 
-fn args<T:ToCStr>(&mut self, args: &[T]) -> &mut Command // elided
-fn args<'a, 'b, T:ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command // expanded
+fn args<T:ToCStr>(&mut self, args: &[T]) -> &mut Command; // elided
+fn args<'a, 'b, T:ToCStr>(&'a mut self, args: &'b [T]) -> &'a mut Command; // expanded
 
 fn new(buf: &mut [u8]) -> BufWriter; // elided
-fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a> // expanded
+fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a>; // expanded
 ```

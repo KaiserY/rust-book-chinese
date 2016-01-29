@@ -7,7 +7,7 @@
 “Vector”是一个动态或“可增长”的数组，被实现为标准库类型[Vec<T>](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](http://doc.rust-lang.org/nightly/book/generics.html)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
 
 ```rust
-let v = vec![1, 2, 3]; // v: Vec<i32>
+let v = vec![1, 2, 3, 4, 5]; // v: Vec<i32>
 ```
 
 （与我们之前使用`println!`宏时不一样，我们在`vec!`中使用中括号`[]`。为了方便，Rust 允许你使用上述各种情况。）
@@ -31,7 +31,7 @@ println!("The third element of v is {}", v[2]);
 
 另外值得注意的是你必须用`usize`类型的值来索引：
 
-```rust
+```rust,ignore
 let v = vec![1, 2, 3, 4, 5];
 
 let i: usize = 0;
@@ -46,7 +46,7 @@ v[j];
 
 用非`usize`类型索引的话会给出类似如下的错误：
 
-```bash
+```text
 error: the trait `core::ops::Index<i32>` is not implemented for the type
 `collections::vec::Vec<_>` [E0277]
 v[j];
@@ -61,14 +61,14 @@ error: aborting due to previous error
 
 如果你尝试访问并不存在的索引：
 
-```rust
+```rust,ignore
 let v = vec![1, 2, 3];
 println!("Item 7 is {}", v[7]);
 ```
 
 那么当前的线程会 [panic](https://github.com/rust-lang/rust/blob/master/src/doc/book/concurrency.html#panics)并输出如下信息：
 
-```bash
+```text
 thread '<main>' panicked at 'index out of bounds: the len is 3 but the index is 7'
 ```
 

@@ -7,14 +7,14 @@
 函数是伟大的，不过如果你在一些数据上调用了一堆函数，这将是令人尴尬的。
 考虑下面代码：
 
-```
-baz(bar(foo(x)));
+```rust,ignore
+baz(bar(foo));
 ```
 
 我们可以从左向右阅读，我们会看到“baz bar foo”。不过这不是函数被调用的顺序，调用应该是从内向外的：“foo bar baz”。如果能这么做不是更好吗？
 
-```
-x.foo().bar().baz();
+```rust,ignore
+foo.bar().baz();
 ```
 
 幸运的是，正如对上面那个问题的猜测，你可以！Rust 通过`impl`关键字提供了使用*方法调用语法*（*method call syntax*）。
@@ -115,8 +115,8 @@ impl Circle {
         std::f64::consts::PI * (self.radius * self.radius)
     }
 
-    fn grow(&self) -> Circle {
-        Circle { x: self.x, y: self.y, radius: (self.radius * 10.0) }
+    fn grow(&self, increment: f64) -> Circle {
+        Circle { x: self.x, y: self.y, radius: self.radius + increment }
     }
 }
 
@@ -124,7 +124,7 @@ fn main() {
     let c = Circle { x: 0.0, y: 0.0, radius: 2.0 };
     println!("{}", c.area());
 
-    let d = c.grow().area();
+    let d = c.grow(2.0).area();
     println!("{}", d);
 }
 ```
@@ -132,7 +132,10 @@ fn main() {
 注意返回值：
 
 ```rust
-fn grow(&self) -> Circle {
+# struct Circle;
+# impl Circle {
+fn grow(&self, increment: f64) -> Circle {
+# Circle } }
 ```
 
 我们看到我们返回了一个`Circle`。通过这个函数，我们可以增长一个圆的面积到任意大小。
@@ -181,38 +184,46 @@ impl Circle {
 }
 
 struct CircleBuilder {
-    coordinate: f64,
+    x: f64,
+    y: f64,
     radius: f64,
 }
 
 impl CircleBuilder {
     fn new() -> CircleBuilder {
-        CircleBuilder { coordinate: 0.0, radius: 0.0, }
+        CircleBuilder { x: 0.0, y: 0.0, radius: 1.0, }
     }
 
-    fn coordinate(&mut self, coordinate: f64) -> &mut CircleBuilder {
-    self.coordinate = coordinate;
-    self
+    fn x(&mut self, coordinate: f64) -> &mut CircleBuilder {
+        self.x = coordinate;
+        self
+    }
+
+    fn y(&mut self, coordinate: f64) -> &mut CircleBuilder {
+        self.y = coordinate;
+        self
     }
 
     fn radius(&mut self, radius: f64) -> &mut CircleBuilder {
-    self.radius = radius;
-    self
+        self.radius = radius;
+        self
     }
 
     fn finalize(&self) -> Circle {
-        Circle { x: self.coordinate, y: self.coordinate, radius: self.radius }
+        Circle { x: self.x, y: self.y, radius: self.radius }
     }
 }
 
 fn main() {
     let c = CircleBuilder::new()
-                .coordinate(10.0)
-                .radius(5.0)
+                .x(1.0)
+                .y(2.0)
+                .radius(2.0)
                 .finalize();
 
-
     println!("area: {}", c.area());
+    println!("x: {}", c.x);
+    println!("y: {}", c.y);
 }
 ```
 

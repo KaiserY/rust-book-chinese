@@ -21,7 +21,7 @@ let x: Option<i32> = Some(5);
 
 在类型声明中，我们看到`Option<i32>`。注意它与`Option<T>`的相似之处。所以在这个特定的`Option`中，`T`是`i32`。在绑定的右侧，我们用了`Some(T)`，`T`是`5`。因为那是个`i32`，两边类型相符，所以皆大欢喜。如果不相符，我们会得到一个错误：
 
-```rust
+```rust,ignore
 let x: Option<f64> = Some(5);
 // error: mismatched types: expected `core::option::Option<f64>`,
 // found `core::option::Option<_>` (expected f64 but found integral variable)

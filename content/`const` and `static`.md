@@ -42,6 +42,8 @@ static mut N: i32 = 5;
 因为这是可变的，一个线程可能在更新`N`同时另一个在读取它，导致内存不安全。因此访问和改变一个`static mut`是[不安全（unsafe）](http://doc.rust-lang.org/nightly/book/unsafe.html)的，因此必须在`unsafe`块中操作：
 
 ```rust
+# static mut N: i32 = 5;
+
 unsafe {
     N += 1;
 

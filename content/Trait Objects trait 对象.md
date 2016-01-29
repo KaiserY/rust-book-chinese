@@ -18,6 +18,7 @@ trait Foo {
 我们也在`u8`和`String`上实现了这个trait：
 
 ```rust
+# trait Foo { fn method(&self) -> String; }
 impl Foo for u8 {
     fn method(&self) -> String { format!("u8: {}", *self) }
 }
@@ -32,6 +33,9 @@ impl Foo for String {
 我们可以使用 trait 的限制来进行静态分发：
 
 ```rust
+# trait Foo { fn method(&self) -> String; }
+# impl Foo for u8 { fn method(&self) -> String { format!("u8: {}", *self) } }
+# impl Foo for String { fn method(&self) -> String { format!("string: {}", *self) } }
 fn do_something<T: Foo>(x: T) {
     x.method();
 }
@@ -151,7 +155,7 @@ pub struct TraitObject {
 
 一个虚表本质上是一个函数指针的结构体，指向每个函数实现的具体机器码。一个像`trait_object.method()`的函数调用会从虚表中取出正确的指针然后进行一个动态调用。例如：
 
-```rust
+```rust,ignore
 struct FooVtable {
     destructor: fn(*mut ()),
     size: usize,
@@ -203,7 +207,7 @@ static Foo_for_String_vtable: FooVtable = FooVtable {
 
 假设我们有一些实现了`Foo`的值，那么显式的创建和使用`Foo`trait对象可能看起来有点像这个（忽略不匹配的类型，它们只是指针而已）：
 
-```rust
+```rust,ignore
 let a: String = "foo".to_string();
 let x: u8 = 1;
 
@@ -234,14 +238,14 @@ let y = TraitObject {
 
 并不是所有 trait 都可以被用来作为一个 trait 对象。例如，vector 实现了`Clone`，不过如果我们尝试创建一个 trait 对象：
 
-```rust
+```rust,ignore
 let v = vec![1, 2, 3];
 let o = &v as &Clone;
 ```
 
 我们得到一个错误：
 
-```bash
+```text
 error: cannot convert to a trait object because trait `core::clone::Clone` is not object-safe [E0038]
 let o = &v as &Clone;
         ^~

@@ -73,7 +73,7 @@ fn main() {
 
     point.x = 5;
 
-    let point = point; // this new binding can’t change now
+    let point = point; // now immutable
 
     point.y = 6; // this causes an error
 }

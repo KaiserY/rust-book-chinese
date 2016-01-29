@@ -6,7 +6,7 @@
 
 为了极端底层操作和性能要求，你可能希望直接控制 CPU。Rust 通过`asm!`宏来支持使用内联汇编。语法大体上与 GCC 和 Clang 相似：
 
-```rust
+```rust,ignore
 asm!(assembly template
    : output operands
    : input operands

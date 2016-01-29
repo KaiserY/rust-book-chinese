@@ -60,7 +60,7 @@ let answer = foo(&v1, &v2);
 
 引用是不可变的，就像绑定一样。这意味着在`foo()`中，向量完全不能被改变：
 
-```rust
+```rust,ignore
 fn foo(v: &Vec<i32>) {
      v.push(5);
 }
@@ -72,7 +72,7 @@ foo(&v);
 
 有如下错误：
 
-```bash
+```text
 error: cannot borrow immutable borrowed content `*v` as mutable
 v.push(5);
 ^
@@ -98,7 +98,7 @@ println!("{}", x);
 
 否则，`&mut`引用就像一个普通引用。这两者之间,以及它们是如何交互的*有*巨大的区别。你会发现在上面的例子有些不太靠谱，因为我们需要额外的作用域，包围在`{`和`}`之间。如果我们移除它们，我们得到一个错误：
 
-```bash
+```text
 error: cannot borrow `x` as immutable because it is also borrowed as mutable
     println!("{}", x);
                    ^
@@ -134,7 +134,7 @@ Rust 中的借用有一些规则：
 ## 理解作用域（Thinking in scopes）
 这是代码：
 
-```rust
+```rust,ignore
 let mut x = 5;
 let y = &mut x;
 
@@ -145,7 +145,7 @@ println!("{}", x);
 
 这些代码给我们如下错误：
 
-```bash
+```text
 error: cannot borrow `x` as immutable because it is also borrowed as mutable
     println!("{}", x);
                    ^
@@ -153,7 +153,7 @@ error: cannot borrow `x` as immutable because it is also borrowed as mutable
 
 这是因为我们违反了规则：我们有一个指向`x`的`&mut T`，所以我们不允许创建任何`&T`。一个或另一个。错误记录提示了我们应该如何理解这个错误：
 
-```rust
+```text
 note: previous borrow ends here
 fn main() {
 
@@ -163,7 +163,7 @@ fn main() {
 
 换句话说，可变借用在剩下的例子中一直存在。我们需要的是可变借用在我们尝试调用`println!`*之前*结束并生成一个不可变借用。在 Rust 中，借用绑定在借用有效的作用域上。而我们的作用域看起来像这样：
 
-```rust
+```rust,ignore
 let mut x = 5;
 
 let y = &mut x;    // -+ &mut borrow of x starts here
@@ -181,7 +181,7 @@ println!("{}", x); // -+ - try to borrow x here
 ```rust
 let mut x = 5;
 
-{                   
+{
     let y = &mut x; // -+ &mut borrow starts here
     *y += 1;        //  |
 }                   // -+ ... and ends here
@@ -207,7 +207,7 @@ for i in &v {
 
 这会打印出 1 到 3.因为我们在向量上迭代，我们只得到了元素的引用。同时`v`本身作为不可变借用，它意味着我们在迭代时不能改变它：
 
-```rust
+```rust,ignore
 let mut v = vec![1, 2, 3];
 
 for i in &v {
@@ -218,7 +218,7 @@ for i in &v {
 
 这里是错误：
 
-```bash
+```text
 error: cannot borrow `v` as mutable because it is also borrowed as immutable
     v.push(34);
     ^
@@ -241,7 +241,7 @@ for i in &v {
 
 如果 Rust 并没有检查这个属性，我们可能意外的使用了一个无效的引用。例如：
 
-```rust
+```rust,ignore
 let y: &i32;
 {
     let x = 5;
@@ -253,7 +253,7 @@ println!("{}", y);
 
 我们得到这个错误：
 
-```bash
+```text
 error: `x` does not live long enough
     y = &x;
          ^
@@ -276,7 +276,7 @@ statement 0 at 4:18
 
 当引用在它引用的变量*之前*声明会导致类似的问题：
 
-```rust
+```rust,ignore
 let y: &i32;
 let x = 5;
 y = &x;
@@ -286,7 +286,7 @@ println!("{}", y);
 
 我们得到这个错误：
 
-```bash
+```text
 error: `x` does not live long enough
 y = &x;
      ^

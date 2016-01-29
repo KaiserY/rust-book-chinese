@@ -48,7 +48,7 @@ impl HasArea for Circle {
 
 trait 很有用是因为他们允许一个类型对它的行为提供特定的承诺。泛型函数可以显式的限制，或者叫 [bound](https://github.com/rust-lang/rust/blob/master/src/doc/book/glossary.html#bounds)，它接受的类型。考虑这个函数，它并不能编译：
 
-```rust
+```rust,ignore
 fn print_area<T>(shape: T) {
     println!("This shape has an area of {}", shape.area());
 }
@@ -56,7 +56,7 @@ fn print_area<T>(shape: T) {
 
 Rust抱怨道：
 
-```bash
+```text
 error: no method named `area` found for type `T` in the current scope
 ```
 
@@ -64,6 +64,9 @@ error: no method named `area` found for type `T` in the current scope
 因为`T`可以是任何类型，我们不能确定它实现了`area`方法。不过我们可以在泛型`T`添加一个 trait bound，来确保它实现了对应方法：
 
 ```rust
+# trait HasArea {
+#     fn area(&self) -> f64;
+# }
 fn print_area<T: HasArea>(shape: T) {
     println!("This shape has an area of {}", shape.area());
 }
@@ -126,20 +129,20 @@ fn main() {
 
 这个程序会输出：
 
-```bash
+```text
 This shape has an area of 3.141593
 This shape has an area of 1
 ```
 
 如你所见，`print_area`现在是泛型的了，并且确保我们传递了正确的类型。如果我们传递了错误的类型：
 
-```rust
+```rust,ignore
 print_area(5);
 ```
 
 我们会得到一个编译时错误：
 
-```bash
+```text
 error: the trait `HasArea` is not implemented for the type `_` [E0277]
 ```
 
@@ -178,7 +181,7 @@ fn main() {
 
 `is_square()`需要检查边是相等的，所以边必须是一个实现了[`core::cmp::PartialEq`](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialEq.html) trait 的类型：
 
-```rust
+```rust,ignore
 impl<T: PartialEq> Rectangle<T> { ... }
 ```
 
@@ -210,15 +213,16 @@ impl HasArea for i32 {
 
 这看起来有点像狂野西部（Wild West），不过这还有两个限制来避免情况失去控制。第一是如果 trait 并不定义在你的作用域，它并不能实现。这是个例子：为了进行文件I/O，标准库提供了一个[`Write`](http://doc.rust-lang.org/nightly/std/io/trait.Write.html)trait来为`File`增加额外的功能。默认，`File`并不会有这个方法：
 
-```rust
+```rust,ignore
 let mut f = std::fs::File::open("foo.txt").ok().expect("Couldn’t open foo.txt");
 let buf = b"whatever"; // byte string literal. buf: &[u8; 8]
 let result = f.write(buf);
+# result.unwrap(); // ignore the error
 ```
 
 这里是错误：
 
-```bash
+```text
 error: type `std::fs::File` does not implement any method in scope named `write`
 let result = f.write(buf);
                ^~~~~~~~~~
@@ -226,7 +230,7 @@ let result = f.write(buf);
 
 我们需要先`use`这个`Write` trait：
 
-```rust
+```rust,ignore
 use std::io::Write;
 
 let mut f = std::fs::File::open("foo.txt").expect("Couldn’t open foo.txt");
@@ -301,7 +305,7 @@ fn bar<T, K>(x: T, y: K) where T: Clone, K: Clone + Debug {
 
 fn main() {
     foo("Hello", "world");
-    bar("Hello", "workd");
+    bar("Hello", "world");
 }
 ```
 
@@ -340,7 +344,7 @@ fn normal<T: ConvertTo<i64>>(x: &T) -> i64 {
 
 // can be called with T == i64
 fn inverse<T>() -> T
-        // this is using ConvertTo as if it were "ConvertFrom<i32>"
+        // this is using ConvertTo as if it were "ConvertTo<i64>"
         where i32: ConvertTo<T> {
     42.convert()
 }
@@ -414,6 +418,12 @@ trait FooBar : Foo {
 `FooBar`的实现也必须实现`Foo`，像这样：
 
 ```rust
+# trait Foo {
+#     fn foo(&self);
+# }
+# trait FooBar : Foo {
+#     fn foobar(&self);
+# }
 struct Baz;
 
 impl Foo for Baz {
@@ -427,7 +437,7 @@ impl FooBar for Baz {
 
 如果我们忘了实现`Foo`，Rust会告诉我们：
 
-```bash
+```text
 error: the trait `main::Foo` is not implemented for the type `main::Baz` [E0277]
 ```
 

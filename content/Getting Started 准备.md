@@ -208,7 +208,7 @@ fn main() {
 +[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%20%20%20%20%0A%7D)
 
 ```rust
-println!("Hello, world!");
+    println!("Hello, world!");
 ```
 
 这行代码做了这个小程序的所有工作：它在屏幕上打印文本。这有很多重要的细节。第一个是使用 4 个空格缩进，而不是制表符。
