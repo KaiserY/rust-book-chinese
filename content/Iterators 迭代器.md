@@ -85,7 +85,7 @@ for num in &nums {
 
 *消费者*操作一个迭代器，返回一些值或者几种类型的值。最常见的消费者是`collect()`。这个代码还不能编译，不过它表明了我们的意图：
 
-```rust,ignore
+```rust
 let one_to_one_hundred = (1..101).collect();
 ```
 
@@ -178,7 +178,7 @@ for num in nums.iter() {
 
 *迭代适配器*（*Iterator adapters*）获取一个迭代器然后按某种方法修改它，并产生一个新的迭代器。最简单的是一个是`map`：
 
-```rust,ignore
+```rust
 (1..100).map(|x| x + 1);
 ```
 

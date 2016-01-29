@@ -73,7 +73,7 @@ fn main() {
 
 作为一个例子，这是一个在很多语言中会产生数据竞争的 Rust 版本程序。它不能编译：
 
-```rust,ignore
+```rust
 use std::thread;
 use std::time::Duration;
 
@@ -108,7 +108,7 @@ Rust 知道这并不是安全的！如果每个线程中都有一个`data`的引
 
 `Arc<T>`的原子部分可以在多线程中安全的访问。为此编译器确保了内部计数的改变都是不可分割的操作这样就不会产生数据竞争。
 
-```rust,ignore
+```rust
 use std::thread;
 use std::sync::Arc;
 use std::time::Duration;
@@ -169,7 +169,7 @@ fn main() {
 
 同时注意到[Mutex](https://github.com/rust-lang/rust/blob/master/src/doc/std/sync/struct.Mutex.html)的[lock](https://github.com/rust-lang/rust/blob/master/src/doc/std/sync/struct.Mutex.html#method.lock)方法有如下签名：
 
-```rust,ignore
+```rust
 fn lock(&self) -> LockResult<MutexGuard<T>>
 ```
 

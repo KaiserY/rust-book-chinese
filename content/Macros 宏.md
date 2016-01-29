@@ -58,7 +58,7 @@ macro_rules! vec {
 
 哇哦，这里有好多新语法！让我们分开来看。
 
-```rust,ignore
+```rust
 macro_rules! vec { ... }
 ```
 
@@ -67,7 +67,7 @@ macro_rules! vec { ... }
 ## 匹配
 宏通过一系列*规则*定义，它们是模式匹配的分支。上面我们有：
 
-```rust,ignore
+```rust
 ( $( $x:expr ),* ) => { ... };
 ```
 
@@ -96,7 +96,7 @@ mode Y: 3
 
 而这个：
 
-```rust,ignore
+```rust
 foo!(z => 3);
 ```
 
@@ -109,7 +109,7 @@ error: no rules expected the token `z`
 ## 扩展
 宏规则的右边是正常的Rust语法，大部分是。不过我们可以拼接一些匹配器中的语法。例如最开始的例子：
 
-```rust,ignore
+```rust
 $(
     temp_vec.push($x);
 )*
@@ -121,7 +121,7 @@ $(
 
 另一个细节：`vec!`宏的右侧有*两对*大括号。它们经常像这样结合起来：
 
-```rust,ignore
+```rust
 macro_rules! foo {
     () => {{
         ...
@@ -246,7 +246,7 @@ fn main() {
 
 这也限制了宏在被执行时引入新绑定的能力。像这样的代码是不能工作的：
 
-```rust,ignore
+```rust
 macro_rules! foo {
     () => (let x = 3);
 }
@@ -383,7 +383,7 @@ fn main() {
 
 `macro_use`属性也可以出现在`extern crate`。在这个上下文中它控制那些宏从外部包装箱中装载，例如
 
-```rust,ignore
+```rust
 #[macro_use(foo, bar)]
 extern crate baz;
 ```
@@ -504,7 +504,7 @@ macro_rules! bct {
 ### `panic!`
 这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：
 
-```rust,no_run
+```rust
 panic!("oh no!");
 ```
 
@@ -524,7 +524,7 @@ let v = vec![0; 100];
 ### `assert!`和`assert_eq!`
 这两个宏用在测试中。`assert!`获取一个布尔值，而`assert_eq!`获取两个值并比较它们。对了就通过，错了就`panic!`（注：原书是Truth passes, success panic!s，个人认为不对）。像这样：
 
-```rust,no_run
+```rust
 // A-ok!
 
 assert!(true);
@@ -539,7 +539,7 @@ assert_eq!(5, 3);
 ### `try!`
 `try!`用来进行错误处理。它获取一些可以返回`Result<T, E>`的数据，并返回`T`如果它是` Ok<T>`，或`return`一个`Err(E)`如果出错了。像这样：
 
-```rust,no_run
+```rust
 use std::fs::File;
 
 fn foo() -> std::io::Result<()> {
@@ -551,7 +551,7 @@ fn foo() -> std::io::Result<()> {
 
 它比这么写要更简明：
 
-```rust,no_run
+```rust
 use std::fs::File;
 
 fn foo() -> std::io::Result<()> {

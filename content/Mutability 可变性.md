@@ -6,7 +6,7 @@
 
 可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
-```rust,ignore
+```rust
 let x = 5;
 x = 6; // error!
 ```
@@ -81,7 +81,7 @@ let y = x.borrow_mut();
 
 `RefCell`使用`borrow_mut()`方法来分配它内部资源的`&mut`引用。这难道不危险吗？如果我们：
 
-```rust,ignore
+```rust
 use std::cell::RefCell;
 
 let x = RefCell::new(42);
@@ -96,7 +96,7 @@ let z = x.borrow_mut();
 ## 字段级别可变性（Field-level mutability）
 可变性是一个不是借用（`&mut`）就是绑定的属性（`&mut`）。这意味着，例如，你不能拥有一个一些字段可变而一些字段不可变的[结构体](https://doc.rust-lang.org/stable/book/structs.html)：
 
-```rust,ignore
+```rust
 struct Point {
     x: i32,
     mut y: i32, // nope
@@ -105,7 +105,7 @@ struct Point {
 
 结构体的可变性位于它的绑定上：
 
-```rust,ignore
+```rust
 struct Point {
     x: i32,
     y: i32,

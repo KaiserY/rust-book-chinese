@@ -312,7 +312,7 @@ match x {
 ## 混合与匹配（Mix and Match）
 (口哨)！根据你的需求，你可以对上面的多种匹配方法进行组合：
 
-```rust,ignore
+```rust
 match x {
     Foo { x: Some(ref name), y: None } => ...
 }

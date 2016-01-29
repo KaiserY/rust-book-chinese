@@ -97,7 +97,7 @@ build  deps  examples  libphrases-a7448e02a0468eaa.rlib  native
 
 除了这样定义一个模块外：
 
-```rust,ignore
+```rust
 mod english {
     // contents of our module go here
 }
@@ -105,7 +105,7 @@ mod english {
 
 我们还可以这样定义：
 
-```rust,ignore
+```rust
 mod english;
 ```
 
@@ -141,14 +141,14 @@ $ tree .
 
 `src/lib.rs`是我们包装箱的根，它看起来像这样：
 
-```rust,ignore
+```rust
 mod english;
 mod japanese;
 ```
 
 这两个定义告诉Rust去寻找`src/english.rs`和`src/japanese.rs`，或者`src/english/mod.rs`和`src/japanese/mod.rs`，具体根据你的偏好。在我们的例子中，因为我们的模块含有子模块，所以我们选择第二种方式。`src/english/mod.rs`和`src/japanese/mod.rs`都看起来像这样：
 
-```rust,ignore
+```rust
 mod greetings;
 mod farewells;
 ```
@@ -200,7 +200,7 @@ fn goodbye() -> String {
 
 创建一个`src/main.rs`文件然后写入如下：（现在它还不能编译）
 
-```rust,ignore
+```rust
 extern crate phrases;
 
 fn main() {
@@ -239,7 +239,7 @@ Rust 默认一切都是私有的。让我们深入了解一下这个。
 ## 导出公用接口
 Rust允许你严格的控制你的接口哪部分是公有的，所以它们默认都是私有的。你需要使用`pub`关键字，来公开它。让我们先关注`english`模块，所以让我们像这样减少`src/main.rs`的内容：
 
-```rust,ignore
+```rust
 extern crate phrases;
 
 fn main() {
@@ -250,21 +250,21 @@ fn main() {
 
 在我们的`src/lib.rs`，让我们给`english`模块声明添加一个`pub`：
 
-```rust,ignore
+```rust
 pub mod english;
 mod japanese;
 ```
 
 然后在我们的`src/english/mod.rs`中，加上两个`pub`：
 
-```rust,ignore
+```rust
 pub mod greetings;
 pub mod farewells;
 ```
 
 在我们的`src/english/greetings.rs`中，让我们在`fn`声明中加上`pub`：
 
-```rust,ignore
+```rust
 pub fn hello() -> String {
     "Hello!".to_string()
 }
@@ -272,7 +272,7 @@ pub fn hello() -> String {
 
 然后在`src/english/farewells.rs`中：
 
-```rust,ignore
+```rust
 pub fn goodbye() -> String {
     "Goodbye.".to_string()
 }
@@ -301,7 +301,7 @@ Goodbye in English: Goodbye.
 ## 用`use`导入模块
 Rust有一个`use`关键字，它允许我们导入名字到我们本地的作用域中。让我们把`src/main.rs`改成这样：
 
-```rust,ignore
+```rust
 extern crate phrases;
 
 use phrases::english::greetings;
@@ -315,7 +315,7 @@ fn main() {
 
 这两行`use`导入了两个模块到我们本地作用域中，这样我们就可以用一个短得多的名字来引用函数。作为一个传统，当导入函数时，导入模块而不是直接导入函数被认为是一个最佳实践。也就是说，你可以这么做：
 
-```rust,ignore
+```rust
 extern crate phrases;
 
 use phrases::english::greetings::hello;
@@ -329,7 +329,7 @@ fn main() {
 
 不过这并不理想。这意味着更加容易导致命名冲突。在我们的小程序中，这没什么大不了的，不过随着我们的程序增长，它将会成为一个问题。如果我们有命名冲突，Rust会给我们一个编译错误。举例来说，如果我们将`japanese`的函数设为公有，然后这样尝试：
 
-```rust,ignore
+```rust
 extern crate phrases;
 
 use phrases::english::greetings::hello;
@@ -354,14 +354,14 @@ Could not compile `phrases`.
 
 如果你从同样的模块中导入多个名字，我们不必写多遍。Rust有一个简便的语法：
 
-```rust,ignore
+```rust
 use phrases::english::greetings;
 use phrases::english::farewells;
 ```
 
 我们可以使用这个简写：
 
-```rust,ignore
+```rust
 use phrases::english::{greetings, farewells};
 ```
 
@@ -370,7 +370,7 @@ use phrases::english::{greetings, farewells};
 
 让我们看个例子。修改`src/main.rs`让它看起来像这样：
 
-```rust,ignore
+```rust
 extern crate phrases;
 
 use phrases::english::{greetings,farewells};
@@ -387,14 +387,14 @@ fn main() {
 
 然后修改`src/lib.rs`公开`japanese`模块：
 
-```rust,ignore
+```rust
 pub mod english;
 pub mod japanese;
 ```
 
 接下来，把这两个函数声明为公有，先是`src/japanese/greetings.rs`：
 
-```rust,ignore
+```rust
 pub fn hello() -> String {
     "こんにちは".to_string()
 }
@@ -402,7 +402,7 @@ pub fn hello() -> String {
 
 然后是`src/japanese/farewells.rs`：
 
-```rust,ignore
+```rust
 pub fn goodbye() -> String {
     "さようなら".to_string()
 }
@@ -410,7 +410,7 @@ pub fn goodbye() -> String {
 
 最后，修改你的`src/japanese/mod.rs`为这样：
 
-```rust,ignore
+```rust
 pub use self::greetings::hello;
 pub use self::farewells::goodbye;
 
@@ -444,7 +444,7 @@ Goodbye in Japanese: さようなら
 
 Rust 提供了多种高级选项来让你的`extern crate`和`use`语句变得简洁方便。这是一个例子：
 
-```rust,ignore
+```rust
 extern crate phrases as sayings;
 
 use sayings::japanese::greetings as ja_greetings;
@@ -469,7 +469,7 @@ fn main() {
 
 第三个`use`语句需要更多的解释。它使用了“大括号扩展（brace expansion）”来将三条`use`语句压缩成了一条（这类语法对曾经写过 Linux shell 脚本的人应该很熟悉）。语句的非压缩形式应该是：
 
-```rust,ignore
+```rust
 use sayings::english;
 use sayings::english::greetings as en_greetings;
 use sayings::english::farewells as en_farewells;

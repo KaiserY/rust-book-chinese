@@ -20,7 +20,7 @@ let x: Name = "Hello".to_string();
 
 然而要注意的是，这一个*别名*，完全不是一个新的类型。换句话说，因为Rust是强类型的，你可以预期两个不同类型的比较会失败：
 
-```rust,ignore
+```rust
 let x: i32 = 5;
 let y: i64 = 5;
 

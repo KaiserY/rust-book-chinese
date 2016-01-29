@@ -23,7 +23,7 @@ libc = "0.2.0"
 
 下面是一个最简单的调用其它语言函数的例子，如果你安装了snappy的话它将能够编译：
 
-```rust,no_run
+```rust
 # #![feature(libc)]
 extern crate libc;
 use libc::size_t;
@@ -47,7 +47,7 @@ fn main() {
 
 `extern`块可以扩展以包括整个snappy API：
 
-```rust,no_run
+```rust
 # #![feature(libc)]
 extern crate libc;
 use libc::{c_int, size_t};
@@ -171,7 +171,7 @@ pub fn uncompress(src: &[u8]) -> Option<Vec<u8>> {
 
 Rust代码：
 
-```rust,no_run
+```rust
 extern fn callback(a: i32) {
     println!("I'm called from C with value {0}", a);
 }
@@ -215,7 +215,7 @@ void trigger_callback() {
 
 Rust代码：
 
-```rust,no_run
+```rust
 #[repr(C)]
 struct RustObject {
     a: i32,
@@ -314,7 +314,7 @@ unsafe fn kaboom(ptr: *const i32) -> i32 { *ptr }
 ## 访问外部全局变量（Accessing foreign globals）
 外部API经常导出一个全局变量来进行像记录全局状态这样的工作。为了访问这些变量，你可以在`extern`块中用`static`关键字声明它们：
 
-```rust,no_run
+```rust
 # #![feature(libc)]
 extern crate libc;
 
@@ -331,7 +331,7 @@ fn main() {
 
 另外，你可能想修改外部结接口提供的全局状态。为了做到这一点，声明为`mut`这样我们就可以改变它了。
 
-```rust,no_run
+```rust
 # #![feature(libc)]
 extern crate libc;
 

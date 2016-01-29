@@ -50,7 +50,7 @@ Rust 的错误处理天生是冗长而烦人的。这一部分将会探索这些
 
 保持代码的可组合性是很重要的，因为没有这个要求，我们可能在遇到没想到的情况时[panic](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.panic!.html)。（`panic`导致当前线程结束，而在大多数情况，导致整个程序结束。）这是一个例子：
 
-```rust,should_panic
+```rust
 // Guess a number between 1 and 10.
 // If it matches the number we had in mind, return true. Else, return false.
 fn guess(n: i32) -> bool {
@@ -73,7 +73,7 @@ thread '<main>' panicked at 'Invalid number: 11', src/bin/panic-simple.rs:5
 
 这是另一个稍微不那么违和的例子。一个接受一个整型作为参数，乘以二并打印的程序。
 
-```rust,should_panic
+```rust
 use std::env;
 
 fn main() {
@@ -353,7 +353,7 @@ thread '<main>' panicked at 'called `Result::unwrap()` on an `Err` value: ParseI
 
 这是很难堪的，而且如果这在你所使用的库中出现了的话，可以理解你会很烦躁。相反，我们应该尝试在我们的函数里处理错误并让调用者决定该怎么做。这意味着改变`double_number`的返回值类型。不过改编成什么呢？好吧，这需要我们看看标准库中[`parse`方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/primitive.str.html#method.parse)的签名：
 
-```rust,ignore
+```rust
 impl str {
     fn parse<F: FromStr>(&self) -> Result<F, F::Err>;
 }
@@ -448,7 +448,7 @@ fn double_number(number_str: &str) -> Result<i32> {
 
 现在，让我们重温这一部分的第一个例子：
 
-```rust,should_panic
+```rust
 use std::env;
 
 fn main() {
@@ -505,7 +505,7 @@ IO 和 解析输入是非常常见的任务，这也是我个人在 Rust 经常�
 
 虽然我们劝告过你不要用`unwrap`，不过开始写代码的时候`unwrap`也是有用的。它允许你关注你的问题而不是错误处理，并且暴露出需要错误处理的点。让我们开始试试手感，再接着用更好的错误处理重构。
 
-```rust,should_panic
+```rust
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -763,7 +763,7 @@ enum CliError {
 
 实现`Error`是非常直观的。这会有很多的显式 case analysis。
 
-```rust,ignore
+```rust
 use std::error;
 use std::fmt;
 
@@ -825,7 +825,7 @@ let cow: ::std::borrow::Cow<str> = From::from("foo");
 
 好的，这么说`From`用来处理字符串转换，那么错误怎么办？他被证明是一个关键实现：
 
-```rust,ignore
+```rust
 impl<'a, E: Error + 'a> From<E> for Box<Error + 'a>
 ```
 
@@ -1091,7 +1091,7 @@ cargo build --release
 
 让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过这里有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，我们可以解码程序参数到一个 Rust 结构体中。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
 
-```rust,ignore
+```rust
 extern crate getopts;
 extern crate rustc_serialize;
 
@@ -1132,7 +1132,7 @@ fn main() {
 
 在这个案例学习中，逻辑真的很简单。所有我们要做的就是解析给我们的 CSV 数据并打印出匹配的行的一个字段。让我们开始吧。（确保在你的文件开头加上`extern crate csv;`。）
 
-```rust,ignore
+```rust
 // This struct represents the data in each row of the CSV file.
 // Type based decoding absolves us of a lot of the nitty gritty error
 // handling, like parsing strings as integers or floats.
@@ -1212,7 +1212,7 @@ fn main() {
 
 让我们重构函数，不过保持对`unwrap`的调用。注意我们选择处理一个不存在的人口数行的方式是单纯的忽略它。
 
-```rust,ignore
+```rust
 struct Row {
     // unchanged
 }
@@ -1284,7 +1284,7 @@ fn main() {
 
 让我们试试：
 
-```rust,ignore
+```rust
 fn search<P: AsRef<Path>>
          (file_path: P, city: &str)
          -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
@@ -1316,7 +1316,7 @@ fn search<P: AsRef<Path>>
 
 代码中还有另一个大的需要注意的地方：我们用了`Box<Error + Send + Sync>`而不是`Box<Error>`。这么做是因为我们可以把一个字符串转换为一个错误类型。我们需要这些额外的 bound，这样我们就可以使用[相应的`From`实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)了：
 
-```rust,ignore
+```rust
 // We are making use of this impl in the code above, since we call `From::from`
 // on a `&'static str`.
 impl<'a, 'b> From<&'b str> for Box<Error + Send + Sync + 'a>
@@ -1328,7 +1328,7 @@ impl From<String> for Box<Error + Send + Sync>
 
 因为`search`现在返回`Result<T, E>`，`main`应该在调用`search`时使用 case analysis：
 
-```rust,ignore
+```rust
 ...
 match search(&data_file, &city) {
     Ok(pops) => {
@@ -1355,7 +1355,7 @@ match search(&data_file, &city) {
 
 首先，这是新的使用方法函数：
 
-```rust,ignore
+```rust
 fn print_usage(program: &str, opts: Options) {
     println!("{}", opts.usage(&format!("Usage: {} [options] <city>", program)));
 }
@@ -1363,7 +1363,7 @@ fn print_usage(program: &str, opts: Options) {
 
 下一部分只会变得稍微难一点：
 
-```rust,ignore
+```rust
 ...
 let mut opts = Options::new();
 opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
@@ -1389,7 +1389,7 @@ for pop in search(&data_file, &city) {
 
 修改`search`需要一点技巧。`csv`crate 可以用[任何实现了`io::Read`的类型]()构建一个解析器。不过我们如何对这两个类型（注：因该是`Option`的两个值）使用相同的代码呢？事实上这里有多种方法可以做到。其中之一是重写`search`为接受一个满足`io::Read`的`R`类型参数的泛型。另一个办法是使用 trait 对象：
 
-```rust,ignore
+```rust
 fn search<P: AsRef<Path>>
          (file_path: &Option<P>, city: &str)
          -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
@@ -1409,7 +1409,7 @@ fn search<P: AsRef<Path>>
 
 因为我们有三个不同的错误（IO，CSV 解析和未找到），让我们定义一个三个变体的`enum`：
 
-```rust,ignore
+```rust
 #[derive(Debug)]
 enum CliError {
     Io(io::Error),
@@ -1420,7 +1420,7 @@ enum CliError {
 
 现在让我们实现`Display`和`Error`：
 
-```rust,ignore
+```rust
 impl fmt::Display for CliError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
@@ -1445,7 +1445,7 @@ impl Error for CliError {
 
 在我们可以在`search`函数中使用`CliError`之前，我们需要提供一系列的`From`实现。我们如何知晓该提供那个实现呢？好吧，我们得把`io::Error`和`csv::Error`都转换为`CliError`。他们都只是外部错误，所以目前我们只需要两个`From`实现：
 
-```rust,ignore
+```rust
 impl From<io::Error> for CliError {
     fn from(err: io::Error) -> CliError {
         CliError::Io(err)
@@ -1463,7 +1463,7 @@ impl From<csv::Error> for CliError {
 
 当实现了`From`，我们只需要对`search`函数进行两个小的修改：返回值类型和“未找到”错误。这是全部的代码：
 
-```rust,ignore
+```rust
 fn search<P: AsRef<Path>>
          (file_path: &Option<P>, city: &str)
          -> Result<Vec<PopulationCount>, CliError> {
@@ -1511,7 +1511,7 @@ fn search<P: AsRef<Path>>
 
 所以让我们开始增加 flag。就像之前一样，我们需要修改用法字符串，并给选项变量添加 flag。当我们写完这些，Getopts 会搞定剩下的操作：
 
-```rust,ignore
+```rust
 ...
 let mut opts = Options::new();
 opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
@@ -1522,7 +1522,7 @@ opts.optflag("q", "quiet", "Silences errors and warnings.");
 
 现在我们只需要实现我们的“安静”功能。这要求我们修改`mian`中的 case analysis：
 
-```rust,ignore
+```rust
 match search(&args.arg_data_path, &args.arg_city) {
     Err(CliError::NotFound) if args.flag_quiet => process::exit(1),
     Err(err) => panic!("{}", err),

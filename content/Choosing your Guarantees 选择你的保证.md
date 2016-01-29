@@ -95,7 +95,7 @@ println!("{}", x.get());
 
 这与如下代码有相同的运行时开销：
 
-```rust,ignore
+```rust
 let mut x = 1;
 let y = &mut x;
 let z = &mut x;
@@ -182,7 +182,7 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 [Mutex\<T\>](https://doc.rust-lang.org/stable/std/sync/struct.Mutex.html)和[RwLock\<T\>](https://doc.rust-lang.org/stable/std/sync/struct.RwLock.html)通过RAII guard（guard是一类直到析构函数被调用时能保持一些状态的对象）提供了互斥功能。对于这两个类型，mutex直到我们调用`lock()`之前它都是无效的，此时直到我们获取锁这个线程都会被阻塞，同时它会返回一个guard。这个guard可以被用来访问它的内部数据（可变的），而当guard离开作用域锁将被释放。
 
-```rust,ignore
+```rust
 {
     let guard = mutex.lock();
     // guard dereferences mutably to the inner type

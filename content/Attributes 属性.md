@@ -21,7 +21,7 @@
 
 这两者的区别是`!`，它改变了属性作用的对象：
 
-```rust,ignore
+```rust
 #[foo]
 struct Foo;
 

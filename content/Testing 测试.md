@@ -208,7 +208,7 @@ fn it_works() {
 
 这就是全部的基础内容！让我们写一个“真实”的测试：
 
-```rust,ignore
+```rust
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -282,7 +282,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 然而以这样的方式来实现我们的测试的例子并不是地道的做法：它缺少`tests`模块。如果要实现我们的测试实例，一个比较惯用的做法应该是如下的：
 
-```rust,ignore
+```rust
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -302,7 +302,7 @@ mod tests {
 
 第二个变化是`use`声明。因为我们在一个内部模块中，我们需要把我们要测试的函数导入到当前空间中。如果你有一个大型模块的话这会非常烦人，所以这里有经常使用一个`glob`功能。让我们修改我们的`src/lib.rs`来使用这个：
 
-```rust,ignore
+```rust
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -345,7 +345,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ## `tests`目录
 为了进行集成测试，让我们创建一个`tests`目录，然后放一个`tests/lib.rs`文件进去，输入如下内容：
 
-```rust,ignore
+```rust
 extern crate adder;
 
 #[test]

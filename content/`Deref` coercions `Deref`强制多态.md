@@ -94,7 +94,7 @@ f.foo();
 
 即便`f`不是一个引用，而`foo`获取`&self`，这也是可以工作的。因为这些都是一样的：
 
-```rust,ignore
+```rust
 f.foo();
 (&f).foo();
 (&&f).foo();

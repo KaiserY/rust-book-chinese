@@ -9,7 +9,7 @@ Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`wh
 ## loop
 无限`loop`是 Rust 提供的最简单的循环。使用`loop`关键字，Rust 提供了一个直到一些终止语句被执行的循环方法。Rust 的无限`loop`看起来像这样：
 
-```rust,ignore
+```rust
 loop {
     println!("Loop forever!");
 }
@@ -37,13 +37,13 @@ while !done {
 
 如果你需要一个无限循环，你可能想要这么写：
 
-```rust,ignore
+```rust
 while true {
 ```
 
 然而，`loop`远比它适合处理这个情况：
 
-```rust,ignore
+```rust
 loop {
 ```
 
@@ -69,7 +69,7 @@ for x in 0..10 {
 
 更抽象的形式：
 
-```rust,ignore
+```rust
 for var in expression {
     code
 }

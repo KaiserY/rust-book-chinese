@@ -22,7 +22,7 @@
 
 让我们写一个实现了罗马数字的插件[roman_numerals.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/roman_numerals.rs)。
 
-```rust,ignore
+```rust
 #![crate_type="dylib"]
 #![feature(plugin_registrar, rustc_private)]
 
@@ -87,7 +87,7 @@ pub fn plugin_registrar(reg: &mut Registry) {
 
 我们可以像其它宏那样使用`rn!()`：
 
-```rust,ignore
+```rust
 #![feature(plugin)]
 #![plugin(roman_numerals)]
 
@@ -110,7 +110,7 @@ fn main() {
 
 你可以使用[syntax::parse](http://doc.rust-lang.org/syntax/parse/)来将记号树转换为像表达式这样的更高级的语法元素：
 
-```rust,ignore
+```rust
 fn expand_foo(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
         -> Box<MacResult+'static> {
 
@@ -133,7 +133,7 @@ fn expand_foo(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
 
 插件可以扩展[Rust Lint基础设施](http://doc.rust-lang.org/reference.html#lint-check-attributes)来添加额外的代码风格，安全检查等。你可以查看[src/test/auxiliary/lint_plugin_test.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/lint_plugin_test.rs)来了解一个完整的例子，我们在这里重现它的核心部分：
 
-```rust,ignore
+```rust
 #![feature(plugin_registrar)]
 #![feature(box_syntax, rustc_private)]
 
@@ -175,7 +175,7 @@ pub fn plugin_registrar(reg: &mut Registry) {
 
 那么像这样的代码：
 
-```rust,ignore
+```rust
 #![plugin(lint_plugin_test)]
 
 fn lintme() { }

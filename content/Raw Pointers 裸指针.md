@@ -31,7 +31,7 @@ let raw_mut = &mut y as *mut i32;
 
 然而，解引用它则不行。这个并不能工作：
 
-```rust,ignore
+```rust
 let x = 5;
 let raw = &x as *const i32;
 

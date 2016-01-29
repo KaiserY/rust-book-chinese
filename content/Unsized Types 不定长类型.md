@@ -14,19 +14,19 @@ Rust知道几个这样的类型，不过它们有一些限制。这有三个：
 
 所以为什么这很重要？好吧，因为`[T]`只能用在一个指针之后，如果我们没有对不定长类型的语言支持，它将不可能这么写：
 
-```rust,ignore
+```rust
 impl Foo for str {
 ```
 
 或者
 
-```rust,ignore
+```rust
 impl<T> Foo for [T] {
 ```
 
 相反，你将不得不这么写：
 
-```rust,ignore
+```rust
 impl Foo for &str {
 ```
 

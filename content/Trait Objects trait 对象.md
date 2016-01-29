@@ -155,7 +155,7 @@ pub struct TraitObject {
 
 一个虚表本质上是一个函数指针的结构体，指向每个函数实现的具体机器码。一个像`trait_object.method()`的函数调用会从虚表中取出正确的指针然后进行一个动态调用。例如：
 
-```rust,ignore
+```rust
 struct FooVtable {
     destructor: fn(*mut ()),
     size: usize,
@@ -207,7 +207,7 @@ static Foo_for_String_vtable: FooVtable = FooVtable {
 
 假设我们有一些实现了`Foo`的值，那么显式的创建和使用`Foo`trait对象可能看起来有点像这个（忽略不匹配的类型，它们只是指针而已）：
 
-```rust,ignore
+```rust
 let a: String = "foo".to_string();
 let x: u8 = 1;
 
@@ -238,7 +238,7 @@ let y = TraitObject {
 
 并不是所有 trait 都可以被用来作为一个 trait 对象。例如，vector 实现了`Clone`，不过如果我们尝试创建一个 trait 对象：
 
-```rust,ignore
+```rust
 let v = vec![1, 2, 3];
 let o = &v as &Clone;
 ```

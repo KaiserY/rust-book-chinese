@@ -24,7 +24,7 @@ fn main() {
 
 任何`Foo`的定义都必须定义`ID`，不定义的话：
 
-```rust,ignore
+```rust
 #![feature(associated_consts)]
 
 trait Foo {
