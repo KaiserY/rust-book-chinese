@@ -6,6 +6,7 @@
 * [BingCheung](https://github.com/BingCheung)
 * [Bluek404](https://github.com/Bluek404)
 * [hczhcz](https://github.com/hczhcz)
+* [hltj](https://github.com/hltj)
 * [honorabrutroll](https://github.com/honorabrutroll)
 * [hy0kl](https://github.com/hy0kl)
 * [JaySon-Huang](https://github.com/JaySon-Huang)
