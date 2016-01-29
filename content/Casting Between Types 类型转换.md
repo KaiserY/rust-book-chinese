@@ -101,7 +101,7 @@ let b = a as u32;
 
 `as`只允许安全的转换，并会拒绝例如尝试将 4 个字节转换为一个`u32`：
 
-```rust,ignore
+```rust
 let a = [0u8, 0u8, 0u8, 0u8];
 
 let b = a as u32; // four eights makes 32
@@ -135,7 +135,7 @@ unsafe {
 
 虽然`transmute`做了非常少的检查，至少它确保了这些类型是相同大小的，这个错误：
 
-```rust,ignore
+```rust
 use std::mem;
 
 unsafe {

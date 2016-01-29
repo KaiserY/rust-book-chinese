@@ -188,7 +188,7 @@ fn main() {
 
 在循环体中，我们调用`p.eat()`，它定义在上面：
 
-```rust,ignore
+```rust
 fn eat(&self) {
     println!("{} is done eating.", self.name);
 }
@@ -249,13 +249,13 @@ fn main() {
 
 只有一些变化，让我们拆开来看。
 
-```rust,ignore
+```rust
 use std::thread;
 ```
 
 `use`将名称引入作用域。我们将开始使用标准库的`thread`模块，所以我们需要`use`它。
 
-```rust,ignore
+```rust
     fn eat(&self) {
         println!("{} is eating.", self.name);
 
@@ -333,7 +333,7 @@ fn main() {
 
 所有我们做的是改变了`main()`中的循环，并增加了第二个循环！这里是第一个变化：
 
-```rust,ignore
+```rust
 let handles: Vec<_> = philosophers.into_iter().map(|p| {
     thread::spawn(move || {
         p.eat();
@@ -343,19 +343,19 @@ let handles: Vec<_> = philosophers.into_iter().map(|p| {
 
 虽然这只有 5 行，它们有 4 行密集的代码。让我们分开看。
 
-```rust,ignore
+```rust
 let handles: Vec<_> =
 ```
 
 我们引入了一个新的绑定，叫做`handles`。我们用这个名字因为我们将创建一些新的线程，并且它们会返回一些这些线程句柄来让我们控制它们的行为。然而这里我们需要显式注明类型，因为一个我们之后会介绍的问题。`_`是一个类型占位符。我们是在说“`handles`是一些东西的 vector，不过Rust你自己应该能发现这些东西是什么"。
 
-```rust,ignore
+```rust
 philosophers.into_iter().map(|p| {
 ```
 
 我们获取了哲学家列表并在其上调用`into_iter()`。它创建了一个迭代器来获取每个哲学家的所有权。我们需要这样做来把它们传递给我们的线程。我们取得这个迭代器并在其上调用`map`，他会获取一个闭包作为参数并按顺序在每个元素上调用这个闭包。
 
-```rust,ignore
+```rust
     thread::spawn(move || {
         p.eat();
     })
@@ -365,13 +365,13 @@ philosophers.into_iter().map(|p| {
 
 在线程中，所有我们做的就是在`p`上调用`eat()`。另外注意到`thread::spawn`调用最后木有分号，这使它是一个表达式。这个区别是重要的，以便生成正确的返回值。更多细节，请看[表达式VS语句](5.2.Functions 函数.md#expressions-vs.-statements)。
 
-```rust,ignore
+```rust
 }).collect();
 ```
 
 最后，我们获取所有这些`map`调用的结果并把它们收集起来。`collect()`将会把它们放入一个某种类型的集合，这也就是为什么我们要表明返回值的类型：我们需要一个`Vec<T>`。这些元素是`thread::spawn`调用的返回值，它们就是这些线程的句柄。噢！
 
-```rust,ignore
+```rust
 for h in handles {
     h.join().unwrap();
 }
@@ -480,13 +480,13 @@ fn main() {
 
 大量的修改！然而，通过这次迭代，我们有了一个可以工作的程序。让我摸看看细节：
 
-```rust,ignore
+```rust
 use std::sync::{Mutex, Arc};
 ```
 
 我们将用到`std::sync`包中的另一个结构：`Arc<T>`。我们在用到时再详细解释。
 
-```rust,ignore
+```rust
 struct Philosopher {
     name: String,
     left: usize,
@@ -496,7 +496,7 @@ struct Philosopher {
 
 我们需要在我们的`Philosopher`中增加更多的字段。每个哲学家将拥有两把叉子：一个拿左手，一个拿右手。我们将用`usize`来表示它们，因为它是你的 vector 的索引的类型。这两个值将会是我们`Table`中的`forks`的索引。
 
-```rust,ignore
+```rust
 fn new(name: &str, left: usize, right: usize) -> Philosopher {
     Philosopher {
         name: name.to_string(),
@@ -508,7 +508,7 @@ fn new(name: &str, left: usize, right: usize) -> Philosopher {
 
 现在我们需要构造这些`left`和`right`的值，所以我们把它们加到`new()`里。
 
-```rust,ignore
+```rust
 fn eat(&self, table: &Table) {
     let _left = table.forks[self.left].lock().unwrap();
     thread::sleep(Duration::from_millis(150));
@@ -530,7 +530,7 @@ fn eat(&self, table: &Table) {
 
 那怎么释放锁呢？好吧，这会在`_left`和`_right`离开作用域时发生，自动的。
 
-```rust,ignore
+```rust
     let table = Arc::new(Table { forks: vec![
         Mutex::new(()),
         Mutex::new(()),
@@ -542,7 +542,7 @@ fn eat(&self, table: &Table) {
 
 接下来，在`main()`中，我们创建了一个新`Table`并封装在一个`Arc<T>`中。“arc”代表“原子引用计数”，并且我们需要在多个线程间共享我们的`Table`。因为我们共享了它，引用计数会增长，而当每个线程结束，它会减少。
 
-```rust,ignore
+```rust
 let philosophers = vec![
     Philosopher::new("Judith Butler", 0, 1),
     Philosopher::new("Gilles Deleuze", 1, 2),
@@ -554,7 +554,7 @@ let philosophers = vec![
 
 我们需要传递我们的`left`和`right`的值给我们的`Philosopher`们的构造函数。不过这里有另一个细节，并且是“非常”重要。如果你观察它的模式，它们从头到尾全是连续的。米歇尔·福柯应该使用`4`，`0`作为参数，不过我们用了`0`，`4`。这事实上是为了避免死锁：我们的哲学家中有一个左撇子！这是解决这个问题的一个方法，并且在我看来，是最简单的方法。
 
-```rust,ignore
+```rust
 let handles: Vec<_> = philosophers.into_iter().map(|p| {
     let table = table.clone();
 

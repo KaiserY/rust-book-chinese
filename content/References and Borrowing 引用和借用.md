@@ -60,7 +60,7 @@ let answer = foo(&v1, &v2);
 
 引用是不可变的，就像绑定一样。这意味着在`foo()`中，向量完全不能被改变：
 
-```rust,ignore
+```rust
 fn foo(v: &Vec<i32>) {
      v.push(5);
 }
@@ -134,7 +134,7 @@ Rust 中的借用有一些规则：
 ## 理解作用域（Thinking in scopes）
 这是代码：
 
-```rust,ignore
+```rust
 let mut x = 5;
 let y = &mut x;
 
@@ -163,7 +163,7 @@ fn main() {
 
 换句话说，可变借用在剩下的例子中一直存在。我们需要的是可变借用在我们尝试调用`println!`*之前*结束并生成一个不可变借用。在 Rust 中，借用绑定在借用有效的作用域上。而我们的作用域看起来像这样：
 
-```rust,ignore
+```rust
 let mut x = 5;
 
 let y = &mut x;    // -+ &mut borrow of x starts here
@@ -207,7 +207,7 @@ for i in &v {
 
 这会打印出 1 到 3.因为我们在向量上迭代，我们只得到了元素的引用。同时`v`本身作为不可变借用，它意味着我们在迭代时不能改变它：
 
-```rust,ignore
+```rust
 let mut v = vec![1, 2, 3];
 
 for i in &v {
@@ -241,7 +241,7 @@ for i in &v {
 
 如果 Rust 并没有检查这个属性，我们可能意外的使用了一个无效的引用。例如：
 
-```rust,ignore
+```rust
 let y: &i32;
 {
     let x = 5;
@@ -276,7 +276,7 @@ statement 0 at 4:18
 
 当引用在它引用的变量*之前*声明会导致类似的问题：
 
-```rust,ignore
+```rust
 let y: &i32;
 let x = 5;
 y = &x;

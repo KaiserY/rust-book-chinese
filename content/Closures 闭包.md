@@ -62,7 +62,7 @@ assert_eq!(10, plus_num(5));
 
 这个闭包，`plus_num`，引用了它作用域中的`let`绑定：`num`。更明确的说，它借用了绑定。如果我们做一些会与这个绑定冲突的事，我们会得到一个错误。比如这个：
 
-```rust,ignore
+```rust
 let mut num = 5;
 let plus_num = |x: i32| x + num;
 
@@ -104,7 +104,7 @@ let y = &mut num;
 
 如果你的闭包需要它，然而，相反Rust会取得所有权并移动环境：
 
-```rust,ignore
+```rust
 let nums = vec![1, 2, 3];
 
 let takes_nums = || nums;
@@ -282,7 +282,7 @@ let answer = call_with_one(&add_one);
 
 对于函数式风格代码来说在各种情况返回闭包是非常常见的。如果你尝试返回一个闭包，你可能会得到一个错误。在刚接触的时候，这看起来有点奇怪，不过我们会搞清楚。当你尝试从函数返回一个闭包的时候，你可能会写出类似这样的代码：
 
-```rust,ignore
+```rust
 fn factory() -> (Fn(i32) -> i32) {
     let num = 5;
 
@@ -315,7 +315,7 @@ let f = factory();
 
 为了从函数返回一些东西，Rust 需要知道返回类型的大小。不过`Fn`是一个 trait，它可以是各种大小(size)的任何东西。比如说，返回值可以是实现了`Fn`的任意类型。一个简单的解决方法是：返回一个引用。因为引用的大小(size)是固定的，因此返回值的大小就固定了。因此我们可以这样写：
 
-```rust,ignore
+```rust
 fn factory() -> &(Fn(i32) -> i32) {
     let num = 5;
 
@@ -338,7 +338,7 @@ fn factory() -> &(Fn(i32) -> i32) {
 
 对。因为我们有一个引用，我们需要给它一个生命周期。不过我们的`factory()`函数不接收参数，所以省略不能用在这。我们可以使用什么生命周期呢？`'static`：
 
-```rust,ignore
+```rust
 fn factory() -> &'static (Fn(i32) -> i32) {
     let num = 5;
 
@@ -370,7 +370,7 @@ error: mismatched types:
 
 这个错误也指出了返回值类型期望是一个引用，不过我们尝试返回的不是。更进一步，我们并不能直接给一个对象`'static`声明周期。所以我们换一个方法并通过`Box`装箱`Fn`来返回一个 trait 对象。这个*几乎*可以成功运行：
 
-```rust,ignore
+```rust
 fn factory() -> Box<Fn(i32) -> i32> {
     let num = 5;
 

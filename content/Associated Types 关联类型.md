@@ -16,7 +16,7 @@ trait Graph<N, E> {
 
 虽然这可以工作，不过显得很尴尬，例如，任何需要一个`Graph`作为参数的函数都需要泛型化的`N`ode和`E`dge类型：
 
-```rust,ignore
+```rust
 fn distance<N, E, G: Graph<N, E>>(graph: &G, start: &N, end: &N) -> u32 { ... }
 ```
 
@@ -115,7 +115,7 @@ impl Graph for MyGraph {
 
 这里还有另外一个我们需要讨论的语法：trait对象。如果你创建一个关联类型的trait对象，像这样：
 
-```rust,ignore
+```rust
 # trait Graph {
 #     type N;
 #     type E;

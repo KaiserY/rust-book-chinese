@@ -31,7 +31,7 @@ println!("The third element of v is {}", v[2]);
 
 另外值得注意的是你必须用`usize`类型的值来索引：
 
-```rust,ignore
+```rust
 let v = vec![1, 2, 3, 4, 5];
 
 let i: usize = 0;
@@ -61,7 +61,7 @@ error: aborting due to previous error
 
 如果你尝试访问并不存在的索引：
 
-```rust,ignore
+```rust
 let v = vec![1, 2, 3];
 println!("Item 7 is {}", v[7]);
 ```

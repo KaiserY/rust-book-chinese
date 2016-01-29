@@ -56,7 +56,7 @@ fn print_sum(x: i32, y: i32) {
 
 与`let`不同，你*必须*为函数参数声明类型。下面代码将不能工作：
 
-```rust,ignore
+```rust
 fn print_sum(x, y) {
     println!("sum is: {}", x + y);
 }
@@ -83,7 +83,7 @@ Rust 函数只能返回一个值，并且你需要在一个“箭头”后面声
 
 注意这里并没有一个分号。如果你把它加上：
 
-```rust,ignore
+```rust
 fn add_one(x: i32) -> i32 {
     x + 1;
 }
@@ -117,7 +117,7 @@ x = y = 5
 
 然而，在 Rust 中，使用`let`引入一个绑定并*不是*一个表达式。下面的代码会产生一个编译时错误：
 
-```rust,ignore
+```rust
 let x = (let y = 5); // expected identifier, found keyword `let`
 ```
 
@@ -227,7 +227,7 @@ stack backtrace:
 
 发散函数可以被用作任何类型：
 
-```rust,should_panic
+```rust
 # fn diverges() -> ! {
 #    panic!("This function never returns!");
 # }

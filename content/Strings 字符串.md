@@ -59,7 +59,7 @@ fn main() {
 
 这种强制转换并不发生在接受`&str`的trait而不是`&str`本身作为参数的函数上。例如，[TcpStream::connect](https://doc.rust-lang.org/stable/std/net/struct.TcpStream.html#method.connect)，有一个`ToSocketAddrs`类型的参数。`&str`可以不用转换不过`String`必须使用`&*`显式转换。
 
-```rust,no_run
+```rust
 use std::net::TcpStream;
 
 TcpStream::connect("192.168.0.1:3000"); // &str parameter
@@ -74,7 +74,7 @@ TcpStream::connect(&*addr_string); // convert addr_string to &str
 
 因为字符串是有效UTF-8编码的，它不支持索引：
 
-```rust,ignore
+```rust
 let s = "hello";
 
 println!("The first letter of s is {}", s[0]); // ERROR!!!
@@ -127,7 +127,7 @@ let hachi = &dog[0..5];
 
 注意这里是*字节*偏移，而不是*字符*偏移。所以如下代码在运行时会失败：
 
-```rust,should_panic
+```rust
 let dog = "忠犬ハチ公";
 let hachi = &dog[0..2];
 ```

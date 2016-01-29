@@ -51,7 +51,7 @@ enum Option<T> {
 
 上面的代码可以工作，但这个不行：
 
-```rust,ignore
+```rust
 /// The `Option` type. See [the module level documentation](../) for more.
 enum Option<T> {
     None, /// No value
@@ -480,7 +480,7 @@ This is the example documentation.
 
 `rustdoc`会将公有部分的文档重导出：
 
-```rust,ignore
+```rust
 extern crate foo;
 
 pub use foo::bar;
@@ -490,7 +490,7 @@ pub use foo::bar;
 
 这种行文可以通过`no_inline`来阻止：
 
-```rust,ignore
+```rust
 extern crate foo;
 
 #[doc(no_inline)]
@@ -507,7 +507,7 @@ pub use foo::bar;
 
 而为了生成错误你需要使用`deny`：
 
-```rust,ignore
+```rust
 #![deny(missing_docs)]
 ```
 

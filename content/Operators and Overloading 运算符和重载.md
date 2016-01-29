@@ -68,7 +68,7 @@ impl Add<i32> for Point {
 
 将允许你这样做：
 
-```rust,ignore
+```rust
 let p: Point = // ...
 let x: f64 = p + 2i32;
 ```
@@ -110,7 +110,7 @@ fn main() {
 
 对于`HasArea`和`Square`，我们声明了一个类型参数`T`并取代`f64`。`impl`则需要更深入的修改：
 
-```rust,ignore
+```rust
 impl<T> HasArea<T> for Square<T>
         where T: Mul<Output=T> + Copy { ... }
 ```

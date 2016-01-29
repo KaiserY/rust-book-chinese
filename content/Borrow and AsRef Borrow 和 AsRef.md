@@ -12,7 +12,7 @@
 
 例如，[`HashMap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/collections/struct.HashMap.html)有一个用了`Borrow`的[`get`方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/collections/struct.HashMap.html#method.get)：
 
-```rust,ignore
+```rust
 fn get<Q: ?Sized>(&self, k: &Q) -> Option<&V>
     where K: Borrow<Q>,
           Q: Hash + Eq
@@ -20,7 +20,7 @@ fn get<Q: ?Sized>(&self, k: &Q) -> Option<&V>
 
 这个签名非常复杂。`k`参数是我们感兴趣的。它引用了一个`HashMap`自身的参数：
 
-```rust,ignore
+```rust
 struct HashMap<K, V, S = RandomState> {
 ```
 

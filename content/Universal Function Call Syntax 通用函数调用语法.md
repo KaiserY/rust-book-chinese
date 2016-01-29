@@ -67,14 +67,14 @@ Bar::f(&b);
 
 让我们拆开来看。
 
-```rust,ignore
+```rust
 Foo::
 Bar::
 ```
 
 调用的这一半是两个traits的类型：`Foo`和`Bar`。这样实际上就区分了这两者：Rust调用你使用的trait里面的方法。
 
-```rust,ignore
+```rust
 f(&b)
 ```
 
@@ -83,13 +83,13 @@ f(&b)
 ## 尖括号形式（Angle-bracket Form）
 我们刚才讨论的通用函数调用语法的形式：
 
-```rust,ignore
+```rust
 Trait::method(args);
 ```
 
 上面的形式其实是一种缩写。这是在一些情况下需要使用的扩展形式：
 
-```rust,ignore
+```rust
 <Type as Trait>::method(args);
 ```
 

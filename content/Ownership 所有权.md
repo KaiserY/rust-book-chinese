@@ -47,7 +47,7 @@ let v2 = v;
 
 不过，如果之后我们尝试使用`v`，我们得到一个错误：
 
-```rust,ignore
+```rust
 let v = vec![1, 2, 3];
 
 let v2 = v;
@@ -65,7 +65,7 @@ println!("v[0] is: {}", v[0]);
 
 当我们定义了一个取得所有权的函数，并尝试在我们把变量作为参数传递给函数之后使用这个变量时，会发生相似的事情：
 
-```rust,ignore
+```rust
 fn take(v: Vec<i32>) {
     // what happens here isn’t important.
 }
