@@ -115,4 +115,4 @@ impl<T> Point<T> {
 }
 ```
 
-目前为止你已经见过了支持几乎任何类型的泛型。他们在很多地方都是有用的：你已经见过了`Option<T>`，接下来你还将见到像[`Vec<T>`](https://github.com/rust-lang/rust/blob/master/src/doc/std/vec/struct.Vec.html)这样的通用容器类型。另一方面，通常你想要用灵活性去换取更强的表现力。阅读[trait bound](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.html)章节来了解为什么和如何做。
+目前为止你已经见过了支持几乎任何类型的泛型。他们在很多地方都是有用的：你已经见过了`Option<T>`，接下来你还将见到像[`Vec<T>`](https://github.com/rust-lang/rust/blob/master/src/doc/std/vec/struct.Vec.html)这样的通用容器类型。另一方面，通常你想要用灵活性去换取更强的表现力。阅读[trait bound](Traits.md#泛型函数的-trait-bound（trait-bounds-on-generic-functions）)章节来了解为什么和如何做。

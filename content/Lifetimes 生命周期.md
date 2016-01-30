@@ -45,13 +45,13 @@ fn bar<'a>(x: &'a i32) {
 }
 ```
 
-`'a`读作“生命周期 a”。技术上讲，每一个引用都有一些与之相关的生命周期，不过编译器在通常情况让你可以省略（也就是，省略，查看下面的[生命周期省略](https://github.com/rust-lang/rust/blob/master/src/doc/book/lifetimes.md#lifetime-elision)）它们。在我们讲到它之前，让我们拆开显式的例子看看：
+`'a`读作“生命周期 a”。技术上讲，每一个引用都有一些与之相关的生命周期，不过编译器在通常情况让你可以省略（也就是，省略，查看下面的[生命周期省略](#生命周期省略（lifetime-elision）)）它们。在我们讲到它之前，让我们拆开显式的例子看看：
 
 ```rust
 fn bar<'a>(...)
 ```
 
-之前我们讨论了一些[函数语法](https://github.com/rust-lang/rust/blob/master/src/doc/book/lifetimes.md#lifetime-elision)，不过我们并没有讨论函数名后面的`<>`。一个函数可以在`<>`之间有“泛型参数”，生命周期也是其中一种。我们在[本书的后面](https://github.com/rust-lang/rust/blob/master/src/doc/book/generics.html)讨论其他类型的泛型。不过现在让我们着重看生命周期。
+之前我们讨论了一些[函数语法](Functions 函数.md)，不过我们并没有讨论函数名后面的`<>`。一个函数可以在`<>`之间有“泛型参数”，生命周期也是其中一种。我们在[本书的后面](Generics 泛型.md)讨论其他类型的泛型。不过现在让我们着重看生命周期。
 
 我们用`<>`声明了生命周期。这是说`bar`有一个生命周期`'a`。如果我们有两个引用参数，它应该看起来像这样：
 

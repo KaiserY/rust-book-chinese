@@ -66,7 +66,7 @@ let v = vec![1, 2, 3];
 println!("Item 7 is {}", v[7]);
 ```
 
-那么当前的线程会 [panic](https://github.com/rust-lang/rust/blob/master/src/doc/book/concurrency.html#panics)并输出如下信息：
+那么当前的线程会 [panic](Concurrency 并发.md#恐慌（panics）)并输出如下信息：
 
 ```text
 thread '<main>' panicked at 'index out of bounds: the len is 3 but the index is 7'

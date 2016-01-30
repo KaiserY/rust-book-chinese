@@ -124,7 +124,7 @@ match origin {
 
 这会输出`y is 0`。
 
-这种“解构”行为可以用在任何复合数据类型上，例如[元组](https://doc.rust-lang.org/stable/book/primitive-types.html#tuples)和[枚举](https://doc.rust-lang.org/stable/book/enums.html)
+这种“解构”行为可以用在任何复合数据类型上，例如[元组](Primitive Types 原生类型.md#元组（tuples）)和[枚举](Enums 枚举.md)
 
 ## 忽略绑定（Ignoring bindings）
 

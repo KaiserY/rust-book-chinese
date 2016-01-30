@@ -215,9 +215,9 @@ fn main() {
 
 第二个重要的部分是`println!()`这一行。这是一个 Rust [宏](Macros 宏.md)，是 Rust 元编程的关键所在。相反如果我们调用一个函数的话，它应该看起来像这样：`println()`（木有 !）。我们将在后面更加详细的讨论 Rust 宏，不过现在你只需记住当看到符号 `!` 的时候，就代表调用了一个宏而不是一个普通的函数。
 
-接下来，`"Hello, world!"` 是一个字符串。在一门系统级编程语言中，字符串是一个复杂得令人惊讶的话题。这是一个[静态分配](https://github.com/rust-lang/rust/blob/master/src/doc/book/the-stack-and-the-heap.html)的字符串。这个语句将这个字符串作为参数传递给`println!` 宏，这个宏负责在屏幕（控制台）上打印字符串。是不是很简单啊(⊙o⊙)
+接下来，`"Hello, world!"` 是一个字符串。在一门系统级编程语言中，字符串是一个复杂得令人惊讶的话题。这是一个[静态分配](The Stack and the Heap 栈和堆.md)的字符串。这个语句将这个字符串作为参数传递给`println!` 宏，这个宏负责在屏幕（控制台）上打印字符串。是不是很简单啊(⊙o⊙)
 
-这一行以一个分号结尾（`;`）。Rust是一门[**面向表达式**](https://github.com/rust-lang/rust/blob/master/src/doc/book/glossary.html#expression-oriented-language)的语言，也就是说大部分语句都是表达式。`;` 表示一个表达式的结束，另一个新表达式的开始。大部分 Rust 代码行以`;`结尾。
+这一行以一个分号结尾（`;`）。Rust是一门[**面向表达式**](Glossary 词汇表.md#面向表达式语言（expression-oriented-language）)的语言，也就是说大部分语句都是表达式。`;` 表示一个表达式的结束，另一个新表达式的开始。大部分 Rust 代码行以`;`结尾。
 
 ### 编译和运行是两个步骤
 
@@ -418,4 +418,4 @@ Cargo 已经为你生成了一个“Hello World！”，现在你已经准备好
 ## 写在最后（Closing Thoughts）
 这个章节覆盖了将用于本书余下部分以及你之后 Rust 时光的基础知识。现在你获得了工具，我们将更多的介绍 Rust 语言本身。
 
-（接下来）你有两个选择：在 “[学习 Rust](https://github.com/rust-lang/rust/blob/master/src/doc/book/learn-rust.html)” 中深入研究一个项目，或者自下而上地学习 “[语法和语义](https://github.com/rust-lang/rust/blob/master/src/doc/book/syntax-and-semantics.html)”。来自系统级编程语言的同学，你们可能倾向于选择 “学习 Rust”，而来自动态编程语言的同学，请根据自己的喜好来选择吧。人各有别，适合自己的才是最好的。
+（接下来）你有两个选择：在 “[学习 Rust](Learn Rust 学习 Rust.md)” 中深入研究一个项目，或者自下而上地学习 “[语法和语义](Syntax and Semantics 语法和语义.md)”。来自系统级编程语言的同学，你们可能倾向于选择 “学习 Rust”，而来自动态编程语言的同学，请根据自己的喜好来选择吧。人各有别，适合自己的才是最好的。
