@@ -3,6 +3,8 @@
 
     "title": "rust 官方教程 中文版",
 
+    "language": "zh-hans",
+
     "structure": {
         "readme": "preface.md"
     },
