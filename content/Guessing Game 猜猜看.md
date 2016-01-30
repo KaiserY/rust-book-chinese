@@ -172,7 +172,7 @@ io::stdin()
 
 不过这样会难以阅读。所以我们把它分开，3 行对应 3 个方法调用。我们已经谈论过了`read_line()`，不过`expect()`呢？好吧，我们已经提到过`read_line()`将用户输入放入我们传递给它的`&mut String`中。不过它也返回一个值：在这个例子中，一个[io::Result](https://doc.rust-lang.org/stable/std/io/type.Result.html)。Rust的标准库中有很多叫做`Result`的类型：一个泛型[Result](https://doc.rust-lang.org/stable/std/result/enum.Result.html)，然后是子库的特殊版本，例如`io::Result`。
 
-这个`Result`类型的作用是编码错误处理信息。`Result`类型的值，像任何（其它）类型，有定义在其上的方法。在这个例子中，`io::Result`有一个[expect()方法](https://doc.rust-lang.org/stable/std/option/enum.Option.html#method.expect)获取调用它的值，而且如果它不是一个成功的值，[panic!](https://doc.rust-lang.org/stable/book/error-handling.html)并带有你传递给它的信息。这样的`panic!`会使我们的程序崩溃，显示（我们传递的）信息。
+这个`Result`类型的作用是编码错误处理信息。`Result`类型的值，像任何（其它）类型，有定义在其上的方法。在这个例子中，`io::Result`有一个[expect()方法](https://doc.rust-lang.org/stable/std/option/enum.Option.html#method.expect)获取调用它的值，而且如果它不是一个成功的值，[panic!](Error Handling 错误处理.md)并带有你传递给它的信息。这样的`panic!`会使我们的程序崩溃，显示（我们传递的）信息。
 
 如果我们去掉这两个函数调用，我们的程序会编译通过，不过我们会得到一个警告：
 
@@ -469,7 +469,7 @@ fn main() {
 guess.trim().parse()
 ```
 
-这里，`guess`引用旧的`guess`，那个我们输入用到的`String`。`String`的`trim()`方法会去掉我们字符串开头和结尾的任何空格。这很重要，因为我们不得不按“回车”键来满足`read_line()`。这意味着如果输入`5`并按回车，`guess`看起来像这样：`5\n`。`\n`代表“新行”，回车键。`trim()`去掉这些，保留`5`给我们的字符串。[字符串的`parse()`方法](https://doc.rust-lang.org/stable/std/primitive.str.html#method.parse)将字符串解析为一些类型的数字。因为它可以解析多种数字，我们需要给Rust一些提醒作为我们具体想要的数字的类型。因此，`let guess: u32`。`guess`后面的分号（`:`）告诉 Rust 我们要标注它的类型。`u32`是一个无符号的，32位整型。Rust 有[一系列内建数字类型](https://doc.rust-lang.org/stable/book/primitive-types.html#numeric-types)，不过我们选择了`u32`。它是一个小正数的默认好选择。
+这里，`guess`引用旧的`guess`，那个我们输入用到的`String`。`String`的`trim()`方法会去掉我们字符串开头和结尾的任何空格。这很重要，因为我们不得不按“回车”键来满足`read_line()`。这意味着如果输入`5`并按回车，`guess`看起来像这样：`5\n`。`\n`代表“新行”，回车键。`trim()`去掉这些，保留`5`给我们的字符串。[字符串的`parse()`方法](https://doc.rust-lang.org/stable/std/primitive.str.html#method.parse)将字符串解析为一些类型的数字。因为它可以解析多种数字，我们需要给Rust一些提醒作为我们具体想要的数字的类型。因此，`let guess: u32`。`guess`后面的分号（`:`）告诉 Rust 我们要标注它的类型。`u32`是一个无符号的，32位整型。Rust 有[一系列内建数字类型](Primitive Types 原生类型.md#数字类型)，不过我们选择了`u32`。它是一个小正数的默认好选择。
 
 就像`read_line()`，我们调用`parse()`可能产生一个错误。如果我们的字符串包含`A👍%?`呢？并不能将它们转换成一个数字。为此，我们将做我们在`read_line()`时做的相同的事：使用`expect()`方法来在这里出现错误时崩溃。
 

@@ -81,7 +81,7 @@ let a = [1, 2, 3]; // a: [i32; 3]
 let mut m = [1, 2, 3]; // m: [i32; 3]
 ```
 
-数组的类型是`[T; N]`。我们会在[泛型部分](https://doc.rust-lang.org/stable/book/generics.html)的时候讨论这个`T`标记。`N`是一个编译时常量，代表数组的长度。
+数组的类型是`[T; N]`。我们会在[泛型部分](Generics 泛型.md)的时候讨论这个`T`标记。`N`是一个编译时常量，代表数组的长度。
 
 这里有一个可以将数组中每一个元素初始化为相同值的简写。在这个例子中，`a`的每个元素都被初始化为`0`：
 
@@ -114,7 +114,7 @@ println!("The second name is: {}", names[1]);
 
 ### 切片语法
 
-你可以用一个`&`和`[]`的组合从多种数据类型创建一个切片。`&`表明切片类似于[引用](https://github.com/rust-lang/rust/blob/master/src/doc/book/references-and-borrowing.html)，这个我们会在本部分的后面详细介绍。带有一个范围的`[]`，允许你定义切片的长度：
+你可以用一个`&`和`[]`的组合从多种数据类型创建一个切片。`&`表明切片类似于[引用](References and Borrowing 引用和借用.md)，这个我们会在本部分的后面详细介绍。带有一个范围的`[]`，允许你定义切片的长度：
 
 ```rust
 let a = [0, 1, 2, 3, 4];
@@ -122,13 +122,13 @@ let complete = &a[..]; // A slice containing all of the elements in a
 let middle = &a[1..4]; // A slice of a: just the elements 1, 2, and 3
 ```
 
-片段拥有`&[T]`类型。当我们涉及到[泛型](https://doc.rust-lang.org/stable/book/generics.html)时会讨论这个`T`。
+片段拥有`&[T]`类型。当我们涉及到[泛型](Generics 泛型.md)时会讨论这个`T`。
 
 你可以在[标准库文档](https://doc.rust-lang.org/stable/std/primitive.slice.html)中找到更多关于`slices`的文档。
 
 
 ## `str`
-Rust的`str`类型是最原始的字符串类型。作为一个[不定长类型](https://doc.rust-lang.org/stable/book/unsized-types.html)，它本身并不是非常有用，不过当它用在引用后是就有用了，例如[&str](https://doc.rust-lang.org/stable/book/strings.html)。如你所见，我们到时候再讲。
+Rust的`str`类型是最原始的字符串类型。作为一个[不定长类型](Unsized Types 不定长类型.md)，它本身并不是非常有用，不过当它用在引用后是就有用了，例如[&str](Strings 字符串.md)。如你所见，我们到时候再讲。
 
 你可以在[标准库文档](https://doc.rust-lang.org/stable/std/primitive.str.html)中找到更多关于`str`的文档。
 
@@ -147,7 +147,7 @@ let x: (i32, &str) = (1, "hello");
 
 如你所见，元组的类型跟元组看起来很像，只不过类型取代的值的位置。细心的读者可能会注意到元组是异质的：这个元组中有一个`i32`和一个`&str`。在系统编程语言中，字符串要比其它语言中来的复杂。现在，可以认为`&str`是一个*字符串片段*（*string slice*），我们马上会讲到它。
 
-你可以把一个元组赋值给另一个，如果它们包含相同的类型和[数量](https://doc.rust-lang.org/stable/book/glossary.html#arity)。当元组有相同的长度时它们有相同的数量。
+你可以把一个元组赋值给另一个，如果它们包含相同的类型和[数量](Glossary 词汇表.md#参数数量（arity）)。当元组有相同的长度时它们有相同的数量。
 
 ```rust
 let mut x = (1, 2); // x: (i32, i32)
@@ -164,7 +164,7 @@ let (x, y, z) = (1, 2, 3);
 println!("x is {}", x);
 ```
 
-还记得[之前](https://doc.rust-lang.org/stable/book/variable-bindings.html)我曾经说过`let`语句的左侧远比一个赋值绑定强大吗？这就是证据。我们可以在`let`左侧写一个模式，如果它能匹配右侧的话，我们可以一次写多个绑定。这种情况下，`let`“解构”或“拆开”了元组，并分成了三个绑定。
+还记得[之前](Variable Bindings 变量绑定.md)我曾经说过`let`语句的左侧远比一个赋值绑定强大吗？这就是证据。我们可以在`let`左侧写一个模式，如果它能匹配右侧的话，我们可以一次写多个绑定。这种情况下，`let`“解构”或“拆开”了元组，并分成了三个绑定。
 
 这个模式是很强大的，我们后面会经常看到它。
 
