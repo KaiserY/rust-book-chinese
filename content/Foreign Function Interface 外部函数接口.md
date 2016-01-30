@@ -412,7 +412,7 @@ pub extern fn hello_rust() -> *const u8 {
 # fn main() {}
 ```
 
-`extern`使这个函数遵循 C 调用约定，就像之前讨论[外部调用约定](https://doc.rust-lang.org/stable/book/ffi.html#foreign-calling-conventions)时一样。`no_mangle`属性关闭Rust的命名改编，这样它更容易链接。
+`extern`使这个函数遵循 C 调用约定，就像之前讨论[外部调用约定](#外部调用约定（foreign-calling-conventions）)时一样。`no_mangle`属性关闭Rust的命名改编，这样它更容易链接。
 
 ### FFI 和 panic
 当使用FFI时留意`panic!`是很重要的。一个跨越FFI边界的`panic!`是未定义行为。如果你的代码可能panic，你应该在另一个线程运行它，这样panic不会出现在C代码中：

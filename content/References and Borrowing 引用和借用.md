@@ -22,7 +22,7 @@ Rust 注重安全和速度。它通过很多*零开销抽象*（*zero-cost abstr
 记住这些之后，让我们来学习关于借用的内容。
 
 ## 借用
-在[所有权](https://doc.rust-lang.org/stable/book/ownership.html)章节的最后，我们有一个看起来像这样的糟糕的函数：
+在[所有权](Ownership 所有权.mdl)章节的最后，我们有一个看起来像这样的糟糕的函数：
 
 ```rust
 fn foo(v1: Vec<i32>, v2: Vec<i32>) -> (Vec<i32>, Vec<i32>, i32) {

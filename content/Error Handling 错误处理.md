@@ -73,6 +73,8 @@ thread '<main>' panicked at 'Invalid number: 11', src/bin/panic-simple.rs:5
 
 这是另一个稍微不那么违和的例子。一个接受一个整型作为参数，乘以二并打印的程序。
 
+<a name="code-unwrap-double"></a>
+
 ```rust
 use std::env;
 
@@ -107,6 +109,8 @@ enum Option<T> {
 
 `Option`类型是一个 Rust 类型系统用于表达*不存在的可能性（possibility of absence）*的方式。将不存在的可能性编码进类型系统是一个重要概念，因为它会强迫编译器处理不存在的情况。让我们看看一个尝试在一个字符串中找一个字符的例子：
 
+<a name="code-option-ex-string-find"></a>
+
 ```rust
 // Searches `haystack` for the Unicode character `needle`. If one is found, the
 // byte offset of the character is returned. Otherwise, `None` is returned.
@@ -135,9 +139,11 @@ fn main() {
 }
 ```
 
-这段代码使用[模式识别](https://github.com/rust-lang/rust/blob/master/src/doc/book/patterns.html)来对`find`函数的返回的`Option<usize>`进行 case analysis。事实上，case analysis 是唯一能获取`Option<T>`中存储的值的方式。这意味着你，作为一个程序猿，必须处理当`Option<T>`是`None`而不是`Some(t)`的情况。
+这段代码使用[模式识别](Patterns 模式.md)来对`find`函数的返回的`Option<usize>`进行 case analysis。事实上，case analysis 是唯一能获取`Option<T>`中存储的值的方式。这意味着你，作为一个程序猿，必须处理当`Option<T>`是`None`而不是`Some(t)`的情况。
 
-不过稍等，那我们[之前](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-unwrap-double)使用的`unwrap`呢？那里并没有 case analysis！相反，case analysis 被放入了`unwrap`方法中。如果你想的话你可以自己定义它：
+不过稍等，那我们[之前](#code-unwrap-double)使用的`unwrap`呢？那里并没有 case analysis！相反，case analysis 被放入了`unwrap`方法中。如果你想的话你可以自己定义它：
+
+<a name="code-option-def-unwrap"></a>
 
 ```rust
 enum Option<T> {
@@ -160,7 +166,7 @@ impl<T> Option<T> {
 
 #### <a name="composing-optiont-values"></a>组合`Option<T>`值
 
-在[之前的例子](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-option-ex-string-find)中，我们看到了如何用`find`发现文件名的扩展名。当然，并不是所有文件名都有一个`.`，所以可能文件名并没有扩展名。不存在的可能性被编码进了使用`Option<T>`的类型。换句话说，编译器将会强制我们描述一个扩展名不存在的可能性。在我们的例子中，我们只打印出一个说明情况的信息。
+在[之前的例子](#code-option-ex-string-find)中，我们看到了如何用`find`发现文件名的扩展名。当然，并不是所有文件名都有一个`.`，所以可能文件名并没有扩展名。不存在的可能性被编码进了使用`Option<T>`的类型。换句话说，编译器将会强制我们描述一个扩展名不存在的可能性。在我们的例子中，我们只打印出一个说明情况的信息。
 
 获取一个文件名的扩展名是一个很常见的操作，所以把它放进一个函数是很有道理的：
 
@@ -184,6 +190,8 @@ fn extension_explicit(file_name: &str) -> Option<&str> {
 事实上，`extension_explicit`的 case analysis 遵循一个非常常见的模式：将`Option<T>`中的值映射为一个函数，除非它是`None`，这时，返回`None`。
 
 Rust 拥有参数多态（parametric polymorphism），所以定义一个组合来抽象这个模式是很容易的：
+
+<a name="code-option-map"></a>
 
 ```rust
 fn map<F, T, A>(option: Option<T>, f: F) -> Option<A> where F: FnOnce(T) -> A {
@@ -264,7 +272,7 @@ fn file_name(file_path: &str) -> Option<&str> {
 }
 ```
 
-你可能认为我们应该用`map`组合来减少 case analysis，不过它的类型并不匹配。也就是说，`map`获取一个只处理（Option）内部值的函数。这导致那个函数总是[重新映射成了`Some`](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-option-map)。因此，我们需要一些类似`map`，不过允许调用者返回另一个`Option`的方法。它的泛型实现甚至比`map`更简单：
+你可能认为我们应该用`map`组合来减少 case analysis，不过它的类型并不匹配。也就是说，`map`获取一个只处理（Option）内部值的函数。这导致那个函数总是[重新映射成了`Some`](#code-option-map)。因此，我们需要一些类似`map`，不过允许调用者返回另一个`Option`的方法。它的泛型实现甚至比`map`更简单：
 
 ```rust
 fn and_then<F, T, A>(option: Option<T>, f: F) -> Option<A>
@@ -293,6 +301,8 @@ fn file_path_ext(file_path: &str) -> Option<&str> {
 ### <a name="the-result-type"></a>`Result`类型
 
 `Result`类型也[定义于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/result)：
+
+<a name="code-result-def"></a>
 
 ```rust
 enum Result<T, E> {
@@ -326,7 +336,7 @@ impl<T, E: ::std::fmt::Debug> Result<T, E> {
 }
 ```
 
-这实际上与[`Option::unwrap`的定义](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-option-def-unwrap)一样，除了它在`panic!`信息中包含了错误信息。这让调试变得简单，不过也要求我们为`E`类型参数（它代表我们的错误类型）添加一个[`Debug`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/trait.Debug.html)限制。因为绝大部分类型应该满足`Debug`限制，这使得它可以在实际中使用。（`Debug`简单的意味着这个类型有合理的方式可以打印出人类可读的描述。）
+这实际上与[`Option::unwrap`的定义](#code-option-def-unwrap)一样，除了它在`panic!`信息中包含了错误信息。这让调试变得简单，不过也要求我们为`E`类型参数（它代表我们的错误类型）添加一个[`Debug`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/trait.Debug.html)限制。因为绝大部分类型应该满足`Debug`限制，这使得它可以在实际中使用。（`Debug`简单的意味着这个类型有合理的方式可以打印出人类可读的描述。）
 
 OK，让我们开始一个例子。
 
@@ -361,7 +371,7 @@ impl str {
 
 额嗯。所以至少我们知道了我们需要使用一个`Result`。当然，也可以返回一个`Option`。毕竟，一个字符串要么能解析成一个数字要么不能，不是吗？这当然是一个合理的方式，不过实现内部区别了为什么字符串不能解析成数字。（要么是一个空字符串，一个无效的数位，太大或太小。）因此，使用`Result`更有道理因为我们想要比单纯的“不存在”提供更多信息。我们想要表明*为什么*解析会失败。你应该尝试再现这样的推理，当你面对一个`Opation`和`Result`之间的选择时。如果你可以提供详细的错误信息，那么大概你也应该提供。（我们会在后面详细讲到。）
 
-好的，不过我们的返回值类型该怎么写呢？上面定义的`parse`方法对所有不同的标准库定义的数字类型是泛型的。我们也可以（应该）让我们的函数也是泛型的，不过这回让我们享受显式定义的好处。我们只关心`i32`，所以我们需要寻找[`FromStr`的实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/primitive.i32.html)（在你的浏览器中用`CTRL-F`搜索“FromStr”）和[与它相关的类型`](https://github.com/rust-lang/rust/blob/master/src/doc/book/associated-types.html)`Err`。这么做我可以找出具体的错误类型。在这个例子中，它是[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。最后我们可以重写函数：
+好的，不过我们的返回值类型该怎么写呢？上面定义的`parse`方法对所有不同的标准库定义的数字类型是泛型的。我们也可以（应该）让我们的函数也是泛型的，不过这回让我们享受显式定义的好处。我们只关心`i32`，所以我们需要寻找[`FromStr`的实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/primitive.i32.html)（在你的浏览器中用`CTRL-F`搜索“FromStr”）和[与它相关的类型`](Associated Types 关联类型.md)`Err`。这么做我可以找出具体的错误类型。在这个例子中，它是[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。最后我们可以重写函数：
 
 ```rust
 use std::num::ParseIntError;
@@ -404,7 +414,7 @@ fn main() {
 
 #### <a name="the-result-type-alias-idiom"></a>`Result`类型别名习惯
 
-在标准库中，你可能经常看到像`Result<i32>`这样的类型。不过等等，[我们定义的`Result`](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-result-def)有两个类型参数。我么怎么能只指定一个呢？这里的关键是定义一个`Resule`类型别名来对一个特定类型固定其中一个类型参数。通常固定的类型是错误类型。例如，我们之前的解析整数例子可以重写成这样：
+在标准库中，你可能经常看到像`Result<i32>`这样的类型。不过等等，[我们定义的`Result`](#code-result-def)有两个类型参数。我么怎么能只指定一个呢？这里的关键是定义一个`Resule`类型别名来对一个特定类型固定其中一个类型参数。通常固定的类型是错误类型。例如，我们之前的解析整数例子可以重写成这样：
 
 ```rust
 use std::num::ParseIntError;
@@ -463,6 +473,7 @@ fn main() {
 
 这里的坑是`argv.nth(1)`产生一个`Option`而`arg.parse()`产生一个`Result`。他们不是直接可组合的。当同时遇到`Option`和`Result`的时候，解决办法通常是把`Option`转换为一个`Result`。在我们的例子中，缺少命令行参数（来自`env::args()`）意味着我们的用户没有正确调用我们的程序。我们可以用一个`String`来描述这个错误。让我们试试：
 
+<a name="code-error-double-string"></a>
 
 ```rust
 use std::env;
@@ -532,7 +543,7 @@ fn main() {
 2. 从文件读数据出错。
 3. 将数据解析为数字出错。
 
-头两个错误被描述为[`std::io::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/struct.Error.html)类型。我们知道这些因为返回类型是[`std::fs::File::open`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)和[`std::io::Read::read_to_string`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/trait.Read.html#method.read_to_string)。（注意他们都使用了之前描述的[`Result`类型别名习惯](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-result-type-alias-idiom)。如果你点击`Result`类型，你将会[看到这个类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)，以及底层的`io::Error`类型。）第三个问题被描述为[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。特别的`io::Error`被广泛的用于标准库中。你会一次又一次的看到它。
+头两个错误被描述为[`std::io::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/struct.Error.html)类型。我们知道这些因为返回类型是[`std::fs::File::open`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)和[`std::io::Read::read_to_string`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/trait.Read.html#method.read_to_string)。（注意他们都使用了之前描述的[`Result`类型别名习惯](#the-result-type-alias-idiom)。如果你点击`Result`类型，你将会[看到这个类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)，以及底层的`io::Error`类型。）第三个问题被描述为[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。特别的`io::Error`被广泛的用于标准库中。你会一次又一次的看到它。
 
 让我们着手重构`file_double`函数。为了让这个函数可以与程序的其他组件组合，它必须不能在上述错误情况下 panic。事实上，这意味着它在任何操作失败时应该返回一个错误。我们的问题是`file_double`的返回类型是`i32`，它并没有给我们一个有效的报告错误的途径。因此，我们必须以把返回类型`i32`改成别的什么的开始。
 
@@ -620,6 +631,8 @@ Rust 中错误处理的基石是`try!`宏。`try!`宏像组合一样抽象了 ca
 
 这是一个简单化的`try!`宏定义：
 
+<a name="code-try-def-simple"></a>
+
 ```rust
 macro_rules! try {
     ($e:expr) => (match $e {
@@ -654,7 +667,7 @@ fn main() {
 }
 ```
 
-根据[我们`try!`宏的定义](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-try-def-simple)`map_err`调用仍是必要的。这是因为错误类型仍然需要被转换为`String`。好消息是我们马上就会学到如何移除这些`map_err`调用！坏消息是在我们可以移除`map_err`调用之前我们需要更深入的学习一些标准库中的重要的 trait。
+根据[我们`try!`宏的定义](#code-try-def-simple)`map_err`调用仍是必要的。这是因为错误类型仍然需要被转换为`String`。好消息是我们马上就会学到如何移除这些`map_err`调用！坏消息是在我们可以移除`map_err`调用之前我们需要更深入的学习一些标准库中的重要的 trait。
 
 ### <a name="defining-your-own-error-type"></a>定义你自己的错误类型
 
@@ -663,7 +676,7 @@ fn main() {
 
 之前我们的例子中使用`String`是为了方便，因为把错误转换为字符串是简单的，甚至把我们自己的类型转换为字符串也是如此。然而，把`String`作为你的错误有一些缺点。
 
-第一个缺点是错误信息会倾向于另你的代码变得凌乱。把错误信息定义在别处是可能的，不顾除非你非常的（qiang）自（po）律（zheng），你很容易就会把错误信息嵌入到你的代码中。事实上，我们[上一个例子](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-error-double-string)就是这么做的。
+第一个缺点是错误信息会倾向于另你的代码变得凌乱。把错误信息定义在别处是可能的，不顾除非你非常的（qiang）自（po）律（zheng），你很容易就会把错误信息嵌入到你的代码中。事实上，我们[上一个例子](#code-error-double-string)就是这么做的。
 
 第二个也是更重要的缺点是`String`是*不完整的*。也就是说，如果所有错误都转换成了字符串，那么传递给调用者的错误就变得完全不透明了。调用者对于一个`String`类型的错误所能作的唯一可行的事就是把它展示给用户。当然，通过观察字符串来确定错误的类型是不健壮的。（对于一个库来说这个缺点公认要比在例如程序中来的更重要。）
 
@@ -742,9 +755,9 @@ trait Error: Debug + Display {
 * 获取一个错误的简短描述（通过`description`方法）
 * 查看错误的调用链，如果存在的话（通过`cause`方法）
 
-头两个是因为`Error`要求实现`Debug`和`Display`。后两个来自于定义于`Error`的方法。`Error`的力量来自于所有错误类型都实现了`Error`的事实，这意味着错误可以被量化一个[trait 对象](https://github.com/rust-lang/rust/blob/master/src/doc/book/trait-objects.html)。表现为`Box<Error>`或`&Error`。事实上,`cause`返回一个`&Error`，它自身就是一个 trait 对象。我们将在后面再次讨论`Error`作为 trait 对象的功能。
+头两个是因为`Error`要求实现`Debug`和`Display`。后两个来自于定义于`Error`的方法。`Error`的力量来自于所有错误类型都实现了`Error`的事实，这意味着错误可以被量化一个[trait 对象](Trait Objects trait 对象.md)。表现为`Box<Error>`或`&Error`。事实上,`cause`返回一个`&Error`，它自身就是一个 trait 对象。我们将在后面再次讨论`Error`作为 trait 对象的功能。
 
-目前，展示一个实现了`Error` trait 的例子是足够的。让我们使用[上一部分](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#defining-your-own-error-type)我们定义的错误类型：
+目前，展示一个实现了`Error` trait 的例子是足够的。让我们使用[上一部分](#defining-your-own-error-type)我们定义的错误类型：
 
 ```rust
 use std::io;
@@ -807,6 +820,8 @@ impl error::Error for CliError {
 
 `std::convert::From` trait [定义于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)：
 
+<a name="code-from-def"></a>
+
 ```rust
 trait From<T> {
     fn from(T) -> Self;
@@ -868,6 +883,8 @@ macro_rules! try {
 ```
 
 这并不是它真正的定义。它的实际定义[位于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.try!.html)：
+
+<a name="code-try-def"></a>
 
 ```rust
 macro_rules! try {
@@ -954,7 +971,7 @@ fn file_double_verbose<P: AsRef<Path>>(file_path: P) -> Result<i32, CliError> {
 }
 ```
 
-注意我们仍然有`map_err`的调用。为神马？好吧，回忆[`try!`](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-try-def)和[`From`](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-from-def)的定义。问题是这里并没有`impl`的实现允许我们将一些像`io::Error`和`num::ParseIntError`这样的错误类型转换为我们的自定义类型`CliError`。当然，这个问题很好修改！`CliError`都是我们定义的，我们可以为其实现`From`。
+注意我们仍然有`map_err`的调用。为神马？好吧，回忆[`try!`](#code-try-def)和[`From`](#code-from-def)的定义。问题是这里并没有`impl`的实现允许我们将一些像`io::Error`和`num::ParseIntError`这样的错误类型转换为我们的自定义类型`CliError`。当然，这个问题很好修改！`CliError`都是我们定义的，我们可以为其实现`From`。
 
 ```rust
 # #[derive(Debug)]
@@ -1042,11 +1059,11 @@ impl From<num::ParseFloatError> for CliError {
 
 如果你的库需要报告一些自定义错误，那么你可能应该定义你自己的错误类型。由你决定是否暴露它的表示（例如[`ErrorKind`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/enum.ErrorKind.html)）或者把它隐藏起来（例如[`ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)）。不过你怎么做，相比`String`表示多少提供一些关于错误的信息通常是好的实践。不过说实话，这根据使用情况大有不同。
 
-最少，你可能应该实现[`Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)trait。这会给你的库的用户以[处理错误](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-real-try-macro)的最小灵活性。实现`Error`trait 也意味着可以确保用户能够获得一个错误的字符串表示（因为它实现了`fmt::Debug`和`fmt::Display`）。
+最少，你可能应该实现[`Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)trait。这会给你的库的用户以[处理错误](#the-real-try-macro)的最小灵活性。实现`Error`trait 也意味着可以确保用户能够获得一个错误的字符串表示（因为它实现了`fmt::Debug`和`fmt::Display`）。
 
-不仅如此，为你的错误类型提供`From`实现也是很有用的。这允许你（库作者）和你的用户[组合更详细的错误](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#composing-custom-error-types)。例如，[`csv::Error`](http://burntsushi.net/rustdoc/csv/enum.Error.html)提供了`io::Error`和`byteorder::Error`。
+不仅如此，为你的错误类型提供`From`实现也是很有用的。这允许你（库作者）和你的用户[组合更详细的错误](#composing-custom-error-types)。例如，[`csv::Error`](http://burntsushi.net/rustdoc/csv/enum.Error.html)提供了`io::Error`和`byteorder::Error`。
 
-最后，根据你的风格，你也许想要定义一个[`Result`类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-result-type-alias-idiom)，尤其是如果你的库定义了一个单一的错误类型。这被用在了标准库的[`io::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)和[`fmt::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/type.Result.html)中。
+最后，根据你的风格，你也许想要定义一个[`Result`类型别名](#the-result-type-alias-idiom)，尤其是如果你的库定义了一个单一的错误类型。这被用在了标准库的[`io::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)和[`fmt::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/type.Result.html)中。
 
 ## <a name="case-study-a-program-to-read-population-data"></a>案例学习：一个读取人口数据的程序
 
@@ -1060,7 +1077,7 @@ impl From<num::ParseFloatError> for CliError {
 
 ### <a name="initial-setup"></a>初始化
 
-我们不打算花很多时间在使用 Cargo 创建一个项目上，因为这在 [Cargo 部分](https://github.com/rust-lang/rust/blob/master/src/doc/book/hello-cargo.html)和 [Cargo 文档](http://doc.crates.io/guide.html)中已被讲解。
+我们不打算花很多时间在使用 Cargo 创建一个项目上，因为这在 [Cargo 部分](Getting Started 准备.md#hello-cargo)和 [Cargo 文档](http://doc.crates.io/guide.html)中已被讲解。
 
 为了从头开始，运行`cargo new --bin city-pop`并确保你的`Cargo.toml`看起来像这样：
 
@@ -1206,7 +1223,7 @@ fn main() {
 
 `Box<Error>`的好处是它刚刚够用。你并不需要定义你自己的错误类型而且也不需要任何`From`实现。缺点是因为`Box<Error>`是一个 trait 对象，这意味着编译器无法再推导出底层类型。
 
-[之前](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#the-limits-of-combinators)我们开始了把我们函数类型从`T`变成`Result<T, OurErrorType>`的重构。在这个例子中，`OurErrorType`就是`Box<Error>`。不过`T`是什么？或者我们可以给`main`添加一个返回类型吗？
+[之前](#the-limits-of-combinators)我们开始了把我们函数类型从`T`变成`Result<T, OurErrorType>`的重构。在这个例子中，`OurErrorType`就是`Box<Error>`。不过`T`是什么？或者我们可以给`main`添加一个返回类型吗？
 
 第二个问题的答案是不行，我们不能这么做。这意味着我们需要写一个新函数。不过`T`是什么？最简单的办法是返回一个作为`Vec<Row>`的匹配上的`Row`的值。（更好的代码会返回一个迭代器，不过这是一个留给读者的练习。）
 
@@ -1405,7 +1422,7 @@ fn search<P: AsRef<Path>>
 
 ### <a name="error-handling-with-a-custom-type"></a>用自定义类型处理错误
 
-之前，我们学习了如何[用自定义错误类型组合错误](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#composing-custom-error-types)。我们定义了一个`enum`的错误类型并实现了`Error`和`From`。
+之前，我们学习了如何[用自定义错误类型组合错误](#composing-custom-error-types)。我们定义了一个`enum`的错误类型并实现了`Error`和`From`。
 
 因为我们有三个不同的错误（IO，CSV 解析和未找到），让我们定义一个三个变体的`enum`：
 
@@ -1459,7 +1476,7 @@ impl From<csv::Error> for CliError {
 }
 ```
 
-因为[`try!`的定义](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md#code-try-def)`From`的实现是很重要的。尤其是在这个例子中，如果出现错误，错误的`From::from`被调用，将被转换为我们的错误类型`CliError`。
+因为[`try!`的定义](#code-try-def)`From`的实现是很重要的。尤其是在这个例子中，如果出现错误，错误的`From::from`被调用，将被转换为我们的错误类型`CliError`。
 
 当实现了`From`，我们只需要对`search`函数进行两个小的修改：返回值类型和“未找到”错误。这是全部的代码：
 

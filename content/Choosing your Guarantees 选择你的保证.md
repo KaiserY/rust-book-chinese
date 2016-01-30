@@ -8,7 +8,7 @@ Rust 的一个重要特性是允许我们控制一个程序的开销和（安全
 
 Rust 标准库中有多种“wrapper 类型”的抽象，他们代表了大量在开销，工程学和安全保证之间的权衡。很多让你在运行时和编译时增强之间选择。这一部分将会详细解释一些特定的抽象。
 
-在开始之前，强烈建议你阅读Rust的[所有权](https://doc.rust-lang.org/stable/book/ownership.html)和[借用](https://doc.rust-lang.org/stable/book/references-and-borrowing.html)。
+在开始之前，强烈建议你阅读Rust的[所有权](Ownership 所有权.md)和[借用](References and Borrowing 引用和借用.md)。
 
 ## 基础指针类型
 
