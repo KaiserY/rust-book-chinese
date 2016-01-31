@@ -72,4 +72,4 @@
 * [7.词汇表](content/Glossary 词汇表.md)
 * [8.语法索引](content/Syntax Index 语法索引.md)
 * [9.参考文献](content/Bibliography 参考文献.md)
-* [勘误](Errata 勘误.md)
+* [附录：名词中英文对照](名词中英文对照.md)
