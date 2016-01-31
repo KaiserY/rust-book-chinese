@@ -24,9 +24,9 @@ Rust 的内存安全功能也适用于并发环境。甚至并发的 Rust 程序
 
 ### `Sync`
 
-第二个特性是`Sync`。当一个类型`T`实现了`Sync`，它向编译器表明这个类型在多线程并发时没有导致内存不安全的可能性。这隐含了没有[内部可变性](https://github.com/rust-lang/rust/blob/master/src/doc/book/mutability.html)的类型天生是`Sync`的，这包含了基本类型和包含他们的聚合类型。
+第二个特性是`Sync`。当一个类型`T`实现了`Sync`，它向编译器表明这个类型在多线程并发时没有导致内存不安全的可能性。这隐含了没有[内部可变性](Mutability 可变性.md)的类型天生是`Sync`的，这包含了基本类型和包含他们的聚合类型。
 
-为了在线程间共享引用，Rust 提供了一个叫做`Arc<T>`的 wrapper 类型。`Arc<T>`实现了`Send`和`Sync`当且仅当`T`实现了`Send`和`Sync`。例如，一个`Arc<RefCell<U>>`类型的对象不能在线程间传送因为[RefCell](https://github.com/rust-lang/rust/blob/master/src/doc/book/choosing-your-guarantees.html#refcellt)并没有实现`Sync`，因此`Arc<RefCell<U>>`并不会实现`Send`。
+为了在线程间共享引用，Rust 提供了一个叫做`Arc<T>`的 wrapper 类型。`Arc<T>`实现了`Send`和`Sync`当且仅当`T`实现了`Send`和`Sync`。例如，一个`Arc<RefCell<U>>`类型的对象不能在线程间传送因为[RefCell](Choosing your Guarantees 选择你的保证.md#refcellt)并没有实现`Sync`，因此`Arc<RefCell<U>>`并不会实现`Send`。
 
 例如，使用一个原子引用来共享可变数据是线程安全的。Rust提供了一个这样的类型，`Arc<T>`，并且它实现了`Sync`，所以它可以安全的在线程间共享。
 

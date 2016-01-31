@@ -43,7 +43,7 @@ fn process_color_change(msg: Message) {
 }
 ```
 
-不支持这些操作（比较操作）可能看起来更像限制。不过这是一个我们可以克服的限制。这里有两种方法：我们自己实现相等（比较），或通过[`match` ](https://doc.rust-lang.org/stable/book/match.html)表达式模式匹配变量，你会在下一部分学到它。我们还不够了解Rust如何实现相等，不过我们会在[特性](https://doc.rust-lang.org/stable/book/traits.html)找到它们。
+不支持这些操作（比较操作）可能看起来更像限制。不过这是一个我们可以克服的限制。这里有两种方法：我们自己实现相等（比较），或通过[`match` ](Match 匹配.md)表达式模式匹配变量，你会在下一部分学到它。我们还不够了解Rust如何实现相等，不过我们会在[特性](Traits.md)找到它们。
 
 ## 构造器作为函数（Constructors as functions）
 一个枚举的构造器总是可以像函数一样使用。例如：
@@ -68,7 +68,7 @@ fn foo(x: String) -> Message {
 let x = foo("Hello, world".to_string());
 ```
 
-这对我们没有什么直接的帮助，直到我们要用到[闭包](https://doc.rust-lang.org/stable/book/closures.html)时，这时我们要考虑将函数作为参数传递给其他函数。例如，使用[迭代器](https://doc.rust-lang.org/stable/book/iterators.html)，我们可以这样把一个`String`的vector转换为一个`Message::Write`的vector：
+这对我们没有什么直接的帮助，直到我们要用到[闭包](Closures 闭包.md)时，这时我们要考虑将函数作为参数传递给其他函数。例如，使用[迭代器](Iterators 迭代器.md)，我们可以这样把一个`String`的vector转换为一个`Message::Write`的vector：
 
 ```rust
 # enum Message {

@@ -6,7 +6,7 @@
 
 trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 
-你还记得`impl`关键字吗，曾用[方法语法](https://doc.rust-lang.org/stable/book/method-syntax.html)调用方法的那个？
+你还记得`impl`关键字吗，曾用[方法语法](Method Syntax 方法语法.md)调用方法的那个？
 
 ```rust
 struct Circle {
@@ -46,7 +46,7 @@ impl HasArea for Circle {
 
 ## 泛型函数的 trait bound（Trait bounds on generic functions）
 
-trait 很有用是因为他们允许一个类型对它的行为提供特定的承诺。泛型函数可以显式的限制，或者叫 [bound](https://github.com/rust-lang/rust/blob/master/src/doc/book/glossary.html#bounds)，它接受的类型。考虑这个函数，它并不能编译：
+trait 很有用是因为他们允许一个类型对它的行为提供特定的承诺。泛型函数可以显式的限制，或者叫 [bound](Glossary 词汇表.md#界限（bounds）)，它接受的类型。考虑这个函数，它并不能编译：
 
 ```rust
 fn print_area<T>(shape: T) {
@@ -187,7 +187,7 @@ impl<T: PartialEq> Rectangle<T> { ... }
 
 现在，一个长方形可以用任何可以比较相等的类型定义了。
 
-这里我们定义了一个新的接受任何精度数字的`Rectangle`结构体——讲道理，很多类型——只要他们能够比较大小。我们可以对`HasArea`结构体，`Square`和`Circle`做同样的事吗？可以，不过他们需要乘法，而要处理它我们需要了解[运算符 trait](https://github.com/rust-lang/rust/blob/master/src/doc/book/operators-and-overloading.html)更多。
+这里我们定义了一个新的接受任何精度数字的`Rectangle`结构体——讲道理，很多类型——只要他们能够比较大小。我们可以对`HasArea`结构体，`Square`和`Circle`做同样的事吗？可以，不过他们需要乘法，而要处理它我们需要了解[运算符 trait](Operators and Overloading 运算符和重载.md)更多。
 
 ## 实现 trait 的规则（Rules for implementing traits）
 
@@ -443,7 +443,7 @@ error: the trait `main::Foo` is not implemented for the type `main::Baz` [E0277]
 
 ## Deriving
 
-重复的实现像`Debug`和`Default`这样的 trait 会变得很无趣。为此，Rust 提供了一个[属性](https://github.com/rust-lang/rust/blob/master/src/doc/book/attributes.html)来允许我们让 Rust 为我们自动实现 trait：
+重复的实现像`Debug`和`Default`这样的 trait 会变得很无趣。为此，Rust 提供了一个[属性](Attributes 属性.md)来允许我们让 Rust 为我们自动实现 trait：
 
 ```rust
 #[derive(Debug)]
