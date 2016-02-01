@@ -50,7 +50,7 @@
 * [Experience Report: Developing the Servo Web Browser Engine using Rust](http://arxiv.org/abs/1505.07383)。Lars Bergstrom著。
 * [Implementing a Generic Radix Trie in Rust](https://michaelsproul.github.io/rust_radix_paper/rust-radix-sproul.pdf)。Michael Sproul的毕业论文。
 * [Reenix: Implementing a Unix-Like Operating System in Rust](http://scialex.github.io/reenix.pdf)。Alex Light的毕业论文。
-* [Evaluation of performance and productivity metrics of potential programming languages in the HPC environment](https://doc.rust-lang.org/stable/book/academic-research.html)。Florian Wilkens的学士学位论文。比较C，Go和Rust。
+* [Evaluation of performance and productivity metrics of potential programming languages in the HPC environment](http://doc.rust-lang.org/stable/book/academic-research.html)。Florian Wilkens的学士学位论文。比较C，Go和Rust。
 * [Nom, a byte oriented, streaming, zero copy, parser combinators library in Rust](http://spw15.langsec.org/papers/couprie-nom.pdf)。Geoffroy Couprie著，关于VLC的研究。
 * [Graph-Based Higher-Order Intermediate Representation](http://compilers.cs.uni-saarland.de/papers/lkh15_cgo.pdf)。一个用Impala（一个类似Rust的语言）实现的实验性的IR。
 * [Code Refinement of Stencil Codes](http://compilers.cs.uni-saarland.de/papers/ppl14_web.pdf)。另一个使用Impala的论文。

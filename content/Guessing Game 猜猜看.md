@@ -83,7 +83,7 @@ fn main() {
 use std::io;
 ```
 
-我们需要获取用户输入，并接着打印结果作为输出。为此，我们需要标准库的`io`库。Rust 为所有程序只导入了很少一些东西，[‘prelude’](http://doc.rust-lang.org/nightly/std/prelude/)。如果它不在预先导入中，你将不得不直接`use`它。这还有第二个"prelude",[`io`prelude](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/prelude/index.html)，它也起到了类似的作用：你引入它，它引入一系列拥有的 IO 相关的库。
+我们需要获取用户输入，并接着打印结果作为输出。为此，我们需要标准库的`io`库。Rust 为所有程序只导入了很少一些东西，[‘prelude’](http://doc.rust-lang.org/nightly/std/prelude/)。如果它不在预先导入中，你将不得不直接`use`它。这还有第二个"prelude",[`io`prelude](http://doc.rust-lang.org/std/io/prelude/index.html)，它也起到了类似的作用：你引入它，它引入一系列拥有的 IO 相关的库。
 
 ```rust
 fn main() {
@@ -144,7 +144,7 @@ io::stdin()
 
 还记得我们如何在程序的第一行`use std::io`的吗？现在我们调用了一个与之相关的函数。如果我们不`use std::io`，那么我们就得写成`std::io::stdin()`。
 
-这个特殊的函数返回一个指向你终端标准输入的句柄。更具体的，可参考[std::io::Stdin](https://doc.rust-lang.org/stable/std/io/struct.Stdin.html)。
+这个特殊的函数返回一个指向你终端标准输入的句柄。更具体的，可参考[std::io::Stdin](http://doc.rust-lang.org/stable/std/io/struct.Stdin.html)。
 
 下一部分将用这个句柄去获取用户输入：
 
@@ -152,7 +152,7 @@ io::stdin()
 .read_line(&mut guess)
 ```
 
-这里，我们对我们的句柄调用了[read_line()](https://doc.rust-lang.org/stable/std/io/struct.Stdin.html#method.read_line)方法。[“方法”](5.15.Method Syntax 方法语法.md)就像关联函数，不过只在一个类型的特定实例上可用，而不是这个类型本身。我们也向`read_line()`传递了一个参数：`&mut guess`。
+这里，我们对我们的句柄调用了[read_line()](http://doc.rust-lang.org/stable/std/io/struct.Stdin.html#method.read_line)方法。[“方法”](5.15.Method Syntax 方法语法.md)就像关联函数，不过只在一个类型的特定实例上可用，而不是这个类型本身。我们也向`read_line()`传递了一个参数：`&mut guess`。
 
 还记得我们上面怎么绑定`guess`的吗？我们说它是可变的。然而，`read_line`并不接收`String`作为一个参数：它接收一个`&mut String`。Rust有一个叫做[“引用”](5.8.References and Borrowing 引用和借用.md)的功能，它允许你对一片数据有多个引用，用它可以减少拷贝。引用是一个复杂的功能，因为Rust的一个主要卖点就是它如何安全和便捷地使用引用。然而，目前我们还不需要知道很多细节来完成我们的程序。现在，所有我们需要了解的是像`let`绑定，引用默认是不可变的。因此，我们需要写成`&mut guess`，而不是`&guess`。
 
@@ -170,9 +170,9 @@ io::stdin()
     io::stdin().read_line(&mut guess).expect("failed to read line");
 ```
 
-不过这样会难以阅读。所以我们把它分开，3 行对应 3 个方法调用。我们已经谈论过了`read_line()`，不过`expect()`呢？好吧，我们已经提到过`read_line()`将用户输入放入我们传递给它的`&mut String`中。不过它也返回一个值：在这个例子中，一个[io::Result](https://doc.rust-lang.org/stable/std/io/type.Result.html)。Rust的标准库中有很多叫做`Result`的类型：一个泛型[Result](https://doc.rust-lang.org/stable/std/result/enum.Result.html)，然后是子库的特殊版本，例如`io::Result`。
+不过这样会难以阅读。所以我们把它分开，3 行对应 3 个方法调用。我们已经谈论过了`read_line()`，不过`expect()`呢？好吧，我们已经提到过`read_line()`将用户输入放入我们传递给它的`&mut String`中。不过它也返回一个值：在这个例子中，一个[io::Result](http://doc.rust-lang.org/stable/std/io/type.Result.html)。Rust的标准库中有很多叫做`Result`的类型：一个泛型[Result](http://doc.rust-lang.org/stable/std/result/enum.Result.html)，然后是子库的特殊版本，例如`io::Result`。
 
-这个`Result`类型的作用是编码错误处理信息。`Result`类型的值，像任何（其它）类型，有定义在其上的方法。在这个例子中，`io::Result`有一个[expect()方法](https://doc.rust-lang.org/stable/std/option/enum.Option.html#method.expect)获取调用它的值，而且如果它不是一个成功的值，[panic!](Error Handling 错误处理.md)并带有你传递给它的信息。这样的`panic!`会使我们的程序崩溃，显示（我们传递的）信息。
+这个`Result`类型的作用是编码错误处理信息。`Result`类型的值，像任何（其它）类型，有定义在其上的方法。在这个例子中，`io::Result`有一个[expect()方法](http://doc.rust-lang.org/stable/std/option/enum.Option.html#method.expect)获取调用它的值，而且如果它不是一个成功的值，[panic!](Error Handling 错误处理.md)并带有你传递给它的信息。这样的`panic!`会使我们的程序崩溃，显示（我们传递的）信息。
 
 如果我们去掉这两个函数调用，我们的程序会编译通过，不过我们会得到一个警告：
 
@@ -390,7 +390,7 @@ enum Foo {
 
 通过这个定义，任何`Foo`可以是`Foo::Bar`或者`Foo::Baz`。我们用`::`来表明一个特定`enum`变量的命名空间。
 
-[Ordering](https://doc.rust-lang.org/stable/std/cmp/enum.Ordering.html)枚举有3个可能的变量：`Less`，`Equal`和`Greater`。`match`语句获取类型的值，并让你为每个可能的值创建一个“分支”。因为有 3 种类型的`Ordering`，我们有 3 个分支：
+[Ordering](http://doc.rust-lang.org/stable/std/cmp/enum.Ordering.html)枚举有3个可能的变量：`Less`，`Equal`和`Greater`。`match`语句获取类型的值，并让你为每个可能的值创建一个“分支”。因为有 3 种类型的`Ordering`，我们有 3 个分支：
 
 ```rust
 match guess.cmp(&secret_number) {
@@ -469,7 +469,7 @@ fn main() {
 guess.trim().parse()
 ```
 
-这里，`guess`引用旧的`guess`，那个我们输入用到的`String`。`String`的`trim()`方法会去掉我们字符串开头和结尾的任何空格。这很重要，因为我们不得不按“回车”键来满足`read_line()`。这意味着如果输入`5`并按回车，`guess`看起来像这样：`5\n`。`\n`代表“新行”，回车键。`trim()`去掉这些，保留`5`给我们的字符串。[字符串的`parse()`方法](https://doc.rust-lang.org/stable/std/primitive.str.html#method.parse)将字符串解析为一些类型的数字。因为它可以解析多种数字，我们需要给Rust一些提醒作为我们具体想要的数字的类型。因此，`let guess: u32`。`guess`后面的分号（`:`）告诉 Rust 我们要标注它的类型。`u32`是一个无符号的，32位整型。Rust 有[一系列内建数字类型](Primitive Types 原生类型.md#数字类型)，不过我们选择了`u32`。它是一个小正数的默认好选择。
+这里，`guess`引用旧的`guess`，那个我们输入用到的`String`。`String`的`trim()`方法会去掉我们字符串开头和结尾的任何空格。这很重要，因为我们不得不按“回车”键来满足`read_line()`。这意味着如果输入`5`并按回车，`guess`看起来像这样：`5\n`。`\n`代表“新行”，回车键。`trim()`去掉这些，保留`5`给我们的字符串。[字符串的`parse()`方法](http://doc.rust-lang.org/stable/std/primitive.str.html#method.parse)将字符串解析为一些类型的数字。因为它可以解析多种数字，我们需要给Rust一些提醒作为我们具体想要的数字的类型。因此，`let guess: u32`。`guess`后面的分号（`:`）告诉 Rust 我们要标注它的类型。`u32`是一个无符号的，32位整型。Rust 有[一系列内建数字类型](Primitive Types 原生类型.md#数字类型)，不过我们选择了`u32`。它是一个小正数的默认好选择。
 
 就像`read_line()`，我们调用`parse()`可能产生一个错误。如果我们的字符串包含`A👍%?`呢？并不能将它们转换成一个数字。为此，我们将做我们在`read_line()`时做的相同的事：使用`expect()`方法来在这里出现错误时崩溃。
 
