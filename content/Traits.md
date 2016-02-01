@@ -179,7 +179,7 @@ fn main() {
 }
 ```
 
-`is_square()`需要检查边是相等的，所以边必须是一个实现了[`core::cmp::PartialEq`](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialEq.html) trait 的类型：
+`is_square()`需要检查边是相等的，所以边必须是一个实现了[`core::cmp::PartialEq`](http://doc.rust-lang.org/cmp/trait.PartialEq.html) trait 的类型：
 
 ```rust
 impl<T: PartialEq> Rectangle<T> { ... }
@@ -456,12 +456,12 @@ fn main() {
 
 然而，deriving 限制为一些特定的 trait：
 
-* [Clone](https://github.com/rust-lang/rust/blob/master/src/doc/core/clone/trait.Clone.html)
-* [Copy](https://github.com/rust-lang/rust/blob/master/src/doc/core/marker/trait.Copy.html)
-* [Debug](https://github.com/rust-lang/rust/blob/master/src/doc/core/fmt/trait.Debug.html)
-* [Default](https://github.com/rust-lang/rust/blob/master/src/doc/core/default/trait.Default.html)
-* [Eq](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.Eq.html)
-* [Hash](https://github.com/rust-lang/rust/blob/master/src/doc/core/hash/trait.Hash.html)
-* [Ord](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.Ord.html)
-* [PartialEq](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialEq.html)
-* [PartialOrd](https://github.com/rust-lang/rust/blob/master/src/doc/core/cmp/trait.PartialOrd.html)
+* [Clone](http://doc.rust-lang.org/core/clone/trait.Clone.html)
+* [Copy](http://doc.rust-lang.org/core/marker/trait.Copy.html)
+* [Debug](http://doc.rust-lang.org/core/fmt/trait.Debug.html)
+* [Default](http://doc.rust-lang.org/core/default/trait.Default.html)
+* [Eq](http://doc.rust-lang.org/core/cmp/trait.Eq.html)
+* [Hash](http://doc.rust-lang.org/core/hash/trait.Hash.html)
+* [Ord](http://doc.rust-lang.org/core/cmp/trait.Ord.html)
+* [PartialEq](http://doc.rust-lang.org/core/cmp/trait.PartialEq.html)
+* [PartialOrd](http://doc.rust-lang.org/core/cmp/trait.PartialOrd.html)

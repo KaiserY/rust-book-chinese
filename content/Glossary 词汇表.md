@@ -52,7 +52,7 @@ let z = (8, 2, 6);
 
 ## 动态大小类型（DST (Dynamically Sized Type)）
 
-一个没有静态大小或对齐的类型。（[更多信息](https://github.com/rust-lang/rust/blob/master/src/doc/nomicon/exotic-sizes.html#dynamically-sized-types-dsts)）
+一个没有静态大小或对齐的类型。（[更多信息](http://doc.rust-lang.org/nomicon/exotic-sizes.html#dynamically-sized-types-dsts)）
 
 ## 表达式（Expression）
 在计算机编程中，一个表达式是一个值，常量，变量，运算符和函数的组合，它可以产生一个单一的值。例如，`2 + (3 * 4)`是一个返回14的表达式。值得注意的是表达式可以产生副作用。例如，一个表达式中的函数可能会执行一些不只是简单的返回一个值的操作。

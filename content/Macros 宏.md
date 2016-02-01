@@ -357,7 +357,7 @@ fn main() {
 * `pat`：一个模式。例如：`Some(t)`；`(17, 'a')`；`_`
 * `stmt`：一个单独语句。例如：`let x = 3`
 * `block`：一个大括号界定的语句序列。例如：`{ log(error, "hi"); return 12; }`
-* `item`：一个[项](https://doc.rust-lang.org/stable/reference.html#items)。例如：`fn foo() { }`，`struct Bar`
+* `item`：一个[项](http://doc.rust-lang.org/stable/reference.html#items)。例如：`fn foo() { }`，`struct Bar`
 * `meta`：一个“元数据项”，可以在属性中找到。例如：`cfg(target_os = "windows")`
 * `tt`：一个单独的记号树
 
@@ -429,7 +429,7 @@ mod bar {
 
 当这个库被用`#[macro_use] extern crate`装载时，只有`m2`会被导入。
 
-Rust参考中有一个[宏相关的属性列表](https://doc.rust-lang.org/stable/reference.html#macro-related-attributes)。
+Rust参考中有一个[宏相关的属性列表](http://doc.rust-lang.org/stable/reference.html#macro-related-attributes)。
 
 ## `$crate`变量
 当一个宏在多个包装箱中使用时会产生另一个困难。让我们说`mylib`定义了

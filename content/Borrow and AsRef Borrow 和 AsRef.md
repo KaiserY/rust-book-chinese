@@ -10,7 +10,7 @@
 
 `Borrow`特性用于当你处于某种目的写了一个数据结构，并且你想要使用一个要么拥有要么借用的类型作为它的同义词。
 
-例如，[`HashMap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/collections/struct.HashMap.html)有一个用了`Borrow`的[`get`方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/collections/struct.HashMap.html#method.get)：
+例如，[`HashMap`](http://doc.rust-lang.org/std/collections/struct.HashMap.html)有一个用了`Borrow`的[`get`方法](http://doc.rust-lang.org/std/collections/struct.HashMap.html#method.get)：
 
 ```rust
 fn get<Q: ?Sized>(&self, k: &Q) -> Option<&V>

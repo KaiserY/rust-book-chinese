@@ -106,9 +106,9 @@
 * `'ident`: 命名的生命周期或循环标签。详见[模式（绑定）](Patterns 模式.md)。    
 * `…u8`, `…i32`, `…f64`, `…usize`, …: 特定类型的数字常量。
 * `"…"`: 字符串常量。详见[字符串](Strings 字符串.md)。
-* `r"…"`, `r#"…"#`, `r##"…"##`, …: 原始字符串常量，转义字符不会被处理。详见[参考手册（原始字符串常量）](https://github.com/rust-lang/rust/blob/master/src/doc/reference.html#raw-string-literals)。
-* `b"…"`: 字节字符串常量，生成一个`[u8]`而不是一个字符串。详见[参考手册（字节字符串常量）](https://github.com/rust-lang/rust/blob/master/src/doc/reference.html#byte-string-literals)。
-* `br"…"`, `br#"…"#`, `br##"…"##`, …: 原始字节字符串常量，原始和字节字符串常量的组合。详见[参考手册（原始字节字符串常量）](https://github.com/rust-lang/rust/blob/master/src/doc/reference.html#raw-byte-string-literals)。
+* `r"…"`, `r#"…"#`, `r##"…"##`, …: 原始字符串常量，转义字符不会被处理。详见[参考手册（原始字符串常量）](http://doc.rust-lang.org/reference.html#raw-string-literals)。
+* `b"…"`: 字节字符串常量，生成一个`[u8]`而不是一个字符串。详见[参考手册（字节字符串常量）](http://doc.rust-lang.org/reference.html#byte-string-literals)。
+* `br"…"`, `br#"…"#`, `br##"…"##`, …: 原始字节字符串常量，原始和字节字符串常量的组合。详见[参考手册（原始字节字符串常量）](http://doc.rust-lang.org/reference.html#raw-byte-string-literals)。
 * `'…'`: 字符常量。详见[原生类型（`char`）](Primitive Types 原生类型.md)。
 * `b'…'`: ASCII 字节常量。
 * `|…| expr`: 闭包。详见[闭包](Closures 闭包.md)。

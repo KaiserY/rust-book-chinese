@@ -4,7 +4,7 @@
 > <br>
 > commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
 
-标准库提供了一个特殊的特性，[`Deref`](https://doc.rust-lang.org/stable/std/ops/trait.Deref.html)。它一般用来重载`*`，解引用运算符：
+标准库提供了一个特殊的特性，[`Deref`](http://doc.rust-lang.org/stable/std/ops/trait.Deref.html)。它一般用来重载`*`，解引用运算符：
 
 ```rust
 use std::ops::Deref;

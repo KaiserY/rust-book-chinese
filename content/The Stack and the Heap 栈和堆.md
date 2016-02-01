@@ -149,7 +149,7 @@ fn main() {
 ## 堆
 目前为止，它能出色的工作，不过并非所有事情都能这么运作。有时，你需要在不同函数间传递一些内存，或者让它活过一次函数执行。为此，我们可以使用堆。
 
-在Rust中，你可以使用[`Box<T>`类型](https://github.com/rust-lang/rust/blob/master/src/doc/std/boxed/index.html)在堆上分配内存。这是一个例子：
+在Rust中，你可以使用[`Box<T>`类型](http://doc.rust-lang.org/std/boxed/index.html)在堆上分配内存。这是一个例子：
 
 ```rust
 fn main() {

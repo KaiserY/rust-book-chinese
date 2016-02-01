@@ -48,7 +48,7 @@ Rust 的错误处理天生是冗长而烦人的。这一部分将会探索这些
 
 你可以认为错误处理是用事例分析（case analysis）来决定一个计算成功与否。如你所见，工程性的错误处理就是要减少程序猿显式的事例分析的同时保持代码的可组合性。
 
-保持代码的可组合性是很重要的，因为没有这个要求，我们可能在遇到没想到的情况时[panic](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.panic!.html)。（`panic`导致当前线程结束，而在大多数情况，导致整个程序结束。）这是一个例子：
+保持代码的可组合性是很重要的，因为没有这个要求，我们可能在遇到没想到的情况时[panic](http://doc.rust-lang.org/std/macro.panic!.html)。（`panic`导致当前线程结束，而在大多数情况，导致整个程序结束。）这是一个例子：
 
 ```rust
 // Guess a number between 1 and 10.
@@ -98,7 +98,7 @@ Rust 中“unwrap”是说，“给我计算的结果，并且如果有错误，
 
 ### <a name="the-option-type"></a>`Option`类型
 
-`Option`类型[定义在标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html)：
+`Option`类型[定义在标准库中](http://doc.rust-lang.org/std/option/enum.Option.html)：
 
 ```rust
 enum Option<T> {
@@ -183,7 +183,7 @@ fn extension_explicit(file_name: &str) -> Option<&str> {
 }
 ```
 
-（专业建议：不要用这段代码，相反使用标准库的[extension](https://github.com/rust-lang/rust/blob/master/src/doc/std/path/struct.Path.html#method.extension)方法。）
+（专业建议：不要用这段代码，相反使用标准库的[extension](http://doc.rust-lang.org/std/path/struct.Path.html#method.extension)方法。）
 
 代码是简单的，不过重要的是注意到`find`的类型强迫我们考虑不存在的可能性。这是一个好事，因为这意味着编译器不会让我们不小心忘记了文件名没有扩展名的情况。另一方面，每次都像`extension_explicit`那样进行显式 case analysis 会变得有点无聊。
 
@@ -202,7 +202,7 @@ fn map<F, T, A>(option: Option<T>, f: F) -> Option<A> where F: FnOnce(T) -> A {
 }
 ```
 
-事实上，`map`是标准库中的`Option<T>`[定义的一个方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.map)。
+事实上，`map`是标准库中的`Option<T>`[定义的一个方法](http://doc.rust-lang.org/std/option/enum.Option.html#method.map)。
 
 用我们的新组合，我们可以重写我们的`extension_explicit`方法来去掉 case analysis：
 
@@ -248,7 +248,7 @@ fn main() {
 }
 ```
 
-（注意`unwrap_or`是标准库中的`Option<T>`[定义的一个方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.unwrap_or)，所以这里我们使用它而不是我们上面定义的独立的函数。别忘了看看更通用的[`unwrap_or_else`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.unwrap_or_else)方法。）
+（注意`unwrap_or`是标准库中的`Option<T>`[定义的一个方法](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or)，所以这里我们使用它而不是我们上面定义的独立的函数。别忘了看看更通用的[`unwrap_or_else`](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or_else)方法。）
 
 这里有另一个我们认为值得特别注意的 combinator：`and_then`。它让我们更容易的组合不同的承认不存在的可能性的计算。例如，这一部分的很多代码是关于找到一个给定文件的扩展名的。为此，你首先需要一个通常截取自文件路径的文件名。虽然大部分文件路径都有一个文件名，但并不是都有。例如，`.`，`..`，`/`。
 
@@ -294,13 +294,13 @@ fn file_path_ext(file_path: &str) -> Option<&str> {
 }
 ```
 
-`Option`类型有很多其他[定义在标准库中的](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html)组合。过一边这个列表并熟悉他们的功能是一个好主意 —— 通常他们可以减少你的 case analysis。熟悉这些组合将会得到回报，因为他们很多也为`Result`类型定义了实现（相似的语义），而我们接下来会讲`Result`。
+`Option`类型有很多其他[定义在标准库中的](http://doc.rust-lang.org/std/option/enum.Option.html)组合。过一边这个列表并熟悉他们的功能是一个好主意 —— 通常他们可以减少你的 case analysis。熟悉这些组合将会得到回报，因为他们很多也为`Result`类型定义了实现（相似的语义），而我们接下来会讲`Result`。
 
 组合使用像`Option`这样的符合工程学的类型来减少显式 case analysis。他们也是可组合的因为他们允许调用者以他们自己的方式处理不存在的可能性。像`unwrap`这样的方法去掉了选择因为当`Option<T>`为`None`他们会 panic。
 
 ### <a name="the-result-type"></a>`Result`类型
 
-`Result`类型也[定义于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/result)：
+`Result`类型也[定义于标准库中](http://doc.rust-lang.org/std/result/index.html)：
 
 <a name="code-result-def"></a>
 
@@ -321,7 +321,7 @@ type Option<T> = Result<T, ()>;
 
 `Result`类型是一个代表一个计算的两个可能结果的方式。通常，一个结果是期望的值或者“`Ok`”而另一个意味着非预期的或者“`Err`”。
 
-就像`Option`，`Result`在标准库中也[定义了一个`unwrap`方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.unwrap)。让我们定义它：
+就像`Option`，`Result`在标准库中也[定义了一个`unwrap`方法](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap)。让我们定义它：
 
 ```rust
 # enum Result<T, E> { Ok(T), Err(E) }
@@ -336,7 +336,7 @@ impl<T, E: ::std::fmt::Debug> Result<T, E> {
 }
 ```
 
-这实际上与[`Option::unwrap`的定义](#code-option-def-unwrap)一样，除了它在`panic!`信息中包含了错误信息。这让调试变得简单，不过也要求我们为`E`类型参数（它代表我们的错误类型）添加一个[`Debug`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/trait.Debug.html)限制。因为绝大部分类型应该满足`Debug`限制，这使得它可以在实际中使用。（`Debug`简单的意味着这个类型有合理的方式可以打印出人类可读的描述。）
+这实际上与[`Option::unwrap`的定义](#code-option-def-unwrap)一样，除了它在`panic!`信息中包含了错误信息。这让调试变得简单，不过也要求我们为`E`类型参数（它代表我们的错误类型）添加一个[`Debug`](http://doc.rust-lang.org/std/fmt/trait.Debug.html)限制。因为绝大部分类型应该满足`Debug`限制，这使得它可以在实际中使用。（`Debug`简单的意味着这个类型有合理的方式可以打印出人类可读的描述。）
 
 OK，让我们开始一个例子。
 
@@ -361,7 +361,7 @@ fn main() {
 thread '<main>' panicked at 'called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }', /home/rustbuild/src/rust-buildbot/slave/beta-dist-rustc-linux/build/src/libcore/result.rs:729
 ```
 
-这是很难堪的，而且如果这在你所使用的库中出现了的话，可以理解你会很烦躁。相反，我们应该尝试在我们的函数里处理错误并让调用者决定该怎么做。这意味着改变`double_number`的返回值类型。不过改编成什么呢？好吧，这需要我们看看标准库中[`parse`方法](https://github.com/rust-lang/rust/blob/master/src/doc/std/primitive.str.html#method.parse)的签名：
+这是很难堪的，而且如果这在你所使用的库中出现了的话，可以理解你会很烦躁。相反，我们应该尝试在我们的函数里处理错误并让调用者决定该怎么做。这意味着改变`double_number`的返回值类型。不过改编成什么呢？好吧，这需要我们看看标准库中[`parse`方法](http://doc.rust-lang.org/std/primitive.str.html#method.parse)的签名：
 
 ```rust
 impl str {
@@ -371,7 +371,7 @@ impl str {
 
 额嗯。所以至少我们知道了我们需要使用一个`Result`。当然，也可以返回一个`Option`。毕竟，一个字符串要么能解析成一个数字要么不能，不是吗？这当然是一个合理的方式，不过实现内部区别了为什么字符串不能解析成数字。（要么是一个空字符串，一个无效的数位，太大或太小。）因此，使用`Result`更有道理因为我们想要比单纯的“不存在”提供更多信息。我们想要表明*为什么*解析会失败。你应该尝试再现这样的推理，当你面对一个`Opation`和`Result`之间的选择时。如果你可以提供详细的错误信息，那么大概你也应该提供。（我们会在后面详细讲到。）
 
-好的，不过我们的返回值类型该怎么写呢？上面定义的`parse`方法对所有不同的标准库定义的数字类型是泛型的。我们也可以（应该）让我们的函数也是泛型的，不过这回让我们享受显式定义的好处。我们只关心`i32`，所以我们需要寻找[`FromStr`的实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/primitive.i32.html)（在你的浏览器中用`CTRL-F`搜索“FromStr”）和[与它相关的类型`](Associated Types 关联类型.md)`Err`。这么做我可以找出具体的错误类型。在这个例子中，它是[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。最后我们可以重写函数：
+好的，不过我们的返回值类型该怎么写呢？上面定义的`parse`方法对所有不同的标准库定义的数字类型是泛型的。我们也可以（应该）让我们的函数也是泛型的，不过这回让我们享受显式定义的好处。我们只关心`i32`，所以我们需要寻找[`FromStr`的实现](http://doc.rust-lang.org/std/primitive.i32.html)（在你的浏览器中用`CTRL-F`搜索“FromStr”）和[与它相关的类型`](Associated Types 关联类型.md)`Err`。这么做我可以找出具体的错误类型。在这个例子中，它是[`std::num::ParseIntError`](http://doc.rust-lang.org/std/num/struct.ParseIntError.html)。最后我们可以重写函数：
 
 ```rust
 use std::num::ParseIntError;
@@ -410,7 +410,7 @@ fn main() {
 }
 ```
 
-常见的组合`Result`都有，包括[unwrap_or](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.unwrap_or)和[and_then](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.and_then)。另外，因为`Result`有第二个类型参数，这里有只影响错误类型的组合，例如[map_err](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.map_err)（相对于`map`）和[or_else](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.or_else)（相对于`and_then`）。
+常见的组合`Result`都有，包括[unwrap_or](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or)和[and_then](http://doc.rust-lang.org/std/result/enum.Result.html#method.and_then)。另外，因为`Result`有第二个类型参数，这里有只影响错误类型的组合，例如[map_err](http://doc.rust-lang.org/std/result/enum.Result.html#method.map_err)（相对于`map`）和[or_else](http://doc.rust-lang.org/std/result/enum.Result.html#method.or_else)（相对于`and_then`）。
 
 #### <a name="the-result-type-alias-idiom"></a>`Result`类型别名习惯
 
@@ -429,7 +429,7 @@ fn double_number(number_str: &str) -> Result<i32> {
 
 为什么我们应该这么做？好吧，如果我们有很多可能返回`ParseIntError`的函数，那么定义一个总是使用`ParseIntError `的别名就比每回都写一遍要方便很多。
 
-这个习惯最突出的一点是标准库中的[`io::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)。通常，当你使用`io::Result<T>`，很明显你就是在使用`io`模块的类型别名而不是`std::result`的原始定义。（这个习惯也用于[`fmt::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/type.Result.html)。）
+这个习惯最突出的一点是标准库中的[`io::Result`](http://doc.rust-lang.org/std/io/type.Result.html)。通常，当你使用`io::Result<T>`，很明显你就是在使用`io`模块的类型别名而不是`std::result`的原始定义。（这个习惯也用于[`fmt::Result`](http://doc.rust-lang.org/std/fmt/type.Result.html)。）
 
 ### <a name="a-brief-interlude-unwrapping-isnt-evil"></a>小插曲：unwrapping 并不邪恶
 
@@ -440,7 +440,7 @@ fn double_number(number_str: &str) -> Result<i32> {
 * **在例子和简单快速的编码中。**有时你要写一个例子或小程序，这时错误处理一点也不重要。这种情形要击败`unwrap`的方便易用是很难的，所以它显得很合适。
 * **当 panic 就意味着程序中有 bug 的时候。**当你代码中的不变量应该阻止特定情况发生的时候（比如，从一个空的栈上弹出一个值），那么 panic 就是可行的。这是因为它暴露了程序的一个 bug。这可以是显式的，例如一个`assert!`失败，或者因为一个数组越界。
 
-这可能并不是一个完整的列表。另外，当使用`Option`的时候，通常使用[`expect`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.expect)方法更好。`expect`做了`unwrap`同样的工作，除了`expect`会打印你给它的信息。这让 panic 的结果更容易处理，因为相比“called unwrap on a None value.”会提供一个信息。
+这可能并不是一个完整的列表。另外，当使用`Option`的时候，通常使用[`expect`](http://doc.rust-lang.org/std/option/enum.Option.html#method.expect)方法更好。`expect`做了`unwrap`同样的工作，除了`expect`会打印你给它的信息。这让 panic 的结果更容易处理，因为相比“called unwrap on a None value.”会提供一个信息。
 
 我的建议浓缩如下：运用你良好的判断。我的文字中并没有出现“永远不要做 X”或“Y 被认为是有害的”是有原因的。所有这些都是权衡取舍，并且这是你们程序猿的工作去决定在你的用例中哪个是可以接受的。我们目标只是尽可能的帮助你进行权衡。
 
@@ -493,7 +493,7 @@ fn main() {
 }
 ```
 
-这个例子中有几个新东西。第一个是使用了[`Option::ok_or`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.ok_or)组合。这是一个把`Option`转换为`Result`的方法。这个转换要求你指定当`Option`为`None`时的错误。就像我们见过的其他组合一样，它的定义是非常简单的：
+这个例子中有几个新东西。第一个是使用了[`Option::ok_or`](http://doc.rust-lang.org/std/option/enum.Option.html#method.ok_or)组合。这是一个把`Option`转换为`Result`的方法。这个转换要求你指定当`Option`为`None`时的错误。就像我们见过的其他组合一样，它的定义是非常简单的：
 
 ```rust
 fn ok_or<T, E>(option: Option<T>, err: E) -> Result<T, E> {
@@ -504,7 +504,7 @@ fn ok_or<T, E>(option: Option<T>, err: E) -> Result<T, E> {
 }
 ```
 
-另一个新使用的组合是[`Result::map_err`](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.map_err)。这就像`Result::map`，除了它映射一个函数到`Result`的 error 部分。如果`Result`是一个`Ok(...)`，那么它什么也不修改。
+另一个新使用的组合是[`Result::map_err`](http://doc.rust-lang.org/std/result/enum.Result.html#method.map_err)。这就像`Result::map`，除了它映射一个函数到`Result`的 error 部分。如果`Result`是一个`Ok(...)`，那么它什么也不修改。
 
 这里我们使用`map_err`是因为它对保证相同的错误类型（因为我们使用了`and_then`）是必要的。因为我们选择把`Option<String>`（来自`argv.nth(1)`）转换为`Result<String, String>`，我们也必须把来自`arg.parse()`的`ParseIntError`转换为`String`。
 
@@ -535,7 +535,7 @@ fn main() {
 }
 ```
 
-（附注：`AsRef<Path>`被使用是因为它与[`std::fs::File::open`有着相同的 bound](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)。这让我们可以用任何类型的字符串作为一个文件路径。）
+（附注：`AsRef<Path>`被使用是因为它与[`std::fs::File::open`有着相同的 bound](http://doc.rust-lang.org/std/fs/struct.File.html#method.open)。这让我们可以用任何类型的字符串作为一个文件路径。）
 
 这里可能出现三个不同错误：
 
@@ -543,7 +543,7 @@ fn main() {
 2. 从文件读数据出错。
 3. 将数据解析为数字出错。
 
-头两个错误被描述为[`std::io::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/struct.Error.html)类型。我们知道这些因为返回类型是[`std::fs::File::open`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)和[`std::io::Read::read_to_string`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/trait.Read.html#method.read_to_string)。（注意他们都使用了之前描述的[`Result`类型别名习惯](#the-result-type-alias-idiom)。如果你点击`Result`类型，你将会[看到这个类型别名](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)，以及底层的`io::Error`类型。）第三个问题被描述为[`std::num::ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)。特别的`io::Error`被广泛的用于标准库中。你会一次又一次的看到它。
+头两个错误被描述为[`std::io::Error`](http://doc.rust-lang.org/std/io/struct.Error.html)类型。我们知道这些因为返回类型是[`std::fs::File::open`](http://doc.rust-lang.org/std/fs/struct.File.html#method.open)和[`std::io::Read::read_to_string`](http://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_string)。（注意他们都使用了之前描述的[`Result`类型别名习惯](#the-result-type-alias-idiom)。如果你点击`Result`类型，你将会[看到这个类型别名](http://doc.rust-lang.org/std/io/type.Result.html)，以及底层的`io::Error`类型。）第三个问题被描述为[`std::num::ParseIntError`](http://doc.rust-lang.org/std/num/struct.ParseIntError.html)。特别的`io::Error`被广泛的用于标准库中。你会一次又一次的看到它。
 
 让我们着手重构`file_double`函数。为了让这个函数可以与程序的其他组件组合，它必须不能在上述错误情况下 panic。事实上，这意味着它在任何操作失败时应该返回一个错误。我们的问题是`file_double`的返回类型是`i32`，它并没有给我们一个有效的报告错误的途径。因此，我们必须以把返回类型`i32`改成别的什么的开始。
 
@@ -642,7 +642,7 @@ macro_rules! try {
 }
 ```
 
-（[实际的定义](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.try!.html)有一点复杂。我们会在后面详述。）
+（[实际的定义](http://doc.rust-lang.org/std/macro.try!.html)有一点复杂。我们会在后面详述。）
 
 使用`try!`宏让我们的最后的例子异常的简单。因为它为我们做了 case analysis 和提早返回，我们的代码更紧凑也更易于理解：
 
@@ -680,7 +680,7 @@ fn main() {
 
 第二个也是更重要的缺点是`String`是*不完整的*。也就是说，如果所有错误都转换成了字符串，那么传递给调用者的错误就变得完全不透明了。调用者对于一个`String`类型的错误所能作的唯一可行的事就是把它展示给用户。当然，通过观察字符串来确定错误的类型是不健壮的。（对于一个库来说这个缺点公认要比在例如程序中来的更重要。）
 
-例如，`io::Error`类型内嵌了一个[`io::ErrorKind`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/enum.ErrorKind.html)，它是一个表示在 IO 操作期间错误信息的*结构化类型*。这很重要因为你可能根据错误做出不同的反应。（例如，`BrokenPipe`错误可能意味着可以温和的退出程序，而`NotFound`则意味着应该返回一个错误码并向用户展示错误。）通过`io::ErrorKind`，调用者可以用 case analysis 检查错误的类型，这完全优于尝试从`String`中梳理错误的细节。
+例如，`io::Error`类型内嵌了一个[`io::ErrorKind`](http://doc.rust-lang.org/std/io/enum.ErrorKind.html)，它是一个表示在 IO 操作期间错误信息的*结构化类型*。这很重要因为你可能根据错误做出不同的反应。（例如，`BrokenPipe`错误可能意味着可以温和的退出程序，而`NotFound`则意味着应该返回一个错误码并向用户展示错误。）通过`io::ErrorKind`，调用者可以用 case analysis 检查错误的类型，这完全优于尝试从`String`中梳理错误的细节。
 
 除了在我们之前从文件读取一个数字的例子中使用`String`作为错误类型外，我们可以定义我们自己的错误类型来用结构化数据代表错误。我们尽量不丢掉底层错误的信息以防调用者想要检视细节。
 
@@ -730,11 +730,11 @@ fn main() {
 
 ## <a name="standard-library-traits-used-for-error-handling"></a>用于错误处理的标准库 trait
 
-标准库定义了两个完整 trait 用于错误处理：[`https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html`](std::error::Error)和[`std::convert::From`](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)。`Error`被专门设计为描述通用错误，`From` trait 更多的用于在两个不同类型值之间转换。
+标准库定义了两个完整 trait 用于错误处理：[`http://doc.rust-lang.org/std/error/trait.Error.html`](std::error::Error)和[`std::convert::From`](http://doc.rust-lang.org/std/convert/trait.From.html)。`Error`被专门设计为描述通用错误，`From` trait 更多的用于在两个不同类型值之间转换。
 
 ### <a name="the-error-trait"></a>`Error`trait
 
-`Error` trait [定义于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)：
+`Error` trait [定义于标准库中](http://doc.rust-lang.org/std/error/trait.Error.html)：
 
 ```rust
 use std::fmt::{Debug, Display};
@@ -818,7 +818,7 @@ impl error::Error for CliError {
 
 ### <a name="the-from-trait"></a>`From`trait
 
-`std::convert::From` trait [定义于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)：
+`std::convert::From` trait [定义于标准库中](http://doc.rust-lang.org/std/convert/trait.From.html)：
 
 <a name="code-from-def"></a>
 
@@ -828,7 +828,7 @@ trait From<T> {
 }
 ```
 
-非常简单吧？`From`很有用因为它给了我们一个通用的方式来处理从一个特定类型`T`到其他类型的转换（在这个例子中，“其他类型”是实现的主体，或者`Self`）。`From`的核心是[标准库提供的一系列实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)。
+非常简单吧？`From`很有用因为它给了我们一个通用的方式来处理从一个特定类型`T`到其他类型的转换（在这个例子中，“其他类型”是实现的主体，或者`Self`）。`From`的核心是[标准库提供的一系列实现](http://doc.rust-lang.org/std/convert/trait.From.html)。
 
 这里是几个展示`From`如何工作的小例子：
 
@@ -882,7 +882,7 @@ macro_rules! try {
 }
 ```
 
-这并不是它真正的定义。它的实际定义[位于标准库中](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.try!.html)：
+这并不是它真正的定义。它的实际定义[位于标准库中](http://doc.rust-lang.org/std/macro.try!.html)：
 
 <a name="code-try-def"></a>
 
@@ -938,7 +938,7 @@ fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, Box<Error>> {
 
 当结合所有这些东西，我们的代码不再受组合，`unwrap`调用或 case analysis 的困扰了。
 
-这里还剩一点东西：`Box<Error>`是不透明的。如果我们返回一个`Box<Error>`给调用者，调用者并不能（轻易地）观察底层错误类型。当然这种情形比`String`要好，因为调用者可以调用像[`description`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html#tymethod.description)和[`cause`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html#method.cause)这样的方法，不过这是有限制的：`Box<Error>`是不透明的。（附注：这并不是完全正确，因为 Rust 并没有运行时反射，这在某些场景是有用的不过[超出了本部分的范畴](https://crates.io/crates/error)。）
+这里还剩一点东西：`Box<Error>`是不透明的。如果我们返回一个`Box<Error>`给调用者，调用者并不能（轻易地）观察底层错误类型。当然这种情形比`String`要好，因为调用者可以调用像[`description`](http://doc.rust-lang.org/std/error/trait.Error.html#tymethod.description)和[`cause`](http://doc.rust-lang.org/std/error/trait.Error.html#method.cause)这样的方法，不过这是有限制的：`Box<Error>`是不透明的。（附注：这并不是完全正确，因为 Rust 并没有运行时反射，这在某些场景是有用的不过[超出了本部分的范畴](https://crates.io/crates/error)。）
 
 是时候重写我们的`CliError`类型并将一切连起来了。
 
@@ -1057,13 +1057,13 @@ impl From<num::ParseFloatError> for CliError {
 
 ### <a name="advice-for-library-writers"></a>给库编写者的建议
 
-如果你的库需要报告一些自定义错误，那么你可能应该定义你自己的错误类型。由你决定是否暴露它的表示（例如[`ErrorKind`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/enum.ErrorKind.html)）或者把它隐藏起来（例如[`ParseIntError`](https://github.com/rust-lang/rust/blob/master/src/doc/std/num/struct.ParseIntError.html)）。不过你怎么做，相比`String`表示多少提供一些关于错误的信息通常是好的实践。不过说实话，这根据使用情况大有不同。
+如果你的库需要报告一些自定义错误，那么你可能应该定义你自己的错误类型。由你决定是否暴露它的表示（例如[`ErrorKind`](http://doc.rust-lang.org/std/io/enum.ErrorKind.html)）或者把它隐藏起来（例如[`ParseIntError`](http://doc.rust-lang.org/std/num/struct.ParseIntError.html)）。不过你怎么做，相比`String`表示多少提供一些关于错误的信息通常是好的实践。不过说实话，这根据使用情况大有不同。
 
-最少，你可能应该实现[`Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)trait。这会给你的库的用户以[处理错误](#the-real-try-macro)的最小灵活性。实现`Error`trait 也意味着可以确保用户能够获得一个错误的字符串表示（因为它实现了`fmt::Debug`和`fmt::Display`）。
+最少，你可能应该实现[`Error`](http://doc.rust-lang.org/std/error/trait.Error.html)trait。这会给你的库的用户以[处理错误](#the-real-try-macro)的最小灵活性。实现`Error`trait 也意味着可以确保用户能够获得一个错误的字符串表示（因为它实现了`fmt::Debug`和`fmt::Display`）。
 
 不仅如此，为你的错误类型提供`From`实现也是很有用的。这允许你（库作者）和你的用户[组合更详细的错误](#composing-custom-error-types)。例如，[`csv::Error`](http://burntsushi.net/rustdoc/csv/enum.Error.html)提供了`io::Error`和`byteorder::Error`。
 
-最后，根据你的风格，你也许想要定义一个[`Result`类型别名](#the-result-type-alias-idiom)，尤其是如果你的库定义了一个单一的错误类型。这被用在了标准库的[`io::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/type.Result.html)和[`fmt::Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fmt/type.Result.html)中。
+最后，根据你的风格，你也许想要定义一个[`Result`类型别名](#the-result-type-alias-idiom)，尤其是如果你的库定义了一个单一的错误类型。这被用在了标准库的[`io::Result`](http://doc.rust-lang.org/std/io/type.Result.html)和[`fmt::Result`](http://doc.rust-lang.org/std/fmt/type.Result.html)中。
 
 ## <a name="case-study-a-program-to-read-population-data"></a>案例学习：一个读取人口数据的程序
 
@@ -1210,7 +1210,7 @@ fn main() {
 
 让我们概括下错误。我们可以从明显的开始：三个`unwrap`被调用的地方：
 
-1. [`File::open`](https://github.com/rust-lang/rust/blob/master/src/doc/std/fs/struct.File.html#method.open)可能返回[`io::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/io/struct.Error.html)。
+1. [`File::open`](http://doc.rust-lang.org/std/fs/struct.File.html#method.open)可能返回[`io::Error`](http://doc.rust-lang.org/std/io/struct.Error.html)。
 2. [`csv::Reader::decode`](http://burntsushi.net/rustdoc/csv/struct.Reader.html#method.decode)一次解码一行，而且[解码一个记录](http://burntsushi.net/rustdoc/csv/struct.DecodedRecords.html)（查看`Iterator`实现的关联类型`Item`）可能产生一个[`csv::Error`](http://burntsushi.net/rustdoc/csv/enum.Error.html)。
 
 3. 如果`row.population`是`None`，那么调用`expect`会 panic。
@@ -1331,7 +1331,7 @@ fn search<P: AsRef<Path>>
 
 现在我们用`try!(x)`代替了`x.unwrap()`。因为我们的函数返回一个`Result<T, E>`，`try!`宏在出现错误时会提早返回。
 
-代码中还有另一个大的需要注意的地方：我们用了`Box<Error + Send + Sync>`而不是`Box<Error>`。这么做是因为我们可以把一个字符串转换为一个错误类型。我们需要这些额外的 bound，这样我们就可以使用[相应的`From`实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)了：
+代码中还有另一个大的需要注意的地方：我们用了`Box<Error + Send + Sync>`而不是`Box<Error>`。这么做是因为我们可以把一个字符串转换为一个错误类型。我们需要这些额外的 bound，这样我们就可以使用[相应的`From`实现](http://doc.rust-lang.org/std/convert/trait.From.html)了：
 
 ```rust
 // We are making use of this impl in the code above, since we call `From::from`
@@ -1559,14 +1559,14 @@ match search(&args.arg_data_path, &args.arg_city) {
 
 因为这个章节很长，有一个 Rust 错误处理的快速总结是很有帮助的。这里有很多好的“拇指规则”。他们是强调而非教条。这里每一个建议都可能有适当的理由予以反驳！
 
-* 如果你在写小的事例代码这时错误处理显得负担过重，可能使用`unwrap`（[`Result::unwrap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html#method.unwrap)，[`Option::unwrap`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.unwrap)，或是更可取的[`Option::expect`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html#method.expect)）是足够的。你的代码的客户应该知道如何正确的处理错误。（如果他们并不知道，教会他们吧！）
+* 如果你在写小的事例代码这时错误处理显得负担过重，可能使用`unwrap`（[`Result::unwrap`](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap)，[`Option::unwrap`](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap)，或是更可取的[`Option::expect`](http://doc.rust-lang.org/std/option/enum.Option.html#method.expect)）是足够的。你的代码的客户应该知道如何正确的处理错误。（如果他们并不知道，教会他们吧！）
 
 * 如果你在 hack（quick 'n' dirty）程序，不要为你使用`unwrap`而感羞愧。不过你被警告过了：如果别人踩到了坑，不要因为他们对糟糕的错误信息火冒三丈而感到惊讶！
 
-* 如果你在 hack 程序并对 panic 感到羞愧，那么使用`String`或者`Box<Error + Send + Sync>`作为你的错误类型（选择`Box<Error + Send + Sync>`是因为它有[可用的`From`实现](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)）。
+* 如果你在 hack 程序并对 panic 感到羞愧，那么使用`String`或者`Box<Error + Send + Sync>`作为你的错误类型（选择`Box<Error + Send + Sync>`是因为它有[可用的`From`实现](http://doc.rust-lang.org/std/convert/trait.From.html)）。
 
-* 否则，在程序中，定义你自己的错误类型并实现合适的[`From`](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)和[`Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html)来让[`try!`](https://github.com/rust-lang/rust/blob/master/src/doc/std/macro.try!.html)宏变得更工程化。
+* 否则，在程序中，定义你自己的错误类型并实现合适的[`From`](http://doc.rust-lang.org/std/convert/trait.From.html)和[`Error`](http://doc.rust-lang.org/std/error/trait.Error.html)来让[`try!`](http://doc.rust-lang.org/std/macro.try!.html)宏变得更工程化。
 
-* 如果你在写一个库并且它可能产生错误，定义你自己的错误类型并实现[`std::error::Error`](https://github.com/rust-lang/rust/blob/master/src/doc/std/error/trait.Error.html) trait。如果可以的话，实现[`From`](https://github.com/rust-lang/rust/blob/master/src/doc/std/convert/trait.From.html)来让你的库代码和调用者的代码更加容易编写。（因为 Rust 的一致性规则，调用者不能为你的错误类型实现`From`，所以你的库应该实现。）
+* 如果你在写一个库并且它可能产生错误，定义你自己的错误类型并实现[`std::error::Error`](http://doc.rust-lang.org/std/error/trait.Error.html) trait。如果可以的话，实现[`From`](http://doc.rust-lang.org/std/convert/trait.From.html)来让你的库代码和调用者的代码更加容易编写。（因为 Rust 的一致性规则，调用者不能为你的错误类型实现`From`，所以你的库应该实现。）
 
-* 学习定义于[`Option`](https://github.com/rust-lang/rust/blob/master/src/doc/std/option/enum.Option.html)和[`Result`](https://github.com/rust-lang/rust/blob/master/src/doc/std/result/enum.Result.html)中的组合。只使用他们有时可能比较累人，不过我个人发现合理的结合`try!`和组合是比较诱人的。`and_then`，`map`和`unwrap_or`是我们的最爱。
+* 学习定义于[`Option`](http://doc.rust-lang.org/std/option/enum.Option.html)和[`Result`](http://doc.rust-lang.org/std/result/enum.Result.html)中的组合。只使用他们有时可能比较累人，不过我个人发现合理的结合`try!`和组合是比较诱人的。`and_then`，`map`和`unwrap_or`是我们的最爱。

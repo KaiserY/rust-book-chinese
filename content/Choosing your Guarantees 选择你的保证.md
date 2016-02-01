@@ -14,7 +14,7 @@ Rust 标准库中有多种“wrapper 类型”的抽象，他们代表了大量�
 
 ### `Box<T>`
 
-[Box\<T\>](https://doc.rust-lang.org/stable/std/boxed/struct.Box.html)是一个“自我拥有的”，或者“装箱”的指针。因为它可以维持引用和包含的数据，它是数据的唯一的拥有者。特别的，当执行类似如下代码时：
+[Box\<T\>](http://doc.rust-lang.org/stable/std/boxed/struct.Box.html)是一个“自我拥有的”，或者“装箱”的指针。因为它可以维持引用和包含的数据，它是数据的唯一的拥有者。特别的，当执行类似如下代码时：
 
 ```rust
 let x = Box::new(1);
@@ -43,7 +43,7 @@ let y = x;
 ### `Rc<T>`
 这是第一个我们将会介绍到的有运行时开销的包装类型。
 
-[Rc\<T\>](https://doc.rust-lang.org/stable/std/rc/struct.Rc.html)是一个引用计数指针。换句话说，这让我们拥有相同数据的多个“有所有权”的指针，并且数据在所有指针离开作用域后将被释放（析构函数将会执行）。
+[Rc\<T\>](http://doc.rust-lang.org/stable/std/rc/struct.Rc.html)是一个引用计数指针。换句话说，这让我们拥有相同数据的多个“有所有权”的指针，并且数据在所有指针离开作用域后将被释放（析构函数将会执行）。
 
 在内部，它包含一个共享的“引用计数”（也叫做“refcount”），每次`Rc`被拷贝时递增，而每次`Rc`离开作用域时递减。`Rc<T>`的主要职责是确保共享的数据的析构函数被调用。
 
@@ -69,13 +69,13 @@ let y = x;
 
 `Cell`提供内部可变性。换句话说，他们包含的数据可以被修改，即便是这个类型并不能以可变形式获取（例如，当他们位于一个`&`指针或`Rc<T>`之后时）。
 
-[对此`cell`模块的文档有一个非常好的解释](https://doc.rust-lang.org/stable/std/cell/)。
+[对此`cell`模块的文档有一个非常好的解释](http://doc.rust-lang.org/stable/std/cell/)。
 
 这些类型*经常*在结构体字段中出现，不过他们也可能在其他一些地方找到。
 
 ### `Cell<T>`
 
-[Cell\<T\>](https://doc.rust-lang.org/stable/std/cell/struct.Cell.html)是一个提供了零开销内部可变性的类型，不过只用于`Copy`类型。因为编译器知道它包含的值对应的所有数据都位于栈上，所以并没有通过简单的替换数据而导致任何位于引用之后的数据泄露（或者更糟！）的担心。
+[Cell\<T\>](http://doc.rust-lang.org/stable/std/cell/struct.Cell.html)是一个提供了零开销内部可变性的类型，不过只用于`Copy`类型。因为编译器知道它包含的值对应的所有数据都位于栈上，所以并没有通过简单的替换数据而导致任何位于引用之后的数据泄露（或者更糟！）的担心。
 
 然而使用这个封装仍有可能违反你自己的不可变性，所以谨慎的使用它。它是一个很好的标识，表明一些数据块是可变的并且可能在你第一次读取它和当你想要使用它时的值并不一样。
 
@@ -121,7 +121,7 @@ println!("{}", x);
 
 ### `RefCell<T>`
 
-[RefCell\<T\>](https://doc.rust-lang.org/stable/std/cell/struct.RefCell.html)也提供了内部可变性，不过并不限制为`Copy`类型。
+[RefCell\<T\>](http://doc.rust-lang.org/stable/std/cell/struct.RefCell.html)也提供了内部可变性，不过并不限制为`Copy`类型。
 
 相对的，它有运行时开销。`RefCell<T>`在运行时使用了读写锁模式，不像`&T`/`&mut T`那样在编译时执行。这通过`borrow()`和`borrow_mut()`函数来实现，它修改一个内部引用计数并分别返回可以不可变的和可变的解引用的智能指针。当智能指针离开作用域引用计数将被恢复。通过这个系统，我们可以动态的确保当有一个有效的可变借用时绝不会有任何其他有效的借用。如果程序猿尝试创建一个这样的借用，线程将会恐慌。
 
@@ -141,7 +141,7 @@ let x = RefCell::new(vec![1,2,3,4]);
 
 与`Cell`相似，它主要用于难以或不可能满足借用检查的情况。大体上我们知道这样的改变不会发生在一个嵌套的形式中，不过检查一下是有好处的。
 
-对于大型的，复杂的程序，把一些东西放入`RefCell`来将事情变简单是有用的。例如，Rust编译器内部的[`ctxt`结构体](https://doc.rust-lang.org/stable/rustc/middle/ty/struct.ctxt.html)中的很多map都在这个封装中。他们只会在创建时被修改一次（但并不是正好在初始化后），或者在明显分开的地方多次多次修改。然而，因为这个结构体被广泛的用于各个地方，有效的组织可变和不可变的指针将会是困难的（也许是不可能的），并且可能产生大量的难以扩展的`&`指针。换句话说，`RefCell`提供了一个廉价（并不是零开销）的方式来访问它。之后，如果有人增加一些代码来尝试修改一个已经被借用的cell时，这将会产生（通常是决定性的）一个恐慌，并会被追溯到那个可恶的借用上。
+对于大型的，复杂的程序，把一些东西放入`RefCell`来将事情变简单是有用的。例如，Rust编译器内部的[`ctxt`结构体](http://doc.rust-lang.org/stable/rustc/middle/ty/struct.ctxt.html)中的很多map都在这个封装中。他们只会在创建时被修改一次（但并不是正好在初始化后），或者在明显分开的地方多次多次修改。然而，因为这个结构体被广泛的用于各个地方，有效的组织可变和不可变的指针将会是困难的（也许是不可能的），并且可能产生大量的难以扩展的`&`指针。换句话说，`RefCell`提供了一个廉价（并不是零开销）的方式来访问它。之后，如果有人增加一些代码来尝试修改一个已经被借用的cell时，这将会产生（通常是决定性的）一个恐慌，并会被追溯到那个可恶的借用上。
 
 相似的，在Servo的DOM中有很多可变量，大部分对于一个DOM类型都是本地的，不过有一些交错在DOM中并修改了很多内容。使用`RefCell`和`Cell`来保护所有的变化可以让我们免于担心到处都是的可变性，并且同时也表明了何处*正在*发生变化。
 
@@ -164,7 +164,7 @@ let x = RefCell::new(vec![1,2,3,4]);
 
 ### `Arc<T>`
 
-[Arc\<T\>](https://doc.rust-lang.org/stable/std/sync/struct.Arc.html)就是一个使用原子引用计数版本的`Rc<T>`（*Atomic reference count*，因此是“Arc”）。它可以在线程间自由的传递。
+[Arc\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.Arc.html)就是一个使用原子引用计数版本的`Rc<T>`（*Atomic reference count*，因此是“Arc”）。它可以在线程间自由的传递。
 
 C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是可以改变的。为了语义上与C++的形式相似，我们应该使用`Arc<Mutex<T>>`，`Arc<RwLock<T>>`，或者`Arc<UnsafeCell<T>>`[^4]。最后一个应该只被用在我们能确定使用它并不会造成内存不安全性的情况下。记住写入一个结构体不是一个原子操作，并且很多像`vec.push()`这样的函数可以在内部重新分配内存并产生不安全的行为，所以即便是单一环境也不足以证明`UnsafeCell`是安全的。
 
@@ -180,7 +180,7 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 ### `Mutex<T>`和`RwLock<T>`
 
-[Mutex\<T\>](https://doc.rust-lang.org/stable/std/sync/struct.Mutex.html)和[RwLock\<T\>](https://doc.rust-lang.org/stable/std/sync/struct.RwLock.html)通过RAII guard（guard是一类直到析构函数被调用时能保持一些状态的对象）提供了互斥功能。对于这两个类型，mutex直到我们调用`lock()`之前它都是无效的，此时直到我们获取锁这个线程都会被阻塞，同时它会返回一个guard。这个guard可以被用来访问它的内部数据（可变的），而当guard离开作用域锁将被释放。
+[Mutex\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.Mutex.html)和[RwLock\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.RwLock.html)通过RAII guard（guard是一类直到析构函数被调用时能保持一些状态的对象）提供了互斥功能。对于这两个类型，mutex直到我们调用`lock()`之前它都是无效的，此时直到我们获取锁这个线程都会被阻塞，同时它会返回一个guard。这个guard可以被用来访问它的内部数据（可变的），而当guard离开作用域锁将被释放。
 
 ```rust
 {

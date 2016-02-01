@@ -160,7 +160,7 @@ pub fn uncompress(src: &[u8]) -> Option<Vec<u8>> {
 ## 析构函数
 外部库经常把资源的所有权传递给调用函数。当这发生时，我们必须使用Rust析构函数来提供安全性和确保释放了这些资源（特别是在恐慌的时候）。
 
-关于析构函数的更多细节，请看[`Drop`trait](https://doc.rust-lang.org/stable/std/ops/trait.Drop.html)
+关于析构函数的更多细节，请看[`Drop`trait](http://doc.rust-lang.org/stable/std/ops/trait.Drop.html)
 
 ## 在Rust函数中处理C回调（Callbacks from C code to Rust functions）
 一些外部库要求使用回调来向调用者反馈它们的当前状态或者即时数据。可以传递在Rust中定义的函数到外部库中。要求是这个回调函数被标记为`extern`并使用正确的调用约定来确保它可以在C代码中被调用。

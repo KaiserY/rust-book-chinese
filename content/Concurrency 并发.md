@@ -167,7 +167,7 @@ fn main() {
 
 注意`i`的值被限制（拷贝）到了闭包里并不能在线程间共享。
 
-同时注意到[Mutex](https://github.com/rust-lang/rust/blob/master/src/doc/std/sync/struct.Mutex.html)的[lock](https://github.com/rust-lang/rust/blob/master/src/doc/std/sync/struct.Mutex.html#method.lock)方法有如下签名：
+同时注意到[Mutex](http://doc.rust-lang.org/std/sync/struct.Mutex.html)的[lock](http://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock)方法有如下签名：
 
 ```rust
 fn lock(&self) -> LockResult<MutexGuard<T>>

@@ -456,6 +456,6 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured
 
 现在我们运行了3种测试！注意文档测试的名称：`_0`生成为模块测试，而`add_two_0`函数测试。如果你添加更多用例的话它们会像`add_two_1`这样自动加一。
 
-我们还没有讲到所有编写文档测试的所有细节。关于更多，请看[文档章节](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/documentation.html)。
+我们还没有讲到所有编写文档测试的所有细节。关于更多，请看[文档章节](README 介绍.md)。
 
-最后再强调一次：文档测试不能在二进制 crate 中运行。关于文件相关的细节请看[crate 和模块](https://github.com/rust-lang/rust/blob/master/src/doc/trpl/crates-and-modules.html)部分。
+最后再强调一次：文档测试不能在二进制 crate 中运行。关于文件相关的细节请看[crate 和模块](Crates and Modules crate 和模块.md)部分。

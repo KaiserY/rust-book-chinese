@@ -107,7 +107,7 @@ println!("The second name is: {}", names[1]);
 
 就跟大部分编程语言一个样，下标从0开始，所以第一个元素是`names[0]`，第二个是`names[1]`。上面的例子会打印出`The second name is: Brian`。如果你尝试使用一个不在数组中的下标，你会得到一个错误：数组访问会在运行时进行边界检查。这种不适当的访问时其它系统编程语言中很多bug的根源。
 
-你可以在[标准库文档](https://doc.rust-lang.org/stable/std/primitive.array.html)中找到更多关于`array`的文档。
+你可以在[标准库文档](http://doc.rust-lang.org/stable/std/primitive.array.html)中找到更多关于`array`的文档。
 
 ## 切片（Slices）
 一个*切片*（*slice*）是一个数组的引用（或者“视图”）。它有利于安全，有效的访问数组的一部分而不用进行拷贝。比如，你可能只想要引用读入到内存的文件中的一行。原理上，片段并不是直接创建的，而是引用一个已经存在的变量。片段有预定义的长度，可以是可变也可以是不可变的。
@@ -124,13 +124,13 @@ let middle = &a[1..4]; // A slice of a: just the elements 1, 2, and 3
 
 片段拥有`&[T]`类型。当我们涉及到[泛型](Generics 泛型.md)时会讨论这个`T`。
 
-你可以在[标准库文档](https://doc.rust-lang.org/stable/std/primitive.slice.html)中找到更多关于`slices`的文档。
+你可以在[标准库文档](http://doc.rust-lang.org/stable/std/primitive.slice.html)中找到更多关于`slices`的文档。
 
 
 ## `str`
 Rust的`str`类型是最原始的字符串类型。作为一个[不定长类型](Unsized Types 不定长类型.md)，它本身并不是非常有用，不过当它用在引用后是就有用了，例如[&str](Strings 字符串.md)。如你所见，我们到时候再讲。
 
-你可以在[标准库文档](https://doc.rust-lang.org/stable/std/primitive.str.html)中找到更多关于`str`的文档。
+你可以在[标准库文档](http://doc.rust-lang.org/stable/std/primitive.str.html)中找到更多关于`str`的文档。
 
 ## 元组（Tuples）
 元组（tuples）是固定大小的有序列表。如下：
@@ -190,7 +190,7 @@ println!("x is {}", x);
 
 就像数组索引，它从`0`开始，不过也不像数组索引，它使用`.`，而不是`[]`。
 
-你可以在[标准库文档](https://doc.rust-lang.org/stable/std/primitive.tuple.html)中找到更多关于`tuple`的文档。
+你可以在[标准库文档](http://doc.rust-lang.org/stable/std/primitive.tuple.html)中找到更多关于`tuple`的文档。
 
 ## 函数
 函数也有一个类型！它们看起来像这样：
