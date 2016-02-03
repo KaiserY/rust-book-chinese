@@ -78,7 +78,7 @@ Bar::
 f(&b)
 ```
 
-当我们使用[方法语法](http://doc.rust-lang.org/nightly/book/method-syntax.html)调用像`b.f()`这样的方法时，如果`f()`需要`&self`，Rust实际上会自动地把`b`借用为`&self`。而在这个例子中，Rust并不会这么做，所以我们需要显式地传递一个`&b`。
+当我们使用[方法语法](Method Syntax 方法语法.md)调用像`b.f()`这样的方法时，如果`f()`需要`&self`，Rust实际上会自动地把`b`借用为`&self`。而在这个例子中，Rust并不会这么做，所以我们需要显式地传递一个`&b`。
 
 ## 尖括号形式（Angle-bracket Form）
 我们刚才讨论的通用函数调用语法的形式：

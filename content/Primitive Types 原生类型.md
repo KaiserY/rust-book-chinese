@@ -15,7 +15,7 @@ let x = true;
 let y: bool = false;
 ```
 
-布尔型通常用在[if语句](http://doc.rust-lang.org/nightly/book/if.html)中。
+布尔型通常用在[if语句](If If语句.md)中。
 
 你可以在[标准库文档](http://doc.rust-lang.org/nightly/std/primitive.bool.html)中找到更多关于`bool`的文档。
 

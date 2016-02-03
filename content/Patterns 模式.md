@@ -4,7 +4,7 @@
 > <br>
 > commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
-模式在Rust中十分常见。我们在[变量绑定](http://doc.rust-lang.org/nightly/book/variable-bindings.html)，[匹配语句](http://doc.rust-lang.org/nightly/book/match.html)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
+模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配语句](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
 
 快速回顾：你可以直接匹配常量，并且`_`作为“任何”类型：
 

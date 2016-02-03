@@ -72,7 +72,7 @@ mod foo {
 如果`a`通过`cfg`属性设置了的话这与`#[b]`相同，否则不起作用。
 
 # cfg!
-`cfg!`[语法扩展](http://doc.rust-lang.org/nightly/book/compiler-plugins.html)也让你可以在你的代码中使用这类标记：
+`cfg!`[语法扩展](Compiler Plugins 编译器插件.md)也让你可以在你的代码中使用这类标记：
 
 ```rust
 if cfg!(target_os = "macos") || cfg!(target_os = "ios") {

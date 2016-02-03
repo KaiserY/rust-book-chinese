@@ -10,7 +10,7 @@ Rust有一个用`const`关键字定义常量的方法：
 const N: i32 = 5;
 ```
 
-与[let](http://doc.rust-lang.org/nightly/book/variable-bindings.html)绑定不同，你必须标注一个`const`的类型。
+与[let](Variable Bindings 变量绑定.md)绑定不同，你必须标注一个`const`的类型。
 
 常量贯穿于整个程序的生命周期。更具体的，Rust中的常量并没有固定的内存地址。这是因为实际上它们会被内联到用到它们的地方。为此对同一常量的引用并不能保证引用到相同的内存地址。
 
@@ -24,9 +24,9 @@ Rust以静态量的方式提供了类似“全局变量”的功能。它们与�
 static N: i32 = 5;
 ```
 
-与[let](http://doc.rust-lang.org/nightly/book/variable-bindings.html)绑定不同，你必须标注一个`static`的类型。
+与[let](Variable Bindings 变量绑定.md)绑定不同，你必须标注一个`static`的类型。
 
-静态量贯穿于整个程序的生命周期，因此任何存储在常量中的引用有一个[`'static`生命周期](http://doc.rust-lang.org/nightly/book/lifetimes.html)：
+静态量贯穿于整个程序的生命周期，因此任何存储在常量中的引用有一个[`'static`生命周期](Lifetimes 生命周期.md)：
 
 ```rust
 static NAME: &'static str = "Steve";
@@ -39,7 +39,7 @@ static NAME: &'static str = "Steve";
 static mut N: i32 = 5;
 ```
 
-因为这是可变的，一个线程可能在更新`N`同时另一个在读取它，导致内存不安全。因此访问和改变一个`static mut`是[不安全（unsafe）](http://doc.rust-lang.org/nightly/book/unsafe.html)的，因此必须在`unsafe`块中操作：
+因为这是可变的，一个线程可能在更新`N`同时另一个在读取它，导致内存不安全。因此访问和改变一个`static mut`是[不安全（unsafe）](`unsafe` 不安全代码.md)的，因此必须在`unsafe`块中操作：
 
 ```rust
 # static mut N: i32 = 5;
