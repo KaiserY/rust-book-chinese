@@ -167,7 +167,7 @@ for x in 0..10 {
 }
 ```
 
-`break`和`continue`在`while`循环和[`for`循环](http://doc.rust-lang.org/nightly/book/for-loops.html)中都有效。
+`break`和`continue`在`while`循环和[`for`循环](#for)中都有效。
 
 ## 循环标签（Loop labels）
 你也许会遇到这样的情形，当你有嵌套的循环而希望指定你的哪一个`break`或`continue`该起作用。就像大多数语言，默认`break`或`continue`将会作用于最内层的循环。当你想要一个`break`或`continue`作用于一个外层循环，你可以使用标签来指定你的`break`或`continue`语句作用的循环。如下代码只会在`x`和`y`都为奇数时打印他们：

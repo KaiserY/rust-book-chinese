@@ -4,7 +4,7 @@
 > <br>
 > commit 5b9dd6a016adb5ed67e150643fb7e21dcc916845
 
-“Vector”是一个动态或“可增长”的数组，被实现为标准库类型[Vec<T>](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](http://doc.rust-lang.org/nightly/book/generics.html)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
+“Vector”是一个动态或“可增长”的数组，被实现为标准库类型[Vec<T>](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](Generics 泛型.md)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
 
 ```rust
 let v = vec![1, 2, 3, 4, 5]; // v: Vec<i32>

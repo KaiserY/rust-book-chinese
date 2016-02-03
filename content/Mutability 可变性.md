@@ -19,9 +19,9 @@ let mut x = 5;
 x = 6; // no problem!
 ```
 
-这是一个可变的[变量绑定](http://doc.rust-lang.org/nightly/book/variable-bindings.html)。当一个绑定是可变的，它意味着你可以改变它指向的内容。所以在上面的例子中，`x`的值并没有多大的变化，不过这个绑定从一个`i32`变成了另外一个。
+这是一个可变的[变量绑定](Variable Bindings 变量绑定.md)。当一个绑定是可变的，它意味着你可以改变它指向的内容。所以在上面的例子中，`x`的值并没有多大的变化，不过这个绑定从一个`i32`变成了另外一个。
 
-如果你想改变绑定指向的东西，你将会需要一个[可变引用](http://doc.rust-lang.org/nightly/book/references-and-borrowing.html)：
+如果你想改变绑定指向的东西，你将会需要一个[可变引用](References and Borrowing 引用和借用.md)：
 
 ```rust
 let mut x = 5;
@@ -39,7 +39,7 @@ let mut y = &mut x;
 
 现在`y`可以绑定到另外一个值，并且它引用的值也可以改变。
 
-很重要的一点是`mut`是[模式](http://doc.rust-lang.org/nightly/book/patterns.html)的一部分，所以你可以这样做：
+很重要的一点是`mut`是[模式](Patterns 模式.md)的一部分，所以你可以这样做：
 
 ```rust
 let (mut x, y) = (5, 6);
@@ -60,7 +60,7 @@ let y = x.clone();
 
 当我们调用`clone()`时，`Arc<T>`需要更新引用计数。以为你并未使用任何`mut`，`x`是一个不可变绑定，并且我们也没有取得`&mut 5`或者什么。那么发生了什么呢？
 
-为了解释这些，我们不得不回到Rust指导哲学的核心，内存安全，和Rust用以保证它的机制，[所有权](http://doc.rust-lang.org/nightly/book/ownership.html)系统，和更具体的[借用](http://doc.rust-lang.org/nightly/book/borrowing.html#The-Rules)：
+为了解释这些，我们不得不回到Rust指导哲学的核心，内存安全，和Rust用以保证它的机制，[所有权](Ownership 所有权.md)系统，和更具体的[借用](Borrow and AsRef Borrow 和 AsRef.md#borrow)：
 
 > 你可能有这两种类型借用的其中一个，但不同同时拥有：
 
