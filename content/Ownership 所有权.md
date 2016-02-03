@@ -30,7 +30,7 @@ fn foo() {
 }
 ```
 
-当`v`进入作用域，一个新的[Vec<T>](http://doc.rust-lang.org/stable/std/vec/struct.Vec.html)被创建，向量（vector）也在[堆](The Stack and the Heap 栈和堆.md)上为它的3个元素分配了空间。当`v`在`foo()`的末尾离开作用域，Rust将会清理掉与向量（vector）相关的一切，甚至是堆上分配的内存。这在作用域的结尾是一定（deterministically）会发生的。
+当`v`进入作用域，一个新的[`Vec<T>`](http://doc.rust-lang.org/stable/std/vec/struct.Vec.html)被创建，向量（vector）也在[堆](The Stack and the Heap 栈和堆.md)上为它的3个元素分配了空间。当`v`在`foo()`的末尾离开作用域，Rust将会清理掉与向量（vector）相关的一切，甚至是堆上分配的内存。这在作用域的结尾是一定（deterministically）会发生的。
 
 我们将会在本章的后面详细介绍[vector](Vectors.md)；这里我们只是用它来作为一个在运行时在堆上分配内存的类型的例子。他们表现起来像[数组](Primitive Types 原生类型.md#数组)，除了通过`push()`更多元素他们的大小会改变。
 
