@@ -138,7 +138,7 @@ $ rustc --version
 
 如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。
 
-如果还是搞不定，这里有几个地方你可以获取帮助。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust)访问位于 irc.mozilla.org 的 #rust IRC频道 。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
+如果还是搞不定，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust)访问位于 irc.mozilla.org 的 #rust IRC频道 。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
 
 安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。在 UNIX 系统上，位置是`/usr/local/share/doc/rust`。在Windows，它位于你 Rust 安装位置的`share/doc`文件夹。
 
