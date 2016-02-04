@@ -35,9 +35,7 @@ let x: Vec<u32> = {
 # assert_eq!(x, [1, 2, 3]);
 ```
 
-我们可以使用宏来实现这么一个简写：[^actual]
-
-[^actual]：`vec!`在 libcollections 中的实际定义跟这里的表现并不相同，出于效率和复用的考虑。
+我们可以使用宏来实现这么一个简写：[^实际上]
 
 ```rust
 macro_rules! vec {
@@ -593,4 +591,4 @@ match x {
 如果Rust宏系统不能做你想要的，你可能想要写一个[编译器插件](Compiler Plugins 编译器插件.md)。与`macro_rules!`宏相比，它能做更多的事，接口也更不稳定，并且bug将更难以追踪。相反你得到了可以在编译器中运行任意Rust代码的灵活性。为此语法扩展插件有时被称为*宏程序*（*procedural macros*）。
 
 ---
-1. 在libcollections中的`vec!`的实际定义与我们在这展示的有所不同，出于效率和可重用性的考虑。
+[^实际上]: `vec!`在 libcollections 中的实际定义跟这里的表现并不相同，出于效率和复用的考虑。
