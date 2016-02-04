@@ -433,7 +433,7 @@ mod foo {
 # fn foo() {}
 ~~~
 
-就是
+在一个Markdown文件中，就是：
 
 ~~~markdown
 # Examples
@@ -445,7 +445,7 @@ let five = Rc::new(5);
 ```
 ~~~
 
-当在一个Markdown文件中。不过这里有个窍门：Markdown文件需要有一个像这样的标题：
+不过有个窍门：Markdown文件需要有一个像这样的标题：
 
 ```markdown
 % The title

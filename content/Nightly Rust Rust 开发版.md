@@ -59,4 +59,4 @@ rustc 1.0.0-nightly (f11f3e7ba 2015-01-04) (built 2015-01-06)
 
 如果你做到了，那么Rust已经正确安装！此处应有掌声！
 
-如果你遇到什么错误，这里有几个地方你可以获取帮助。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust)访问[Rust IRC频道 irc.mozilla.org](irc://irc.mozilla.org/#rust)。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它的地方有[the /r/rust subreddit](http://www.reddit.com/r/rust)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
+如果你遇到什么错误，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust)访问[Rust IRC频道 irc.mozilla.org](irc://irc.mozilla.org/#rust)。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它的地方有[the /r/rust subreddit](http://www.reddit.com/r/rust)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。

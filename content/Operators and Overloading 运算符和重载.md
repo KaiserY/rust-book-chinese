@@ -4,7 +4,7 @@
 > <br>
 > commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
-Rust 允许有限形式的运算符重载。这里有特定的运算符可以被重载。为了支持一个类型间特定的运算符，这里有一个你可以实现的特定的特性，它接着重载运算符。
+Rust 允许有限形式的运算符重载。特定的运算符可以被重载。要支持一个类型间特定的运算符，你可以实现一个的特定的重载运算符的trait。
 
 例如，`+`运算符可以通过`Add`特性重载：
 
@@ -37,7 +37,7 @@ fn main() {
 
 在`main`中，我们可以对我们的两个`Point`用`+`号，因为我们已经为`Point`实现了`Add<Output=Point>`。
 
-这里有一系列可以这样被重载的运算符，并且所有与之相关的特性都在[`std::ops`](http://doc.rust-lang.org/stable/std/ops/)模块中。查看它的文档来获取完整的列表。
+有一系列可以这样被重载的运算符，并且所有与之相关的trait都在[`std::ops`](http://doc.rust-lang.org/stable/std/ops/)模块中。查看它的文档来获取完整的列表。
 
 实现这些特性要遵循一个模式。让我们仔细看看[`Add`](http://doc.rust-lang.org/stable/std/ops/trait.Add.html)：
 

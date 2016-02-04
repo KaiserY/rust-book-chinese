@@ -250,7 +250,7 @@ fn main() {
 
 （注意`unwrap_or`是标准库中的`Option<T>`[定义的一个方法](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or)，所以这里我们使用它而不是我们上面定义的独立的函数。别忘了看看更通用的[`unwrap_or_else`](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or_else)方法。）
 
-这里有另一个我们认为值得特别注意的 combinator：`and_then`。它让我们更容易的组合不同的承认不存在的可能性的计算。例如，这一部分的很多代码是关于找到一个给定文件的扩展名的。为此，你首先需要一个通常截取自文件路径的文件名。虽然大部分文件路径都有一个文件名，但并不是都有。例如，`.`，`..`，`/`。
+还有另一个我们认为值得特别注意的 组合：`and_then`。它让我们更容易的组合不同的承认不存在的可能性的计算。例如，这一部分的很多代码是关于找到一个给定文件的扩展名的。为此，你首先需要一个通常截取自文件路径的文件名。虽然大部分文件路径都有一个文件名，但并不是都有。例如，`.`，`..`，`/`。
 
 所以，我们面临着从一个给定的文件路径找出一个扩展名的挑战。让我们从显式 case analysis 开始：
 
@@ -410,7 +410,7 @@ fn main() {
 }
 ```
 
-常见的组合`Result`都有，包括[unwrap_or](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or)和[and_then](http://doc.rust-lang.org/std/result/enum.Result.html#method.and_then)。另外，因为`Result`有第二个类型参数，这里有只影响错误类型的组合，例如[map_err](http://doc.rust-lang.org/std/result/enum.Result.html#method.map_err)（相对于`map`）和[or_else](http://doc.rust-lang.org/std/result/enum.Result.html#method.or_else)（相对于`and_then`）。
+常见的组合`Result`都有，包括[unwrap_or](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap_or)和[and_then](http://doc.rust-lang.org/std/result/enum.Result.html#method.and_then)。另外，因为`Result`有第二个类型参数，所以有一些只影响错误类型的组合，例如[map_err](http://doc.rust-lang.org/std/result/enum.Result.html#method.map_err)（相对于`map`）和[or_else](http://doc.rust-lang.org/std/result/enum.Result.html#method.or_else)（相对于`and_then`）。
 
 #### <a name="the-result-type-alias-idiom"></a>`Result`类型别名习惯
 
@@ -580,7 +580,7 @@ fn main() {
 
 这些代码看起来有点难以理解。在能轻松编写这样的代码前可能需要更多一些实践。我们写代码的方式遵循*跟着类型走（following the types）*。一旦我们把`file_double `的返回类型改为`Result<i32, String>`，我们就不得不开始寻找正确的组合。在这个例子中，我们只用到了三个不同的组合：`and_then`，`map`和`map_err`。
 
-`and_then`被用来连接多个计算，其中每一个都有可能返回一个错误。在打开文件后，这还有另外两个可能失败的计算：从文件读取和把内容解析成数字。相应的这里有两个`and_then`的调用。
+`and_then`被用来连接多个计算，其中每一个都有可能返回一个错误。在打开文件后，还有另外两个可能失败的计算：从文件读取和把内容解析成数字。相应地，有两个`and_then`的调用。
 
 `map`用来把一个函数用于`Result`的`Ok(...)`值。例如，最后一个`map`调用把`Ok(...)`值（它是一个`i32`）乘以`2`。如果在这之前出现了错误，这里的操作会被省略，因为`map`是这么定义的。
 
@@ -1067,7 +1067,7 @@ impl From<num::ParseFloatError> for CliError {
 
 ## <a name="case-study-a-program-to-read-population-data"></a>案例学习：一个读取人口数据的程序
 
-这一部分很长，并且根据你的背景，它可能显得更加复杂。虽然这里有很多示例代码以及散文一样的解释，但大部分都被设计为教科书式的。那么，我们要开始点新东西了：一个案例学习。
+这一部分很长，并且根据你的背景，它可能显得更加复杂。虽然有很多示例代码以及散文一样的解释，但大部分都被设计为教科书式的。那么，我们要开始点新东西了：一个案例学习。
 
 为此，为此我们将要建立一个可以让你查询真实世界人口数据的命令行程序。目标是简单的：你给出一个地点接着它会告诉你人口。虽然这很简单，但仍有很多地方我们可能犯错。
 
@@ -1106,7 +1106,7 @@ cargo build --release
 
 ### <a name="argument-parsing"></a>参数解析
 
-让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过这里有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，我们可以解码程序参数到一个 Rust 结构体中。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
+让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，我们可以解码程序参数到一个 Rust 结构体中。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
 
 ```rust
 extern crate getopts;
@@ -1404,7 +1404,7 @@ for pop in search(&data_file, &city) {
 
 在这段代码中，我们获取`file`（它的类型是`Option<String>`），并转换为一个`search`可用的类型，在这个例子中，是`&Option<AsRef<Path>>`。为此，我们获取一个文件的引用，并执行映射`Path::new`。在这里，`as_ref()`把`Option<String>`转换为`Option<&str>`，而且从这开始，我们可以对内容的`Option`执行`Path::new`，并返回新值的`Option`。当一切搞定，这就变为简单的获取`city`参数并执行`search`函数了。
 
-修改`search`需要一点技巧。`csv`crate 可以用[任何实现了`io::Read`的类型]()构建一个解析器。不过我们如何对这两个类型（注：因该是`Option`的两个值）使用相同的代码呢？事实上这里有多种方法可以做到。其中之一是重写`search`为接受一个满足`io::Read`的`R`类型参数的泛型。另一个办法是使用 trait 对象：
+修改`search`需要一点技巧。`csv`crate 可以用[任何实现了`io::Read`的类型]()构建一个解析器。不过我们如何对这两个类型（注：因该是`Option`的两个值）使用相同的代码呢？事实上有多种方法可以做到。其中之一是重写`search`为接受一个满足`io::Read`的`R`类型参数的泛型。另一个办法是使用 trait 对象：
 
 ```rust
 fn search<P: AsRef<Path>>
@@ -1557,7 +1557,7 @@ match search(&args.arg_data_path, &args.arg_city) {
 
 ## <a name="the-short-story"></a>精简版
 
-因为这个章节很长，有一个 Rust 错误处理的快速总结是很有帮助的。这里有很多好的“拇指规则”。他们是强调而非教条。这里每一个建议都可能有适当的理由予以反驳！
+因为这个章节很长，有一个 Rust 错误处理的快速总结是很有帮助的。有很多好的“拇指规则”。需要强调的是他们*并非*教条。这里每一个建议都可能有适当的理由予以反驳！
 
 * 如果你在写小的事例代码这时错误处理显得负担过重，可能使用`unwrap`（[`Result::unwrap`](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap)，[`Option::unwrap`](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap)，或是更可取的[`Option::expect`](http://doc.rust-lang.org/std/option/enum.Option.html#method.expect)）是足够的。你的代码的客户应该知道如何正确的处理错误。（如果他们并不知道，教会他们吧！）
 
