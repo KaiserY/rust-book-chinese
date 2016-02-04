@@ -46,7 +46,7 @@ impl HasArea for Circle {
 
 ## 泛型函数的 trait bound（Trait bounds on generic functions）
 
-trait 很有用是因为他们允许一个类型对它的行为提供特定的承诺。泛型函数可以显式的限制，或者叫 [bound](Glossary 词汇表.md#界限（bounds）)，它接受的类型。考虑这个函数，它并不能编译：
+trait 很有用是因为他们允许一个类型对它的行为提供特定的承诺。泛型函数可以显式的限制（或者叫 [bound](Glossary 词汇表.md#界限（bounds）)）它接受的类型。考虑这个函数，它并不能编译：
 
 ```rust
 fn print_area<T>(shape: T) {

@@ -180,7 +180,7 @@ let Inches(integer_length) = length;
 println!("length is {} inches", integer_length);
 ```
 
-如你所见，你可以通过一个解构`let`来提取内部的整形，就像我们在讲元组时说的那样，`let Inches(integer_length)`给`integer_length`赋值为`10`。
+如你所见，你可以通过一个解构`let`来提取内部的整型，就像我们在讲元组时说的那样，`let Inches(integer_length)`给`integer_length`赋值为`10`。
 
 ## 类单元结构体（Unit-like structs）
 你可以定义一个没有任何成员的结构体：
