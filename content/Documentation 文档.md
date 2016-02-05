@@ -4,8 +4,6 @@
 > <br>
 > commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
-> **注意：**由于gitbook的markdown对代码块中的3重音符的解析与github不一致（估计是bug），故在本章中在其间加空格，届时会有说明
-
 文档是任何软件项目中重要的一部分，并且它在Rust中是一级重要的。让我们讨论下Rust提供给我们编写项目文档的的工具。
 
 ## 关于`rustdoc`
@@ -184,7 +182,7 @@ hello.rs:4 }
 # fn foo() {}
 ~~~
 
-你会注意到你并不需要`fn main()`或者别的什么函数。`rustdoc`会自动一个`main()`包装你的代码，并且在正确的位置。例如：
+你会注意到你并不需要`fn main()`或者别的什么函数。`rustdoc`会自动一个`main()`包装你的代码，使用试探法试图把它放到正确的位置。例如：
 
 ~~~rust
 /// ```
@@ -208,7 +206,7 @@ fn main() {
 
 1. 任何`#![foo]`开头的属性会被完整的作为包装箱属性
 2. 一些通用的`allow`属性被插入，包括`unused_variables`、`unused_assignments`、`unused_mut`、`unused_attributes`和`dead_code`。小的例子经常触发这些lint检查
-3. 如果例子并未包含`extern crate`，那么`extern crate <mycrate>;`被插入
+3. 如果例子并未包含`extern crate`，那么`extern crate <mycrate>;`被插入（注意缺失了`#[macro_use]`）
 4. 最后，如果例子不包含`fn main`，剩下的文本将被包装到`fn main() { your_code }`中
 
 有时，这是不够的。例如，我们已经考虑到了所有`///`开头的代码样例了吗？普通文本：
@@ -536,17 +534,15 @@ struct Hidden;
 
 这里设置了一些不同的选项，带有一个logo，一个网站图标，和一个根URL。
 
-### Configuring documentation tests
+## 配置文档测试
 
-You can also configure the way that `rustdoc` tests your documentation examples
-through the `#![doc(test(..))]` attribute.
+你也可以通过`#![doc(test(..))]`属性来配置`rustdoc`测试你文档示例的方式。
 
 ```rust
 #![doc(test(attr(allow(unused_variables), deny(warnings))))]
 ```
 
-This allows unused variables within the examples, but will fail the test for any
-other lint warning thrown.
+这允许示例中存在未使用的变量，但其他 lint 警告抛出仍会使测试失败。
 
 ## 生成选项
 `rustdoc`也提供了一些其他命令行选项，以便进一步定制：
