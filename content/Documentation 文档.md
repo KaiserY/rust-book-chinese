@@ -9,7 +9,7 @@
 文档是任何软件项目中重要的一部分，并且它在Rust中是一级重要的。让我们讨论下Rust提供给我们编写项目文档的的工具。
 
 ## 关于`rustdoc`
-Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rustdoc`也可以在Cargo中通过`cargo doc`。
+Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rustdoc`也可以在Cargo中通过`cargo doc`使用。
 
 文档可以使用两种方法生成：从源代码，或者从单独的Markdown文件。
 
@@ -33,7 +33,7 @@ pub fn new(value: T) -> Rc<T> {
 
 这段代码产生像[这样](http://doc.rust-lang.org/nightly/std/rc/struct.Rc.html#method.new)的文档。我忽略了函数的实现，而是留下了一个标准的注释。
 
-第一个需要注意的地方是这个注释：它使用了`///`，而不是`//`。三斜线表明这是文档注释。
+第一个需要注意的地方是这个注释：它使用了`///`，而不是`//`。三斜线指示这是文档注释。
 
 文档注释用Markdown语法编写。
 
@@ -92,21 +92,21 @@ hello.rs:4 }
 
 ### 特殊部分
 
-下面，是特殊部分。它由一个标头表明，`#`。有三种经常使用的标头。它们不是特殊的语法，只是传统，目前为止。
+下面，是特殊部分。它由一个标头指示，`#`。有四种经常使用的标头。它们不是特殊的语法，只是传统，目前为止。
 
 ```rust
 /// # Panics
 # fn foo() {}
 ```
 
-不可恢复的函数滥用（比如，程序错误）在Rust中通常用恐慌表明，它至少会杀死整个当前的线程。如果你的函数有这样有意义的被识别为或者强制为恐慌的约定，记录文档是非常重要的。
+不可恢复的函数滥用（比如，程序错误）在Rust中通常用恐慌（panics）指示，它至少会杀死整个当前的线程。如果你的函数有被识别为或者强制为恐慌这样的不平凡契约，记录文档是非常重要的。
 
 ```rust
 /// # Failures
 # fn foo() {}
 ```
 
-如果你的函数或方法返回`Result<T, E>`，那么描述何种情况下它会返回`Err(E)`是件好事。这并不如`Panics`重要，因为失败被编码进了类型系统，不过仍旧是件好事。
+如果你的函数或方法返回`Result<T, E>`，那么描述何种情况下它会返回`Err(E)`是件好事。这并不如`Panics`重要，因为失败（failure）被编码进了类型系统，不过仍旧是件好事。
 
 ```rust
 /// # Safety
@@ -126,7 +126,7 @@ hello.rs:4 }
 # fn foo() {}
 ~~~
 
-第三个，`Examples`。包含一个或多个使用你函数的例子，这样你的用户会为此感（ai）谢（shang）你的。这些例子写在代码块注释中，我们稍后会讨论到，并且可以有不止一个部分：
+第四个，`Examples`。包含一个或多个使用你函数的例子，这样你的用户会为此感（ài）谢（shàng）你的。这些例子写在代码块注释中，我们稍后会讨论到，并且可以有不止一个部分：
 
 ~~~rust
 /// # Examples
@@ -151,7 +151,7 @@ hello.rs:4 }
 
 ### 代码块注释
 
-在注释中编写Rust代码，使用三重重音号：
+在注释中编写Rust代码，使用三个重音号：
 
 ~~~rust
 /// ```
@@ -160,7 +160,7 @@ hello.rs:4 }
 # fn foo() {}
 ~~~
 
-如果你想要一些不是Rust的代码，你可以加上一个注释：
+如果你想要一些不是Rust的代码，你可以加上一个注解：
 
 ~~~rust
 /// ```c
@@ -169,9 +169,9 @@ hello.rs:4 }
 # fn foo() {}
 ~~~
 
-这回根据你选择的语言高亮代码。如果你只是想展示普通文本，选择`text`。
+这会根据你选择的语言高亮代码。如果你只是想展示普通文本，选择`text`。
 
-选择正确的注释是很重要的，因为`rustdoc`用一种有意思的方法使用它：它可以用来实际测试你的代码，这样你的注释就不会过时。如果你写了些C代码不过`rustdoc`会认为它是Rust代码由于你忽略了注释，`rustdoc`会在你生成文档时提示。
+选择正确的注释是很重要的，因为`rustdoc`用一种有意思的方法使用它：它可以用来实际测试你的代码，这样你的注解就不会过时。如果你写了些C代码不过`rustdoc`会认为它是Rust代码由于你忽略了注解，`rustdoc`会在你生成文档时提示。
 
 ## 文档作为测试
 
@@ -207,7 +207,7 @@ fn main() {
 这里是`rustdoc`用来后处理例子的完整的算法：
 
 1. 任何`#![foo]`开头的属性会被完整的作为包装箱属性
-2. 一些通用的`allow`属性被插入，包括`unused_variables`，`unused_assignments`，`unused_mut`，`unused_attributes`和`dead_code`。小的例子经常触发这些lint检查
+2. 一些通用的`allow`属性被插入，包括`unused_variables`、`unused_assignments`、`unused_mut`、`unused_attributes`和`dead_code`。小的例子经常触发这些lint检查
 3. 如果例子并未包含`extern crate`，那么`extern crate <mycrate>;`被插入
 4. 最后，如果例子不包含`fn main`，剩下的文本将被包装到`fn main() { your_code }`中
 
@@ -369,7 +369,7 @@ $ cargo test
 # fn foo() {}
 ~~~
 
-`ignore`指令告诉Rust忽略你的代码。这几乎不会是你想要的，因为这是最不受支持的。相反，如果不是代码的话考虑注释为`text`，或者使用`#`来形成一个只显示你关心部分的例子。
+`ignore`指令告诉Rust忽略你的代码。这几乎不会是你想要的，因为这是最不受支持的。相反，如果不是代码的话考虑注释为`text`，或者使用`#`来形成一个可运行但只显示你关心部分的例子。
 
 ~~~rust
 /// ```should_panic
@@ -445,7 +445,7 @@ let five = Rc::new(5);
 ```
 ~~~
 
-不过有个窍门：Markdown文件需要有一个像这样的标题：
+不过文档写在 Markdown 文件中要加一点：Markdown文件需要有一个像这样的标题：
 
 ```markdown
 % The title
@@ -478,7 +478,7 @@ This is the example documentation.
 
 ## 重导出（Re-exports）
 
-`rustdoc`会将公有部分的文档重导出：
+`rustdoc`对公有重导出部分会在两个地方都显式文档：
 
 ```rust
 extern crate foo;
@@ -486,7 +486,7 @@ extern crate foo;
 pub use foo::bar;
 ```
 
-这回在`foo`包装箱中生成文档，也会在你的包装箱中生成文档。它会在两个地方使用相同的内容。
+这既会为`bar`在`foo`包装箱中生成文档，也会在你的包装箱中生成文档。它会在两个地方使用相同的内容。
 
 这种行文可以通过`no_inline`来阻止：
 
@@ -534,7 +534,7 @@ struct Hidden;
        html_root_url = "https://doc.rust-lang.org/")]
 ```
 
-这里设置了一些不同的选项，带有一个logo，一个收藏夹，和一个根URL。
+这里设置了一些不同的选项，带有一个logo，一个网站图标，和一个根URL。
 
 ### Configuring documentation tests
 
@@ -548,8 +548,8 @@ through the `#![doc(test(..))]` attribute.
 This allows unused variables within the examples, but will fail the test for any
 other lint warning thrown.
 
-## 通用选项
-`rustdoc`也提供了一些其他命令行选项，以便进一步自定义：
+## 生成选项
+`rustdoc`也提供了一些其他命令行选项，以便进一步定制：
 
 * `--html-in-header FILE`：在`<head>...</head>`部分的末尾加上`FILE`内容
 * `--html-before-content FILE`：在`<body>`之后，在渲染内容之前加上`FILE`内容
