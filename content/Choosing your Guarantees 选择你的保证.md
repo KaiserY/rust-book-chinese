@@ -166,9 +166,7 @@ let x = RefCell::new(vec![1,2,3,4]);
 
 [Arc\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.Arc.html)就是一个使用原子引用计数版本的`Rc<T>`（*Atomic reference count*，因此是“Arc”）。它可以在线程间自由的传递。
 
-C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是可以改变的。为了语义上与C++的形式相似，我们应该使用`Arc<Mutex<T>>`，`Arc<RwLock<T>>`，或者`Arc<UnsafeCell<T>>`[^4]。最后一个应该只被用在我们能确定使用它并不会造成内存不安全性的情况下。记住写入一个结构体不是一个原子操作，并且很多像`vec.push()`这样的函数可以在内部重新分配内存并产生不安全的行为，所以即便是单一环境也不足以证明`UnsafeCell`是安全的。
-
-[^4]: `Arc<UnsafeCell<T>>`实际上并不能编译因为`UnsafeCell<T>`并不是`Send`或`Sync`的，不过我们可以把它 wrap 进一个类型并且手动为其实现`Send`/`Sync`来获得`Arc<Wrapper<T>>`，它的`Wrapper`是`struct Wrapper<T>(UnsafeCell<T>)`。
+C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是可以改变的。为了语义上与C++的形式相似，我们应该使用`Arc<Mutex<T>>`，`Arc<RwLock<T>>`，或者`Arc<UnsafeCell<T>>`[^1]。最后一个应该只被用在我们能确定使用它并不会造成内存不安全性的情况下。记住写入一个结构体不是一个原子操作，并且很多像`vec.push()`这样的函数可以在内部重新分配内存并产生不安全的行为，所以即便是单一环境也不足以证明`UnsafeCell`是安全的。
 
 #### 保证
 
@@ -212,7 +210,7 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 前者，`RefCell<T>`封装了`Vec<T>`，所以`Vec<T>`整体是可变的。与此同时，同一时刻只能有一个整个`Vec`的可变借用。这意味着你的代码不能同时通过不同的`Rc`句柄来操作vector的不同元素。然而，我们可以随意的从`Vec<T>`中加入或取出元素。这类似于一个有运行时借用检查的`&mut Vec<T>`。
 
-后者，借用作用于单独的元素，不过vector整体是不可变的。因此，我们可以独立的借用不同的元素，不过我们对vector加入或取出元素。这类似于`&mut [T]`<a name="ref2"></a>[<sup>2</sup>](#2)，不过同样会在运行时做借用检查。
+后者，借用作用于单独的元素，不过vector整体是不可变的。因此，我们可以独立的借用不同的元素，不过我们对vector加入或取出元素。这类似于`&mut [T]`[^2]，不过同样会在运行时做借用检查。
 
 在并发程序中，我们有一个使用`Arc<Mutex<T>>`的类似场景，它提供了共享可变性和所有权。
 
@@ -220,4 +218,7 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 当选择一个组合类型的时候，我们必须反过来思考；搞清楚我们需要何种保证，以及在组合中的何处我们需要他们。例如，如果面对一个`Vec<RefCell<T>>`和`RefCell<Vec<T>>`之间的选择，我们需要明确像上面讲到的那样的权衡并选择其一。
 
-2. <a name="2"></a>`&[T]`和`&mut [T]`是*切片*（slice）；他们包含一个指针和一个长度并可以引用一个vector或数组的一部分。`&mut [T]`能够改变它的元素，不过长度不能改变。[↩](#ref2)
+---
+[^1]: `Arc<UnsafeCell<T>>`实际上并不能编译因为`UnsafeCell<T>`并不是`Send`或`Sync`的，不过我们可以把它 wrap 进一个类型并且手动为其实现`Send`/`Sync`来获得`Arc<Wrapper<T>>`，它的`Wrapper`是`struct Wrapper<T>(UnsafeCell<T>)`。
+
+[^2]: `&[T]`和`&mut [T]`是*切片*（slice）；他们包含一个指针和一个长度并可以引用一个vector或数组的一部分。`&mut [T]`能够改变它的元素，不过长度不能改变。

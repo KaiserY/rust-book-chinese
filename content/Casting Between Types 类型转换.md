@@ -72,7 +72,7 @@ let two_hundred = -56i8 as u8;
   * 如果源类型是无符号的会补零（zero-extend）
   * 如果源类型是有符号的会符号（sign-extend）
 * 从一个浮点转换为一个整型会向 0 舍入
-  * [注意：目前如果舍入的值并不能用目标整形表示的话会导致未定义行为（Undefined Behavior）](https://github.com/rust-lang/rust/issues/10184)。这包括 Inf 和 NaN。这是一个 bug 并会被修复。
+  * [注意：目前如果舍入的值并不能用目标整型表示的话会导致未定义行为（Undefined Behavior）](https://github.com/rust-lang/rust/issues/10184)。这包括 Inf 和 NaN。这是一个 bug 并会被修复。
 * 从一个整型转换为一个浮点会产生整型的浮点表示，如有必要会舍入（未指定舍入策略）
 * 从 f32 转换为 f64 是完美无缺的
 * 从 f64 转换为 f32 会产生最接近的可能值（未指定舍入策略）
