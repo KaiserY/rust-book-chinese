@@ -51,8 +51,8 @@ Rust不能避免所有类型的软件错误。有bug的代码可能并将会出�
 
 * 数据竞争
 * 解引用一个空/悬垂裸指针
-* 读[`undef`](http://llvm.org/docs/LangRef.html#undefined-values)（未初始化）内存
-* 使用裸指针打破[指针重叠（aliasing）规则](http://llvm.org/docs/LangRef.html#pointer-aliasing-rules)
+* 读[未初始化内存](http://llvm.org/docs/LangRef.html#undefined-values)（undefined values）
+* 使用裸指针打破[指针重叠规则](http://llvm.org/docs/LangRef.html#pointer-aliasing-rules)（pointer aliasing rules）
 * `&mut T`和`&T`遵循LLVM范围的[`noalias`](http://llvm.org/docs/LangRef.html#noalias)模型，除了如果`&T`包含一个`UnsafeCell<U>`的话。不安全代码必须不能违反这些重叠（aliasing）保证
 * 不使用`UnsafeCell<U>`改变一个不可变值/引用
 * 通过编译器固有功能调用未定义行为：
