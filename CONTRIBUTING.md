@@ -21,6 +21,7 @@
 * [mapx](https://github.com/mapx)
 * [NemoAlex](https://github.com/NemoAlex)
 * [peng1999](https://github.com/peng1999)
+* [qiuyesuifeng](https://github.com/qiuyesuifeng)
 * [quxiaolong1504](https://github.com/quxiaolong1504)
 * [t123yh](https://github.com/t123yh)
 * [ustcscgy](https://github.com/ustcscgy)
