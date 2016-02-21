@@ -15,7 +15,7 @@
 
 ## 相关资源
 * 本文档 GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
-* Rust 中文社区: http://rust.cc/
+* Rust 中文社区: https://rust-china.org
 * QQ 群: 144605258
 * 聊天频道：https://chat.rust-china.org/
 
