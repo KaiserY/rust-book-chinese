@@ -1,6 +1,8 @@
 # 泛型
 
 > [generics.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/generics.md)
+> <br>
+> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 
 有时，当你编写函数或数据类型时，我们可能会希望它能处理多种类型的参数。幸运的是，Rust有一个能给我们更好选择的功能：泛型。泛型在类型理论中叫做*参数多态*（*parametric polymorphism*），它意味着它们是对于给定参数（parametric）能够有多种形式（`poly`是多，`morph`是形态）的函数或类型。
 

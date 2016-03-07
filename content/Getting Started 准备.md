@@ -2,7 +2,7 @@
 
 > [getting-started.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/getting-started.md)
 > <br>
-> commit 0b8370c3978bb47de97ce754ea601fc1b654cd2b
+> commit 52786de3ed2ff4553378c9b9bca1a60d8b2a2e9d
 
 本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后我们还会介绍Cargo，Rust 的构建（编译）系统以及包管理器。
 
@@ -351,7 +351,7 @@ Hello, world!
 
 Cargo 检查任何项目文件是否被修改，并且只会在你上次构建后修改了他们才重新构建。
 
-对于简单的项目，Cargo 并不比使用`rustc`要好多少，不过将来它会变得有用。对于包含多个 crate 的项目，让 Cargo 来协调构建将会轻松很多。有了 Cargo，你可以运行`cargo build`，而一切将有条不紊的运行。
+对于简单的项目，Cargo 并不比使用`rustc`要好多少，不过将来它会变得有用。这在你开始使用 crate 时显得尤为正确；（crate）在其他语言中有“库（library）”或“包（package）”这样的同义词。对于包含多个 crate 的项目，让 Cargo 来协调构建将会轻松很多。有了 Cargo，你可以运行`cargo build`，而一切将有条不紊的运行。
 
 ### 发布构建（Building for Release）
 

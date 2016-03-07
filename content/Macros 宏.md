@@ -2,7 +2,7 @@
 
 > [macros.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/macros.md)
 > <br>
-> commit ccaa7e5146ba0ee47d3b7301121a05da6e484f49
+> commit 7fd7b5b7fc628b3cd19c56daf84dbe9b2b9db1c0
 
 到目前为止你已经学到了不少Rust提供的抽象和重用代码的工具了。这些代码重用单元有丰富的语义结构。例如，函数有类型签名，类型参数有特性限制并且能重载的函数必须属于一个特定的特性。
 
@@ -213,9 +213,11 @@ LOG(state)
 
 ```c
 const char *state = "reticulating splines";
-int state = get_log_state();
-if (state > 0) {
-    printf("log(%d): %s\n", state, state);
+{
+    int state = get_log_state();
+    if (state > 0) {
+        printf("log(%d): %s\n", state, state);
+    }
 }
 ```
 
@@ -359,14 +361,14 @@ fn main() {
 * `meta`：一个“元数据项”，可以在属性中找到。例如：`cfg(target_os = "windows")`
 * `tt`：一个单独的记号树
 
-对于一个元变量后面的一个记号有一些额外的规则：
+对于一个元变量（metavariable）后面的一个记号有一些额外的规则：
 
-* `expr`变量必须后跟一个`=>`，`,`，`;`
-* `ty`和`path`变量必须后跟一个`=>`，`,`，`:`，`=`，`>`，`as`
-* `pat`变量必须后跟一个`=>`，`,`，`=`
+* `expr`和`stmt`变量必须后跟任意一个：`=> , ;`
+* `ty`和`path`变量必须后跟任意一个：`=> , = | ; : > [ { as where`
+* `pat`变量必须后跟任意一个：`=> , = | if in`
 * 其它变量可以后跟任何记号
 
-这些规则为Rust语法提供了一些灵活性以便将来的展开不会破坏现有的宏。
+这些规则为 Rust 语法提供了一些灵活性以便将来的展开不会破坏现有的宏。
 
 宏系统完全不处理解析模糊。例如，`$($t:ty)* $e:expr`语法总是会解析失败，因为解析器会被强制在解析`$t`和解析`$e`之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成`$(T $t:ty)* E $e:exp`。
 

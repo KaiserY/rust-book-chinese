@@ -1,7 +1,10 @@
-# 学院派研究
-一个曾影响过Rust的论文的不完整列表。
+# 参考文献
 
-推荐进一步了解Rust背景和激发灵感阅读。
+> [bibliography.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/bibliography.md)
+> <br>
+> commit b986698bc41f487ed791a7c7d9f6c6a78d6d86a3
+
+这是一个与 Rust 相关的材料的阅读列表。这包含了曾经影响过 Rust 先验研究，以及关于 Rust 的出版物。
 
 > **（注：以下翻译属个人理解，勿作为参考）**
 
@@ -34,7 +37,7 @@
 * [非阻塞半work stealing队列（Non-blocking steal-half work queues）](http://www.cs.bgu.ac.il/~hendlerd/papers/p280-hendler.pdf)
 * [Reagents：表现和编写细粒度的并发（Reagents: expressing and composing fine-grained concurrency）](http://www.mpi-sws.org/~turon/reagents.pdf)
 * [用于共享内存多处理器的可扩展同步性的算法（Algorithms for scalable synchronization of shared-memory multiprocessors）](https://www.cs.rochester.edu/u/scott/papers/1991_TOCS_synch.pdf)
-* [Epoc-based reclamation](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-579.pdf).
+* [Epoch-based reclamation](https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-579.pdf).
 
 ## 其它
 
@@ -42,7 +45,7 @@
 * [编写高性能内存分配器（Composing High-Performance Memory Allocators）](http://people.cs.umass.edu/~emery/pubs/berger-pldi2001.pdf)
 * [对手动内存分配的思考（Reconsidering Custom Memory Allocation）](http://people.cs.umass.edu/~emery/pubs/berger-oopsla2002.pdf)
 
-## *关于*Rust的论文
+## *关于* Rust 的论文
 
 * [Rust中的GPU编程（GPU programming in Rust）](http://www.cs.indiana.edu/~eholk/papers/hips2013.pdf)
 * [并行闭包：一个基于老观点的新做法（Parallel closures: a new twist on an old idea）](https://www.usenix.org/conference/hotpar12/parallel-closures-new-twist-old-idea) - 并不完全关于Rust，不过是Nicholas D. Matsakis写的

@@ -68,7 +68,7 @@ pub extern fn main(argc: i32, argv: *const *const u8) -> i32 {
 
 > 如下内容已被删除，暂时保留
 
-## 使用libcore
+## 使用 libcore
 > **注意**：核心库的结构是不稳定的，建议在任何可能的情况下使用标准库。
 
 通过上面的计数，我们构造了一个少见的运行Rust代码的可执行程序。标准库提供了很多功能，然而，这是Rust的生产力所需要的。如果标准库是不足的话，那么可以使用被设计为标准库替代的[libcore](http://doc.rust-lang.org/core/)。
