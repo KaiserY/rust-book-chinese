@@ -116,10 +116,8 @@ for (linenumber, line) in lines.enumerate() {
 输出：
 
 ```text
-0: Content of line one
-1: Content of line two
-2: Content of line three
-3: Content of line four
+0: hello
+1: world
 ```
 ## 提早结束迭代（Ending iteration early）
 让我们再看一眼之前的`while`循环：
