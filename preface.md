@@ -6,6 +6,9 @@
 本文档为 [*The Rust Programming Language*](https://doc.rust-lang.org/book/) 的中文翻译。  
 欢迎在 [GitHub](https://github.com/KaiserY/rust-book-chinese) 上为本文档做出贡献。
 
+## 墙内地址
+[rustbook.cn](http://rustbook.cn/) 由[掘金](http://gold.xitu.io/)赞助
+
 ## 版本
 1.7.0-stable
 
