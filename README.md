@@ -13,6 +13,7 @@
 1.9.0-stable
 
 ## 电子书
+* **[GitBook.com](https://www.gitbook.com/book/kaisery/rust-book-chinese)上的电子书字体已有所改善，请先去这里下载:)**
 * 请使用 [GitBook](https://github.com/GitbookIO/gitbook) 来生成电子书。
 * 在 ebook 文件夹里可以找到 pdf 版本。
 
