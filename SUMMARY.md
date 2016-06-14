@@ -56,7 +56,7 @@
  * [5.9.外部函数接口](content/Foreign Function Interface 外部函数接口.md)
  * [5.10.Borrow 和 AsRef](content/Borrow and AsRef Borrow 和 AsRef.md)
  * [5.11.发布途径](content/Release Channels 发布途径.md)
- * [5.12.不使用标准库开发 Rust](content/Using Rust Without the Standard Library 不使用标准库开发 Rust)
+ * [5.12.不使用标准库开发 Rust](content/Using Rust Without the Standard Library 不使用标准库开发 Rust.md)
 * [6.Rust 开发版](content/Nightly Rust Rust 开发版.md)
  * [6.1.编译器插件](content/Compiler Plugins 编译器插件.md)
  * [6.2.内联汇编](content/Inline Assembly 内联汇编.md)
