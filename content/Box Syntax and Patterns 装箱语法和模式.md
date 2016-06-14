@@ -1,4 +1,4 @@
-#装箱语法和模式
+# 装箱语法和模式
 
 > [box-syntax-and-patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/box-syntax-and-patterns.md)
 > <br>

@@ -2,7 +2,7 @@
 
 > [lang-items.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/lang-items.md)
 > <br>
-> commit 464cdff102993ff1900eebbf65209e0a3c0be0d5
+> commit 432460a6fc92e8baecbc4fa175345e78232fe2ed
 
 > **注意**：语言项通常由Rust发行版的 crate 提供，并且它自身有一个不稳定的接口。建议使用官方发布的 crate 而不是定义自己的版本。
 
@@ -34,9 +34,15 @@ unsafe fn allocate(size: usize, _align: usize) -> *mut u8 {
 
     p
 }
+
 #[lang = "exchange_free"]
 unsafe fn deallocate(ptr: *mut u8, _size: usize, _align: usize) {
     libc::free(ptr as *mut libc::c_void)
+}
+
+#[lang = "box_free"]
+unsafe fn box_free<T>(ptr: *mut T) {
+    deallocate(ptr as *mut u8, ::core::mem::size_of::<T>(), ::core::mem::align_of::<T>());
 }
 
 #[start]

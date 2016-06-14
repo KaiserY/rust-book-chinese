@@ -2,7 +2,7 @@
 
 > [error-handling.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md)
 > <br>
-> commit e26279db48cc5510a13f0e97bde97ccd2d2a1854
+> commit 8f99ad2a2a8a95b395de93d692f1b652721e94c8
 
 就像大多数编程语言，Rust 鼓励程序猿以特定的方式处理错误。一般来讲，错误处理被分割为两个大类：异常和返回值。Rust 选择了返回值。
 
@@ -202,7 +202,7 @@ fn map<F, T, A>(option: Option<T>, f: F) -> Option<A> where F: FnOnce(T) -> A {
 }
 ```
 
-事实上，`map`是标准库中的`Option<T>`[定义的一个方法](http://doc.rust-lang.org/std/option/enum.Option.html#method.map)。
+事实上，`map`是标准库中的`Option<T>`[定义的一个方法](http://doc.rust-lang.org/std/option/enum.Option.html#method.map)。值得一提的是，它有着一个略微不同的 signature：一个以`self`，`&self`或`&mut self`作为第一个参数的方法。
 
 用我们的新组合，我们可以重写我们的`extension_explicit`方法来去掉 case analysis：
 
@@ -226,6 +226,8 @@ fn unwrap_or<T>(option: Option<T>, default: T) -> T {
     }
 }
 ```
+
+与上面的`map`相似，标准库中的实现是一个方法而不是一个普通的函数。
 
 这里要注意的是默认值的类型必须与可能出现在`Option<T>`中的值类型相同。在我们的例子中使用它是非常简单的：
 
@@ -272,7 +274,21 @@ fn file_name(file_path: &str) -> Option<&str> {
 }
 ```
 
-你可能认为我们应该用`map`组合来减少 case analysis，不过它的类型并不匹配。也就是说，`map`获取一个只处理（Option）内部值的函数。这导致那个函数总是[重新映射成了`Some`](#code-option-map)。因此，我们需要一些类似`map`，不过允许调用者返回另一个`Option`的方法。它的泛型实现甚至比`map`更简单：
+你可能认为我们应该用`map`组合来减少 case analysis，不过它的类型并不匹配。。。
+
+```rust,ignore
+fn file_path_ext(file_path: &str) -> Option<&str> {
+    file_name(file_path).map(|x| extension(x)) //Compilation error
+}
+```
+
+这里的`map`函数装箱了`extension`函数返回的`Option<_>`中的值，并且因为`extension`返回一个`Option<&str>`，表达式`file_name(file_path).map(|x| extension(x))`实际上返回一个`Option<Option<&str>>`。
+
+不过因为`file_path_ext`仅仅返回`Option<&str>`（而不是`Option<Option<&str>>`），我们会遇到一个编译错误。
+
+被 map 函数作为输入的函数的返回值**总是**会被重新封装为`Some`。因此，我们需要一些像`map`，不过允许调用者直接返回一个`Option<_>`而不用在再套上另一个`Option<_>`的函数。
+
+它的泛型实现甚至比`map`更简单：
 
 ```rust
 fn and_then<F, T, A>(option: Option<T>, f: F) -> Option<A>
@@ -293,6 +309,8 @@ fn file_path_ext(file_path: &str) -> Option<&str> {
     file_name(file_path).and_then(extension)
 }
 ```
+
+边注：因为`and_then`本质上就像`map`不过返回一个`Option<_>`而不是`Option<Option<_>>`，它在一些其他语言中被称为`flatmap`。
 
 `Option`类型有很多其他[定义在标准库中的](http://doc.rust-lang.org/std/option/enum.Option.html)组合。过一边这个列表并熟悉他们的功能是一个好主意 —— 通常他们可以减少你的 case analysis。熟悉这些组合将会得到回报，因为他们很多也为`Result`类型定义了实现（相似的语义），而我们接下来会讲`Result`。
 
@@ -1121,7 +1139,7 @@ fn print_usage(program: &str, opts: Options) {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let program = args[0].clone();
+    let program = &args[0];
 
     let mut opts = Options::new();
     opts.optflag("h", "help", "Show this usage message.");
@@ -1134,8 +1152,8 @@ fn main() {
         print_usage(&program, opts);
         return;
     }
-    let data_path = args[1].clone();
-    let city = args[2].clone();
+    let data_path = &args[1];
+    let city = &args[2];
 
     // Do stuff with information
 }
@@ -1150,6 +1168,8 @@ fn main() {
 在这个案例学习中，逻辑真的很简单。所有我们要做的就是解析给我们的 CSV 数据并打印出匹配的行的一个字段。让我们开始吧。（确保在你的文件开头加上`extern crate csv;`。）
 
 ```rust
+use std::fs::File;
+
 // This struct represents the data in each row of the CSV file.
 // Type based decoding absolves us of a lot of the nitty gritty error
 // handling, like parsing strings as integers or floats.
@@ -1174,7 +1194,7 @@ fn print_usage(program: &str, opts: Options) {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let program = args[0].clone();
+    let program = &args[0];
 
     let mut opts = Options::new();
     opts.optflag("h", "help", "Show this usage message.");
@@ -1189,11 +1209,10 @@ fn main() {
         return;
     }
 
-    let data_file = args[1].clone();
-    let data_path = Path::new(&data_file);
-    let city = args[2].clone();
+    let data_path = &args[1];
+    let city: &str = &args[2];
 
-    let file = fs::File::open(data_path).unwrap();
+    let file = File::open(data_path).unwrap();
     let mut rdr = csv::Reader::from_reader(file);
 
     for row in rdr.decode::<Row>() {
@@ -1230,6 +1249,8 @@ fn main() {
 让我们重构函数，不过保持对`unwrap`的调用。注意我们选择处理一个不存在的人口数行的方式是单纯的忽略它。
 
 ```rust
+use std::path::Path;
+
 struct Row {
     // unchanged
 }
@@ -1248,7 +1269,7 @@ fn print_usage(program: &str, opts: Options) {
 
 fn search<P: AsRef<Path>>(file_path: P, city: &str) -> Vec<PopulationCount> {
     let mut found = vec![];
-    let file = fs::File::open(file_path).unwrap();
+    let file = File::open(file_path).unwrap();
     let mut rdr = csv::Reader::from_reader(file);
     for row in rdr.decode::<Row>() {
         let row = row.unwrap();
@@ -1268,7 +1289,7 @@ fn search<P: AsRef<Path>>(file_path: P, city: &str) -> Vec<PopulationCount> {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let program = args[0].clone();
+    let program = &args[0];
 
     let mut opts = Options::new();
     opts.optflag("h", "help", "Show this usage message.");
@@ -1282,10 +1303,9 @@ fn main() {
         return;
     }
 
-    let data_file = args[1].clone();
-    let data_path = Path::new(&data_file);
-    let city = args[2].clone();
-    for pop in search(&data_path, &city) {
+    let data_path = &args[1];
+    let city = &args[2];
+    for pop in search(data_path, city) {
         println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
     }
 }
@@ -1302,11 +1322,15 @@ fn main() {
 让我们试试：
 
 ```rust
+use std::error::Error;
+
+// The rest of the code before this is unchanged
+
 fn search<P: AsRef<Path>>
          (file_path: P, city: &str)
          -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
     let mut found = vec![];
-    let file = try!(fs::File::open(file_path));
+    let file = try!(File::open(file_path));
     let mut rdr = csv::Reader::from_reader(file);
     for row in rdr.decode::<Row>() {
         let row = try!(row);
@@ -1387,17 +1411,22 @@ opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME"
 opts.optflag("h", "help", "Show this usage message.");
 ...
 let file = matches.opt_str("f");
-let data_file = file.as_ref().map(Path::new);
+let data_file = &file.as_ref().map(Path::new);
 
 let city = if !matches.free.is_empty() {
-    matches.free[0].clone()
+    &matches.free[0]
 } else {
     print_usage(&program, opts);
     return;
 };
 
-for pop in search(&data_file, &city) {
-    println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+match search(data_file, city) {
+    Ok(pops) => {
+        for pop in pops {
+            println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+        }
+    }
+    Err(err) => println!("{}", err)
 }
 ...
 ```
@@ -1407,13 +1436,17 @@ for pop in search(&data_file, &city) {
 修改`search`需要一点技巧。`csv`crate 可以用[任何实现了`io::Read`的类型]()构建一个解析器。不过我们如何对这两个类型（注：因该是`Option`的两个值）使用相同的代码呢？事实上有多种方法可以做到。其中之一是重写`search`为接受一个满足`io::Read`的`R`类型参数的泛型。另一个办法是使用 trait 对象：
 
 ```rust
+use std::io;
+
+// The rest of the code before this is unchanged
+
 fn search<P: AsRef<Path>>
          (file_path: &Option<P>, city: &str)
          -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
     let mut found = vec![];
     let input: Box<io::Read> = match *file_path {
         None => Box::new(io::stdin()),
-        Some(ref file_path) => Box::new(try!(fs::File::open(file_path))),
+        Some(ref file_path) => Box::new(try!(File::open(file_path))),
     };
     let mut rdr = csv::Reader::from_reader(input);
     // The rest remains unchanged!
@@ -1457,6 +1490,16 @@ impl Error for CliError {
             CliError::NotFound => "not found",
         }
     }
+
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {            
+            CliError::Io(ref err) => Some(err),
+            CliError::Parse(ref err) => Some(err),
+            // Our custom error doesn't have an underlying cause, but we could
+            // modify it so that it does.
+            CliError::NotFound() => None,
+        }
+    }
 }
 ```
 
@@ -1487,7 +1530,7 @@ fn search<P: AsRef<Path>>
     let mut found = vec![];
     let input: Box<io::Read> = match *file_path {
         None => Box::new(io::stdin()),
-        Some(ref file_path) => Box::new(try!(fs::File::open(file_path))),
+        Some(ref file_path) => Box::new(try!(File::open(file_path))),
     };
     let mut rdr = csv::Reader::from_reader(input);
     for row in rdr.decode::<Row>() {

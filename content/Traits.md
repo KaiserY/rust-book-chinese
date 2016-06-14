@@ -2,7 +2,7 @@
 
 > [traits.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 728d20f7cc84a67ea85aaa1257234b4750bdcc1c
 
 trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 
@@ -143,7 +143,7 @@ print_area(5);
 我们会得到一个编译时错误：
 
 ```text
-error: the trait `HasArea` is not implemented for the type `_` [E0277]
+error: the trait bound `_ : HasArea` is not satisfied [E0277]
 ```
 
 ## 泛型结构体的 trait bound（Trait bounds on generic structs）
@@ -241,9 +241,15 @@ let result = f.write(buf);
 
 这样就能无错误的编译了。
 
-这意味着即使有人做了像给`int`增加函数这样的坏事，它也不会影响你，除非你`use`了那个trait。
+这意味着即使有人做了像给`i32`增加函数这样的坏事，它也不会影响你，除非你`use`了那个 trait。
 
-这还有一个实现trait的限制。不管是trait还是你写的`impl`都只能在你自己的包装箱内生效。所以，我们可以为`i32`实现`HasArea`trait，因为`HasArea`在我们的包装箱中。不过如果我们想为`i32`实现`Float`trait，它是由Rust提供的，则无法做到，因为这个trait和类型都不在我们的包装箱中。
+这还有一个实现 trait 的限制。要么是 trait 要么是你写实现的类型必须由你定义。更准确的说，它们中的一个必须定义于你编写`impl`的相同的 crate 中。关于 Rust 的模块和包系统，详见[crate 和模块](Crates and Modules crate 和模块.md)。
+
+所以，我们可以为`i32`实现`HasArea`trait，因为`HasArea`在我们的包装箱中。不过如果我们想为`i32`实现`Float`trait，它是由 Rust 提供的，则无法做到，因为这个 trait 和类型都不在我们的包装箱中。
+
+
+
+There’s one more restriction on implementing traits: either the trait or the type you’re implementing it for must be defined by you. Or more precisely, one of them must be defined in the same crate as the impl you're writing. For more on Rust's module and package system, see the chapter on crates and modules.
 
 关于trait的最后一点：带有trait限制的泛型函数是*单态*（*monomorphization*）（mono：单一，morph：形式）的，所以它是*静态分发*（*statically dispatched*）的。这是什么意思？查看[trait对象](Trait Objects trait 对象.md)来了解更多细节。
 
@@ -438,7 +444,7 @@ impl FooBar for Baz {
 如果我们忘了实现`Foo`，Rust会告诉我们：
 
 ```text
-error: the trait `main::Foo` is not implemented for the type `main::Baz` [E0277]
+error: the trait bound `main::Baz : main::Foo` is not satisfied [E0277]
 ```
 
 ## Deriving

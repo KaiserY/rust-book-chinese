@@ -2,7 +2,7 @@
 
 > [compiler-plugins.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/compiler-plugins.md)
 > <br>
-> commit 1430a3500076ad504a0b30be77fd2ad4468ea769
+> commit 73db76015e39d18950d654d3a32ba9053261242f
 
 ## 介绍
 

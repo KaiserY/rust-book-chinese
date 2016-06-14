@@ -2,7 +2,7 @@
 
 > [variable-bindings.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/variable-bindings.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 79244c3a6b4478e1561a1dfa1aff035650aff3ad
 
 事实上每一个非“Hello World” Rust 程序都用了*变量绑定*。他们将一些值绑定到一个名字上，这样可以在之后使用他们。`let`被用来声明一个绑定，像这样：
 
@@ -16,13 +16,13 @@ fn main() {
 
 ## 模式（Patterns）
 
-在许多语言中，这叫做*变量*。不过 Rust 的变量绑定有一些不同的巧妙之处。例如`let`表达式的左侧是一个“[模式](Patterns 模式.md)”，而不仅仅是一个变量。这意味着我们可以这样写：
+在许多语言中，这叫做*变量*。不过 Rust 的变量绑定有一些不同的巧妙之处。例如`let`语句的左侧是一个“[模式](Patterns 模式.md)”，而不仅仅是一个变量。这意味着我们可以这样写：
 
 ```rust
 let (x, y) = (1, 2);
 ```
 
-在这个表达式被计算后，`x`将会是1，而`y`将会是2.模式非常强大，并且本书中有[关于它的部分](Patterns 模式.md)。我们现在还不需要这些功能，所以接下来你只需记住有这个东西就行了。
+在这个语句被计算后，`x`将会是1，而`y`将会是2.模式非常强大，并且本书中有[关于它的部分](Patterns 模式.md)。我们现在还不需要这些功能，所以接下来你只需记住有这个东西就行了。
 
 ## 类型注解（Type annotations）
 

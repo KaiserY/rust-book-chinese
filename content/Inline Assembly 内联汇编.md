@@ -2,9 +2,9 @@
 
 > [inline-assembly.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/inline-assembly.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 78484696fc6853a30c938c518e92a074ad94cc54
 
-为了极端底层操作和性能要求，你可能希望直接控制 CPU。Rust 通过`asm!`宏来支持使用内联汇编。语法大体上与 GCC 和 Clang 相似：
+为了极端底层操作和性能要求，你可能希望直接控制 CPU。Rust 通过`asm!`宏来支持使用内联汇编。
 
 ```rust
 asm!(assembly template

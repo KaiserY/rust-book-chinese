@@ -2,7 +2,7 @@
 
 > [primitive-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/primitive-types.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit ccafdae9a11925cbc79c6ea4446688ef71bae1a1
 
 Rust有一系列被认为是“原生”的类型。这意味着它们是内建在语言中的。Rust被构建为在标准库中也提供了一些建立在这些类型之上的有用的类型，不过它们也大部分是原生的。
 
@@ -112,7 +112,9 @@ println!("The second name is: {}", names[1]);
 ## 切片（Slices）
 一个*切片*（*slice*）是一个数组的引用（或者“视图”）。它有利于安全，有效的访问数组的一部分而不用进行拷贝。比如，你可能只想要引用读入到内存的文件中的一行。原理上，片段并不是直接创建的，而是引用一个已经存在的变量。片段有预定义的长度，可以是可变也可以是不可变的。
 
-### 切片语法
+在底层，slice 代表一个指向数据开始的指针和一个长度。
+
+### 切片语法（Slicing syntax）
 
 你可以用一个`&`和`[]`的组合从多种数据类型创建一个切片。`&`表明切片类似于[引用](References and Borrowing 引用和借用.md)，这个我们会在本部分的后面详细介绍。带有一个范围的`[]`，允许你定义切片的长度：
 

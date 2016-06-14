@@ -10,7 +10,7 @@
 [rustbook.cn](http://rustbook.cn/) 由[掘金](http://gold.xitu.io/)赞助
 
 ## 版本
-1.8.0-stable
+1.9.0-stable
 
 ## 电子书
 * 请使用 [GitBook](https://github.com/GitbookIO/gitbook) 来生成电子书。

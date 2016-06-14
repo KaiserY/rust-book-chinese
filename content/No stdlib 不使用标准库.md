@@ -2,7 +2,7 @@
 
 > [no-stdlib.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/no-stdlib.md)
 > <br>
-> commit 0394418752cd39c5da68e7e05d5a37bf5a30f0db
+> commit e9b1c3ccb5fbae3d61d4ba0c1d650763dcda3923
 
 Rust 的标准库提供了很多有用的功能，不过它假设它的 host 系统的多种功能的支持：线程，网络，堆分配和其他功能。有些系统并没有这些功能，不过，Rust也能在这些系统上工作。为此，我们可以通过一个属性来告诉 Rust 我们不想使用标准库：`#![no_std]`。
 
@@ -29,7 +29,7 @@ fn start(_argc: isize, _argv: *const *const u8) -> isize {
 // for a bare-bones hello world. These are normally
 // provided by libstd.
 #[lang = "eh_personality"] extern fn eh_personality() {}
-#[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
+#[lang = "panic_fmt"] extern fn panic_fmt() -> ! { loop {} }
 # #[lang = "eh_unwind_resume"] extern fn rust_eh_unwind_resume() {}
 # #[no_mangle] pub extern fn rust_eh_register_frames () {}
 # #[no_mangle] pub extern fn rust_eh_unregister_frames () {}
@@ -53,7 +53,7 @@ pub extern fn main(argc: i32, argv: *const *const u8) -> i32 {
 }
 
 #[lang = "eh_personality"] extern fn eh_personality() {}
-#[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
+#[lang = "panic_fmt"] extern fn panic_fmt() -> ! { loop {} }
 # #[lang = "eh_unwind_resume"] extern fn rust_eh_unwind_resume() {}
 # #[no_mangle] pub extern fn rust_eh_register_frames () {}
 # #[no_mangle] pub extern fn rust_eh_unregister_frames () {}
@@ -62,11 +62,9 @@ pub extern fn main(argc: i32, argv: *const *const u8) -> i32 {
 
 目前编译器对能够被可执行文件调用的符号做了一些假设。正常情况下，这些函数是由标准库提供的，不过没有它你就必须定义你自己的了。
 
-这三个函数中的第一个`stack_exhausted`，当检测到栈溢出时被调用。这个函数对于如何被调用和应该干什么有一些限制，不顾如果栈限制寄存器没有被维护则一个线程可以有”无限的栈“，这种情况下这个函数不应该被触发。
+这两个函数中的第一个，`eh_personality`，被编译器的错误机制使用。它通常映射到 GCC 的特性函数上（查看[libstd实现](http://doc.rust-lang.org/std/rt/unwind/)来获取更多信息），不过对于不会触发恐慌的包装箱可以确定这个函数不会被调用。第二个函数，`panic_fmt`，也被编译器的错误机制使用。
 
-第二个函数，`eh_personality`，被编译器的错误机制使用。它通常映射到 GCC 的特性函数上（查看[libstd实现](http://doc.rust-lang.org/std/rt/unwind/)来获取更多信息），不过对于不会触发恐慌的包装箱可以确定这个函数不会被调用。最后一个函数，`panic_fmt`，也被编译器的错误机制使用。
-
-> 如下内容已被删除，暂时保留
+> 如下内容已被删除，暂时保留，因此可能不具有时效性。
 
 ## 使用 libcore
 > **注意**：核心库的结构是不稳定的，建议在任何可能的情况下使用标准库。

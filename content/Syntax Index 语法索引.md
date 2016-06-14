@@ -2,7 +2,7 @@
 
 > [syntax-index.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/syntax-index.md)
 > <br>
-> commit 1b438314a07d4cc2ecf0d82cd195e28bef73eac2
+> commit e35e5c434b0c3301aa62d2d8648fd5decfdddb7e
 
 ## 关键词（Keywords）
 
@@ -47,23 +47,23 @@
 * `!` (`!expr`): 位计算或逻辑互补。可重载（`Not`）。
 * `!=` (`var != expr`): 不等。可重载（`PartialEq`）。
 * `%` (`expr % expr`): 算数取余。可重载（`Rem`）。
-* `%=` (`var %= expr`): 算数取余并赋值。
+* `%=` (`var %= expr`): 算数取余并赋值。可重载（`RemAssign`）。
 * `&` (`expr & expr`): 位计算和。可重载（`BitAnd`）。
 * `&` (`&expr`): 借用。详见[引用和借用](References and Borrowing 引用和借用.md)。
 * `&` (`&type`, `&mut type`, `&'a type`, `&'a mut type`): 借用指针类型。详见[引用和借用](References and Borrowing 引用和借用.md)。
-* `&=` (`var &= expr`): 位计算和并赋值。
+* `&=` (`var &= expr`): 位计算和并赋值。可重载（`BitAndAssign`）。
 * `&&` (`expr && expr`): 逻辑和。
 * `*` (`expr * expr`): 算数乘法。可重载（`Mul`）。
 * `*` (`*expr`): 解引用。
 * `*` (`*const type`, `*mut type`): 裸指针。详见[裸指针](Raw Pointers 裸指针.md)。
-* `*=` (`var *= expr`): 算数乘法并赋值。
+* `*=` (`var *= expr`): 算数乘法并赋值。可重载（`MulAssign`）。
 * `+` (`expr + expr`): 算数加法。可重载（`Add`）。
 * `+` (`trait + trait`, `'a + trait`): 复合类型限制。详见[Traits（多个 trait bound）](Traits.md)。
-* `+=` (`var += expr`): 算数加法并赋值。
+* `+=` (`var += expr`): 算数加法并赋值。可重载（`AddAssign`）。
 * `,`: 参数和元素分隔符。详见[属性](Attributes 属性.md)，[函数](Functions 函数.md)，[结构体](Structs 结构体.md)，[泛型](Generics 泛型.md)，[匹配](Match 匹配.md)，[闭包](Closures 闭包.md)和[crate 和模块（使用`use`从模块导入）](Crates and Modules crate 和模块.md)。
 * `-` (`expr - expr`): 算数减法。可重载（`Sub`）。
 * `-` (`- expr`): 算数取反。可重载（`Neg`）。
-* `-=` (`var -= expr`): 算数减法并赋值。
+* `-=` (`var -= expr`): 算数减法并赋值。可重载（`SubAssign`）。
 * `->` (`fn(…) -> type`, `|…| -> type`): 函数和闭包的返回值类型。详见[函数](Functions 函数.md)，[闭包](Closures 闭包.md)。
 * `-> !` (`fn(…) -> !`, `|…| -> !`): 发散函数或闭包。详见[发散函数](Functions 函数.md)
 * `.` (`expr.ident`): 访问方法。详见[结构体](Structs 结构体.md)，[方法语法](Method Syntax 方法语法.md)。
@@ -72,14 +72,14 @@
 * `..` (`variant(x, ..)`, `struct_type { x, .. }`): “余下的”模式绑定。详见[模式（忽略绑定）](Patterns 模式.md)。
 * `...` (`expr ... expr`): 闭区间范围模式。详见[模式（范围）](Patterns 模式.md)。
 * `/` (`expr / expr`): 算数除法。可重载（`Div`）。
-* `/=` (`var /= expr`): 算数除法并赋值。
+* `/=` (`var /= expr`): 算数除法并赋值。可重载（`DivAssign`）。
 * `:` (`pat: type`, `ident: type`): 限制。详见[变量绑定](Variable Bindings 变量绑定.md)，[函数](Functions 函数.md)，[](Structs 结构体.md)
 * `:` (`ident: expr`): 结构体字段初始化。详见[结构体](Structs 结构体.md)。
 * `:` (`'a: loop {…}`): 循环标签。详见[循环（循环标签）](Loops 循环.md)
 * `;`: 语句和项终结符。
 * `;` (`[…; len]`): 定长数组语法的一部分。详见[原生类型（数组）](Primitive Types 原生类型.md)。
 * `<<` (`expr << expr`): 左移。可重载（`Shl`）。
-* `<<=` (`var <<= expr`): 左移并赋值。
+* `<<=` (`var <<= expr`): 左移并赋值。可重载（`ShlAssign`）。
 * `<` (`expr < expr`): 小于。可重载（`PartialOrd`）。
 * `<=` (`var <= expr`): 小于。可重载（`PartialOrd`）。
 * `=` (`var = expr`, `ident = type`): 赋值 / 等价。详见[变量绑定](Variable Bindings 变量绑定.md)，[`type`别名](`type` Aliases `type`别名.md)，默认泛型参数。
@@ -88,14 +88,14 @@
 * `>` (`expr > expr`): 大于。可重载（`PartialOrd`）。
 * `>=` (`var >= expr`): 大于。可重载（`PartialOrd`）。
 * `>>` (`expr >> expr`): 右移。可重载（`Shr`）。
-* `>>=` (`var >>= expr`): 右移并赋值。
+* `>>=` (`var >>= expr`): 右移并赋值。可重载（`ShrAssign`）。
 * `@` (`ident @ pat`): 模式绑定。详见[模式（绑定）](Patterns 模式.md)。
 * `^` (`expr ^ expr`): 位计算异或。可重载（`BitXor`）。
 * `^=` (`var ^= expr`): 位计算异或并赋值。
 * `|` (`expr | expr`): 位计算或。可重载（`BitOr`）。
 * `|` (`pat | pat`): 另外的模式。详见[模式（多个模式）](Patterns 模式.md)。
 * `|` (`|…| expr`): 闭包。详见[闭包](Closures 闭包.md)。
-* `|=` (`var |= expr`): 位计算或并赋值。
+* `|=` (`var |= expr`): 位计算或并赋值。可重载（`BitOrAssign`）。
 * `||` (`expr || expr`): 逻辑或。
 * `_`: “忽略”的模式匹配。详见[模式（忽略绑定）](Patterns 模式.md)。
 
@@ -136,7 +136,8 @@
 <!-- Constraints -->
 
 * `T: U`: 泛型参数`T`被限制为实现了`U`的类型。详见[Traits](Traits.md)。
-* `T: 'a`: 泛型类型`T`必须超过声明周期`'a`
+* `T: 'a`: 泛型类型`T`必须超过声明周期`'a`。当我们说一个类型“超出”它的作用域时，意味着它不能间接的包含短于`'a`作用域的任何引用。
+* `T : 'static`: 泛型类型`T`不包含除`'static`之外的被借用的引用。
 * `'b: 'a`: 泛型生命周期`'b`必须超过声明周期`'a`
 * `T: ?Sized`: 允许泛型类型是一个不定长度类型。详见[不定长类型](Unsized Types 不定长类型.md)。
 * `'a + trait`, `trait + trait`: 复合类型限制。详见[Traits（多个 trait bound）](Traits.md)

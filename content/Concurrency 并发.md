@@ -2,7 +2,7 @@
 
 > [concurrency.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/concurrency.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 444a118a8932c99b902548cb7ca8c249222c053a
 
 并发与并行是计算机科学中相当重要的两个主题，并且在当今生产环境中也十分热门。计算机正拥有越来越多的核心，然而很多程序员还没有准备好去完全的利用它们。
 
@@ -58,6 +58,47 @@ fn main() {
 }
 ```
 
+正如闭包可以从它的环境中获取变量，我们也可以把一些数据带到其他线程中：
+
+```rust
+use std::thread;
+
+fn main() {
+    let x = 1;
+    thread::spawn(|| {
+        println!("x is {}", x);
+    });
+}
+```
+
+然而，这会给我们一个错误：
+
+```text
+5:19: 7:6 error: closure may outlive the current function, but it
+                 borrows `x`, which is owned by the current function
+...
+5:19: 7:6 help: to force the closure to take ownership of `x` (and any other referenced variables),
+          use the `move` keyword, as shown:
+      thread::spawn(move || {
+          println!("x is {}", x);
+      });
+```
+
+这是因为默认闭包通过引用获取变量，因此闭包只会获取一个`x`的引用。这样有一个问题，因为线程可能会存在超过`x`的作用域，导致产生一个悬垂指针。
+
+为了解决这个问题，我们使用错误中提示的`move`闭包。`move`闭包将在[这里](Closures 闭包.md)详细讲解。从基本上讲，它把变量从环境中移动到自身。这意味着`x`现在归闭包所有，并不能在调用`spawn()`后的`main()`中使用。
+
+```rust
+use std::thread;
+
+fn main() {
+    let x = 1;
+    thread::spawn(move || {
+        println!("x is {}", x);
+    });
+}
+```
+
 很多语言有执行多线程的能力，不过是很不安全的。有完整的书籍是关于如何避免在共享可变状态下出现错误的。在此，借助类型系统，Rust也通过在编译时避免数据竞争来帮助我们。让我们具体讨论下如何在线程间共享数据。
 
 ## 安全的共享可变状态（Safe Shared Mutable State）
@@ -69,7 +110,7 @@ fn main() {
 
 同样[所有权系统](5.8.Ownership 所有权.md)也通过防止不当的使用指针来帮助我们排除数据竞争，最糟糕的并发bug之一。
 
-作为一个例子，这是一个在很多语言中会产生数据竞争的 Rust 版本程序。它不能编译：
+作为一个例子，这是一个在很多语言中可能会产生数据竞争的 Rust 版本程序。它不能编译：
 
 ```rust
 use std::thread;
@@ -96,15 +137,53 @@ fn main() {
         ^~~~
 ```
 
-Rust 知道这并不是安全的！如果每个线程中都有一个`data`的引用，并且这些线程获取了引用的所有权，我们就有了3个所有者！
+Rust 知道这并不是安全的！如果每个线程中都有一个`data`的引用，并且这些线程获取了引用的所有权，我们就有了3个所有者！`data`在第一次调用`spawn()`时被移出了`mian`，所以循环中接下来的调用不能使用这个变量。
 
-所以，我们需要能让一个值有多于一个引用并可用于线程间共享的某种类型，就是说它必须实现 `Sync`。
+注意这个特定的示例并不会造成数据竞争因为被访问的是不同的数组切片。不过这在编译时无从得知，在一个相似的情况中，例如`i`是一个常量或随机数，将会产生数据竞争。
 
-我们将使用`Arc<T>`，Rust 的标准原子引用计数类型，它用一些额外的运行时记录包装了一个值，它允许我们同时在多个引用间共享值的所有权。
+所以，我们需要一些类型可以让我们拥有一个值的多个有所有权的引用。通常，我们使用`Rc<T>`，它是一个引用计数类型用以提供共享的所有权。它有一些运行时记录来跟踪引用它的数量，也就是“引用计数”。
 
-这些记录包含了值一共有多少个这样的引用，也就是它的名字中的引用计数部分。
+调用`Rc<T>`的`clone()`方法会返回一个有所有权的引用并增加其内部引用计数。我们为每一个线程创建一个：
+
+```rust
+use std::thread;
+use std::time::Duration;
+use std::rc::Rc;
+
+fn main() {
+    let mut data = Rc::new(vec![1, 2, 3]);
+
+    for i in 0..3 {
+        // create a new owned reference
+        let data_ref = data.clone();
+
+        // use it in a thread
+        thread::spawn(move || {
+            data_ref[i] += 1;
+        });
+    }
+
+    thread::sleep(Duration::from_millis(50));
+}
+```
+
+这并不能运行，不过它会给我们这个错误：
+
+```text
+13:9: 13:22 error: the trait bound `alloc::rc::Rc<collections::vec::Vec<i32>> : core::marker::Send`
+            is not satisfied
+...
+13:9: 13:22 note: `alloc::rc::Rc<collections::vec::Vec<i32>>`
+            cannot be sent between threads safely
+```
+
+如错误中提到的，`Rc`并不能在线程间安全的传递。这是因为其内部的引用计数并不是通过一个线程安全的方式维护的（非原子性操作）并可能产生数据竞争。
+
+为了解决这个问题，我们使用`Arc<T>`，Rust 标准的原子引用计数类型。
 
 `Arc<T>`的原子部分可以在多线程中安全的访问。为此编译器确保了内部计数的改变都是不可分割的操作这样就不会产生数据竞争。
+
+本质上，`Arc<T>`是一个可以让我们在线程间安全的共享所有权的类型。
 
 ```rust
 use std::thread;
@@ -125,9 +204,9 @@ fn main() {
 }
 ```
 
-现在我们在`Arc<T>`上调用`clone()`，它增加了内部计数。接着这个句柄被移动到了新线程。
+与之前类似，我们使用`clone()`来创建一个新的有所有权的句柄。接着这个句柄被移动到了新线程。
 
-同时。。。仍然出错了。
+不过。。。仍然出错了。
 
 ```text
 <anon>:11:24 error: cannot borrow immutable borrowed content as mutable
@@ -135,9 +214,11 @@ fn main() {
                              ^~~~
 ```
 
-`Arc<T>`假设它的内容有另一个属性来确保它可以安全的在线程间共享：它假设它的内容是`Sync`的。这在我们的值是不可变时为真，不过我们想要能够改变它，所以我们需要一些别的方法来说服借用检查器我们知道我们在干什么。
+`Arc<T>`默认是不可变的。它允许在线程间**共享**数据，不过可变的共享数据是不安全的并且在涉及到多线程时会造成数据竞争！
 
-看起来我们需要一些允许我们安全的改变共享值的类型，例如同一时刻只允许一个线程能够它内部值的类型。
+通常当我们希望让某个不可变的东西变成可变时，我们使用`Cell<T>`或者`RefCell<T>`，它们通过运行时检查或其他手段提供安全的可变性。然而，与`Rc`类似，它们不是线程安全的。如果我们尝试使用它们，我们将会得到一个错误说这些类型不能被`Sync`，代码会编译失败。
+
+看起来我们需要一些允许我们安全的在线程间改变共享值的类型，例如同一时刻只允许一个线程能够它内部值的类型。
 
 为此，我们可以使用`Mutex<T>`类型！
 
@@ -165,7 +246,11 @@ fn main() {
 
 注意`i`的值被限制（拷贝）到了闭包里并不是在线程间共享。
 
-同时注意到[Mutex](http://doc.rust-lang.org/std/sync/struct.Mutex.html)的[lock](http://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock)方法有如下签名：
+这里我们“锁定”了互斥锁（mutex）。一个互斥锁，正如其名，同时只允许一个线程访问一个值。当我们想要访问一个值时，我们`lock()`它。这会“锁定” mutex，并且其他线程不能锁定它（也就是改变它的值），直到我们处理完之后。如果一个线程尝试锁定一个已经被锁定的 mutex，它将会等待直到其他线程释放这个锁为止。
+
+这里锁的“释放”是隐式的；当锁的结果（在这里是`data`）离开作用域，锁将会被自动释放。
+
+注意[Mutex](http://doc.rust-lang.org/std/sync/struct.Mutex.html)的[lock](http://doc.rust-lang.org/std/sync/struct.Mutex.html#method.lock)方法有如下签名：
 
 ```rust
 fn lock(&self) -> LockResult<MutexGuard<T>>
@@ -210,6 +295,8 @@ use std::sync::mpsc;
 fn main() {
     let data = Arc::new(Mutex::new(0));
 
+    // `tx` is the "transmitter" or "sender"
+    // `rx` is the "receiver"
     let (tx, rx) = mpsc::channel();
 
     for _ in 0..10 {

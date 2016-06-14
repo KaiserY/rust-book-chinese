@@ -2,7 +2,7 @@
 
 > [loops.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/loops.md)
 > <br>
-> commit 2217cf1af27d7980aba9deca4e78165cab5e80fc
+> commit 7df3bf1860d1821056a5e9d4193b7e99d2c9479d
 
 Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`while`和`for`。每种方法都有自己的用途。
 
@@ -107,7 +107,8 @@ i = 4 and j = 9
 ### 对迭代器（On iterators）:
 
 ```rust
-# let lines = "hello\nworld".lines();
+let lines = "hello\nworld".lines();
+
 for (linenumber, line) in lines.enumerate() {
     println!("{}: {}", linenumber, line);
 }

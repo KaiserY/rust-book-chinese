@@ -2,7 +2,7 @@
 
 > [vectors.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/vectors.md)
 > <br>
-> commit 5b9dd6a016adb5ed67e150643fb7e21dcc916845
+> commit 728d20f7cc84a67ea85aaa1257234b4750bdcc1c
 
 “Vector”是一个动态或“可增长”的数组，被实现为标准库类型[`Vec<T>`](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](Generics 泛型.md)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
 
@@ -17,6 +17,8 @@ let v = vec![1, 2, 3, 4, 5]; // v: Vec<i32>
 ```rust
 let v = vec![0; 10]; // ten zeroes
 ```
+
+vector 将它们的内容以连续的`T`的数组的形式存储在堆上，这意味着它们必须在编译时就知道`T`的大小（就是存储一个`T`需要多少字节）。有些类型的大小不可能在编译时就知道。为此你需要保存一个指向该类型的指针：幸好，[`Box`](https://doc.rust-lang.org/std/boxed/)类型正好适合这种情况。
 
 ## 访问元素
 为了vector特定索引的值，使用`[]`：
@@ -47,8 +49,8 @@ v[j];
 用非`usize`类型索引的话会给出类似如下的错误：
 
 ```text
-error: the trait `core::ops::Index<i32>` is not implemented for the type
-`collections::vec::Vec<_>` [E0277]
+error: the trait bound `collections::vec::Vec<_> : core::ops::Index<i32>`
+is not satisfied [E0277]
 v[j];
 ^~~~
 note: the type `collections::vec::Vec<_>` cannot be indexed by `i32`
@@ -98,6 +100,34 @@ for i in &mut v {
 
 for i in v {
     println!("Take ownership of the vector and its element {}", i);
+}
+```
+
+注意：你不能在使用 vector 的所有权遍历之后再次遍历它。你可以使用它的引用多次遍历 vector。例如，下面的代码不能编译。
+
+```rust,ignore
+let v = vec![1, 2, 3, 4, 5];
+
+for i in v {
+    println!("Take ownership of the vector and its element {}", i);
+}
+
+for i in v {
+    println!("Take ownership of the vector and its element {}", i);
+}
+```
+
+而如下代码则可以完美运行：
+
+```rust
+let v = vec![1, 2, 3, 4, 5];
+
+for i in &v {
+    println!("This is a reference to {}", i);
+}
+
+for i in &v {
+    println!("This is a reference to {}", i);
 }
 ```
 

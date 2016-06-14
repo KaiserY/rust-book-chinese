@@ -2,7 +2,7 @@
 
 > [guessing-game.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/guessing-game.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 01d76099f261abe50342d9261fad618c5323274b
 
 让我学习一些 Rust！作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是太大了还是太小了。猜对了，它会祝贺我们。听起来如何？
 
@@ -173,7 +173,7 @@ io::stdin()
 
 不过这样会难以阅读。所以我们把它分开，3 行对应 3 个方法调用。我们已经谈论过了`read_line()`，不过`expect()`呢？好吧，我们已经提到过`read_line()`将用户输入放入我们传递给它的`&mut String`中。不过它也返回一个值：在这个例子中，一个[io::Result](http://doc.rust-lang.org/stable/std/io/type.Result.html)。Rust的标准库中有很多叫做`Result`的类型：一个泛型[Result](http://doc.rust-lang.org/stable/std/result/enum.Result.html)，然后是子库的特殊版本，例如`io::Result`。
 
-这个`Result`类型的作用是编码错误处理信息。`Result`类型的值，像任何（其它）类型，有定义在其上的方法。在这个例子中，`io::Result`有一个[expect()方法](http://doc.rust-lang.org/stable/std/option/enum.Option.html#method.expect)获取调用它的值，而且如果它不是一个成功的值，[panic!](Error Handling 错误处理.md)并带有你传递给它的信息。这样的`panic!`会使我们的程序崩溃，显示（我们传递的）信息。
+这个`Result`类型的作用是编码错误处理信息。`Result`类型的值，像任何（其它）类型，有定义在其上的方法。在这个例子中，`io::Result`有一个[expect()方法](http://doc.rust-lang.org/stable/std/option/enum.Result.html#method.expect)获取调用它的值，而且如果它不是一个成功的值，[panic!](Error Handling 错误处理.md)并带有你传递给它的信息。这样的`panic!`会使我们的程序崩溃，显示（我们传递的）信息。
 
 如果我们去掉这两个函数调用，我们的程序会编译通过，不过我们会得到一个警告：
 
@@ -649,7 +649,7 @@ let guess: u32 = match guess.trim().parse() {
 };
 ```
 
-这是你如何大体上从“错误就崩溃”移动到“确实处理错误”，通过从`ok().expect()`切换到一个`match`语句。`parse()`返回的`Result`就是一个像`Ordering`一样的枚举，不过在这个例子中，每个变量有一些数据与之相关：`Ok`是一个成功，而`Err`是一个失败。每一个都包含更多信息：成功的解析为整型，或一个错误类型。在这个例子中，我们`match`为`Ok(num)`，它设置了`Ok`内叫做`num`的值，接着在右侧返回它。在`Err`的情况下，我们并不关心它是什么类型的错误，所以我们仅仅使用`_`而不是一个名字。这忽略错误，并`continue`造成我们进行`loop`的下一次迭代。
+这是你如何大体上从“错误就崩溃”移动到“确实处理错误”，通过从`expect()`切换到一个`match`语句。`parse()`返回的`Result`就是一个像`Ordering`一样的枚举，不过在这个例子中，每个变量有一些数据与之相关：`Ok`是一个成功，而`Err`是一个失败。每一个都包含更多信息：成功的解析为整型，或一个错误类型。在这个例子中，我们`match`为`Ok(num)`，它设置了`Ok`内叫做`num`的值，接着在右侧返回它。在`Err`的情况下，我们并不关心它是什么类型的错误，所以我们仅仅使用`_`而不是一个名字。这忽略错误，并`continue`造成我们进行`loop`的下一次迭代。
 
 现在应该搞定了！试试看：
 

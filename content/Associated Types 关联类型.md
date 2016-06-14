@@ -2,7 +2,7 @@
 
 > [associated-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/associated-types.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit b1b37384cd6cf45525962a4535188e944493ad9a
 
 关联类型是Rust类型系统中非常强大的一部分。它涉及到‘类型族’的概念，换句话说，就是把多种类型归于一类。这个描述可能比较抽象，所以让我们深入研究一个例子。如果你想编写一个`Graph`trait，你需要泛型化两个类型：点类型和边类型。所以你可能会像这样写一个trait，`Graph<N, E>`：
 
@@ -113,7 +113,7 @@ impl Graph for MyGraph {
 
 ## trait 对象和关联类型
 
-这里还有另外一个我们需要讨论的语法：trait对象。如果你创建一个关联类型的trait对象，像这样：
+这里还有另外一个我们需要讨论的语法：trait对象。如果你试图从一个带有关联类型的 trait 创建一个 trait 对象，像这样：
 
 ```rust
 # trait Graph {

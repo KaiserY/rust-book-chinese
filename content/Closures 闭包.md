@@ -2,7 +2,7 @@
 
 > [closures.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/closures.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 728d20f7cc84a67ea85aaa1257234b4750bdcc1c
 
 有时为了整洁和复用打包一个函数和*自由变量（free variables）*是很有用的。自由变量是指被用在函数中来自函数内部作用域并只用于函数内部的变量。对此，我们用一个新名字“闭包”而且 Rust 提供了大量关于他们的实现，正如我们将看到的。
 
@@ -298,14 +298,13 @@ assert_eq!(6, answer);
 编译的时候会给出这一长串相关错误：
 
 ```text
-error: the trait `core::marker::Sized` is not implemented for the type
-`core::ops::Fn(i32) -> i32` [E0277]
+error: the trait bound `core::ops::Fn(i32) -> i32 : core::marker::Sized` is not satisfied [E0277]
 fn factory() -> (Fn(i32) -> i32) {
                 ^~~~~~~~~~~~~~~~
 note: `core::ops::Fn(i32) -> i32` does not have a constant size known at compile-time
 fn factory() -> (Fn(i32) -> i32) {
                 ^~~~~~~~~~~~~~~~
-error: the trait `core::marker::Sized` is not implemented for the type `core::ops::Fn(i32) -> i32` [E0277]
+error: the trait bound `core::ops::Fn(i32) -> i32 : core::marker::Sized` is not satisfied [E0277]
 let f = factory();
     ^
 note: `core::ops::Fn(i32) -> i32` does not have a constant size known at compile-time

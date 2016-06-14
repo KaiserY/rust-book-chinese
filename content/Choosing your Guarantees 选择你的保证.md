@@ -2,7 +2,7 @@
 
 > [choosing-your-guarantees.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/choosing-your-guarantees.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 73db76015e39d18950d654d3a32ba9053261242f
 
 Rust 的一个重要特性是允许我们控制一个程序的开销和（安全）保证。
 

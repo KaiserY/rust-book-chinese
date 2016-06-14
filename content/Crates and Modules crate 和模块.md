@@ -2,7 +2,7 @@
 
 > [crates-and-modules.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/crates-and-modules.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit a7d15ce6a647670ca555b12f0f3b45b0c939fe66
 
 当一个项目开始变得更大，把它分为一堆更小的部分然后再把它们装配到一起被认为是一个好的软件工程实践。另外定义良好的接口也非常重要，这样有些函数是私有的而有些是公有的。Rust 有一个模块系统来帮助我们处理这些工作。
 
@@ -464,7 +464,7 @@ fn main() {
 
 首先，`extern crate`和`use`都允许重命名导入的项。所以 crate 仍然叫“phrases”，不过这里我们以“sayings”来引用它。类似的，第一个`use`语句从 crate 中导入`japanese::greetings`，不过作为`ja_greetings`而不是简单的`greetings`。这可以帮助我们消除来自不同包中相似名字的项的歧义。
 
-第二个`use`语句用了一个星号来引入`sayings::japanese::farewells`模块中的所有符号。如你所见之后我们可以不用模块标识来引用日语的`goodbye`函数。这类全局引用要保守使用。
+第二个`use`语句用了一个星号来引入`sayings::japanese::farewells`模块中的所有公有符号。如你所见之后我们可以不用模块标识来引用日语的`goodbye`函数。这类全局引用要保守使用。需要注意的是它只引入公有符号，哪怕在相同模块的代码中引入。
 
 
 第三个`use`语句需要更多的解释。它使用了“大括号扩展（brace expansion）”来将三条`use`语句压缩成了一条（这类语法对曾经写过 Linux shell 脚本的人应该很熟悉）。语句的非压缩形式应该是：

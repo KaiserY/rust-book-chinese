@@ -2,7 +2,7 @@
 
 > [drop.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/drop.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit ceaf5dfdc11a092128fad4b7d1289c9766a4059e
 
 现在我们讨论了 trait，让我们看看一个由 Rust 标准库提供的特殊 trait，[`Drop`](http://doc.rust-lang.org/nightly/std/ops/trait.Drop.html)。`Drop` trait提供了一个当一个值离开作用域后运行一些代码的方法。例如：
 

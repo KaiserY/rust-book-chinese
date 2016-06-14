@@ -2,7 +2,7 @@
 
 > [casting-between-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/casting-between-types.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit ccafdae9a11925cbc79c6ea4446688ef71bae1a1
 
 Rust，和它对安全的关注，提供了两种不同的在不同类型间转换的方式。第一个，`as`，用于安全转换。相反，`transmute`允许任意的转换，而这是 Rust 中最危险的功能之一！
 

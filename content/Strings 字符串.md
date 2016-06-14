@@ -2,7 +2,7 @@
 
 > [strings.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/strings.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 6ce63fb3f1bf37004868f79beacb180283c0750e
 
 对于每一个程序，字符串都是需要掌握的重要内容。由于Rust主要着眼于系统编程，所以它的字符串处理系统与其它语言有些许区别。每当你碰到一个可变大小的数据结构时，情况都会变得很微妙，而字符串正是可变大小的数据结构。这也就是说，Rust的字符串与一些像C这样的系统编程语言也不相同。
 
@@ -29,10 +29,12 @@ assert_eq!("foo\n        bar", s);
 
 ```rust
 let s = "foo\
-    bar"; 
+    bar";
 
 assert_eq!("foobar", s);
 ```
+
+注意通常你不能直接访问一个`str`，只能通过`&str`引用。这是因为`str`是一个不定长类型，它需要额外的运行时信息才能使用。关于更多请查看[不定长类型章节](Unsized Types 不定长类型.md)。
 
 Rust 当然不仅仅只有`&str`。一个`String`，是一个在堆上分配的字符串。这个字符串可以增长，并且也保证是UTF-8编码的。`String`通常通过一个字符串片段调用`to_string`方法转换而来。
 

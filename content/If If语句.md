@@ -2,7 +2,7 @@
 
 > [if.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/if.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 56ab2a1cdefec1ddee00ee99d3fb710906714d1b
 
 Rust 的 `if` 并不是特别复杂，不过你会发现它更像动态类型语言而不是更传统的系统语言。所以让我来说说它，以便你能把握这些细节。
 

@@ -2,9 +2,9 @@
 
 > [patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/patterns.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit ea9ae486627fec2ff613bef73ccda612996d8f6f
 
-模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配语句](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
+模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配表达式](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
 
 快速回顾：你可以直接匹配常量，并且`_`作为“任何”类型：
 
@@ -153,7 +153,37 @@ let (x, _, z) = coordinate();
 
 这里，我们绑定元组第一个和最后一个元素为`x`和`z`，不过省略了中间的元素。
 
-相似的，你可以在模式中用`..`来忽略多个值。
+值得注意的是，_ 一开始并不绑定值，这意味着值可能并没有被移动（这里涉及到 Move 和 Copy，应该就是说你不用它的话就不会 Move）：
+
+```rust
+let tuple: (u32, String) = (5, String::from("five"));
+
+// Here, tuple is moved, because the String moved:
+let (x, _s) = tuple;
+
+// The next line would give "error: use of partially moved value: `tuple`"
+// println!("Tuple is: {:?}", tuple);
+
+// However,
+
+let tuple = (5, String::from("five"));
+
+// Here, tuple is _not_ moved, as the String was never moved, and u32 is Copy:
+let (x, _) = tuple;
+
+// That means this works:
+println!("Tuple is: {:?}", tuple);
+```
+
+这也意味着任何临时变量将会在语句结束时立刻被释放掉：
+
+```rust
+// Here, the String created will be dropped immediately, as it’s not bound:
+
+let _ = String::from("  hello  ").trim();
+```
+
+你也可以在模式中用`..`来忽略多个值。
 
 ```rust
 enum OptionalTuple {
@@ -245,7 +275,7 @@ struct Person {
 }
 
 let name = "Steve".to_string();
-let mut x: Option<Person> = Some(Person { name: Some(name) });
+let x: Option<Person> = Some(Person { name: Some(name) });
 match x {
     Some(Person { name: ref a @ Some(_), .. }) => println!("{:?}", a),
     _ => {}

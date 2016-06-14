@@ -2,7 +2,7 @@
 
 > [functions.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/functions.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit e1d2eda7f3ed8999853c8b4424e7a81a88f97d2a
 
 到目前为止你应该见过一个函数，`main`函数：
 
@@ -66,7 +66,7 @@ fn print_sum(x, y) {
 
 ```text
 expected one of `!`, `:`, or `@`, found `)`
-fn print_number(x, y) {
+fn print_sum(x, y) {
 ```
 
 这是一个有意为之的设计决定。即使像 Haskell 这样的能够全程序推断的语言，注明类型也经常作为一个最佳实践被建议。我们认为即使允许在在函数体中推断，也要强制函数声明参数类型。这是一个全推断与无推断的最佳平衡。
@@ -201,6 +201,16 @@ stack backtrace:
   11:     0x7f402694ab44 - __libc_start_main
   12:     0x7f40277386c8 - <unknown>
   13:                0x0 - <unknown>
+```
+
+如果你需要覆盖一个已经设置的`RUST_BACKTRACE`的值，同时你又不能仅仅 unset 这个变量，这时把它设置成`0`来避免获得 backtrace。任何其它（非 0 ）值将打开 backtrace。
+
+```text
+$ export RUST_BACKTRACE=1
+...
+$ RUST_BACKTRACE=0 ./diverges
+thread '<main>' panicked at 'This function never returns!', hello.rs:2
+note: Run with `RUST_BACKTRACE=1` for a backtrace.
 ```
 
 `RUST_BACKTRACE`也可以用于 Cargo 的`run`命令：

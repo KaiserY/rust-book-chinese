@@ -3,7 +3,7 @@
 
 > [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/testing.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit d7e406eab811ae5cbb01c986c6e9ff681e5a6657
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 
@@ -27,6 +27,7 @@ $ cd adder
 在你创建一个新项目时 Cargo 会自动生成一个简单的测试。下面是`src/lib.rs`的内容：
 
 ```rust
+# fn main() {}
 #[test]
 fn it_works() {
 }
@@ -73,6 +74,7 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 那么为啥我们这个啥都没干的测试通过了呢？任何没有`panic!`的测试通过，`panic!`的测试失败。让我们的测试失败：
 
 ```rust
+# fn main() {}
 #[test]
 fn it_works() {
     assert!(false);
@@ -141,6 +143,7 @@ $ echo $?
 我们可以使用另一个属性反转我们的失败的测试：`should_panic`：
 
 ```rust
+# fn main() {}
 #[test]
 #[should_panic]
 fn it_works() {
@@ -170,6 +173,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 Rust提供了另一个宏，`assert_eq!`用来比较两个参数：
 
 ```rust
+# fn main() {}
 #[test]
 #[should_panic]
 fn it_works() {
@@ -199,6 +203,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 `should_panic`测试是脆弱的，因为很难保证测试是否会因什么不可预测原因并未失败。为了解决这个问题，`should_panic`属性可以添加一个可选的`expected`参数。这个参数可以确保失败信息中包含我们提供的文字。下面是我们例子的一个更安全的版本：
 
 ```rust
+# fn main() {}
 #[test]
 #[should_panic(expected = "assertion failed")]
 fn it_works() {
@@ -209,6 +214,7 @@ fn it_works() {
 这就是全部的基础内容！让我们写一个“真实”的测试：
 
 ```rust
+# fn main() {}
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -226,6 +232,7 @@ fn it_works() {
 有时一些特定的测试可能非常耗时。这时可以通过`ignore`属性来默认禁用：
 
 ```rust
+# fn main() {}
 #[test]
 fn it_works() {
     assert_eq!(4, add_two(2));
@@ -283,6 +290,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 然而以这样的方式来实现我们的测试的例子并不是地道的做法：它缺少`tests`模块。如果要实现我们的测试实例，一个比较惯用的做法应该是如下的：
 
 ```rust
+# fn main() {}
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -303,6 +311,7 @@ mod tests {
 第二个变化是`use`声明。因为我们在一个内部模块中，我们需要把我们要测试的函数导入到当前空间中。如果你有一个大型模块的话这会非常烦人，所以这里有经常使用一个`glob`功能。让我们修改我们的`src/lib.rs`来使用这个：
 
 ```rust
+# fn main() {}
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -348,6 +357,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```rust
 extern crate adder;
 
+# fn main() {}
 #[test]
 fn it_works() {
     assert_eq!(4, adder::add_two(2));
@@ -392,6 +402,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 没有什么是比带有例子的文档更好的了。当然也没有什么比不能工作的例子更糟的，因为文档完成之后代码已经被改写。为此，Rust支持自动运行你文档中的例子（**注意：**这只在库 crate中有用，而在二进制 crate 中没用）。这是一个完整的有例子的`src/lib.rs`：
 
 ~~~rust,ignore
+# fn main() {}
 //! The `adder` crate provides functions that add numbers to other numbers.
 //!
 //! # Examples
@@ -457,5 +468,3 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured
 现在我们运行了3种测试！注意文档测试的名称：`_0`生成为模块测试，而`add_two_0`函数测试。如果你添加更多用例的话它们会像`add_two_1`这样自动加一。
 
 我们还没有讲到所有编写文档测试的所有细节。关于更多，请看[文档章节](Documentation 文档.md)。
-
-最后再强调一次：文档测试不能在二进制 crate 中运行。关于文件编排的细节请看[crate 和模块](Crates and Modules crate 和模块.md)部分。

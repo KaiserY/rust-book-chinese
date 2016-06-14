@@ -2,7 +2,7 @@
 
 > [macros.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/macros.md)
 > <br>
-> commit 7fd7b5b7fc628b3cd19c56daf84dbe9b2b9db1c0
+> commit 708c5d09d7a355c506960581e16306c96eb7d019
 
 到目前为止你已经学到了不少Rust提供的抽象和重用代码的工具了。这些代码重用单元有丰富的语义结构。例如，函数有类型签名，类型参数有特性限制并且能重载的函数必须属于一个特定的特性。
 
@@ -356,7 +356,7 @@ fn main() {
 * `ty`：一个类型。例如：`i32`；`Vec<(char, String)>`；`&T`
 * `pat`：一个模式。例如：`Some(t)`；`(17, 'a')`；`_`
 * `stmt`：一个单独语句。例如：`let x = 3`
-* `block`：一个大括号界定的语句序列。例如：`{ log(error, "hi"); return 12; }`
+* `block`：一个大括号界定的语句序列，或者一个表达式。例如：`{ log(error, "hi"); return 12; }`
 * `item`：一个[项](http://doc.rust-lang.org/stable/reference.html#items)。例如：`fn foo() { }`，`struct Bar`
 * `meta`：一个“元数据项”，可以在属性中找到。例如：`cfg(target_os = "windows")`
 * `tt`：一个单独的记号树
@@ -370,7 +370,7 @@ fn main() {
 
 这些规则为 Rust 语法提供了一些灵活性以便将来的展开不会破坏现有的宏。
 
-宏系统完全不处理解析模糊。例如，`$($t:ty)* $e:expr`语法总是会解析失败，因为解析器会被强制在解析`$t`和解析`$e`之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成`$(T $t:ty)* E $e:exp`。
+宏系统完全不处理解析模糊。例如，`$($i:ident)* $e:expr`语法总是会解析失败，因为解析器会被强制在解析`$i`和解析`$e`之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成`$(I $i:ident)* E $e:expr`。
 
 ## 范围和宏导入/导出
 宏在编译的早期阶段被展开，在命名解析之前。这有一个缺点是与语言中其它结构相比，范围对宏的作用不一样。
@@ -465,7 +465,7 @@ macro_rules! inc {
 
 来定义一个可以在库内外都能用的宏。这个函数名字会展开为`::increment`或`::mylib::increment`。
 
-为了保证这个系统简单和正确，`#[macro_use] extern crate ...`应只出现在你包装箱的根中，而不是在`mod`中。这保证了`$crate`展开为一个单独的标识符。
+为了保证这个系统简单和正确，`#[macro_use] extern crate ...`应只出现在你包装箱的根中，而不是在`mod`中。
 
 ## 深入（The deep end）
 之前的介绍章节提到了递归宏，但并没有给出完整的介绍。还有一个原因令递归宏是有用的：每一次递归都给你匹配宏参数的机会。

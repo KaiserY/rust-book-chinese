@@ -64,3 +64,4 @@
   Rust](http://munksgaard.me/papers/laumann-munksgaard-larsen.pdf). Philip
   Munksgaard's master's thesis. Research for Servo.
 * [Ownership is Theft: Experiences Building an Embedded OS in Rust - Amit Levy, et. al.](http://amitlevy.com/papers/tock-plos2015.pdf)
+* [You can't spell trust without Rust](https://raw.githubusercontent.com/Gankro/thesis/master/thesis.pdf). Alexis Beingessner's master's thesis.

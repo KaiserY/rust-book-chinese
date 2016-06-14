@@ -2,7 +2,7 @@
 
 > [getting-started.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/getting-started.md)
 > <br>
-> commit 52786de3ed2ff4553378c9b9bca1a60d8b2a2e9d
+> commit 9094935b460975b6fac272ebf5985dfd71b90104
 
 本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo，Rust 的构建系统以及包管理器。
 
@@ -29,6 +29,7 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
+| `i686-pc-windows-msvc`        |  ✓  |  ✓  |  ✓  | 32-bit MSVC (Windows 7+)   |
 | `x86_64-pc-windows-msvc`      |  ✓  |  ✓  |  ✓  | 64-bit MSVC (Windows 7+)   |
 | `i686-pc-windows-gnu`         |  ✓  |  ✓  |  ✓  | 32-bit MinGW (Windows 7+)  |
 | `x86_64-pc-windows-gnu`       |  ✓  |  ✓  |  ✓  | 64-bit MinGW (Windows 7+)  |
@@ -47,7 +48,6 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
-| `i686-pc-windows-msvc`        |  ✓  |  ✓  |  ✓  | 32-bit MSVC (Windows 7+)   |
 | `x86_64-unknown-linux-musl`   |  ✓  |     |     | 64-bit Linux with MUSL     |
 | `arm-linux-androideabi`       |  ✓  |     |     | ARM Android                |
 | `arm-unknown-linux-gnueabi`   |  ✓  |  ✓  |     | ARM Linux (2.6.18+)        |
@@ -65,18 +65,22 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 | `i686-linux-android`          |  ✓  |     |     | 32-bit x86 Android         |
 | `aarch64-linux-android`       |  ✓  |     |     | ARM64 Android              |
 | `powerpc-unknown-linux-gnu`   |  ✓  |     |     | PowerPC Linux (2.6.18+)    |
+| `powerpc64-unknown-linux-gnu` |  ✓  |     |     | PPC64 Linux (2.6.18+)      |
+|`powerpc64le-unknown-linux-gnu`|  ✓  |     |     | PPC64LE Linux (2.6.18+)    |
+|`armv7-unknown-linux-gnueabihf`|  ✓  |     |     | ARMv7 Linux (2.6.18+)      |
 | `i386-apple-ios`              |  ✓  |     |     | 32-bit x86 iOS             |
 | `x86_64-apple-ios`            |  ✓  |     |     | 64-bit x86 iOS             |
 | `armv7-apple-ios`             |  ✓  |     |     | ARM iOS                    |
 | `armv7s-apple-ios`            |  ✓  |     |     | ARM iOS                    |
 | `aarch64-apple-ios`           |  ✓  |     |     | ARM64 iOS                  |
-| `i686-unknown-freebsd`        |  ✓  |  ✓  |     | 32-bit FreeBSD             |
-| `x86_64-unknown-freebsd`      |  ✓  |  ✓  |     | 64-bit FreeBSD             |
+| `i686-unknown-freebsd`        |  ✓  |  ✓  |  ✓  | 32-bit FreeBSD             |
+| `x86_64-unknown-freebsd`      |  ✓  |  ✓  |  ✓  | 64-bit FreeBSD             |
 | `x86_64-unknown-openbsd`      |  ✓  |  ✓  |     | 64-bit OpenBSD             |
 | `x86_64-unknown-netbsd`       |  ✓  |  ✓  |     | 64-bit NetBSD              |
 | `x86_64-unknown-bitrig`       |  ✓  |  ✓  |     | 64-bit Bitrig              |
 | `x86_64-unknown-dragonfly`    |  ✓  |  ✓  |     | 64-bit DragonFlyBSD        |
 | `x86_64-rumprun-netbsd`       |  ✓  |     |     | 64-bit NetBSD Rump Kernel  |
+| `x86_64-sun-solaris`          |  ✓  |  ✓  |     | 64-bit Solaris/SunOS       |
 | `i686-pc-windows-msvc` (XP)   |  ✓  |     |     | Windows XP support         |
 | `x86_64-pc-windows-msvc` (XP) |  ✓  |     |     | Windows XP support         |
 
@@ -92,20 +96,8 @@ $ curl -sSf https://static.rust-lang.org/rustup.sh | sh
 
 这将会下载一个脚本，并开始安装。如果一切顺利，你将会看到这些：
 
-```bash
-Welcome to Rust.
-
-This script will download the Rust compiler and its package manager, Cargo, and
-install them to /usr/local. You may install elsewhere by running this script
-with the --prefix=<path> option.
-
-The installer will run under ‘sudo’ and may ask you for your password. If you do
-not want the script to run ‘sudo’ then pass it the --disable-sudo flag.
-
-You may uninstall later by running /usr/local/lib/rustlib/uninstall.sh,
-or by running this script again with the --uninstall flag.
-
-Continue? (y/N)
+```text
+Rust is ready to roll.
 ```
 
 在这里输入，输入`y`来选择`yes`，并按照接下来的提示操作。
@@ -138,7 +130,9 @@ $ rustc --version
 
 如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。
 
-如果还是搞不定，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust)访问位于 irc.mozilla.org 的 #rust IRC频道 。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
+Rust 并没有自己的连接器，所以你需要自己装一个。如何安装依赖你特定的系统，参考相关文档来获取更多细节。
+
+如果还是搞不定，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners,%23rust)访问[位于 irc.mozilla.org 的 #rust-beginners IRC频道](irc://irc.mozilla.org/#rust-beginners)和在[#rust IRC 频道](irc://irc.mozilla.org/rust)进行一般讨论。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
 
 安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。在 UNIX 系统上，位置是`/usr/local/share/doc/rust`。在Windows，它位于你 Rust 安装位置的`share/doc`文件夹。
 
@@ -291,7 +285,7 @@ $ rm main  # or 'del main.exe' on Windows
 
 Cargo 期望源文件位于 src 目录，所以先做这个。这样将项目顶级目录（在这里，是 hello_world）留给 README，license 信息和其他跟代码无关的文件。这样，Cargo 帮助你保持项目干净整洁。一切井井有条。
 
-现在，复制`main.rs`到`src`目录，并删除你用`rustc`创建的编译过的文件。一如既往，如果你使用 Windows 用`main.exe`代替`main`。
+现在，移动`main.rs`到`src`目录，并删除你用`rustc`创建的编译过的文件。一如既往，如果你使用 Windows 用`main.exe`代替`main`。
 
 例子中我们继续使用`main.rs`作为源文件名是因为它创建了一个可执行文件。如果你想要创建一个库文件，使用`lib.rs`作为文件名。Cargo 使用这个约定来正确编译你的项目，不过如果你想的话你也可以覆盖它。
 
@@ -355,7 +349,9 @@ Cargo 检查任何项目文件是否被修改，并且只会在你上次构建�
 
 ### 发布构建（Building for Release）
 
-当你的项目最终准备好发布了，可以使用`cargo build --release`来优化编译项目。这些优化可以让 Rust 代码运行的更快，不过启用他们会让程序花更长的时间编译。这也是为何这是两种不同的配置，一个为了开发，另一个构建提供给用户的最终程序。
+当你的项目准备好发布了，可以使用`cargo build --release`来优化编译项目。这些优化可以让 Rust 代码运行的更快，不过启用他们会让程序花更长的时间编译。这也是为何这是两种不同的配置，一个为了开发，另一个构建提供给用户的最终程序。
+
+### 那个`Cargo.lock`是什么？（What Is That `Cargo.lock`?）
 
 运行这个命令同时也会让 Cargo 创建一个叫做`Cargo.lock`的文件，它看起来像这样：
 

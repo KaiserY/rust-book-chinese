@@ -2,7 +2,7 @@
 
 > [documentation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/documentation.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit cff81d724fa73003fe7e589a9433db33dde742a6
 
 文档是任何软件项目中重要的一部分，并且它在Rust中是一级重要的。让我们讨论下Rust提供给我们编写项目文档的的工具。
 
@@ -100,7 +100,7 @@ hello.rs:4 }
 不可恢复的函数滥用（比如，程序错误）在Rust中通常用恐慌（panics）指示，它至少会杀死整个当前的线程。如果你的函数有被识别为或者强制为恐慌这样的不平凡契约，记录文档是非常重要的。
 
 ```rust
-/// # Failures
+/// # Errors
 # fn foo() {}
 ```
 
