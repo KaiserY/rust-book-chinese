@@ -3,7 +3,7 @@
 
 > [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/testing.md)
 > <br>
-> commit d7e406eab811ae5cbb01c986c6e9ff681e5a6657
+> commit 8e8f3911aa4e68d7f0a88a7d011a08c07b2cd189
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 

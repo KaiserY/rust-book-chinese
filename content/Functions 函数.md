@@ -2,7 +2,7 @@
 
 > [functions.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/functions.md)
 > <br>
-> commit e1d2eda7f3ed8999853c8b4424e7a81a88f97d2a
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 到目前为止你应该见过一个函数，`main`函数：
 

@@ -2,7 +2,7 @@
 
 > [loops.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/loops.md)
 > <br>
-> commit 7df3bf1860d1821056a5e9d4193b7e99d2c9479d
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`while`和`for`。每种方法都有自己的用途。
 

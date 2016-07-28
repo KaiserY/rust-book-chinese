@@ -2,7 +2,7 @@
 
 > [traits.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.md)
 > <br>
-> commit 728d20f7cc84a67ea85aaa1257234b4750bdcc1c
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 

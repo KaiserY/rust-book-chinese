@@ -2,7 +2,7 @@
 
 > [documentation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/documentation.md)
 > <br>
-> commit cff81d724fa73003fe7e589a9433db33dde742a6
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 文档是任何软件项目中重要的一部分，并且它在Rust中是一级重要的。让我们讨论下Rust提供给我们编写项目文档的的工具。
 

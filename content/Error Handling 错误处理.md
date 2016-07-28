@@ -2,7 +2,7 @@
 
 > [error-handling.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md)
 > <br>
-> commit 8f99ad2a2a8a95b395de93d692f1b652721e94c8
+> commit 8e8f3911aa4e68d7f0a88a7d011a08c07b2cd189
 
 就像大多数编程语言，Rust 鼓励程序猿以特定的方式处理错误。一般来讲，错误处理被分割为两个大类：异常和返回值。Rust 选择了返回值。
 
@@ -173,7 +173,7 @@ impl<T> Option<T> {
 ```rust
 # fn find(_: &str, _: char) -> Option<usize> { None }
 // Returns the extension of the given file name, where the extension is defined
-// as all characters proceeding the first `.`.
+// as all characters following the first `.`.
 // If `file_name` has no `.`, then `None` is returned.
 fn extension_explicit(file_name: &str) -> Option<&str> {
     match find(file_name, '.') {
@@ -209,7 +209,7 @@ fn map<F, T, A>(option: Option<T>, f: F) -> Option<A> where F: FnOnce(T) -> A {
 ```rust
 # fn find(_: &str, _: char) -> Option<usize> { None }
 // Returns the extension of the given file name, where the extension is defined
-// as all characters proceeding the first `.`.
+// as all characters following the first `.`.
 // If `file_name` has no `.`, then `None` is returned.
 fn extension(file_name: &str) -> Option<&str> {
     find(file_name, '.').map(|i| &file_name[i+1..])
@@ -1124,7 +1124,7 @@ cargo build --release
 
 ### <a name="argument-parsing"></a>参数解析
 
-让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，我们可以解码程序参数到一个 Rust 结构体中。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
+让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，解析器返回一个记录了匹配到定义项内容的机构体，和剩下“自由”的参数。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
 
 ```rust
 extern crate getopts;
@@ -1152,8 +1152,8 @@ fn main() {
         print_usage(&program, opts);
         return;
     }
-    let data_path = &args[1];
-    let city = &args[2];
+    let data_path = &matches.free[0];
+    let city: &str = &matches.free[1];
 
     // Do stuff with information
 }
@@ -1209,8 +1209,8 @@ fn main() {
         return;
     }
 
-    let data_path = &args[1];
-    let city: &str = &args[2];
+    let data_path = &matches.free[0];
+    let city: &str = &matches.free[1];
 
     let file = File::open(data_path).unwrap();
     let mut rdr = csv::Reader::from_reader(file);
@@ -1303,8 +1303,8 @@ fn main() {
         return;
     }
 
-    let data_path = &args[1];
-    let city = &args[2];
+    let data_path = &matches.free[0];
+    let city: &str = &matches.free[1];
     for pop in search(data_path, city) {
         println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
     }
@@ -1371,14 +1371,14 @@ impl From<String> for Box<Error + Send + Sync>
 
 ```rust
 ...
-match search(&data_file, &city) {
-    Ok(pops) => {
-        for pop in pops {
-            println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+    match search(data_path, city) {
+        Ok(pops) => {
+            for pop in pops {
+                println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+            }
         }
+        Err(err) => println!("{}", err)
     }
-    Err(err) => println!("{}", err)
-}
 ...
 ```
 
@@ -1402,36 +1402,35 @@ fn print_usage(program: &str, opts: Options) {
 }
 ```
 
-下一部分只会变得稍微难一点：
+当然我们需要加入参数处理的代码：
 
 ```rust
 ...
-let mut opts = Options::new();
-opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
-opts.optflag("h", "help", "Show this usage message.");
-...
-let file = matches.opt_str("f");
-let data_file = &file.as_ref().map(Path::new);
+    let mut opts = Options::new();
+    opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
+    opts.optflag("h", "help", "Show this usage message.");
+    ...
+    let data_path = matches.opt_str("f");
 
-let city = if !matches.free.is_empty() {
-    &matches.free[0]
-} else {
-    print_usage(&program, opts);
-    return;
-};
+    let city = if !matches.free.is_empty() {
+        &matches.free[0]
+    } else {
+        print_usage(&program, opts);
+        return;
+    };
 
-match search(data_file, city) {
-    Ok(pops) => {
-        for pop in pops {
-            println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+    match search(&data_path, city) {
+        Ok(pops) => {
+            for pop in pops {
+                println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+            }
         }
+        Err(err) => println!("{}", err)
     }
-    Err(err) => println!("{}", err)
-}
 ...
 ```
 
-在这段代码中，我们获取`file`（它的类型是`Option<String>`），并转换为一个`search`可用的类型，在这个例子中，是`&Option<AsRef<Path>>`。为此，我们获取一个文件的引用，并执行映射`Path::new`。在这里，`as_ref()`把`Option<String>`转换为`Option<&str>`，而且从这开始，我们可以对内容的`Option`执行`Path::new`，并返回新值的`Option`。当一切搞定，这就变为简单的获取`city`参数并执行`search`函数了。
+我们已经通过显示使用方法信息来提高了用户体验，而不是因为`city`这个额外的参数不存在导致索引越界而 panic，
 
 修改`search`需要一点技巧。`csv`crate 可以用[任何实现了`io::Read`的类型]()构建一个解析器。不过我们如何对这两个类型（注：因该是`Option`的两个值）使用相同的代码呢？事实上有多种方法可以做到。其中之一是重写`search`为接受一个满足`io::Read`的`R`类型参数的泛型。另一个办法是使用 trait 对象：
 
@@ -1471,6 +1470,8 @@ enum CliError {
 现在让我们实现`Display`和`Error`：
 
 ```rust
+use std::fmt;
+
 impl fmt::Display for CliError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
@@ -1491,13 +1492,13 @@ impl Error for CliError {
         }
     }
 
-    fn cause(&self) -> Option<&error::Error> {
-        match *self {            
+    fn cause(&self) -> Option<&Error> {
+        match *self {
             CliError::Io(ref err) => Some(err),
-            CliError::Parse(ref err) => Some(err),
-            // Our custom error doesn't have an underlying cause, but we could
-            // modify it so that it does.
-            CliError::NotFound() => None,
+            CliError::Csv(ref err) => Some(err),
+            // Our custom error doesn't have an underlying cause,
+            // but we could modify it so that it does.
+            CliError::NotFound => None,
         }
     }
 }
@@ -1573,23 +1574,26 @@ fn search<P: AsRef<Path>>
 
 ```rust
 ...
-let mut opts = Options::new();
-opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
-opts.optflag("h", "help", "Show this usage message.");
-opts.optflag("q", "quiet", "Silences errors and warnings.");
+    let mut opts = Options::new();
+    opts.optopt("f", "file", "Choose an input file, instead of using STDIN.", "NAME");
+    opts.optflag("h", "help", "Show this usage message.");
+    opts.optflag("q", "quiet", "Silences errors and warnings.");
 ...
 ```
 
 现在我们只需要实现我们的“安静”功能。这要求我们修改`mian`中的 case analysis：
 
 ```rust
-match search(&args.arg_data_path, &args.arg_city) {
-    Err(CliError::NotFound) if args.flag_quiet => process::exit(1),
-    Err(err) => panic!("{}", err),
-    Ok(pops) => for pop in pops {
-        println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+use std::process;
+...
+    match search(&data_path, city) {
+        Err(CliError::NotFound) if matches.opt_present("q") => process::exit(1),
+        Err(err) => panic!("{}", err),
+        Ok(pops) => for pop in pops {
+            println!("{}, {}: {:?}", pop.city, pop.country, pop.count);
+        }
     }
-}
+...
 ```
 
 当然，在出现 IO 错误或者数据解析失败时我们并不想变得安静。因此，我们用 case analysis 来检查错误类型是否是`NotFound`以及`--quiet`是否被启用。如果，搜索失败了，我们仍然使用一个错误码退出（使用`grep`的传统）。

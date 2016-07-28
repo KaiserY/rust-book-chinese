@@ -2,7 +2,7 @@
 
 > [getting-started.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/getting-started.md)
 > <br>
-> commit 9094935b460975b6fac272ebf5985dfd71b90104
+> commit b6fc4abe44da7563851c8e137e16a72f2d7d6832
 
 本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo，Rust 的构建系统以及包管理器。
 
@@ -29,13 +29,13 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
-| `i686-pc-windows-msvc`        |  ✓  |  ✓  |  ✓  | 32-bit MSVC (Windows 7+)   |
-| `x86_64-pc-windows-msvc`      |  ✓  |  ✓  |  ✓  | 64-bit MSVC (Windows 7+)   |
-| `i686-pc-windows-gnu`         |  ✓  |  ✓  |  ✓  | 32-bit MinGW (Windows 7+)  |
-| `x86_64-pc-windows-gnu`       |  ✓  |  ✓  |  ✓  | 64-bit MinGW (Windows 7+)  |
 | `i686-apple-darwin`           |  ✓  |  ✓  |  ✓  | 32-bit OSX (10.7+, Lion+)  |
-| `x86_64-apple-darwin`         |  ✓  |  ✓  |  ✓  | 64-bit OSX (10.7+, Lion+)  |
+| `i686-pc-windows-gnu`         |  ✓  |  ✓  |  ✓  | 32-bit MinGW (Windows 7+)  |
+| `i686-pc-windows-msvc`        |  ✓  |  ✓  |  ✓  | 32-bit MSVC (Windows 7+)   |
 | `i686-unknown-linux-gnu`      |  ✓  |  ✓  |  ✓  | 32-bit Linux (2.6.18+)     |
+| `x86_64-apple-darwin`         |  ✓  |  ✓  |  ✓  | 64-bit OSX (10.7+, Lion+)  |
+| `x86_64-pc-windows-gnu`       |  ✓  |  ✓  |  ✓  | 64-bit MinGW (Windows 7+)  |
+| `x86_64-pc-windows-msvc`      |  ✓  |  ✓  |  ✓  | 64-bit MSVC (Windows 7+)   |
 | `x86_64-unknown-linux-gnu`    |  ✓  |  ✓  |  ✓  | 64-bit Linux (2.6.18+)     |
 
 ### T2 科技（Tier 2）
@@ -48,13 +48,28 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
-| `x86_64-unknown-linux-musl`   |  ✓  |     |     | 64-bit Linux with MUSL     |
+| `aarch64-apple-ios`           |  ✓  |     |     | ARM64 iOS                  |
+| `aarch64-unknown-linux-gnu`   |  ✓  |  ✓  |  ✓  | ARM64 Linux (2.6.18+)      |
 | `arm-linux-androideabi`       |  ✓  |     |     | ARM Android                |
-| `arm-unknown-linux-gnueabi`   |  ✓  |  ✓  |     | ARM Linux (2.6.18+)        |
-| `arm-unknown-linux-gnueabihf` |  ✓  |  ✓  |     | ARM Linux (2.6.18+)        |
-| `aarch64-unknown-linux-gnu`   |  ✓  |     |     | ARM64 Linux (2.6.18+)      |
+| `arm-unknown-linux-gnueabi`   |  ✓  |  ✓  |  ✓  | ARM Linux (2.6.18+)        |
+| `arm-unknown-linux-gnueabihf` |  ✓  |  ✓  |  ✓  | ARM Linux (2.6.18+)        |
+| `armv7-apple-ios`             |  ✓  |     |     | ARM iOS                    |
+|`armv7-unknown-linux-gnueabihf`|  ✓  |  ✓  |  ✓  | ARMv7 Linux (2.6.18+)      |
+| `armv7s-apple-ios`            |  ✓  |     |     | ARM iOS                    |
+| `i386-apple-ios`              |  ✓  |     |     | 32-bit x86 iOS             |
+| `i586-pc-windows-msvc`        |  ✓  |     |     | 32-bit Windows w/o SSE     |
 | `mips-unknown-linux-gnu`      |  ✓  |     |     | MIPS Linux (2.6.18+)       |
+| `mips-unknown-linux-musl`     |  ✓  |     |     | MIPS Linux with MUSL       |
 | `mipsel-unknown-linux-gnu`    |  ✓  |     |     | MIPS (LE) Linux (2.6.18+)  |
+| `mipsel-unknown-linux-musl`   |  ✓  |     |     | MIPS (LE) Linux with MUSL  |
+| `powerpc-unknown-linux-gnu`   |  ✓  |     |     | PowerPC Linux (2.6.18+)    |
+| `powerpc64-unknown-linux-gnu` |  ✓  |     |     | PPC64 Linux (2.6.18+)      |
+|`powerpc64le-unknown-linux-gnu`|  ✓  |     |     | PPC64LE Linux (2.6.18+)    |
+| `x86_64-apple-ios`            |  ✓  |     |     | 64-bit x86 iOS             |
+| `x86_64-rumprun-netbsd`       |  ✓  |     |     | 64-bit NetBSD Rump Kernel  |
+| `x86_64-unknown-freebsd`      |  ✓  |  ✓  |  ✓  | 64-bit FreeBSD             |
+| `x86_64-unknown-linux-musl`   |  ✓  |     |     | 64-bit Linux with MUSL     |
+| `x86_64-unknown-netbsd`       |  ✓  |  ✓  |  ✓  | 64-bit NetBSD              |
 
 ### T3 科技（Tier 3）（Tengu！！！）
 
@@ -62,27 +77,16 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
-| `i686-linux-android`          |  ✓  |     |     | 32-bit x86 Android         |
 | `aarch64-linux-android`       |  ✓  |     |     | ARM64 Android              |
-| `powerpc-unknown-linux-gnu`   |  ✓  |     |     | PowerPC Linux (2.6.18+)    |
-| `powerpc64-unknown-linux-gnu` |  ✓  |     |     | PPC64 Linux (2.6.18+)      |
-|`powerpc64le-unknown-linux-gnu`|  ✓  |     |     | PPC64LE Linux (2.6.18+)    |
-|`armv7-unknown-linux-gnueabihf`|  ✓  |     |     | ARMv7 Linux (2.6.18+)      |
-| `i386-apple-ios`              |  ✓  |     |     | 32-bit x86 iOS             |
-| `x86_64-apple-ios`            |  ✓  |     |     | 64-bit x86 iOS             |
-| `armv7-apple-ios`             |  ✓  |     |     | ARM iOS                    |
-| `armv7s-apple-ios`            |  ✓  |     |     | ARM iOS                    |
-| `aarch64-apple-ios`           |  ✓  |     |     | ARM64 iOS                  |
+| `armv7-linux-androideabi`     |  ✓  |     |     | ARM-v7a Android            |
+| `i686-linux-android`          |  ✓  |     |     | 32-bit x86 Android         |
+| `i686-pc-windows-msvc` (XP)   |  ✓  |     |     | Windows XP support         |
 | `i686-unknown-freebsd`        |  ✓  |  ✓  |  ✓  | 32-bit FreeBSD             |
-| `x86_64-unknown-freebsd`      |  ✓  |  ✓  |  ✓  | 64-bit FreeBSD             |
-| `x86_64-unknown-openbsd`      |  ✓  |  ✓  |     | 64-bit OpenBSD             |
-| `x86_64-unknown-netbsd`       |  ✓  |  ✓  |     | 64-bit NetBSD              |
+| `x86_64-pc-windows-msvc` (XP) |  ✓  |     |     | Windows XP support         |
+| `x86_64-sun-solaris`          |  ✓  |  ✓  |     | 64-bit Solaris/SunOS       |
 | `x86_64-unknown-bitrig`       |  ✓  |  ✓  |     | 64-bit Bitrig              |
 | `x86_64-unknown-dragonfly`    |  ✓  |  ✓  |     | 64-bit DragonFlyBSD        |
-| `x86_64-rumprun-netbsd`       |  ✓  |     |     | 64-bit NetBSD Rump Kernel  |
-| `x86_64-sun-solaris`          |  ✓  |  ✓  |     | 64-bit Solaris/SunOS       |
-| `i686-pc-windows-msvc` (XP)   |  ✓  |     |     | Windows XP support         |
-| `x86_64-pc-windows-msvc` (XP) |  ✓  |     |     | Windows XP support         |
+| `x86_64-unknown-openbsd`      |  ✓  |  ✓  |     | 64-bit OpenBSD             |
 
 注意这个表格可能会随着时间而扩展，这将永远不会是等级三平台的完整列表！
 
@@ -268,18 +272,18 @@ $ cargo --version
 让我们将 Hello World 程序迁移至 Cargo。为了 Cargo 化一个项目，需要做三件事：
 
 1. 将源文件放到正确的目录
-2. 删除旧的可执行文件（Windows下是`main.exe`，其他平台是`main`）并生成一个新的。
+2. 删除旧的可执行文件（Windows下是`main.exe`，其他平台是`main`）。
 3. 创建一个 Cargo 配置文件
 
 让我们开始吧！
 
-### 创建一个新的可执行文件和源文件目录
+### 创建一个源文件目录并移除旧的可执行文件
 
 首先，回到你的终端，移动到你的`hello_world`目录，并输入如下命令：
 
 ```bash
 $ mkdir src
-$ mv main.rs src/main.rs
+$ $ mv main.rs src/main.rs # or 'move main.rs src/main.rs' on Windows
 $ rm main  # or 'del main.exe' on Windows
 ```
 
@@ -395,7 +399,11 @@ Cargo 为我们创建了两个文件和一个目录：一个`Cargo.toml`和一�
 name = "hello_world"
 version = "0.1.0"
 authors = ["Your Name <you@example.com>"]
+
+[dependencies]
 ```
+
+不要担心`[dependencies]`那一行，之后我们会讲到。
 
 Cargo 已经根据你给出的参数和`git`全局配置给出了合理的默认配置。你可能会注意到 Cargo 也把`hello_world`目录初始化为了一个`git`仓库。
 

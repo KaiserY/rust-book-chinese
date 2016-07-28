@@ -2,7 +2,7 @@
 
 > [ffi.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/ffi.md)
 > <br>
-> commit 077f4eeb8485e5a1437f6e27973a907ac772b616
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 ## 介绍
 

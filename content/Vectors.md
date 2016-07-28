@@ -2,7 +2,7 @@
 
 > [vectors.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/vectors.md)
 > <br>
-> commit 728d20f7cc84a67ea85aaa1257234b4750bdcc1c
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 “Vector”是一个动态或“可增长”的数组，被实现为标准库类型[`Vec<T>`](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](Generics 泛型.md)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
 

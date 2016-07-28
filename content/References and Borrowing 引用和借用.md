@@ -2,7 +2,7 @@
 
 > [references-and-borrowing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/references-and-borrowing.md)
 > <br>
-> commit 06d8b21372742234c95e1ea842e4d66aa9ee9dd5
+> commit 10abb666e48abdb747946db6de21317708e18cf5
 
 这篇教程是现行 3 个 Rust 所有权系统之一。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
@@ -54,6 +54,32 @@ let v2 = vec![1, 2, 3];
 let answer = foo(&v1, &v2);
 
 // we can use v1 and v2 here!
+```
+
+一个更具体的例子：
+
+```rust
+fn main() {
+    // Don't worry if you don't understand how `fold` works, the point here is that an immutable reference is borrowed.
+    fn sum_vec(v: &Vec<i32>) -> i32 {
+        return v.iter().fold(0, |a, &b| a + b);
+    }
+    // Borrow two vectors and and sum them.
+    // This kind of borrowing does not allow mutation to the borrowed.
+    fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
+        // do stuff with v1 and v2
+        let s1 = sum_vec(v1);
+        let s2 = sum_vec(v2);
+        // return the answer
+        s1 + s2
+    }
+
+    let v1 = vec![1, 2, 3];
+    let v2 = vec![4, 5, 6];
+
+    let answer = foo(&v1, &v2);
+    println!("{}", answer);
+}
 ```
 
 与其获取`Vec<i32>`作为我们的参数，我们获取一个引用：`&Vec<i32>`。并与其直接传递`v1`和`v2`，我们传递`&v1`和`&v2`。我们称`&T`类型为一个”引用“，而与其拥有这个资源，它借用了所有权。一个借用变量的绑定在它离开作用域时并不释放资源。这意味着`foo()`调用之后，我们可以再次使用原始的绑定。

@@ -2,7 +2,7 @@
 
 > [macros.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/macros.md)
 > <br>
-> commit 708c5d09d7a355c506960581e16306c96eb7d019
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 到目前为止你已经学到了不少Rust提供的抽象和重用代码的工具了。这些代码重用单元有丰富的语义结构。例如，函数有类型签名，类型参数有特性限制并且能重载的函数必须属于一个特定的特性。
 

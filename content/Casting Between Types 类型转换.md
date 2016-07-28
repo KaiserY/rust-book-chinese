@@ -2,7 +2,7 @@
 
 > [casting-between-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/casting-between-types.md)
 > <br>
-> commit ccafdae9a11925cbc79c6ea4446688ef71bae1a1
+> commit 345626f088bc2abac5257346f3f044376d7bac0b
 
 Rust，和它对安全的关注，提供了两种不同的在不同类型间转换的方式。第一个，`as`，用于安全转换。相反，`transmute`允许任意的转换，而这是 Rust 中最危险的功能之一！
 
@@ -104,14 +104,14 @@ let b = a as u32;
 ```rust
 let a = [0u8, 0u8, 0u8, 0u8];
 
-let b = a as u32; // four eights makes 32
+let b = a as u32; // four u8s makes a u32
 ```
 
 这个错误为：
 
 ```text
 error: non-scalar cast: `[u8; 4]` as `u32`
-let b = a as u32; // four eights makes 32
+let b = a as u32; // four u8s makes a u32
         ^~~~~~~~
 ```
 
@@ -124,10 +124,15 @@ let b = a as u32; // four eights makes 32
 ```rust
 use std::mem;
 
-unsafe {
-    let a = [0u8, 0u8, 0u8, 0u8];
-
-    let b = mem::transmute::<[u8; 4], u32>(a);
+fn main() {
+    unsafe {
+        let a = [0u8, 1u8, 0u8, 0u8];
+        let b = mem::transmute::<[u8; 4], u32>(a);
+        println!("{}", b); // 256
+        // or, more concisely:
+        let c: u32 = mem::transmute(a);
+        println!("{}", c); // 256
+    }
 }
 ```
 

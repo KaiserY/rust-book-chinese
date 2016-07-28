@@ -2,7 +2,7 @@
 
 > [concurrency.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/concurrency.md)
 > <br>
-> commit 444a118a8932c99b902548cb7ca8c249222c053a
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 并发与并行是计算机科学中相当重要的两个主题，并且在当今生产环境中也十分热门。计算机正拥有越来越多的核心，然而很多程序员还没有准备好去完全的利用它们。
 
@@ -103,7 +103,7 @@ fn main() {
 
 ## 安全的共享可变状态（Safe Shared Mutable State）
 
-根据Rust的类型系统，我们有个听起来类似谎言的概念叫做：“安全的共享可变状态”。很多程序员都同意共享可变状态是非常，非常不好的。
+根据 Rust的 类型系统，我们有个听起来类似谎言的概念叫做：“安全的共享可变状态”。很多程序员都同意共享可变状态是非常，非常不好的。
 
 有人曾说道：
 > 共享可变状态是一切罪恶的根源。大部分语言尝试解决这个问题的“可变”部分，而Rust则尝试解决“共享”部分。
@@ -121,7 +121,7 @@ fn main() {
 
     for i in 0..3 {
         thread::spawn(move || {
-            data[i] += 1;
+            data[0] += i;
         });
     }
 
@@ -133,13 +133,11 @@ fn main() {
 
 ```text
 8:17 error: capture of moved value: `data`
-        data[i] += 1;
+        data[0] += i;
         ^~~~
 ```
 
 Rust 知道这并不是安全的！如果每个线程中都有一个`data`的引用，并且这些线程获取了引用的所有权，我们就有了3个所有者！`data`在第一次调用`spawn()`时被移出了`mian`，所以循环中接下来的调用不能使用这个变量。
-
-注意这个特定的示例并不会造成数据竞争因为被访问的是不同的数组切片。不过这在编译时无从得知，在一个相似的情况中，例如`i`是一个常量或随机数，将会产生数据竞争。
 
 所以，我们需要一些类型可以让我们拥有一个值的多个有所有权的引用。通常，我们使用`Rc<T>`，它是一个引用计数类型用以提供共享的所有权。它有一些运行时记录来跟踪引用它的数量，也就是“引用计数”。
 
@@ -159,7 +157,7 @@ fn main() {
 
         // use it in a thread
         thread::spawn(move || {
-            data_ref[i] += 1;
+            data_ref[0] += i;
         });
     }
 
@@ -196,7 +194,7 @@ fn main() {
     for i in 0..3 {
         let data = data.clone();
         thread::spawn(move || {
-            data[i] += 1;
+            data[0] += i;
         });
     }
 
@@ -210,7 +208,7 @@ fn main() {
 
 ```text
 <anon>:11:24 error: cannot borrow immutable borrowed content as mutable
-<anon>:11                    data[i] += 1;
+<anon>:11                    data[0] += i;
                              ^~~~
 ```
 
@@ -236,7 +234,7 @@ fn main() {
         let data = data.clone();
         thread::spawn(move || {
             let mut data = data.lock().unwrap();
-            data[i] += 1;
+            data[0] += i;
         });
     }
 
@@ -270,7 +268,7 @@ fn lock(&self) -> LockResult<MutexGuard<T>>
 #         let data = data.clone();
 thread::spawn(move || {
     let mut data = data.lock().unwrap();
-    data[i] += 1;
+    data[0] += i;
 });
 #     }
 #     thread::sleep(Duration::from_millis(50));

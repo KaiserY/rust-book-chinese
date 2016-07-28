@@ -2,7 +2,7 @@
 
 > [advanced-linking.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/advanced-linking.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 Rust 的常用链接形式在本书的之前部分已经介绍过了，不过支持多种其他语言可用的可能的链接对 Rust 获取与原生库的无缝交互是很重要的。
 
@@ -10,7 +10,7 @@ Rust 的常用链接形式在本书的之前部分已经介绍过了，不过支
 
 这里还有一个方法来告诉 rustc 如何自定义链接，这就是通过`link_args`属性。这个属性作用于`extern`块并指定当产生构件时需要传递给连接器的原始标记。一个用例将是：
 
-```rust
+```rust,no_run
 #![feature(link_args)]
 
 #[link_args = "-foo -bar -baz"]

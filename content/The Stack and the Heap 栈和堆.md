@@ -2,7 +2,7 @@
 
 > [the-stack-and-the-heap.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/the-stack-and-the-heap.md)
 > <br>
-> commit 049b9e4e8067b998e4581d026b0bc6d1113ab9f5
+> commit 519cc8280cef3f809149080b44b9d66f967368aa
 
 作为一个系统语言，Rust 在底层运作。如果你有一个高级语言的背景，这可能有一些你不太熟悉的系统编程方面的内容。最重要的一个是内存如何工作，通过栈和堆。如果你熟悉类 C 语言是如何使用栈分配的，这个章节将是一个复习。如果你不太了解，你将会学到这个更通用的概念，不过是专注于 Rust 的。
 
@@ -183,8 +183,7 @@ fn main() {
 | (2<sup>30</sup>) - 3 |      |                        |
 | (2<sup>30</sup>) - 4 |      | 42                     |
 | ...                  | ...  | ...                    |
-| 3                    | y    | → (2<sup>30</sup>) - 4 |
-| 2                    | y    | 42                     |
+| 2                    | z    | → (2<sup>30</sup>) - 4 |
 | 1                    | y    | 42                     |
 | 0                    | x    | → (2<sup>30</sup>) - 1 |
 

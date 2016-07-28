@@ -2,7 +2,7 @@
 
 > [mutability.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/mutability.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 98f1c35c77835395d12c72d5d5712fc1686cc3b4
 
 可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
@@ -21,14 +21,14 @@ x = 6; // no problem!
 
 这是一个可变的[变量绑定](Variable Bindings 变量绑定.md)。当一个绑定是可变的，它意味着你可以改变它指向的内容。所以在上面的例子中，`x`的值并没有多大的变化，不过这个绑定从一个`i32`变成了另外一个。
 
-如果你想改变绑定指向的东西，你将会需要一个[可变引用](References and Borrowing 引用和借用.md)：
+你也可以使用`&x`创建一个它的[引用](References and Borrowing 引用和借用.md)，不过如果你想要使用这个引用来改变它的值，你将会需要一个[可变引用](References and Borrowing 引用和借用.md)：
 
 ```rust
 let mut x = 5;
 let y = &mut x;
 ```
 
-`y`是一个（指向）可变引用的不可变绑定，它意味着你不能把`y`与其它变量绑定（`y = &mut z`），不过你可以改变`y`绑定变量的值（`*y = 5`）。一个微妙的区别。
+`y`是一个（指向）可变引用的不可变绑定，它意味着你不能把`y`与其它变量绑定（`y = &mut z`），不过`y`可以用来把`x`绑定到别的值上（`*y = 5`）。一个微妙的区别。
 
 当然，如果你想它们都可变：
 
@@ -47,6 +47,8 @@ let (mut x, y) = (5, 6);
 fn foo(mut x: i32) {
 # }
 ```
+
+注意这里`x`是可变的，`y`不是。
 
 ## 内部可变性 VS 外部可变性（Interior vs. Exterior Mutability）
 然而，当我们谈到Rust中什么是“不可变”的时候，它并不意味着它不能被改变：我们说它有“外部可变性”。例如，考虑下[`Arc<T>`](http://doc.rust-lang.org/nightly/std/sync/struct.Arc.html)：

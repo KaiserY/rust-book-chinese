@@ -2,11 +2,11 @@
 
 > [bibliography.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/bibliography.md)
 > <br>
-> commit b986698bc41f487ed791a7c7d9f6c6a78d6d86a3
+> commit c158fd93b81f9dd5b4f28723f256760b21eab44f
 
 这是一个与 Rust 相关的材料的阅读列表。这包含了曾经影响过 Rust 先验研究，以及关于 Rust 的出版物。
 
-> **（注：以下翻译属个人理解，勿作为参考）**
+> **（注：以下翻译属个人理解，勿作为参考！）**
 
 ## 类型系统
 

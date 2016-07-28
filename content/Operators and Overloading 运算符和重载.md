@@ -2,7 +2,7 @@
 
 > [operators-and-overloading.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/operators-and-overloading.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 Rust 允许有限形式的运算符重载。特定的运算符可以被重载。要支持一个类型间特定的运算符，你可以实现一个的特定的重载运算符的trait。
 

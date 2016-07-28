@@ -2,7 +2,7 @@
 
 > [crates-and-modules.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/crates-and-modules.md)
 > <br>
-> commit a7d15ce6a647670ca555b12f0f3b45b0c939fe66
+> commit 8e8f3911aa4e68d7f0a88a7d011a08c07b2cd189
 
 当一个项目开始变得更大，把它分为一堆更小的部分然后再把它们装配到一起被认为是一个好的软件工程实践。另外定义良好的接口也非常重要，这样有些函数是私有的而有些是公有的。Rust 有一个模块系统来帮助我们处理这些工作。
 
@@ -90,7 +90,7 @@ $ ls target/debug
 build  deps  examples  libphrases-a7448e02a0468eaa.rlib  native
 ```
 
-`libphrases-hash.rlib`是构建好的包装箱。在我们了解如何使用这个包装箱之前，先让我们把它拆分为多个文件。
+`libphrases-<hash>.rlib`是构建好的包装箱。在我们了解如何使用这个包装箱之前，先让我们把它拆分为多个文件。
 
 ## 多文件包装箱
 如果每个包装箱只能有一个文件，这些文件将会变得非常庞大。把包装箱分散到多个文件也非常简单，Rust支持两种方法。

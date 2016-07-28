@@ -2,7 +2,7 @@
 
 > [closures.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/closures.md)
 > <br>
-> commit 728d20f7cc84a67ea85aaa1257234b4750bdcc1c
+> commit 5928d49aa01bd3ab4f1d07f2dea3b6516f1f0381
 
 有时为了整洁和复用打包一个函数和*自由变量（free variables）*是很有用的。自由变量是指被用在函数中来自函数内部作用域并只用于函数内部的变量。对此，我们用一个新名字“闭包”而且 Rust 提供了大量关于他们的实现，正如我们将看到的。
 
@@ -252,6 +252,44 @@ assert_eq!(3, answer);
 
 现在我们取得一个trait对象，一个`&Fn`。并且当我们将我们的闭包传递给`call_with_one`时我们必须获取一个引用，所以我们使用`&||`。
 
+下面是一个使用显式生命周期的闭包的例子。有时你可能需要一个获取这样引用的闭包：
+
+```rust
+fn call_with_ref<F>(some_closure:F) -> i32
+    where F: Fn(&i32) -> i32 {
+
+    let mut value = 0;
+    some_closure(&value)
+}
+```
+
+通常你可以指定闭包的参数的生命周期。我们可以在函数声明上指定它：
+
+```rust
+fn call_with_ref<'a, F>(some_closure:F) -> i32
+    where F: Fn(&'a 32) -> i32 {
+```
+
+然而这引入了一个问题。当我们显式指定一个函数生命周期并绑定到函数的整个作用域，而不只是我们闭包的作用域时，这意味着借用检查器会把一个同生命周期的可变引用当作一个不可变引用并编译失败。
+
+为了说明我们只需要生命周期在闭包的作用域中有效，我们可以使用更高级的 Trait Bound，使用`for<...>`语法：
+
+```rust
+fn call_with_ref<F>(some_closure:F) -> i32
+    where F: for<'a> Fn(&'a 32) -> i32 {
+```
+
+这会让 rust 编译器找到最小的生命周期来调用闭包并满足借用检查器的规则。我们的函数将能顺利编译：
+
+```rust
+fn call_with_ref<F>(some_closure:F) -> i32
+    where F: for<'a> Fn(&'a i32) -> i32 {
+
+    let mut value = 0;
+    some_closure(&value)
+}
+```
+
 ## 函数指针和闭包
 
 一个函数指针有点像一个没有环境的闭包。因此，你可以传递函数指针给任何期待闭包参数的函数，且能够工作：
@@ -375,12 +413,12 @@ fn factory() -> Box<Fn(i32) -> i32> {
 
     Box::new(|x| x + num)
 }
-# fn main() {
-let f = factory();
+fn main() {
+    let f = factory();
 
-let answer = f(1);
-assert_eq!(6, answer);
-# }
+    let answer = f(1);
+    assert_eq!(6, answer);
+}
 ```
 
 这还有最后一个问题：

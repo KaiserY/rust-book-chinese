@@ -2,7 +2,7 @@
 
 > [trait-objects.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/trait-objects.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit c9517189d7f0e851347859e437fc796411008e66
 
 当涉及到多态的代码时，我们需要一个机制来决定哪个具体的版本应该得到执行。这叫做“分发”（dispatch）。大体上有两种形式的分发：静态分发和动态分发。虽然 Rust 喜欢静态分发，不过它也提供了一个叫做“trait 对象”的机制来支持动态分发。
 

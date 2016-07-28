@@ -10,12 +10,11 @@
 [rustbook.cn](http://rustbook.cn/) 由[掘金](http://gold.xitu.io/)赞助
 
 ## 版本
-1.9.0-stable
+1.10.0-stable
 
 ## 电子书
-* **[GitBook.com](https://www.gitbook.com/book/kaisery/rust-book-chinese)上的电子书字体已有所改善，请先去这里下载:)**
+* **[GitBook.com](https://www.gitbook.com/book/kaisery/rust-book-chinese)上的电子书中文字体已有所改善，请优先去这里下载:)**
 * 请使用 [GitBook](https://github.com/GitbookIO/gitbook) 来生成电子书。
-* 在 ebook 文件夹里可以找到 pdf 版本。
 
 ## 相关资源
 * 本文档 GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
@@ -23,6 +22,7 @@
 * QQ 群: 144605258
 * QQ 2 群： 303838735
 * 聊天频道：https://chat.rust-china.org/
+* 想要为 Rust 社区贡献文档的，可以到[RustPrimer](https://github.com/rustcc/RustPrimer)项目里看看
 
 ## 贡献者
 [贡献者](CONTRIBUTING.md)
