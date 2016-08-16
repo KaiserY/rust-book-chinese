@@ -12,6 +12,9 @@
 ## 版本
 1.10.0-stable
 
+## 国内镜像
+请参考[中文 Wiki](https://wiki.rust-china.org/%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F)上的说明
+
 ## 电子书
 * **[GitBook.com](https://www.gitbook.com/book/kaisery/rust-book-chinese)上的电子书中文字体已有所改善，请优先去这里下载:)**
 * 请使用 [GitBook](https://github.com/GitbookIO/gitbook) 来生成电子书。
@@ -19,6 +22,7 @@
 ## 相关资源
 * 本文档 GitBook: https://www.gitbook.com/book/kaisery/rust-book-chinese
 * Rust 中文社区: https://rust-china.org
+* Rust 中文 Wiki: https://wiki.rust-china.org
 * QQ 群: 144605258
 * QQ 2 群： 303838735
 * 聊天频道：https://chat.rust-china.org/
