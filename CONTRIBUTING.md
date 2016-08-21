@@ -6,6 +6,7 @@
 * [armink](https://github.com/armink)
 * [BingCheung](https://github.com/BingCheung)
 * [Bluek404](https://github.com/Bluek404)
+* [davidwudv](https://github.com/davidwudv)
 * [hczhcz](https://github.com/hczhcz)
 * [hltj](https://github.com/hltj)
 * [honorabrutroll](https://github.com/honorabrutroll)
