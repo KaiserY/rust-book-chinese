@@ -30,5 +30,6 @@
 * [quxiaolong1504](https://github.com/quxiaolong1504)
 * [t123yh](https://github.com/t123yh)
 * [ustcscgy](https://github.com/ustcscgy)
+* [wzv5](https://github.com/wzv5)
 * [ziqin](https://github.com/ziqin)
 * [1989car](https://github.com/1989car)
