@@ -475,4 +475,4 @@ use sayings::english::greetings as en_greetings;
 use sayings::english::farewells as en_farewells;
 ```
 
-如你所见，大括号压缩了位于同一位置的多个项的`use`语句，而且在这里`self`指向这个位置。注意：大括号不用与星号嵌套或混合。
+如你所见，大括号压缩了位于同一位置的多个项的`use`语句，而且在这里`self`指向这个位置。注意：大括号不能与星号嵌套或混合。
