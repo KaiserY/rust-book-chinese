@@ -146,7 +146,7 @@ Rust 并没有自己的连接器，所以你需要自己装一个。如何安装
 
 以这样一个简单的程序开始的好处是你可以快速的确认你的编译器已正确安装，并可以正常工作。在屏幕上打印信息也是一个非常常见的操作，所以早点实践一下是有好处的。
 
-> 注意：本书假设你熟悉基本的命令行操作。Rust 本身并不对你的编辑器，工具和你的代码存放在何处有什么特定的要求，所以如果你比起命令行更喜欢 IDE，这里也有一个选择。你可能想要试试[SolidOak](https://github.com/oakes/SolidOak)，它转为 Rust 而设计。在 Rust 社区里有许许多多正在开发中的 IDE 插件。Rust 团队也发布了[不同编辑器的插件](https://github.com/rust-lang/rust/blob/master/src/etc/CONFIGS.md)。 配置编辑器或 IDE 已超出本教程的范畴，所以请查看你特定设置的文档。
+> 注意：本书假设你熟悉基本的命令行操作。Rust 本身并不对你的编辑器，工具和你的代码存放在何处有什么特定的要求，所以如果你比起命令行更喜欢 IDE，这里也有一个选择。你可能想要试试[SolidOak](https://github.com/oakes/SolidOak)，它专为 Rust 而设计。在 Rust 社区里有许许多多正在开发中的 IDE 插件。Rust 团队也发布了[不同编辑器的插件](https://github.com/rust-lang/rust/blob/master/src/etc/CONFIGS.md)。 配置编辑器或 IDE 已超出本教程的范畴，所以请查看你特定设置的文档。
 
 ### 创建一个项目文件
 
