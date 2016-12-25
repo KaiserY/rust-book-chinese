@@ -464,7 +464,7 @@ This is the example documentation.
 # fn bar() {}
 ```
 
-跟下面这个是相同的：
+跟下面这个是类似的：
 
 ```rust
 //! this
@@ -476,7 +476,7 @@ This is the example documentation.
 
 ## 重导出（Re-exports）
 
-`rustdoc`对公有重导出部分会在两个地方都显式文档：
+`rustdoc`对公有重导出部分会在两个地方都显示文档：
 
 ```rust
 extern crate foo;
@@ -486,7 +486,7 @@ pub use foo::bar;
 
 这既会为`bar`在`foo`包装箱中生成文档，也会在你的包装箱中生成文档。它会在两个地方使用相同的内容。
 
-这种行文可以通过`no_inline`来阻止：
+这种行为可以通过`no_inline`来阻止：
 
 ```rust
 extern crate foo;
@@ -524,7 +524,7 @@ struct Hidden;
 ```
 
 ## 控制HTML
-你可以通过`#![doc]`属性控制`rustdoc`生成的THML文档的一些方面：
+你可以通过`#![doc]`属性控制`rustdoc`生成的THML文档的几个地方：
 
 ```rust
 #![doc(html_logo_url = "https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png",
@@ -551,8 +551,8 @@ struct Hidden;
 * `--html-before-content FILE`：在`<body>`之后，在渲染内容之前加上`FILE`内容
 * `--html-after-content FILE`：在所有渲染内容之后加上`FILE`内容
 
-## 注解安全
-文档注释中的Markdown会被不加处理的放置于最终的网页中。注意HTML文本（XSS？）：
+## 安全事项
+文档注释中的Markdown会被不加以处理地放置于最终的网页中。注意原始的HTML文本：
 
 ```rust
 /// <script>alert(document.cookie)</script>
