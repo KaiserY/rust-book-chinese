@@ -2,7 +2,7 @@
 
 > [variable-bindings.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/variable-bindings.md)
 > <br>
-> commit 79244c3a6b4478e1561a1dfa1aff035650aff3ad
+> commit 73e5a98e71f1f4fa948f0f2111b4c5688c0ee6dc
 
 事实上每一个非“Hello World” Rust 程序都用了*变量绑定*。他们将一些值绑定到一个名字上，这样可以在之后使用他们。`let`被用来声明一个绑定，像这样：
 
@@ -94,7 +94,7 @@ fn main() {
 
 ```text
    Compiling hello_world v0.0.1 (file:///home/you/projects/hello_world)
-src/main.rs:2:9: 2:10 warning: unused variable: `x`, #[warn(unused_variable)] on by default
+src/main.rs:2:9: 2:10 warning: unused variable: `x`, #[warn(unused_variables)] on by default
 src/main.rs:2     let x: i32;
                       ^
 ```
@@ -125,7 +125,9 @@ error: aborting due to previous error
 Could not compile `hello_world`.
 ```
 
-Rust 是不会让我们使用一个没有经过初始化的值的。接下来，让我们讨论一下我们添加到`println!`中的内容。
+Rust 是不会让我们使用一个没有经过初始化的值的。
+
+让我们讨论一下我们添加到`println!`中的内容。
 
 如果你输出的字符串中包含一对大括号（`{}`，一些人称之为胡须。。（译注：moustaches，八字胡）），Rust将把它解释为插入值的请求。*字符串插值*（*String interpolation*）是一个计算机科学术语，代表“在字符串中插入值”。我们加上一个逗号，然后是一个`x`，来表示我们想插入`x`的值。逗号用来分隔我们传递给函数和宏的参数，如果你想传递多个参数的话。
 
@@ -181,7 +183,7 @@ let x =  42;
 println!("{}", x); // Prints "42"
 ```
 
-隐藏和可变绑定可能作为同一枚硬币的两面出现，不过他们是两个并不总是能交替使用的不同的概念。作为其中之一，隐藏允许我们重绑定一个值为不同的类型。它也可以改变一个绑定的可变性：
+隐藏和可变绑定可能表现为同一枚硬币的两面，不过他们是两个并不总是能交替使用的不同的概念。作为其中之一，隐藏允许我们重绑定一个值为不同的类型。它也可以改变一个绑定的可变性。注意 shadowing 并不改变和销毁被绑定的值，这个值会继续存在直到离开作用域，即便它没法通过任何手段访问到。
 
 ```rust
 let mut x: i32 = 1;

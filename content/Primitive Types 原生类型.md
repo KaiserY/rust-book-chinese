@@ -2,7 +2,7 @@
 
 > [primitive-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/primitive-types.md)
 > <br>
-> commit 108a9e43e359b25a76e49fcd801b879923c18899
+> commit 77aeb7b6f1c9ac0f019ccced357d5f5ff7af40c8
 
 Rust有一系列被认为是“原生”的类型。这意味着它们是内建在语言中的。Rust被构建为在标准库中也提供了一些建立在这些类型之上的有用的类型，不过它们也大部分是原生的。
 

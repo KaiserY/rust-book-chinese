@@ -2,7 +2,7 @@
 
 > [loops.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/loops.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 3b5d71e0cfb2d81f588a0b8929e796f3b68488e0
 
 Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`while`和`for`。每种方法都有自己的用途。
 
@@ -87,19 +87,19 @@ Rust 没有使用“C语言风格”的`for`循环是有意为之的。即使对
 ### 对范围（On ranges）：
 
 ```rust
-for (i,j) in (5..10).enumerate() {
-    println!("i = {} and j = {}", i, j);
+for (index, value) in (5..10).enumerate() {
+    println!("index = {} and value = {}", index, value);
 }
 ```
 
 输出：
 
 ```text
-i = 0 and j = 5
-i = 1 and j = 6
-i = 2 and j = 7
-i = 3 and j = 8
-i = 4 and j = 9
+index = 0 and value = 5
+index = 1 and value = 6
+index = 2 and value = 7
+index = 3 and value = 8
+index = 4 and value = 9
 ```
 
 别忘了在范围外面加上括号。

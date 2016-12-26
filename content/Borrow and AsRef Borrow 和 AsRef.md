@@ -2,7 +2,7 @@
 
 > [borrow-and-asref.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/borrow-and-asref.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 6976991569977e8097da5f7660a31a42d11e48d2
 
 [`Borrow`](http://doc.rust-lang.org/std/borrow/trait.Borrow.html)和[`AsRef`](http://doc.rust-lang.org/std/convert/trait.AsRef.html)特性非常相似。这是一个快速的关于这两个特性意义的复习。
 

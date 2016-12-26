@@ -2,7 +2,7 @@
 
 > [vectors.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/vectors.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit c81c75076c05990af6f71e56ccc12d7b196ee25c
 
 “Vector”是一个动态或“可增长”的数组，被实现为标准库类型[`Vec<T>`](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](Generics 泛型.md)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
 
@@ -71,7 +71,7 @@ println!("Item 7 is {}", v[7]);
 那么当前的线程会 [panic](Concurrency 并发.md#恐慌（panics）)并输出如下信息：
 
 ```text
-thread '<main>' panicked at 'index out of bounds: the len is 3 but the index is 7'
+thread 'main' panicked at 'index out of bounds: the len is 3 but the index is 7'
 ```
 
 如果你想处理越界错误而不是 panic，你可以使用像[`get`](http://doc.rust-lang.org/std/vec/struct.Vec.html#method.get)或[`get_mut`](http://doc.rust-lang.org/std/vec/struct.Vec.html#method.get)这样的方法，他们当给出一个无效的索引时返回`None`：

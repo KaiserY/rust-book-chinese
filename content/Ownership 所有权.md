@@ -2,9 +2,9 @@
 
 > [ownership.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/ownership.md)
 > <br>
-> commit e614bb70c2f662016bdbcc8ef06716849b3ce773
+> commit b67a8439f92e6a24b5baa3c6d1b0492bbe86400e
 
-这篇教程是现行3个Rust所有权系统之一。所有权系统是Rust最独特且最引人入胜的特性之一，也是作为Rust开发者应该熟悉的。Rust所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
+这篇教程是现行 3 个 Rust 所有权系统章节的第一部分。所有权系统是Rust最独特且最引人入胜的特性之一，也是作为Rust开发者应该熟悉的。Rust所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
 * 所有权，你正在阅读的这个章节
 * [借用](5.9.References and Borrowing 引用和借用.md)，以及它关联的特性: "引用" (references)
@@ -32,7 +32,7 @@ fn foo() {
 
 当`v`进入作用域，一个新的 vector 在栈上被创建，并在[堆](The Stack and the Heap 栈和堆.md)上为它的3个元素分配了空间。当`v`在`foo()`的末尾离开作用域，Rust将会清理掉与向量（vector）相关的一切，甚至是堆上分配的内存。这在作用域的结尾是一定（deterministically）会发生的。
 
-我们将会在本章的后面详细介绍[vector](Vectors.md)；这里我们只是用它来作为一个在运行时在堆上分配内存的类型的例子。他们表现起来像[数组](Primitive Types 原生类型.md#数组)，除了通过`push()`更多元素他们的大小会改变。
+我们在之前的章节介绍了[vector](Vectors.md)；这里我们只是用它来作为一个在运行时在堆上分配内存的类型的例子。他们表现起来像[数组](Primitive Types 原生类型.md#数组)，除了通过`push()`更多元素他们的大小会改变。
 
 vector 有一个[泛型类型](Generics 泛型.md)`Vec<T>`，所以在这个例子中`v`是`Vec<i32>`类型的。我们将会在本章的后面详细介绍泛型。
 

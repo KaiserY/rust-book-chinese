@@ -2,7 +2,7 @@
 
 > [compiler-plugins.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/compiler-plugins.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit bf22a7a71ab47a7d2074134b02b02df1d6ce497e
 
 ## 介绍
 
@@ -20,7 +20,7 @@
 
 插件可以有多种方法来扩展 Rust 的语法。一种语法扩展是宏过程。它们与[普通宏](5.35.Macros 宏.md)的调用方法一样，不过扩展是通过执行任意Rust代码在编译时操作[语法树](http://doc.rust-lang.org/syntax/ast/)进行的。
 
-让我们写一个实现了罗马数字的插件[roman_numerals.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/roman_numerals.rs)。
+让我们写一个实现了罗马数字的插件[roman_numerals.rs]((https://github.com/rust-lang/rust/blob/master/src/test/run-pass-fulldeps/auxiliary/roman_numerals.rs)。
 
 ```rust
 #![crate_type="dylib"]
@@ -30,11 +30,11 @@ extern crate syntax;
 extern crate rustc;
 extern crate rustc_plugin;
 
-use syntax::codemap::Span;
 use syntax::parse::token;
-use syntax::ast::TokenTree;
+use syntax::tokenstream::TokenTree;
 use syntax::ext::base::{ExtCtxt, MacResult, DummyResult, MacEager};
 use syntax::ext::build::AstBuilder;  // trait for expr_usize
+use syntax::ext::quote::rt::Span;
 use rustc_plugin::Registry;
 
 fn expand_rn(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
@@ -54,7 +54,7 @@ fn expand_rn(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
     }
 
     let text = match args[0] {
-        TokenTree::Token(_, token::Ident(s, _)) => s.to_string(),
+        TokenTree::Token(_, token::Ident(s)) => s.to_string(),
         _ => {
             cx.span_err(sp, "argument should be a single identifier");
             return DummyResult::any(sp);
@@ -129,9 +129,9 @@ fn expand_foo(cx: &mut ExtCtxt, sp: Span, args: &[TokenTree])
 
 上面的例子使用[AstBuilder::expr_usize](http://doc.rust-lang.org/syntax/ext/build/trait.AstBuilder.html#tymethod.expr_usize)产生了一个普通整数。作为一个`AstBuilder`特性的额外选择，`libsyntax`提供了一个[准引用宏](http://doc.rust-lang.org/syntax/ext/quote/)的集合。它们并没有文档并且非常边缘化。然而，这些将会是实现一个作为一个普通插件库的改进准引用的好的出发点。
 
-## Lint插件
+## Lint 插件
 
-插件可以扩展[Rust Lint基础设施](http://doc.rust-lang.org/reference.html#lint-check-attributes)来添加额外的代码风格，安全检查等。你可以查看[src/test/auxiliary/lint_plugin_test.rs](https://github.com/rust-lang/rust/blob/master/src/test/auxiliary/lint_plugin_test.rs)来了解一个完整的例子，我们在这里重现它的核心部分：
+插件可以扩展[Rust Lint基础设施](http://doc.rust-lang.org/reference.html#lint-check-attributes)来添加额外的代码风格，安全检查等。你可以查看[src/test/auxiliary/lint_plugin_test.rs](https://github.com/rust-lang/rust/blob/master/src/test/run-pass-fulldeps/auxiliary/lint_plugin_test.rs)来了解一个完整的例子，我们在这里重现它的核心部分：
 
 ```rust
 #![feature(plugin_registrar)]

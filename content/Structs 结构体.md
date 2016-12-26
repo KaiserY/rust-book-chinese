@@ -2,7 +2,7 @@
 
 > [structs.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/structs.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 74e96299a22ef1629d7ea8268815fc2b82c7e194
 
 结构体是一个创建更复杂数据类型的方法。例如，如果我们正在进行涉及到 2D 空间坐标的计算，我们将需要一个`x`和一个`y`值：
 
@@ -134,7 +134,7 @@ let point = Point3d { z: 1, x: 2, .. origin };
 ```
 
 ## 元组结构体
-Rust有像另一个[元组](Primitive Types 原生类型.md#tuples)和结构体的混合体的数据类型。元组结构体有一个名字，不过它的字段没有。他们用`struct`关键字声明，并元组前面带有一个名字：
+Rust 有像另一个[元组](Primitive Types 原生类型.md#tuples)和结构体的混合体的数据类型。元组结构体有一个名字，不过它的字段没有。他们用`struct`关键字声明，并元组前面带有一个名字：
 
 ```rust
 struct Color(i32, i32, i32);
@@ -144,14 +144,41 @@ let black = Color(0, 0, 0);
 let origin = Point(0, 0, 0);
 ```
 
-这里`black`和`origin`并不相等，即使它们有一模一样的值：
+这里`black`和`origin`并不是相同的类型，即使它们有一模一样的值。
+
+元组结构体结构体的成员可以使用点标记或者解构`let`访问，就像常规的元组：
 
 ```rust
-let black = Color(0, 0, 0);
-let origin = Point(0, 0, 0);
+# struct Color(i32, i32, i32);
+# struct Point(i32, i32, i32);
+# let black = Color(0, 0, 0);
+# let origin = Point(0, 0, 0);
+let black_r = black.0;
+let Point(_, origin_y, origin_z) = origin;
 ```
 
-使用结构体几乎总是好于使用元组结构体。我们可以这样重写`Color`和`Point`：
+像`Point(_, origin_y, origin_z)`这样的模式也可以用于[match 表达式](Match 匹配.md)。
+
+一个元组结构体非常有用的情况是当他只有一个元素时，我们称之为“新类型（newtype）”模式，因为它允许创建一个区别于它包含的值的类型，同时也标明它的语义：
+
+```rust
+struct Inches(i32);
+
+let length = Inches(10);
+
+let Inches(integer_length) = length;
+println!("length is {} inches", integer_length);
+```
+
+如上所示，通过解构`let`可以获取其中的整型值。在这里，`let Inches(integer_length)`将`10`赋值于`integer_length`。我们可以用点标记做到同样的事：
+
+```rust
+# struct Inches(i32);
+# let length = Inches(10);
+let integer_length = length.0;
+```
+
+几乎总是可以在使用元组结构体的地方使用`struct`，并可能更明确一些。我们可以这样重写`Color`和`Point`：
 
 ```rust
 struct Color {
@@ -169,26 +196,16 @@ struct Point {
 
 现在，我们有了名字，而不是位置。好的名字是很重要的，使用结构体，我们就可以设置名字。
 
-不过有种情况元组结构体非常有用，就是当元组结构体只有一个元素时。我们管它叫*新类型*（*newtype*），因为你创建了一个与元素相似的类型：
-
-```rust
-struct Inches(i32);
-
-let length = Inches(10);
-
-let Inches(integer_length) = length;
-println!("length is {} inches", integer_length);
-```
-
-如你所见，你可以通过一个解构`let`来提取内部的整型，就像我们在讲元组时说的那样，`let Inches(integer_length)`给`integer_length`赋值为`10`。
-
 ## 类单元结构体（Unit-like structs）
 你可以定义一个没有任何成员的结构体：
 
 ```rust
-struct Electron;
+struct Electron {} // use empty braces...
+struct Proton;     // ...or just a semicolon
 
-let x = Electron;
+// whether you declared the struct with braces or not, do the same when creating one
+let x = Electron {};
+let y = Proton;
 ```
 
 这样的结构体叫做“类单元”因为它与一个空元组类似，`()`，这有时叫做“单元”。就像一个元组结构体，它定义了一个新类型。

@@ -2,7 +2,7 @@
 
 > [associated-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/associated-types.md)
 > <br>
-> commit b1b37384cd6cf45525962a4535188e944493ad9a
+> commit 31da7f6f25946e2962df78920727d3d593346cee
 
 关联类型是Rust类型系统中非常强大的一部分。它涉及到‘类型族’的概念，换句话说，就是把多种类型归于一类。这个描述可能比较抽象，所以让我们深入研究一个例子。如果你想编写一个`Graph`trait，你需要泛型化两个类型：点类型和边类型。所以你可能会像这样写一个trait，`Graph<N, E>`：
 

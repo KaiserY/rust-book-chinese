@@ -2,7 +2,7 @@
 
 > [glossary.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/glossary.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 2d7abe88bfa6b36be6ba020f87a1f391c7266daa
 
 不是每位 Rustacean 都是系统编程或计算机科学背景的，所以我们加上了可能难以理解的词汇解释。
 
@@ -49,6 +49,10 @@ let z = (8, 2, 6);
 ## 界限（Bounds）
 
 界限是一个类型或[trait](Traits.md)的限制。例如，如果界限位于函数参数，那么传递给函数的参数类型必须遵守这个限制。
+
+### 连接符（Combinators）
+
+连接符是一种高级函数，它只作用于函数和其之前定义的连接符，通过其参数来提供一个结果。可以被用来以一种模块化的方式来控制流程。
 
 ## 动态大小类型（DST (Dynamically Sized Type)）
 

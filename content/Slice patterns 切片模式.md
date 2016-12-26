@@ -2,7 +2,7 @@
 
 > [slice-patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/slice-patterns.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 5cf4139d21073731fa7f7226d941349dbacc16d6
 
 如果你想在一个切片或数组上匹配，你可以通过`slice_patterns`功能使用`&`：
 
@@ -13,7 +13,7 @@ fn main() {
     let v = vec!["match_this", "1"];
 
     match &v[..] {
-        ["match_this", second] => println!("The second element is {}", second),
+        &["match_this", second] => println!("The second element is {}", second),
         _ => {},
     }
 }
@@ -26,8 +26,8 @@ fn main() {
 
 fn is_symmetric(list: &[u32]) -> bool {
     match list {
-        [] | [_] => true,
-        [x, inside.., y] if x == y => is_symmetric(inside),
+        &[] | &[_] => true,
+        &[x, ref inside.., y] if x == y => is_symmetric(inside),
         _ => false
     }
 }

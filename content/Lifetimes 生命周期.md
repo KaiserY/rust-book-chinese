@@ -2,9 +2,9 @@
 
 > [lifetimes.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/lifetimes.md)
 > <br>
-> commit f7ec6873ccfbf7dcdbd1908c0857c866b3e7087a
+> commit cb90723f90ca68093e6030b1d4f94e8e9e5062ee
 
-这篇教程是现行 3 个 Rust 所有权系统之一。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
+这篇教程是现行 3 个 Rust 所有权系统章节的第三部分。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
 * [所有权](5.8.Ownership 所有权.md)，关键章节
 * [借用](5.9.References and Borrowing 引用和借用.md)，以及它关联的特性: "引用" (references)
@@ -29,23 +29,63 @@ Rust 注重安全和速度。它通过很多*零开销抽象*（*zero-cost abstr
 * 我决定不再需要这个资源了，然后释放了它，这时你仍然持有它的引用
 * 你决定使用这个资源
 
-噢！你的引用指向一个无效的资源。这叫做*悬垂指针*（*dangling pointer*）或者“释放后使用”，如果这个资源是内存的话。
-
-要修正这个问题的话，我们必须确保第四步永远也不在第三步之后发生。Rust 所有权系统通过一个叫*生命周期*（*lifetime*）的概念来做到这一点，它定义了一个引用有效的作用域。
-
-当我们有一个获取引用作为参数的函数，我们可以隐式或显式涉及到引用的生命周期：
+噢！你的引用指向一个无效的资源。这叫做*悬垂指针*（*dangling pointer*）或者“释放后使用”，如果这个资源是内存的话。这种状况的一个小例子像这样：
 
 ```rust
-// implicit
-fn foo(x: &i32) {
+let r;              // Introduce reference: r
+{
+    let i = 1;      // Introduce scoped value: i
+    r = &i;         // Store reference of i in r
+}                   // i goes out of scope and is dropped.
+
+println!("{}", r);  // r still refers to i
+```
+
+要修正这个问题的话，我们必须确保第四步永远也不在第三步之后发生。在上面的小例子中 Rust 编译器能够报告问题因为它能识别出函数中不同变量的生命周期。
+
+当我们有一个将引用作为参数的函数时情况就变得更复杂了。考虑如下例子：
+
+```rust,compile_fail,E0106
+fn skip_prefix(line: &str, prefix: &str) -> &str {
+    // ...
+#   line
 }
 
-// explicit
-fn bar<'a>(x: &'a i32) {
+let line = "lang:en=Hello World!";
+let lang = "en";
+
+let v;
+{
+    let p = format!("lang:{}=", lang);  // -+ p goes into scope
+    v = skip_prefix(line, p.as_str());  //  |
+}                                       // -+ p goes out of scope
+println!("{}", v);
+```
+
+这里我们有个函数`skip_prefix`，它获取两个`&str`引用作为参数并返回一个`&str`引用。通过`line`和`p`的引用调用它：两个有不同生命周期的变量。现在`println!`那行代码的安全依赖于`skip_prefix`函数返回的引用是仍然存在的`line`还是已经释放掉的`p`。
+
+因为存在上述的歧义，Rust 将会拒绝编译示例代码。为了继续我们需要向编译器提供更多关于引用生命周期的信息。这可以通过再函数签名中显式标明生命周期来完成：
+
+```rust
+fn skip_prefix<'a, 'b>(line: &'a str, prefix: &'b str) -> &'a str {
+    // ...
+#   line
 }
 ```
 
-`'a`读作“生命周期 a”。技术上讲，每一个引用都有一些与之相关的生命周期，不过编译器在通常情况让你可以省略（也就是，省略，查看下面的[生命周期省略](#生命周期省略（lifetime-elision）)）它们。在我们讲到它之前，让我们拆开显式的例子看看：
+让我们看看所做的修改，但是现在并不深入到语法--之后我们会讲到。第一个修改是再方法名后面加入了`<'a, 'b>`。这引入了两个生命周期参数`'a`和`'b`。接下来函数签名中的每个引用都关联了一个生命周期参数，通过再`&`之后加上生命周期的名字。这告诉了编译器不同引用的生命周期是如何关联的。
+
+这样编译器就能推断出`skip_prefix`函数的返回值与`line`参数有着相同的生命周期，这样就使得之前例子中`v`引用即使在`p`离开作用域之后也能安全使用。
+
+另外编译器能够检查`skip_prefix`返回值的用途，它也能确保之后的实现也遵守函数声明建立的约束。这在实现[之后会介绍到][traits]的 trait 时显得尤为实用。
+
+[traits]: Traits.md
+
+**注意：** 认识到生命周期注解是`_descriptive_`（描述性）而不是`_prescriptive_`（规定性）是很重要的（译者注：各位可以自行搜索这两个术语）。这意味着引用的生命周期是由代码决定的，而不是由生命周期注解决定的。注解，提供了供编译器用来检查引用的有效性的信息。编译器在简单的情况下无需注解就能进行这种检查，不过在复杂的场景需要程序猿的协助。
+
+## 语法
+
+`'a`读作“生命周期 a”。技术上讲，每一个引用都有一些与之相关的生命周期，不过编译器在通常情况让你可以省略（也就是，省略，查看下面的[生命周期省略](#生命周期省略（lifetime-elision）)）它们。在我们讲到它之前，让我们看看一个显式生命周期的例子：
 
 ```rust
 fn bar<'a>(...)
@@ -53,7 +93,7 @@ fn bar<'a>(...)
 
 之前我们讨论了一些[函数语法](Functions 函数.md)，不过我们并没有讨论函数名后面的`<>`。一个函数可以在`<>`之间有“泛型参数”，生命周期也是其中一种。我们在[本书的后面](Generics 泛型.md)讨论其他类型的泛型。不过现在让我们着重看生命周期。
 
-我们用`<>`声明了生命周期。这是说`bar`有一个生命周期`'a`。如果我们有两个引用参数，它应该看起来像这样：
+我们用`<>`声明了生命周期。这是说`bar`有一个生命周期`'a`。如果我们有两个拥有不同生命周期的引用参数，它应该看起来像这样：
 
 ```rust
 fn bar<'a, 'b>(...)
@@ -250,17 +290,17 @@ fn foo<'a>(bar: &'a str) -> &'a str
 ## 例子
 这里有一些省略了生命周期的函数的例子。我们用它们的扩展形式配对了每个省略了生命周期的例子。
 
-```rust
+```rust,ignore
 fn print(s: &str); // elided
 fn print<'a>(s: &'a str); // expanded
 
 fn debug(lvl: u32, s: &str); // elided
 fn debug<'a>(lvl: u32, s: &'a str); // expanded
+```
 
-// In the preceding example, `lvl` doesn’t need a lifetime because it’s not a
-// reference (`&`). Only things relating to references (such as a `struct`
-// which contains a reference) need lifetimes.
+在上面的例子中，`lvl`并不需要一个生命周期，因为它不是一个引用（`&`）。只有与引用（例如一个包含引用的`struct`）相关的变量才需要生命周期。
 
+```rust,ignore
 fn substr(s: &str, until: u32) -> &str; // elided
 fn substr<'a>(s: &'a str, until: u32) -> &'a str; // expanded
 

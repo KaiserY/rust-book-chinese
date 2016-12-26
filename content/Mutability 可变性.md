@@ -2,7 +2,7 @@
 
 > [mutability.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/mutability.md)
 > <br>
-> commit 98f1c35c77835395d12c72d5d5712fc1686cc3b4
+> commit 6a85183e6f7c29777e1058a88f328e05137abb4d
 
 可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
@@ -51,7 +51,7 @@ fn foo(mut x: i32) {
 注意这里`x`是可变的，`y`不是。
 
 ## 内部可变性 VS 外部可变性（Interior vs. Exterior Mutability）
-然而，当我们谈到Rust中什么是“不可变”的时候，它并不意味着它不能被改变：我们说它有“外部可变性”。例如，考虑下[`Arc<T>`](http://doc.rust-lang.org/nightly/std/sync/struct.Arc.html)：
+然而，当我们谈到 Rust 中什么是“不可变”的时候，它并不意味着它不能被改变：这里是指它的“外部可变性”是不可变的。例如，考虑下[`Arc<T>`](http://doc.rust-lang.org/nightly/std/sync/struct.Arc.html)：
 
 ```rust
 use std::sync::Arc;

@@ -3,13 +3,13 @@
 
 > [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/testing.md)
 > <br>
-> commit 8e8f3911aa4e68d7f0a88a7d011a08c07b2cd189
+> commit 956d44fb171aed08c87db60208e7f2c85f8a72fb
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 
 > Edsger W. Dijkstra, "The Humble Programmer" (1972)
 
-> 软件测试是证明bug存在的有效方法，而证明它们不存在时则显得令人绝望的不足。
+> 软件测试是证明 bug 存在的有效方法，而证明它们不存在时则显得令人绝望的不足。
 
 > Edsger W. Dijkstra，【谦卑的程序员】（1972）
 
@@ -27,9 +27,11 @@ $ cd adder
 在你创建一个新项目时 Cargo 会自动生成一个简单的测试。下面是`src/lib.rs`的内容：
 
 ```rust
-# fn main() {}
-#[test]
-fn it_works() {
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn it_works() {
+    }
 }
 ```
 
@@ -37,11 +39,11 @@ fn it_works() {
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
-test it_works ... ok
+test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -55,7 +57,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 Cargo 编译和运行了我们的测试。这里有两部分输出：一个是我们写的测试，另一个是文档测试。我们稍后再讨论这些。现在，看看这行：
 
 ```text
-test it_works ... ok
+test tests::it_works ... ok
 ```
 
 注意那个`it_works`。这是我们函数的名字：
@@ -85,31 +87,31 @@ fn it_works() {
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
-test it_works ... FAILED
+test tests::it_works ... FAILED
 
 failures:
 
----- it_works stdout ----
-        thread 'it_works' panicked at 'assertion failed: false', /home/steve/tmp/adder/src/lib.rs:3
+---- test::it_works stdout ----
+        thread 'tests::it_works' panicked at 'assertion failed: false', src/lib.rs:5
 
 
 
 failures:
-    it_works
+    tests::it_works
 
 test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured
 
-thread '<main>' panicked at 'Some tests failed', /home/steve/src/rust/src/libtest/lib.rs:247
+error: test failed
 ```
 
 Rust指出我们的测试失败了：
 
 ```text
-test it_works ... FAILED
+test tests::it_works ... FAILED
 ```
 
 这反映在了总结行上：
@@ -155,11 +157,11 @@ fn it_works() {
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
-test it_works ... ok
+test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -185,11 +187,11 @@ fn it_works() {
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
-test it_works ... ok
+test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -249,8 +251,8 @@ fn expensive_test() {
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 2 tests
 test expensive_test ... ignored
@@ -269,7 +271,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 ```bash
 $ cargo test -- --ignored
-     Running target/adder-91b3e234d4ed382a
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
 test expensive_test ... ok
@@ -287,7 +289,10 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 ## `tests`模块
 
-然而以这样的方式来实现我们的测试的例子并不是地道的做法：它缺少`tests`模块。如果要实现我们的测试实例，一个比较惯用的做法应该是如下的：
+然而以这样的方式来实现我们的测试的例子并不是地道的做法：它缺少`tests`模块。你可能注意到了这个测试模块在最初用`cargo new`生成时还在代码中存在，不过在我们最后一个例子中消失了。让我们解释一下。
+
+
+一个比较惯用的做法应该是如下的：
 
 ```rust
 # fn main() {}
@@ -332,8 +337,8 @@ mod tests {
 ```bash
 $ cargo test
     Updating registry `https://github.com/rust-lang/crates.io-index`
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
 test tests::it_works ... ok
@@ -352,7 +357,8 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 目前的习惯是使用`test`模块来存放你的“单元测试”。任何只是测试一小部分功能的测试理应放在这里。那么“集成测试”怎么办呢？我们有`tests`目录来处理这些。
 
 ## `tests`目录
-为了进行集成测试，让我们创建一个`tests`目录，然后放一个`tests/lib.rs`文件进去，输入如下内容：
+
+每一个`tests/*.rs`文件都被当作一个独立的 crate。因此，为了进行集成测试，让我们创建一个`tests`目录，然后放一个`tests/integration_test.rs`文件进去，输入如下内容：
 
 ```rust
 extern crate adder;
@@ -364,21 +370,21 @@ fn it_works() {
 }   
 ```
 
-这看起来与我们刚才的测试很像，不过有些许的不同。我们现在有一行`extern crate adder`在开头。这是因为在`tests`目录中的测试另一个完全不同的包装箱，所以我们需要导入我们的库。这也是为什么`tests`是一个写集成测试的好地方：它们就像其它程序一样使用我们的库。
+这看起来与我们刚才的测试很像，不过有些许的不同。我们现在有一行`extern crate adder`在开头。这是因为在`tests`目录中的每个测试（文件）是一个完全不同的 crate，所以我们需要导入我们的库。这也是为什么`tests`是一个写集成测试的好地方：它们就像其它程序一样使用我们的库。
 
 让我们运行一下：
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/you/projects/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0 (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
 test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
-     Running target/lib-c18e7d3494509e74
+     Running target/debug/integration_test-68064b69521c828a
 
 running 1 test
 test it_works ... ok
@@ -393,6 +399,8 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
 现在我们有了三个部分：我们之前的两个测试，然后还有我们新添加的。
+
+Cargo （不？）会忽略`tests/`目录的子目录的文件。因此在集成测试中共享模块是可能的。例如`tests/common/mod.rs`并不会被 Cargo 单独编译并可以被任何包含`mod common`的测试（文件）引用。
 
 这就是`tests`目录的全部内容。它不需要`test`模块因为它整个就是关于测试的。
 
@@ -441,15 +449,15 @@ mod tests {
 
 ```bash
 $ cargo test
-   Compiling adder v0.0.1 (file:///home/steve/tmp/adder)
-     Running target/adder-91b3e234d4ed382a
+   Compiling adder v0.1.0. (file:///home/you/projects/adder)
+     Running target/debug/deps/adder-91b3e234d4ed382a
 
 running 1 test
 test tests::it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
-     Running target/lib-c18e7d3494509e74
+     Running target/debug/integration_test-68064b69521c828a
 
 running 1 test
 test it_works ... ok

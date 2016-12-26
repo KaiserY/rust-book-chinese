@@ -1,16 +1,16 @@
-# 语言项
+# 语言项（Lang items）
 
 > [lang-items.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/lang-items.md)
 > <br>
-> commit 432460a6fc92e8baecbc4fa175345e78232fe2ed
+> commit e586d2174bd732bcc4a430266f371fbb82b39398
 
-> **注意**：语言项通常由Rust发行版的 crate 提供，并且它自身有一个不稳定的接口。建议使用官方发布的 crate 而不是定义自己的版本。
+> **注意**：语言项通常由 Rust 发行版的 crate 提供，并且它自身有一个不稳定的接口。建议使用官方发布的 crate 而不是定义自己的版本。
 
 `rustc`编译器有一些可插入的操作，也就是说，功能不是硬编码进语言的，而是在库中实现的，通过一个特殊的标记告诉编译器它存在。这个标记是`#[lang="..."]`属性并且有不同的值`...`,也就是不同的“语言项”。
 
 例如，`Box`指针需要两个语言项，一个用于分配，一个用于释放。下面是一个独立的程序使用`Box`语法糖进行动态分配，通过`malloc`和`free`：
 
-```rust
+```rust,ignore
 #![feature(lang_items, box_syntax, start, libc)]
 #![no_std]
 
@@ -52,8 +52,8 @@ fn main(argc: isize, argv: *const *const u8) -> isize {
     0
 }
 
-#[lang = "eh_personality"] extern fn eh_personality() {}
-#[lang = "panic_fmt"] fn panic_fmt() -> ! { loop {} }
+#[lang = "eh_personality"] extern fn rust_eh_personality() {}
+#[lang = "panic_fmt"] extern fn rust_begin_panic() -> ! { loop {} }
 # #[lang = "eh_unwind_resume"] extern fn rust_eh_unwind_resume() {}
 # #[no_mangle] pub extern fn rust_eh_register_frames () {}
 # #[no_mangle] pub extern fn rust_eh_unregister_frames () {}

@@ -2,7 +2,7 @@
 
 > [deref-coercions.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/deref-coercions.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 0d3bdc6c3ec9b237f986bd4b233764f36b8c5bda
 
 标准库提供了一个特殊的特性，[`Deref`](http://doc.rust-lang.org/stable/std/ops/trait.Deref.html)。它一般用来重载`*`，解引用运算符：
 
@@ -60,7 +60,7 @@ let counted = Rc::new(owned);
 foo(&counted);
 ```
 
-我们所做的一切就是把我们的`String`封装到了一个`Rc<T>`里。不过现在我们可以传递`Rc<String>`给任何我们有一个`String`的地方。`foo`的签名并无变化，不过它对这两个类型都能正常工作。这个例子有两个转换：`Rc<String>`转换为`String`接着是`String`转换为`&str`。只要类型匹配Rust将可以做任意多次这样的转换。
+我们所做的一切就是把我们的`String`封装到了一个`Rc<T>`里。不过现在我们可以传递`Rc<String>`给任何我们有一个`String`的地方。`foo`的签名并无变化，不过它对这两个类型都能正常工作。这个例子有两个转换：`&Rc<String>`转换为`&String`接着是`&String`转换为`&str`。只要类型匹配Rust将可以做任意多次这样的转换。
 
 标准库提供的另一个非常通用的实现是：
 

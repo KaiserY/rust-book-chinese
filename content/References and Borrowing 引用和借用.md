@@ -2,9 +2,9 @@
 
 > [references-and-borrowing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/references-and-borrowing.md)
 > <br>
-> commit 10abb666e48abdb747946db6de21317708e18cf5
+> commit 22ce98d0e7aa573c5418bdf62d46c0444c60e2ab
 
-这篇教程是现行 3 个 Rust 所有权系统之一。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
+这篇教程是现行 3 个 Rust 所有权系统章节的第二部分。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
 * [所有权](5.8.Ownership 所有权.md)，关键章节
 * 借用，你正在阅读的这个章节
@@ -64,8 +64,8 @@ fn main() {
     fn sum_vec(v: &Vec<i32>) -> i32 {
         return v.iter().fold(0, |a, &b| a + b);
     }
-    // Borrow two vectors and and sum them.
-    // This kind of borrowing does not allow mutation to the borrowed.
+    // Borrow two vectors and sum them.
+    // This kind of borrowing does not allow mutation through the borrowed reference.
     fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
         // do stuff with v1 and v2
         let s1 = sum_vec(v1);
@@ -142,6 +142,7 @@ fn main() {
 正如这个例子表现的那样，有一些规则是你必须要掌握的。
 
 ## 规则
+
 Rust 中的借用有一些规则：
 
 第一，任何借用必须位于比拥有者更小的作用域。第二，对于同一个资源（resource）的借用，以下情况不能同时出现在同一个作用域下：
@@ -163,12 +164,14 @@ Rust 中的借用有一些规则：
 这是代码：
 
 ```rust
-let mut x = 5;
-let y = &mut x;
+fn main() {
+    let mut x = 5;
+    let y = &mut x;
 
-*y += 1;
+    *y += 1;
 
-println!("{}", x);
+    println!("{}", x);
+}
 ```
 
 这些代码给我们如下错误：
@@ -192,14 +195,15 @@ fn main() {
 换句话说，可变借用在剩下的例子中一直存在。我们需要的是可变借用在我们尝试调用`println!`*之前*结束并生成一个不可变借用。在 Rust 中，借用绑定在借用有效的作用域上。而我们的作用域看起来像这样：
 
 ```rust
-let mut x = 5;
+fn main() {
+    let mut x = 5;
 
-let y = &mut x;    // -+ &mut borrow of x starts here
-                   //  |
-*y += 1;           //  |
-                   //  |
-println!("{}", x); // -+ - try to borrow x here
-                   // -+ &mut borrow of x ends here
+    let y = &mut x;    // -+ &mut borrow of x starts here
+                       //  |
+    *y += 1;           //  |
+                       //  |
+    println!("{}", x); // -+ - try to borrow x here
+}                      // -+ &mut borrow of x ends here
 ```
 
 这些作用域冲突了：我们不能在`y`在作用域中时生成一个`&x`。

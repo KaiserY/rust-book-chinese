@@ -2,7 +2,7 @@
 
 > [traits.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 5cab9525ae12a18ec0583ee1ddba3a9eb31a5cfd
 
 trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 
@@ -43,6 +43,32 @@ impl HasArea for Circle {
 ```
 
 如你所见，`trait`块与`impl`看起来很像，不过我们没有定义一个函数体，只是函数标记。当我们`impl`一个trait时，我们使用`impl Trait for Item`，而不是仅仅`impl Item`。
+
+`Self`可以被用在类型标记中表示被作为参数传递的实现了这个 trait 的类型的一个实例。`Self`，`&Self`和`&mut Self`可以根据所需不同级别的所有权来使用。
+
+```rust
+struct Circle {
+    x: f64,
+    y: f64,
+    radius: f64,
+}
+
+trait HasArea {
+    fn area(&self) -> f64;
+
+    fn is_larger(&self, &Self) -> bool;
+}
+
+impl HasArea for Circle {
+    fn area(&self) -> f64 {
+        std::f64::consts::PI * (self.radius * self.radius)
+    }
+
+    fn is_larger(&self, other: &Self) -> bool {
+        self.area() > other.area()
+    }
+}
+```
 
 ## 泛型函数的 trait bound（Trait bounds on generic functions）
 
@@ -214,7 +240,7 @@ impl HasArea for i32 {
 这看起来有点像狂野西部（Wild West），不过这还有两个限制来避免情况失去控制。第一是如果 trait 并不定义在你的作用域，它并不能实现。这是个例子：为了进行文件I/O，标准库提供了一个[`Write`](http://doc.rust-lang.org/nightly/std/io/trait.Write.html)trait来为`File`增加额外的功能。默认，`File`并不会有这个方法：
 
 ```rust
-let mut f = std::fs::File::open("foo.txt").ok().expect("Couldn’t open foo.txt");
+let mut f = std::fs::File::create("foo.txt").ok().expect("Couldn’t create foo.txt");
 let buf = b"whatever"; // byte string literal. buf: &[u8; 8]
 let result = f.write(buf);
 # result.unwrap(); // ignore the error
@@ -230,10 +256,10 @@ let result = f.write(buf);
 
 我们需要先`use`这个`Write` trait：
 
-```rust
+```rust,no_run
 use std::io::Write;
 
-let mut f = std::fs::File::open("foo.txt").expect("Couldn’t open foo.txt");
+let mut f = std::fs::File::create("foo.txt").expect("Couldn’t create foo.txt");
 let buf = b"whatever";
 let result = f.write(buf);
 # result.unwrap(); // ignore the error
@@ -349,10 +375,10 @@ fn normal<T: ConvertTo<i64>>(x: &T) -> i64 {
 }
 
 // can be called with T == i64
-fn inverse<T>() -> T
+fn inverse<T>(x: i32) -> T
         // this is using ConvertTo as if it were "ConvertTo<i64>"
         where i32: ConvertTo<T> {
-    42.convert()
+    x.convert()
 }
 ```
 

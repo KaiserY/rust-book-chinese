@@ -2,7 +2,7 @@
 
 > [guessing-game.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/guessing-game.md)
 > <br>
-> commit a40629d2c9aa2a3bed2e4edaafa2303eb4b19854
+> commit 9cc98612d70cb2dca1d1f5782648f434645fc7d6
 
 让我学习一些 Rust！作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是太大了还是太小了。猜对了，它会祝贺我们。听起来如何？
 
@@ -47,7 +47,7 @@ $ cargo build
 
 很好！再次打开你的`src/main.rs`文件。我们会将所有代码写在这个文件里。稍后我们会讲到多文件项目。
 
-在我们继续之前，让我们再告诉你一个新的 Cargo 命令：`run`。`cargo run`跟`cargo build`类似，并且还会运行我们刚生成的可执行文件。试试它：
+还记得上一章节讲到的`run`命令吗？让我们再次试试它：
 
 ```bash
 $ cargo run
@@ -56,7 +56,7 @@ $ cargo run
 Hello, world!
 ```
 
-很好！`run`命令在我们需要快速重复运行一个项目时非常方便。我们的游戏就是这么一个项目，在我们添加新内容之前我们需要经常快速测试项目。
+很好！我们的小游戏恰恰是`run`命令大显身手的这类程序：我们需要在进行下一步之前快速测试每次迭代。
 
 ## 处理一次猜测
 让我们开始吧！我们需要做的第一件事是让我们的玩家输入一个猜测。把这些放入你的`src/main.rs`：
@@ -231,7 +231,7 @@ You guessed: 6
 rand="0.3.0"
 ```
 
-`Cargo.toml`的`[dependencies]`部分就像`[package]`部分：所有之后的东西都是它的一部分，直到下一个部分开始。Cargo使用依赖部分来知晓你用的外部包装箱的依赖，和你要求的版本。在这个例子中，我们用了`0.3.0`版本。Cargo理解[语义化版本](http://semver.org/lang/zh-CN/)，它是一个编写版本号的标准。如果我们就是只想使用`0.3.0`，我们可以用`=0.3.0`。如果我们想要使用最新版本我们可以使用`*`或者我们可以使用一个范围的版本。[Cargo文档](http://doc.crates.io/crates-io.html)包含更多细节。
+`Cargo.toml`的`[dependencies]`部分就像`[package]`部分：所有之后的东西都是它的一部分，直到下一个部分开始。Cargo使用依赖部分来知晓你用的外部包装箱的依赖，和你要求的版本。在这个例子中，我们用了`0.3.0`版本。Cargo理解[语义化版本](http://semver.org/lang/zh-CN/)，它是一个编写版本号的标准。像上面只有数字的版本事实上是`^0.3.0`的简写，代表“任何兼容 0.3.0 的版本”。如果你只想使用`0.3.0`版本，你可以使用`rand="=0.3.0"`（注意那两个双引号）。我们也可以指定一个版本范围。[Cargo文档](http://doc.crates.io/specifying-dependencies.html)包含更多细节。
 
 现在，在不修改任何我们代码的情况下，让我们构建我们的项目：
 
@@ -270,7 +270,7 @@ $ cargo build
 
 当我们*确实*想要使用`v0.3.9`怎么办？Cargo 有另一个命令，`update`，它代表“忽略锁，搞清楚所有我们指定的最新版本。如果这能工作，将这些版本写入锁文件”。不过，默认，Cargo 只会寻找大于`0.3.0`小于`0.4.0`的版本。如果你想要移动到`0.4.x`，我们不得不直接更新`Cargo.toml`文件。当我们这么做，下一次我们`cargo build`，Cargo会更新索引并重新计算我们的`rand`要求。
 
-关于[Cargo](http://doc.crates.io/)和[它的生态系统](http://doc.crates.io/crates-io.html)有很多东西要说，不过眼下，这是我们需要知道的一切。Cargo让重用库变得真正的简单，并且Rustacean们可以编写更小的由很多子包组装成的项目。
+关于[Cargo](http://doc.crates.io/)和[它的生态系统](http://doc.crates.io/specifying-dependencies.html)有很多东西要说，不过眼下，这是我们需要知道的一切。Cargo让重用库变得真正的简单，并且Rustacean们可以编写更小的由很多子包组装成的项目。
 
 让我们真正的*使用*`rand`，这是我们的下一步：
 
@@ -553,7 +553,7 @@ You guessed: 59
 You win!
 Please input your guess.
 quit
-thread '<main>' panicked at 'Please type a number!'
+thread 'main' panicked at 'Please type a number!'
 ```
 
 啊哈！`quit`确实退出了。就像任何其它非数字输入。好吧，这至少不是最差的想法。首先，如果你赢得了游戏，那我们就真的退出它：

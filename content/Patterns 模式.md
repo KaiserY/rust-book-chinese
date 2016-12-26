@@ -2,7 +2,7 @@
 
 > [patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/patterns.md)
 > <br>
-> commit ea9ae486627fec2ff613bef73ccda612996d8f6f
+> commit 18565c63db1982b927b291b9597368efc615d91c
 
 模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配表达式](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
 
@@ -98,14 +98,14 @@ struct Point {
     y: i32,
 }
 
-let origin = Point { x: 0, y: 0 };
+let point = Point { x: 2, y: 3 };
 
-match origin {
+match point {
     Point { x, .. } => println!("x is {}", x),
 }
 ```
 
-这会输出`x is 0`。
+这会输出`x is 2`。
 
 你可以对任何成员进行这样的匹配，不仅仅是第一个：
 
@@ -115,14 +115,14 @@ struct Point {
     y: i32,
 }
 
-let origin = Point { x: 0, y: 0 };
+let point = Point { x: 2, y: 3 };
 
-match origin {
+match point {
     Point { y, .. } => println!("y is {}", y),
 }
 ```
 
-这会输出`y is 0`。
+这会输出`y is 3`。
 
 这种“解构”行为可以用在任何复合数据类型上，例如[元组](Primitive Types 原生类型.md#元组（tuples）)和[枚举](Enums 枚举.md)
 

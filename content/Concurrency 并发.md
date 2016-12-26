@@ -2,7 +2,7 @@
 
 > [concurrency.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/concurrency.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 335d393114da99c1716eb1dfb0af8c4efcb51b8a
 
 并发与并行是计算机科学中相当重要的两个主题，并且在当今生产环境中也十分热门。计算机正拥有越来越多的核心，然而很多程序员还没有准备好去完全的利用它们。
 

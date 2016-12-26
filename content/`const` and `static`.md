@@ -1,8 +1,8 @@
-# `const` 和 `static`
+# const 和 static
 
 > [const-and-static.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/const-and-static.md)
 > <br>
-> commit 77145b392345f1e30f2c79b5c4258a25f1d1a1b7
+> commit d001e8ad179b2d0b57272d1c875d93099fc347cb
 
 Rust 有一个用`const`关键字定义常量的方法：
 

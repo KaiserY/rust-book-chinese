@@ -2,7 +2,7 @@
 
 > [ffi.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/ffi.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit aadbcffb7c59718834c63c20ab7ce6276aef430c
 
 ## 介绍
 
@@ -155,14 +155,71 @@ pub fn uncompress(src: &[u8]) -> Option<Vec<u8>> {
 }
 ```
 
-作为一个参考，我们在这里使用的例子可以在[GitHub的这个库](https://github.com/thestinger/rust-snappy)中找到。
+接下来，我们可以添加一些测试来展示如何使用他们：
+
+```rust
+# #![feature(libc)]
+# extern crate libc;
+# use libc::{c_int, size_t};
+# unsafe fn snappy_compress(input: *const u8,
+#                           input_length: size_t,
+#                           compressed: *mut u8,
+#                           compressed_length: *mut size_t)
+#                           -> c_int { 0 }
+# unsafe fn snappy_uncompress(compressed: *const u8,
+#                             compressed_length: size_t,
+#                             uncompressed: *mut u8,
+#                             uncompressed_length: *mut size_t)
+#                             -> c_int { 0 }
+# unsafe fn snappy_max_compressed_length(source_length: size_t) -> size_t { 0 }
+# unsafe fn snappy_uncompressed_length(compressed: *const u8,
+#                                      compressed_length: size_t,
+#                                      result: *mut size_t)
+#                                      -> c_int { 0 }
+# unsafe fn snappy_validate_compressed_buffer(compressed: *const u8,
+#                                             compressed_length: size_t)
+#                                             -> c_int { 0 }
+# fn main() { }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn valid() {
+        let d = vec![0xde, 0xad, 0xd0, 0x0d];
+        let c: &[u8] = &compress(&d);
+        assert!(validate_compressed_buffer(c));
+        assert!(uncompress(c) == Some(d));
+    }
+
+    #[test]
+    fn invalid() {
+        let d = vec![0, 0, 0, 0];
+        assert!(!validate_compressed_buffer(&d));
+        assert!(uncompress(&d).is_none());
+    }
+
+    #[test]
+    fn empty() {
+        let d = vec![];
+        assert!(!validate_compressed_buffer(&d));
+        assert!(uncompress(&d).is_none());
+        let c = compress(&d);
+        assert!(validate_compressed_buffer(&c));
+        assert!(uncompress(&c) == Some(d));
+    }
+}
+```
 
 ## 析构函数
+
 外部库经常把资源的所有权传递给调用函数。当这发生时，我们必须使用Rust析构函数来提供安全性和确保释放了这些资源（特别是在恐慌的时候）。
 
 关于析构函数的更多细节，请看[`Drop`trait](http://doc.rust-lang.org/stable/std/ops/trait.Drop.html)
 
-## 在Rust函数中处理C回调（Callbacks from C code to Rust functions）
+## 在 Rust 函数中处理 C 回调（Callbacks from C code to Rust functions）
+
 一些外部库要求使用回调来向调用者反馈它们的当前状态或者即时数据。可以传递在Rust中定义的函数到外部库中。要求是这个回调函数被标记为`extern`并使用正确的调用约定来确保它可以在C代码中被调用。
 
 接着回调函数可以通过一个C库的注册调用传递并在后面被执行。
@@ -208,7 +265,8 @@ void trigger_callback() {
 
 这个例子中Rust的`main()`会调用C中的`trigger_callback()`，它会反过来调用Rust中的`callback()`。
 
-## 在Rust对象上使用回调（Targeting callbacks to Rust objects）
+## 在 Rust 对象上使用回调（Targeting callbacks to Rust objects）
+
 之前的例子展示了一个全局函数是如何在C代码中被调用的。然而我们经常希望回调是针对一个特殊Rust对象的。这个对象可能代表对应C语言中的封装。
 
 这可以通过向C库传递这个对象的不安全指针来做到。C库则可以根据这个这个通知中的指针来取得Rust对象。这允许回调不安全的访问被引用的Rust对象。
@@ -270,11 +328,12 @@ void trigger_callback() {
 
 在之前给出的例子中回调在一个外部C库的函数调用后直接就执行了。在回调的执行过程中当前线程控制权从 Rust 传到了 C 又传到了 Rust，不过最终回调和和触发它的函数都在一个线程中执行。
 
-当外部库生成了自己的线程并触发回调时情况就变得复杂了。在这种情况下回调中对 Rust 数据结构的访问时特别不安全的并必须有合适的同步机制。除了像互斥量这种经典同步机制外，另一种可能就是使用通道（在`std::comm`中）来从触发回调的 C 线程转发数据到 Rust 线程。
+当外部库生成了自己的线程并触发回调时情况就变得复杂了。在这种情况下回调中对 Rust 数据结构的访问时特别不安全的并必须有合适的同步机制。除了像互斥量这种经典同步机制外，另一种可能就是使用通道（`std::sync::mpsc`）来从触发回调的 C 线程转发数据到 Rust 线程。
 
 如果一个异步回调指定了一个在 Rust 地址空间的特殊 Rust 对象，那么在确保在对应 Rust 对象被销毁后不会再有回调被 C 库触发就格外重要了。这一点可以通过在对象的析构函数中注销回调和设计库使其确保在回调被注销后不会再被触发来取得。
 
 ## 链接
+
 在`extern`上的`link`属性提供了基本的构建块来指示`rustc`如何连接到原生库。现在有两种被接受的链接属性形式：
 
 * `#[link(name = "foo")]`
@@ -284,9 +343,9 @@ void trigger_callback() {
 
 * 动态 - `#[link(name = "readline")]`
 * 静态 - `#[link(name = "my_build_dependency", kind = "static")]`
-* 框架 - `#[link(name = "CoreFoundation", kind = "framework")]`
+* Frameworks - `#[link(name = "CoreFoundation", kind = "framework")]`
 
-注意框架只支持OSX平台。
+注意 Frameworks 只支持 OSX 平台。
 
 不同`kind`的值意味着链接过程中不同原生库的参与方式。从链接的角度看，rust编译器创建了两种组件：部分的（rlib/staticlib）和最终的（dylib/binary）。原生动态库和框架会从扩展到最终组件部分，而静态库则完全不会扩展。
 
@@ -301,6 +360,7 @@ void trigger_callback() {
 在OSX上，框架与动态库有相同的语义。
 
 ## 不安全块（Unsafe blocks）
+
 一些操作，像解引用不安全的指针或者被标记为不安全的函数只允许在unsafe块中使用。unsafe块隔离的不安全性并向编译器保证不安全代码不会泄露到块之外。
 
 不安全函数，另一方面，将它公布于众。一个不安全的函数这样写：
@@ -312,6 +372,7 @@ unsafe fn kaboom(ptr: *const i32) -> i32 { *ptr }
 这个函数只能被从`unsafe`块中或者`unsafe`函数调用。
 
 ## 访问外部全局变量（Accessing foreign globals）
+
 外部API经常导出一个全局变量来进行像记录全局状态这样的工作。为了访问这些变量，你可以在`extern`块中用`static`关键字声明它们：
 
 ```rust
@@ -325,7 +386,7 @@ extern {
 
 fn main() {
     println!("You have readline version {} installed.",
-             rl_readline_version as i32);
+             unsafe { rl_readline_version as i32 });
 }
 ```
 
@@ -358,7 +419,8 @@ fn main() {
 注意与`static mut`变量的所有交互都是不安全的，包括读或写。与全局可变量打交道需要足够的注意。
 
 ## 外部调用约定（Foreign calling conventions）
-大部分外部代码导出为一个C的ABI，并且Rust默认使用平台C的调用约定来调用外部函数。一些外部函数，尤其是大部分Windows API，使用其它的调用约定。Rust提供了一个告诉编译器应该用哪种调用约定的方法：
+
+大部分外部代码导出为一个 C 的 ABI，并且 Rust 默认使用平台 C 的调用约定来调用外部函数。一些外部函数，尤其是大部分 Windows API，使用其它的调用约定。Rust提供了一个告诉编译器应该用哪种调用约定的方法：
 
 ```rust
 # #![feature(libc)]
@@ -385,6 +447,7 @@ extern "stdcall" {
 * `system`
 * `C`
 * `win64`
+* `sysv64`
 
 列表中大部分ABI都是自解释的，不过`system`ABI可能看起来有点奇怪。这个约束会选择任何能和目标库正确交互的ABI。例如，在x86架构上，这意味着会使用`stdcall`ABI。然而，在x86_64上windows使用`C`调用约定，所以`C`会被使用。这意味在我们之前的例子中，我们可以使用`extern "system" { ... }`定义一个适用于所有 windows 系统的块，而不仅仅是 x86 系统。
 
@@ -396,13 +459,63 @@ Rust拥有的装箱（`Box<T>`）使用非空指针作为指向他包含的对�
 
 向量和字符串共享同样基础的内存布局，`vec`和`str`模块中可用的功能可以操作 C API。然而，字符串不是`\0`结尾的。如果你需要一个NUL结尾的字符串来与 C 交互，你需要使用`std::ffi`模块中的`CString`类型。
 
-标准库中的`libc`模块包含类型别名和C标准库中的函数定义，Rust 默认链接`libc`和`libm`。
+标准库中的`libc`模块包含类型别名和 C 标准库中的函数定义，Rust 默认链接`libc`和`libm`。
 
 ## “可空指针优化”（The "nullable pointer optimization"）
-特定类型被定义为不为`null`。这包括引用（`&T`，`&mut T`），装箱（`Box<T>`），和函数指针（`extern "abi" fn()`）。当使用C接口时，可能为空的指针经常被使用。作为一个特殊的例子，一个泛化的`enum`包含两个变体，其中一个没有数据，而另一个包含一个单独的字段，非常适合“可空指针优化”。当这么一个枚举被用一个非空指针类型实例化时，它表现为一个指针，而无数据的变体表现为一个空指针。那么`Option<extern "C" fn(c_int) -> c_int>`可以用来表现一个C ABI中的可空函数指针。
 
-## 在C中调用 Rust 代码
-你可能会希望这么编译 Rus t代码以便可以在 C 中调用。这是很简单的，不过需要一些东西：
+特定的 Rust 类型被定义为永远不能为`null`。这包括引用（`&T`，`&mut T`），装箱（`Box<T>`），和函数指针（`extern "abi" fn()`）。当调用 C 接口时，可以为`null`的指针被广泛使用，这好像会需要使用到一些混乱的`transmutes`和/或不安全代码来处理与 Rust 类型间的相互转换。不过，Rust 语言提供了一个变通方案。
+
+作为一个特殊的例子，一类只包含两个 variant 的`enum`适合用来进行“可空指针优化”，其中一个 variant 不包含数据，另一个包含一个上述不可空类型的字段。这意味着不需要额外的空间来进行判别，相反，空的 variant 表现为将一个`null`值放入不可空的字段。这也被称为一种优化，不过不同于别读优化它保证适用于合适的类型。
+
+得益于这种可空指针优化的最常见的例子是`Option<T>`，这里`None`对应`null`。所以`Option<extern "C" fn(c_int) -> c_int>`是一个用于 C ABI 的可空函数指针的正确方式（对应 C 类型`int (*)(int)`）。
+
+这是一个不太自然的例子。假如一些 C 库拥有一个注册回调的功能，它在特定情况下被调用。回调传递了一个函数指针和一个整型并应该以这个整型作为参数执行这个函数。所以我们有一些双向穿越 FFI boundary 的函数指针。
+
+```rust
+# #![feature(libc)]
+extern crate libc;
+use libc::c_int;
+
+# #[cfg(hidden)]
+extern "C" {
+    /// Register the callback.
+    fn register(cb: Option<extern "C" fn(Option<extern "C" fn(c_int) -> c_int>, c_int) -> c_int>);
+}
+# unsafe fn register(_: Option<extern "C" fn(Option<extern "C" fn(c_int) -> c_int>,
+#                                            c_int) -> c_int>)
+# {}
+
+/// This fairly useless function receives a function pointer and an integer
+/// from C, and returns the result of calling the function with the integer.
+/// In case no function is provided, it squares the integer by default.
+extern "C" fn apply(process: Option<extern "C" fn(c_int) -> c_int>, int: c_int) -> c_int {
+    match process {
+        Some(f) => f(int),
+        None    => int * int
+    }
+}
+
+fn main() {
+    unsafe {
+        register(Some(apply));
+    }
+}
+```
+
+而 C 代码看起来像这样：
+
+```c
+void register(void (*f)(void (*)(int), int)) {
+    ...
+}
+```
+
+并不需要`transmute`！
+
+
+## 在 C 中调用 Rust 代码
+
+你可能会希望这么编译 Rust 代码以便可以在 C 中调用。这是很简单的，不过需要一些东西：
 
 ```rust
 #[no_mangle]
@@ -415,7 +528,8 @@ pub extern fn hello_rust() -> *const u8 {
 `extern`使这个函数遵循 C 调用约定，就像之前讨论[外部调用约定](#外部调用约定（foreign-calling-conventions）)时一样。`no_mangle`属性关闭Rust的命名改编，这样它更容易链接。
 
 ### FFI 和 panic
-当使用FFI时留意`panic!`是很重要的。一个跨越FFI边界的`panic!`是未定义行为。如果你的代码可能panic，你应该在另一个线程运行它，这样panic不会出现在C代码中：
+
+当使用 FFI 时留意`panic!`是很重要的。一个跨越FFI边界的`panic!`是未定义行为。如果你的代码可能panic，你应该在另一个线程运行它，这样panic不会出现在C代码中：
 
 ```rust
 use std::thread;

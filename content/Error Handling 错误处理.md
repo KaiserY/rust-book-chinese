@@ -2,7 +2,7 @@
 
 > [error-handling.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md)
 > <br>
-> commit 8e8f3911aa4e68d7f0a88a7d011a08c07b2cd189
+> commit e6cc4c5d13f8819c72568f9675e84c1d17368c67
 
 就像大多数编程语言，Rust 鼓励程序猿以特定的方式处理错误。一般来讲，错误处理被分割为两个大类：异常和返回值。Rust 选择了返回值。
 
@@ -68,7 +68,7 @@ fn main() {
 如果你运行这段代码，程序会崩溃并输出类似如下信息：
 
 ```text
-thread '<main>' panicked at 'Invalid number: 11', src/bin/panic-simple.rs:5
+thread 'main' panicked at 'Invalid number: 11', src/bin/panic-simple.rs:5
 ```
 
 这是另一个稍微不那么违和的例子。一个接受一个整型作为参数，乘以二并打印的程序。
@@ -129,7 +129,7 @@ fn find(haystack: &str, needle: char) -> Option<usize> {
 这可能看起来并没有什么，不过这是故事的一半。另一半是使用我们编写的`find`函数。让我们尝试用它查找文件名的扩展名。
 
 ```rust
-# fn find(_: &str, _: char) -> Option<usize> { None }
+# fn find(haystack: &str, needle: char) -> Option<usize> { haystack.find(needle) }
 fn main() {
     let file_name = "foobar.rs";
     match find(file_name, '.') {
@@ -171,7 +171,7 @@ impl<T> Option<T> {
 获取一个文件名的扩展名是一个很常见的操作，所以把它放进一个函数是很有道理的：
 
 ```rust
-# fn find(_: &str, _: char) -> Option<usize> { None }
+# fn find(haystack: &str, needle: char) -> Option<usize> { haystack.find(needle) }
 // Returns the extension of the given file name, where the extension is defined
 // as all characters following the first `.`.
 // If `file_name` has no `.`, then `None` is returned.
@@ -207,7 +207,7 @@ fn map<F, T, A>(option: Option<T>, f: F) -> Option<A> where F: FnOnce(T) -> A {
 用我们的新组合，我们可以重写我们的`extension_explicit`方法来去掉 case analysis：
 
 ```rust
-# fn find(_: &str, _: char) -> Option<usize> { None }
+# fn find(haystack: &str, needle: char) -> Option<usize> { haystack.find(needle) }
 // Returns the extension of the given file name, where the extension is defined
 // as all characters following the first `.`.
 // If `file_name` has no `.`, then `None` is returned.
@@ -376,7 +376,7 @@ fn main() {
 在这里，你应该对调用`unwrap`持怀疑态度。例如，如果字符串并不能解析为一个数字，它会 panic：
 
 ```text
-thread '<main>' panicked at 'called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }', /home/rustbuild/src/rust-buildbot/slave/beta-dist-rustc-linux/build/src/libcore/result.rs:729
+thread 'main' panicked at 'called `Result::unwrap()` on an `Err` value: ParseIntError { kind: InvalidDigit }', /home/rustbuild/src/rust-buildbot/slave/beta-dist-rustc-linux/build/src/libcore/result.rs:729
 ```
 
 这是很难堪的，而且如果这在你所使用的库中出现了的话，可以理解你会很烦躁。相反，我们应该尝试在我们的函数里处理错误并让调用者决定该怎么做。这意味着改变`double_number`的返回值类型。不过改编成什么呢？好吧，这需要我们看看标准库中[`parse`方法](http://doc.rust-lang.org/std/primitive.str.html#method.parse)的签名：
@@ -1328,7 +1328,7 @@ use std::error::Error;
 
 fn search<P: AsRef<Path>>
          (file_path: P, city: &str)
-         -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
+         -> Result<Vec<PopulationCount>, Box<Error>> {
     let mut found = vec![];
     let file = try!(File::open(file_path));
     let mut rdr = csv::Reader::from_reader(file);
@@ -1355,16 +1355,16 @@ fn search<P: AsRef<Path>>
 
 现在我们用`try!(x)`代替了`x.unwrap()`。因为我们的函数返回一个`Result<T, E>`，`try!`宏在出现错误时会提早返回。
 
-代码中还有另一个大的需要注意的地方：我们用了`Box<Error + Send + Sync>`而不是`Box<Error>`。这么做是因为我们可以把一个字符串转换为一个错误类型。我们需要这些额外的 bound，这样我们就可以使用[相应的`From`实现](http://doc.rust-lang.org/std/convert/trait.From.html)了：
+在`search`的结尾我们也用了[相应的`From`实现](http://doc.rust-lang.org/std/convert/trait.From.html)把一个字符串转换为一个错误类型：
 
 ```rust
 // We are making use of this impl in the code above, since we call `From::from`
 // on a `&'static str`.
-impl<'a, 'b> From<&'b str> for Box<Error + Send + Sync + 'a>
+impl<'a> From<&'a str> for Box<Error>
 
 // But this is also useful when you need to allocate a new string for an
 // error message, usually with `format!`.
-impl From<String> for Box<Error + Send + Sync>
+impl From<String> for Box<Error>
 ```
 
 因为`search`现在返回`Result<T, E>`，`main`应该在调用`search`时使用 case analysis：
@@ -1441,7 +1441,7 @@ use std::io;
 
 fn search<P: AsRef<Path>>
          (file_path: &Option<P>, city: &str)
-         -> Result<Vec<PopulationCount>, Box<Error+Send+Sync>> {
+         -> Result<Vec<PopulationCount>, Box<Error>> {
     let mut found = vec![];
     let input: Box<io::Read> = match *file_path {
         None => Box::new(io::stdin()),
@@ -1610,7 +1610,7 @@ use std::process;
 
 * 如果你在 hack（quick 'n' dirty）程序，不要为你使用`unwrap`而感羞愧。不过你被警告过了：如果别人踩到了坑，不要因为他们对糟糕的错误信息火冒三丈而感到惊讶！
 
-* 如果你在 hack 程序并对 panic 感到羞愧，那么使用`String`或者`Box<Error + Send + Sync>`作为你的错误类型（选择`Box<Error + Send + Sync>`是因为它有[可用的`From`实现](http://doc.rust-lang.org/std/convert/trait.From.html)）。
+* 如果你在 hack 程序并对 panic 感到不耻，那么使用`String`或者`Box<Error>`作为你的错误类型。
 
 * 否则，在程序中，定义你自己的错误类型并实现合适的[`From`](http://doc.rust-lang.org/std/convert/trait.From.html)和[`Error`](http://doc.rust-lang.org/std/error/trait.Error.html)来让[`try!`](http://doc.rust-lang.org/std/macro.try!.html)宏变得更工程化。
 

@@ -2,7 +2,7 @@
 
 > [conditional-compilation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/conditional-compilation.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit d30662f3e78ddc65f6ecafd20e4b6ecd3033e466
 
 Rust有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编译器的标记编译代码。它有两种形式：
 
@@ -41,8 +41,12 @@ Rust有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编�
 # no features by default
 default = []
 
+# Add feature "foo" here, then you can use it. 
+# Our "foo" feature depends on nothing else.
+foo = []
+
 # The “secure-password” feature depends on the bcrypt package.
-secure-password = ["bcrypt"]
+# secure-password = ["bcrypt"]
 ```
 
 当你这么做的时候，Cargo传递给`rustc`一个标记：

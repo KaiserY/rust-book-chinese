@@ -2,7 +2,7 @@
 
 > [unsized-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/unsized-types.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 71af58accf8f773a7d410cf947940487f65ae70f
 
 大部分类型有一个特定的大小，以字节为单位，它们在编译时是已知的。例如，一个`i32`是32位大，或者4个字节。然而，有些类型有益于表达，却没有一个定义的大小。它们叫做“不定长”或者“动态大小”类型。一个例子是`[T]`。这个类型代表一个特定数量`t`的序列。不过我们并不知道有多少，所以大小是未知的。
 
@@ -33,11 +33,13 @@ impl Foo for &str {
 意味深长的是，这个实现将只能用于[引用](References and Borrowing 引用和借用.md)，并且不能用于其它类型的指针。通过`impl for str`，所有指针，包括（在一些地方，这里会有bug需要修复）用户自定义的智能指针，可以使用这个`impl`。
 
 ## `?Sized`
-如果你想要写一个接受动态大小类型的函数，你可以使用这个特殊的限制，`?Sized`：
+
+如果你想要写一个接受动态大小类型的函数，你可以使用这个特殊的 bound 语法，`?Sized`：
 
 ```rust
 struct Foo<T: ?Sized> {
     f: T,
 }
 ```
-这个`?`，读作“`T`可能是`Sized`的”，意味着这个限制是特殊的：它让我们的匹配更宽松，而不是相反。这几乎像每个`T`都隐式拥有` T: Sized`一样，`?`放松了这个默认（限制）。
+
+这个`?Sized`，读作“`T`可能是`Sized`的”，允许我们匹配固定长度和不定长度的类型。所有泛型类型参数隐式包含`Sized` bound，所以`?Sized`可以被用来移除这个隐式 bound。

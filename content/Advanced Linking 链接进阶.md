@@ -2,11 +2,11 @@
 
 > [advanced-linking.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/advanced-linking.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 226bcdf7d1e774f5967f92b0bd0bf237179f95c9
 
 Rust 的常用链接形式在本书的之前部分已经介绍过了，不过支持多种其他语言可用的可能的链接对 Rust 获取与原生库的无缝交互是很重要的。
 
-## 链接参数
+## 链接参数（Link args）
 
 这里还有一个方法来告诉 rustc 如何自定义链接，这就是通过`link_args`属性。这个属性作用于`extern`块并指定当产生构件时需要传递给连接器的原始标记。一个用例将是：
 
@@ -89,7 +89,7 @@ $ ldd example
         not a dynamic executable
 $ ./example
 hi!
-thread '<main>' panicked at 'failed', example.rs:1
+thread 'main' panicked at 'failed', example.rs:1
 ```
 
 成功了！这个二进制文件可以被拷贝到几乎所有拥有相同构架的 Linux 机器上无故障的运行。

@@ -2,7 +2,7 @@
 
 > [getting-started.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/getting-started.md)
 > <br>
-> commit b6fc4abe44da7563851c8e137e16a72f2d7d6832
+> commit 6c0af7074f7306bc50764300534ecad3fe660146
 
 本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo，Rust 的构建系统以及包管理器。
 
@@ -90,35 +90,36 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 
 注意这个表格可能会随着时间而扩展，这将永远不会是等级三平台的完整列表！
 
-## 在 Linux 和 Mac 上安装
+## 安装 Rust
 
-如果使用 Linux 或 Mac，所有我们需要做的就是打开一个终端并输入如下：
+> 译者：妖兽啦，强行 rustup 啊QAQ
+
+在 类 Unix 的 Linux 和 macOS 上所有你需要做的就是打开终端并输入：
 
 ```bash
-$ curl -sSf https://static.rust-lang.org/rustup.sh | sh
+$ curl https://sh.rustup.rs -sSf | sh
 ```
 
 这将会下载一个脚本，并开始安装。如果一切顺利，你将会看到这些：
 
 ```text
-Rust is ready to roll.
+Rust is installed now. Great! 
 ```
 
-在这里输入，输入`y`来选择`yes`，并按照接下来的提示操作。
+在 Windows 上安装也同样简单：下载并运行[rustup-init.exe]。它会在一个终端开始安装并在成功时显示如上信息。
 
-## 在 Windows 上安装
+对于其他安装选项和信息，访问 Rust 官网的[install]页面。
 
-如果你使用 Windows，请下载合适的[安装包](https://www.rust-lang.org/install.html)
+[rustup-init.exe]: https://win.rustup.rs
+[install]: https://www.rust-lang.org/install.html
 
 ## 卸载
 
-卸载 Rust 跟安装它一样容易。在 Linux 或 Mac 上，运行卸载脚本：
+卸载 Rust 跟安装它一样容易：
 
 ```bash
-$ sudo /usr/local/lib/rustlib/uninstall.sh
+$ rustup self uninstall
 ```
-
-如果你使用的是 Windows 安装包，再次运行`.msi`文件，它会给我们一个卸载选项。
 
 ## 疑难解答（Troubleshooting）
 
@@ -132,13 +133,17 @@ $ rustc --version
 
 如果你做到了，那么 Rust 已成功安装！恭喜你！（此处应有掌声）
 
-如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。
+如果这不能工作并且你在使用 Windows，这可能意味着 `PATH` 系统变量并没有包含 Cargo 可执行程序的路径，在类 Unix 系统下是`~/.cargo/bin`，或者在 Windows 下是`%USERPROFILE%\.cargo\bin`。这是存放绝大多数 Rust 开发工具的路径，同时绝大多数 Rust 程序猿将它包含在`PATH`系统变量中，这样可以使在命令行运行`rustc`成为可能。由于操作系统，命令行的不用，以及安装程序的 bug，你可能需要重启 shell，注销系统，或者为你的操作系统环境手动配置合适的`PATH`。
 
-Rust 并没有自己的连接器，所以你需要自己装一个。如何安装依赖你特定的系统，参考相关文档来获取更多细节。
+如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中：`$ echo %PATH%`。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。如果你需要手动设置安装路径，你可以在在类似`"C:\Program Files\Rust stable GNU 1.x\bin"`这样的目录找到 Rust 的可执行文件
+
+Rust 并没有自己的连接器，所以你需要自己装一个。这根据你特定的系统而有所不同。对于基于 Linxu 的系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools（msvc）][msvbt]。他们并需要位于`%PATH%`中因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
+
+[msvbt]: http://landinghub.visualstudio.com/visual-cpp-build-tools
 
 如果还是搞不定，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners,%23rust)访问[位于 irc.mozilla.org 的 #rust-beginners IRC频道](irc://irc.mozilla.org/#rust-beginners)和在[#rust IRC 频道](irc://irc.mozilla.org/rust)进行一般讨论。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
 
-安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。在 UNIX 系统上，位置是`/usr/local/share/doc/rust`。在Windows，它位于你 Rust 安装位置的`share/doc`文件夹。
+安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。只需输入`rustup doc`即可！
 
 ## Hello, world!
 
@@ -163,9 +168,9 @@ $ cd hello_world
 
 ### 编写并运行一个 Rust 程序
 
-接下来，创建一个叫做`main.rs`的源文件。Rust 代码文件总是使用 `.rs` 后缀，并且如果我们用的 Rust 文件名由多个单词组成，我们使用下划线分隔它们；例如，使用`hello_world.rs`而不是`helloworld.rs`
+我们需要为我们的 Rust 程序创建一个源文件。Rust 代码文件总是使用 `.rs` 后缀，并且如果我们用的 Rust 文件名由多个单词组成，我们使用下划线分隔它们；例如，使用*my_program.rs*而不是*myprogram.rs*。
 
-现在打开你刚创建的`main.rs`源文件，键入如下代码：
+现在，创建一个名叫*main.rs*的新文件。打开并输入如下代码：
 
 +[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%7D%0A)
 
@@ -238,13 +243,14 @@ main  main.rs
 
 ```bash
 $ dir
-main.exe  main.rs
+main.exe
+main.rs
 ```
 
 这表示我们有两个文件：`.rs`后缀的源文件，和可执行文件（在 Windows下是`main.exe`，其它平台是`main`）。这里我们剩下的操作就只有运行`main`或`main.exe`文件了，像这样：
 
 ```bash
-$ ./main  # or main.exe on Windows
+$ ./main  # or .\main.exe on Windows
 ```
 
 如果`main.rs`是我们的“Hello, world!”程序，它将会在你的终端上打印`Hello, world!`。
@@ -337,6 +343,8 @@ $ cargo run
      Running `target/debug/hello_world`
 Hello, world!
 ```
+
+`run`命令在你需要快速迭代项目时显得很有用。
 
 注意这个例子并没有重新构建项目。Cargo 发现文件并没有被修改，所以它只是运行了二进制文件。如果你修改了源文件，Cargo 会在运行前重新构建项目，这样你将看到像这样的输出：
 

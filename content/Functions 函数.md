@@ -2,7 +2,7 @@
 
 > [functions.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/functions.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit fb0d9acf36df408883930026073304bca1cce0dd
 
 到目前为止你应该见过一个函数，`main`函数：
 
@@ -179,14 +179,14 @@ fn diverges() -> ! {
 如果你添加一个叫做`diverges()`的函数并运行，你将会得到一些像这样的输出：
 
 ```text
-thread ‘<main>’ panicked at ‘This function never returns!’, hello.rs:2
+thread ‘main’ panicked at ‘This function never returns!’, hello.rs:2
 ```
 
 如果你想要更多信息，你可以设定`RUST_BACKTRACE`环境变量来获取 backtrace ：
 
 ```bash
 $ RUST_BACKTRACE=1 ./diverges
-thread '<main>' panicked at 'This function never returns!', hello.rs:2
+thread 'main' panicked at 'This function never returns!', hello.rs:2
 stack backtrace:
    1:     0x7f402773a829 - sys::backtrace::write::h0942de78b6c02817K8r
    2:     0x7f402773d7fc - panicking::on_panic::h3f23f9d0b5f4c91bu9w

@@ -1,8 +1,8 @@
-# \`type\`别名
+# type 别名
 
 > [type-aliases.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/type-aliases.md)
 > <br>
-> commit 63bb3e66ee559d7e02f877a05a6bc54c9a5ab0d5
+> commit 1eb36b80a43154107729da3e496d0b3fb9e57259
 
 `type`关键字让你定义另一个类型的别名：
 

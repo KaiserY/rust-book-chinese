@@ -2,9 +2,9 @@
 
 > [nightly-rust.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/nightly-rust.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit eb1c7161dd79b55e022cd0c661f9018d406b3fe4
 
-Rust提供了3种发行渠道：开发版（每日构建），beta版和稳定版。不稳定功能只在Rust开发版中可用。对于这个进程的更多细节，查看[作为可支付的稳定性](http://blog.rust-lang.org/2014/10/30/Stability.html)。
+Rust 提供了 3 种发行渠道：开发版（每日构建），beta 版和稳定版。不稳定功能只在 Rust 开发版中可用。对于这个进程的更多细节，查看[作为可支付的稳定性](http://blog.rust-lang.org/2014/10/30/Stability.html)。
 
 要安装Rust开发版，你可以使用`rustup.sh`：
 
@@ -37,7 +37,7 @@ $ sudo /usr/local/lib/rustlib/uninstall.sh
 
 当然，我们需要提到官方支持的平台：
 
-* Windows (7, 8, Server 2008 R2)
+* Windows (7+)
 * Linux (2.6.18 or later, various distributions), x86 and x86-64
 * OSX 10.7 (Lion) or greater, x86 and x86-64
 

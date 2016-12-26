@@ -2,7 +2,7 @@
 
 > [closures.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/closures.md)
 > <br>
-> commit 5928d49aa01bd3ab4f1d07f2dea3b6516f1f0381
+> commit c0bc35a3640cb22c690169bffa2a3cb1a84523a9
 
 有时为了整洁和复用打包一个函数和*自由变量（free variables）*是很有用的。自由变量是指被用在函数中来自函数内部作用域并只用于函数内部的变量。对此，我们用一个新名字“闭包”而且 Rust 提供了大量关于他们的实现，正如我们将看到的。
 
@@ -177,6 +177,7 @@ Rust 的闭包实现与其它语言有些许不用。它们实际上是trait的�
 理解闭包底层是如何工作的关键有点奇怪：使用`()`调用函数，像`foo()`，是一个可重载的运算符。到此，其它的一切都会明了。在Rust中，我们使用trait系统来重载运算符。调用函数也不例外。我们有三个trait来分别重载：
 
 ```rust
+# #![feature(unboxed_closures)]
 # mod foo {
 pub trait Fn<Args> : FnMut<Args> {
     extern "rust-call" fn call(&self, args: Args) -> Self::Output;
@@ -206,7 +207,7 @@ pub trait FnOnce<Args> {
 
 ```rust
 fn call_with_one<F>(some_closure: F) -> i32
-    where F : Fn(i32) -> i32 {
+    where F: Fn(i32) -> i32 {
 
     some_closure(1)
 }
@@ -222,7 +223,7 @@ assert_eq!(3, answer);
 
 ```rust
 fn call_with_one<F>(some_closure: F) -> i32
-#    where F : Fn(i32) -> i32 {
+#    where F: Fn(i32) -> i32 {
 #    some_closure(1) }
 ```
 
@@ -230,7 +231,7 @@ fn call_with_one<F>(some_closure: F) -> i32
 
 ```rust
 # fn call_with_one<F>(some_closure: F) -> i32
-    where F : Fn(i32) -> i32 {
+    where F: Fn(i32) -> i32 {
 #   some_closure(1) }
 ```
 
@@ -258,25 +259,25 @@ assert_eq!(3, answer);
 fn call_with_ref<F>(some_closure:F) -> i32
     where F: Fn(&i32) -> i32 {
 
-    let mut value = 0;
+    let value = 0;
     some_closure(&value)
 }
 ```
 
 通常你可以指定闭包的参数的生命周期。我们可以在函数声明上指定它：
 
-```rust
+```rust,ignore
 fn call_with_ref<'a, F>(some_closure:F) -> i32
-    where F: Fn(&'a 32) -> i32 {
+    where F: Fn(&'a i32) -> i32 {
 ```
 
-然而这引入了一个问题。当我们显式指定一个函数生命周期并绑定到函数的整个作用域，而不只是我们闭包的作用域时，这意味着借用检查器会把一个同生命周期的可变引用当作一个不可变引用并编译失败。
+然而这导致了一个问题。当一个函数拥有一个显式生命周期参数，那个生命周期必须跟*整个*调用这个函数的生命周期一样长。借用检查器会抱怨说`value`的生命周期并不够长，因为它只位于声明后在函数体的作用域内。
 
-为了说明我们只需要生命周期在闭包的作用域中有效，我们可以使用更高级的 Trait Bound，使用`for<...>`语法：
+我们需要的是只为它的参数借用其自己的作用域的闭包，而不是整个外层函数的作用域。为此，我们可以使用更高级的 Trait Bound，使用`for<...>`语法：
 
 ```rust
 fn call_with_ref<F>(some_closure:F) -> i32
-    where F: for<'a> Fn(&'a 32) -> i32 {
+    where F: for<'a> Fn(&'a i32) -> i32 {
 ```
 
 这会让 rust 编译器找到最小的生命周期来调用闭包并满足借用检查器的规则。我们的函数将能顺利编译：
@@ -285,7 +286,7 @@ fn call_with_ref<F>(some_closure:F) -> i32
 fn call_with_ref<F>(some_closure:F) -> i32
     where F: for<'a> Fn(&'a i32) -> i32 {
 
-    let mut value = 0;
+    let value = 0;
     some_closure(&value)
 }
 ```
@@ -413,12 +414,13 @@ fn factory() -> Box<Fn(i32) -> i32> {
 
     Box::new(|x| x + num)
 }
-fn main() {
-    let f = factory();
 
-    let answer = f(1);
-    assert_eq!(6, answer);
-}
+
+let f = factory();
+
+let answer = f(1);
+assert_eq!(6, answer);
+
 ```
 
 这还有最后一个问题：
@@ -438,12 +440,12 @@ fn factory() -> Box<Fn(i32) -> i32> {
 
     Box::new(move |x| x + num)
 }
-# fn main() {
+
 let f = factory();
 
 let answer = f(1);
 assert_eq!(6, answer);
-# }
+
 ```
 
 通过把内部闭包变为`move Fn`，我们为闭包创建了一个新的栈帧。通过`Box`装箱，我们提供了一个已知大小的返回值，并允许它离开我们的栈帧。

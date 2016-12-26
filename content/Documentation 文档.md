@@ -2,7 +2,7 @@
 
 > [documentation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/documentation.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 159d1ab540cd53f1e63db0e00a50180d535a8bce
 
 文档是任何软件项目中重要的一部分，并且它在Rust中是一级重要的。让我们讨论下Rust提供给我们编写项目文档的的工具。
 
@@ -410,6 +410,16 @@ mod foo {
 //! The `foo` module contains a lot of useful functionality blah blah blah
 ```
 
+### Crate 文档
+
+Crate 文档可以通过在 crate 根文件，也就是`lib.rs`，的开头放置文档内注释（`//!`）来编写：
+
+```rust
+//! This is documentation for the `foo` crate.
+//!
+//! The foo crate is meant to be used for bar.
+```
+
 ### 文档注释风格
 
 查看[RFC 505](https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md)以了解文档风格和格式的惯例。
@@ -523,7 +533,7 @@ struct Undocumented;
 struct Hidden;
 ```
 
-## 控制HTML
+## 控制 HTML
 你可以通过`#![doc]`属性控制`rustdoc`生成的THML文档的几个地方：
 
 ```rust

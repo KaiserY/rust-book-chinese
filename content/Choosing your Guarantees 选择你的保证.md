@@ -2,7 +2,7 @@
 
 > [choosing-your-guarantees.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/choosing-your-guarantees.md)
 > <br>
-> commit 73db76015e39d18950d654d3a32ba9053261242f
+> commit 658253d30c124b67c964904400c4dc58a1b557b2
 
 Rust 的一个重要特性是允许我们控制一个程序的开销和（安全）保证。
 
@@ -69,7 +69,7 @@ let y = x;
 
 `Cell`提供内部可变性。换句话说，他们包含的数据可以被修改，即便是这个类型并不能以可变形式获取（例如，当他们位于一个`&`指针或`Rc<T>`之后时）。
 
-[对此`cell`模块的文档有一个非常好的解释](http://doc.rust-lang.org/stable/std/cell/)。
+[对此`cell`模块的文档有一个非常好的解释](http://doc.rust-lang.org/stable/std/cell/index.html)。
 
 这些类型*经常*在结构体字段中出现，不过他们也可能在其他一些地方找到。
 

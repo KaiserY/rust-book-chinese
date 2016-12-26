@@ -2,7 +2,7 @@
 
 > [raw-pointers.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/raw-pointers.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 565474aadda4d2b866396f87df1626a0a63f80f0
 
 Rust 的标准库中有一系列不同的智能指针类型，不过这有两个类型是十分特殊的。Rust的安全大多来源于编译时检查，不过裸指针并没有这样的保证，使用它们是[`unsafe`](`unsafe` 不安全代码.md)的。
 

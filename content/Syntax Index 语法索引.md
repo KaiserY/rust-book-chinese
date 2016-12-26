@@ -2,7 +2,7 @@
 
 > [syntax-index.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/syntax-index.md)
 > <br>
-> commit e35e5c434b0c3301aa62d2d8648fd5decfdddb7e
+> commit 291a10dd28fedd9659928f28f4206bac71776539
 
 ## 关键词（Keywords）
 
@@ -65,7 +65,6 @@
 * `-` (`- expr`): 算数取反。可重载（`Neg`）。
 * `-=` (`var -= expr`): 算数减法并赋值。可重载（`SubAssign`）。
 * `->` (`fn(…) -> type`, `|…| -> type`): 函数和闭包的返回值类型。详见[函数](Functions 函数.md)，[闭包](Closures 闭包.md)。
-* `-> !` (`fn(…) -> !`, `|…| -> !`): 发散函数或闭包。详见[发散函数](Functions 函数.md)
 * `.` (`expr.ident`): 访问方法。详见[结构体](Structs 结构体.md)，[方法语法](Method Syntax 方法语法.md)。
 * `..` (`..`, `expr..`, `..expr`, `expr..expr`): 右开区间的范围常量
 * `..` (`..expr`): 结构体常量更新语法。详见[结构体（更新语法）](Structs 结构体.md)。
@@ -97,7 +96,8 @@
 * `|` (`|…| expr`): 闭包。详见[闭包](Closures 闭包.md)。
 * `|=` (`var |= expr`): 位计算或并赋值。可重载（`BitOrAssign`）。
 * `||` (`expr || expr`): 逻辑或。
-* `_`: “忽略”的模式匹配。详见[模式（忽略绑定）](Patterns 模式.md)。
+* `_`: “忽略”的模式匹配。详见[模式（忽略绑定）](Patterns 模式.md)。也被用来增强整型常量的可读性。
+* `?` (`expr?`): Error propagation。当遇到`Err(_)`时提早返回，否则不执行，类似于[`try!` macro]。
 
 ## 其他语法
 
@@ -159,6 +159,10 @@
 * `/*!…*/`: 内部块文档注释。详见[注释](Comments 注释.md)。
 * `/**…*/`: 内部块文档注释。详见[注释](Comments 注释.md)。
 
+<!-- Special types -->
+
+* `!`: 一个空的 Never type。详见[发散函数](Functions 函数.md)
+
 <!-- Various things involving parens and tuples -->
 
 * `()`: 空元组（也就是单元），常量和类型。
@@ -206,6 +210,8 @@
 [Functions (Early Returns)]: functions.html#early-returns
 [Functions]: functions.html
 [Generics]: generics.html
+[Iterators]: iterators.html
+[`try!` macro]: error-handling.html#the-try-macro
 [Lifetimes]: lifetimes.html
 [Loops (`for`)]: loops.html#for
 [Loops (`loop`)]: loops.html#loop
@@ -230,6 +236,7 @@
 [Primitive Types (Tuples)]: primitive-types.html#tuples
 [Raw Pointers]: raw-pointers.html
 [Reference (Byte String Literals)]: ../reference.html#byte-string-literals
+[Reference (Integer literals)]: ../reference.html#integer-literals
 [Reference (Raw Byte String Literals)]: ../reference.html#raw-byte-string-literals
 [Reference (Raw String Literals)]: ../reference.html#raw-string-literals
 [References and Borrowing]: references-and-borrowing.html
@@ -239,6 +246,8 @@
 [Traits (`where` clause)]: traits.html#where-clause
 [Traits (Multiple Trait Bounds)]: traits.html#multiple-trait-bounds
 [Traits]: traits.html
+[Universal Function Call Syntax]: ufcs.html
+[Universal Function Call Syntax (Angle-bracket Form)]: ufcs.html#angle-bracket-form
 [Unsafe]: unsafe.html
 [Unsized Types (`?Sized`)]: unsized-types.html#sized
 [Variable Bindings]: variable-bindings.html

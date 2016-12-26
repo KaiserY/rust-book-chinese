@@ -2,7 +2,7 @@
 
 > [inline-assembly.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/inline-assembly.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 8aaf0f894bfbbc8e1135e42ce7cb9258d55f41cc
 
 为了极端底层操作和性能要求，你可能希望直接控制 CPU。Rust 通过`asm!`宏来支持使用内联汇编。
 
@@ -54,9 +54,11 @@ fn main() {
 asm!("xor %eax, %eax"
     :
     :
-    : "{eax}"
+    : "eax"
    );
 # } }
+# #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+# fn main() {}
 ```
 
 有空格在中间也没关系：
@@ -65,8 +67,10 @@ asm!("xor %eax, %eax"
 # #![feature(asm)]
 # #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 # fn main() { unsafe {
-asm!("xor %eax, %eax" ::: "{eax}");
+asm!("xor %eax, %eax" ::: "eax");
 # } }
+# #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+# fn main() {}
 ```
 
 ## 操作数
@@ -115,8 +119,10 @@ result
 # #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 # fn main() { unsafe {
 // Put the value 0x200 in eax
-asm!("mov $$0x200, %eax" : /* no outputs */ : /* no inputs */ : "{eax}");
+asm!("mov $$0x200, %eax" : /* no outputs */ : /* no inputs */ : "eax");
 # } }
+# #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+# fn main() {}
 ```
 
 输入和输出寄存器并不需要列出因为这些信息已经通过给出的限制沟通过了。因此，任何其它的被使用的寄存器应该隐式或显式的被列出。
@@ -143,6 +149,8 @@ unsafe {
 }
 println!("eax is currently {}", result);
 # }
+# #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+# fn main() {}
 ```
 
 ## 更多信息

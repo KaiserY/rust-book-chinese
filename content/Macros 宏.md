@@ -2,7 +2,7 @@
 
 > [macros.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/macros.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 66a2578064c2572a355f87f2405859a1c347b590
 
 到目前为止你已经学到了不少Rust提供的抽象和重用代码的工具了。这些代码重用单元有丰富的语义结构。例如，函数有类型签名，类型参数有特性限制并且能重载的函数必须属于一个特定的特性。
 
@@ -248,7 +248,7 @@ fn main() {
 
 ```rust
 macro_rules! foo {
-    () => (let x = 3);
+    () => (let x = 3;);
 }
 
 fn main() {
@@ -261,7 +261,7 @@ fn main() {
 
 ```rust
 macro_rules! foo {
-    ($v:ident) => (let $v = 3);
+    ($v:ident) => (let $v = 3;);
 }
 
 fn main() {
@@ -504,7 +504,7 @@ macro_rules! bct {
 ### `panic!`
 这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：
 
-```rust
+```rust,should_panic
 panic!("oh no!");
 ```
 
@@ -524,7 +524,7 @@ let v = vec![0; 100];
 ### `assert!`和`assert_eq!`
 这两个宏用在测试中。`assert!`获取一个布尔值，而`assert_eq!`获取两个值并比较它们。`true` 就通过，`false`就`panic!`。像这样：
 
-```rust
+```rust,should_panic
 // A-ok!
 
 assert!(true);
