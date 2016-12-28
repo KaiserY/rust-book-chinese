@@ -6,7 +6,7 @@
 
 就像大多数编程语言，Rust 鼓励程序猿以特定的方式处理错误。一般来讲，错误处理被分割为两个大类：异常和返回值。Rust 选择了返回值。
 
-在这一部分，我们试图提供一个全面的 Rust 如何处理错误的解决方案。不仅如此，我们也尝试一次一点的介绍错误处理，这样当你离开时会有一个所有东西如何协调的坚实理解。
+在这一部分，我们试图提供一个全面的 Rust 如何处理错误的解决方案。不仅如此，我们也尝试一次一点的介绍错误处理，这样当你离开时会有一个对所有东西如何协调的坚实理解。
 
 Rust 的错误处理天生是冗长而烦人的。这一部分将会探索这些坑并展示如何使用标准库来让错误处理变得准确和符合工程原理。
 
@@ -252,7 +252,7 @@ fn main() {
 
 （注意`unwrap_or`是标准库中的`Option<T>`[定义的一个方法](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or)，所以这里我们使用它而不是我们上面定义的独立的函数。别忘了看看更通用的[`unwrap_or_else`](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap_or_else)方法。）
 
-还有另一个我们认为值得特别注意的 组合：`and_then`。它让我们更容易的组合不同的承认不存在的可能性的计算。例如，这一部分的很多代码是关于找到一个给定文件的扩展名的。为此，你首先需要一个通常截取自文件路径的文件名。虽然大部分文件路径都有一个文件名，但并不是都有。例如，`.`，`..`，`/`。
+还有另一个我们认为值得特别注意的组合：`and_then`。它让我们更容易地组合不同的代码来应对不存在的可能。例如，这一部分的很多代码是关于找到一个给定文件的扩展名的。为此，你首先需要一个通常截取自文件路径的文件名。虽然大部分文件路径都有一个文件名，但并不是都有。例如，`.`，`..`，`/`。
 
 所以，我们面临着从一个给定的文件路径找出一个扩展名的挑战。让我们从显式 case analysis 开始：
 
@@ -312,7 +312,7 @@ fn file_path_ext(file_path: &str) -> Option<&str> {
 
 边注：因为`and_then`本质上就像`map`不过返回一个`Option<_>`而不是`Option<Option<_>>`，它在一些其他语言中被称为`flatmap`。
 
-`Option`类型有很多其他[定义在标准库中的](http://doc.rust-lang.org/std/option/enum.Option.html)组合。过一边这个列表并熟悉他们的功能是一个好主意 —— 通常他们可以减少你的 case analysis。熟悉这些组合将会得到回报，因为他们很多也为`Result`类型定义了实现（相似的语义），而我们接下来会讲`Result`。
+`Option`类型有很多其他[定义在标准库中的](http://doc.rust-lang.org/std/option/enum.Option.html)组合。过一遍这个列表并熟悉他们的功能是一个好主意 —— 通常他们可以减少你的 case analysis。熟悉这些组合将会得到回报，因为他们很多也为`Result`类型定义了实现（相似的语义），而我们接下来会讲`Result`。
 
 组合使用像`Option`这样的符合工程学的类型来减少显式 case analysis。他们也是可组合的因为他们允许调用者以他们自己的方式处理不存在的可能性。像`unwrap`这样的方法去掉了选择因为当`Option<T>`为`None`他们会 panic。
 
@@ -335,7 +335,7 @@ enum Result<T, E> {
 type Option<T> = Result<T, ()>;
 ```
 
-它把`Result`的第二个类型参数改为总是`()`（读作“单元”或“空元组”）。`()`类型只有一个值：`()`（没错，类型和值级别的形式是一样的！）
+它把`Result`的第二个类型参数改为总是`()`（读作“单元”或“空元组”）。`()`类型只有一个值：`()`（没错，类型和值两个级别的术语表示是一样的！）
 
 `Result`类型是一个代表一个计算的两个可能结果的方式。通常，一个结果是期望的值或者“`Ok`”而另一个意味着非预期的或者“`Err`”。
 
@@ -766,7 +766,7 @@ trait Error: Debug + Display {
 }
 ```
 
-这个 trait 非常泛用因为它被设计为为所有类型实现来代表错误。它被证明对编写可组合的代码非常有帮助，正如我们将要看到的。这个 trait 允许你至少做如下事情：
+这个 trait 非常泛用因为它被设计为为所有类型实现来代表错误。它被证明对编写可组合的代码非常有帮助，正如我们后面将要看到的。这个 trait 允许你至少做如下事情：
 
 * 获取一个错误的`Debug`表示。
 * 获取一个错误的面向用户的`Display`表示
@@ -856,7 +856,7 @@ let bytes: Vec<u8> = From::from("foo");
 let cow: ::std::borrow::Cow<str> = From::from("foo");
 ```
 
-好的，这么说`From`用来处理字符串转换，那么错误怎么办？他被证明是一个关键实现：
+好的，这么说`From`用来处理字符串转换，那么错误怎么办？原来有一个关键实现：
 
 ```rust
 impl<'a, E: Error + 'a> From<E> for Box<Error + 'a>
@@ -954,7 +954,7 @@ fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, Box<Error>> {
 * 控制流。
 * 错误类型转换。
 
-当结合所有这些东西，我们的代码不再受组合，`unwrap`调用或 case analysis 的困扰了。
+当结合所有这些东西，我们的代码不再受组合、`unwrap`调用或 case analysis 的困扰了。
 
 这里还剩一点东西：`Box<Error>`是不透明的。如果我们返回一个`Box<Error>`给调用者，调用者并不能（轻易地）观察底层错误类型。当然这种情形比`String`要好，因为调用者可以调用像[`description`](http://doc.rust-lang.org/std/error/trait.Error.html#tymethod.description)和[`cause`](http://doc.rust-lang.org/std/error/trait.Error.html#method.cause)这样的方法，不过这是有限制的：`Box<Error>`是不透明的。（附注：这并不是完全正确，因为 Rust 并没有运行时反射，这在某些场景是有用的不过[超出了本部分的范畴](https://crates.io/crates/error)。）
 
@@ -1010,7 +1010,7 @@ impl From<num::ParseIntError> for CliError {
 }
 ```
 
-所有这些实现都是告诉`From`如何从其他类型创建一个`CliError`。在我们的例子中，构造函数就像调用相应的值构造器那样简单。讲道理，这确实很简单。
+所有这些实现都是告诉`From`如何从其他类型创建一个`CliError`。在我们的例子中，构造函数就像调用相应的值构造器那样简单。确实，这通常很简单。
 
 最后我们可以重写`file_double`：
 
@@ -1040,7 +1040,7 @@ fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, CliError> {
 
 我们做的唯一一件事就是去掉了`map_err`调用。他们不再必要因为`try!`宏对错误类型调用了`From::from`。这一切可以工作因为我们对所有可能出现的错误类型提供了`From`实现。
 
-如果我们修改我们的`file_double`函数来进行一些其他操作，例如，把自付出转换为浮点，那么我们需要给我们的错误类型增加一个新变量：
+如果我们修改我们的`file_double`函数来进行一些其他操作，例如，把字符串转换为浮点数，那么我们需要给我们的错误类型增加一个新变量：
 
 ```rust
 use std::io;
@@ -1124,7 +1124,7 @@ cargo build --release
 
 ### <a name="argument-parsing"></a>参数解析
 
-让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，解析器返回一个记录了匹配到定义项内容的机构体，和剩下“自由”的参数。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
+让我们搞定参数解析，我们不会涉及太多关于 Getopts 的细节，不过有[一些不错的文档](http://doc.rust-lang.org/getopts/getopts/index.html)。简单的说就是 Getopts 生成了一个参数解析器并通过要给选项的 vector（事实是一个隐藏于一个结构体和一堆方法之下的 vector）生成了一个帮助信息。一旦解析结束，解析器返回一个记录了匹配到定义项内容的结构体，和剩下“自由”的参数。从这里我们可以互获取 flag，实例，任何程序传递给我们的，以及他们都有什么参数。这是我们的程序，它有合适的`extern crate`语句以及 Getopts 的基本参数操作：
 
 ```rust
 extern crate getopts;
@@ -1604,13 +1604,13 @@ use std::process;
 
 ## <a name="the-short-story"></a>精简版
 
-因为这个章节很长，有一个 Rust 错误处理的快速总结是很有帮助的。有很多好的“拇指规则”。需要强调的是他们*并非*教条。这里每一个建议都可能有适当的理由予以反驳！
+因为这个章节很长，有一个 Rust 错误处理的快速总结是很有帮助的。有很多好的“经验规则”。需要强调的是他们*并非*教条。这里每一个建议都可能有适当的理由予以反驳！
 
 * 如果你在写小的事例代码这时错误处理显得负担过重，可能使用`unwrap`（[`Result::unwrap`](http://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap)，[`Option::unwrap`](http://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap)，或是更可取的[`Option::expect`](http://doc.rust-lang.org/std/option/enum.Option.html#method.expect)）是足够的。你的代码的客户应该知道如何正确的处理错误。（如果他们并不知道，教会他们吧！）
 
 * 如果你在 hack（quick 'n' dirty）程序，不要为你使用`unwrap`而感羞愧。不过你被警告过了：如果别人踩到了坑，不要因为他们对糟糕的错误信息火冒三丈而感到惊讶！
 
-* 如果你在 hack 程序并对 panic 感到不耻，那么使用`String`或者`Box<Error>`作为你的错误类型。
+* 如果你在 hack 程序并对 panic 感到羞愧，那么使用`String`或者`Box<Error>`作为你的错误类型。
 
 * 否则，在程序中，定义你自己的错误类型并实现合适的[`From`](http://doc.rust-lang.org/std/convert/trait.From.html)和[`Error`](http://doc.rust-lang.org/std/error/trait.Error.html)来让[`try!`](http://doc.rust-lang.org/std/macro.try!.html)宏变得更工程化。
 
