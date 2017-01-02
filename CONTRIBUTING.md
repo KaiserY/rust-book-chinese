@@ -15,6 +15,7 @@
 * [iovxw](https://github.com/iovxw)
 * [JaySon-Huang](https://github.com/JaySon-Huang)
 * [KaiserY](https://github.com/KaiserY)
+* [KaleoCheng](https://github.com/KaleoCheng)
 * [kenshinji](https://github.com/kenshinji)
 * [kimw](https://github.com/kimw)
 * [leqinotes](https://github.com/leqinotes)
