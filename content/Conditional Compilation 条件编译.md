@@ -41,7 +41,7 @@ Rust有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编�
 # no features by default
 default = []
 
-# Add feature "foo" here, then you can use it. 
+# Add feature "foo" here, then you can use it.
 # Our "foo" feature depends on nothing else.
 foo = []
 

@@ -296,7 +296,7 @@ match x {
 ```
 
 ## 守卫（Guards）
-你可以用`if`来引入*匹配守卫*（*match guards*）：
+你可以用`if`来引入**匹配守卫**（*match guards*）：
 
 ```rust
 enum OptionalInt {

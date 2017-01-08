@@ -17,7 +17,7 @@ baz(bar(foo));
 foo.bar().baz();
 ```
 
-幸运的是，正如对上面那个问题的猜测，你可以！Rust 通过`impl`关键字提供了使用*方法调用语法*（*method call syntax*）。
+幸运的是，正如对上面那个问题的猜测，你可以！Rust 通过`impl`关键字提供了使用**方法调用语法**（*method call syntax*）。
 
 ## 方法调用
 
@@ -165,7 +165,7 @@ fn main() {
 }
 ```
 
-这个*关联函数*（*associated function*）为我们构建了一个新的`Circle`。注意静态函数是通过`Struct::method()`语法调用的，而不是`ref.method()`语法。
+这个**关联函数**（*associated function*）为我们构建了一个新的`Circle`。注意静态函数是通过`Struct::method()`语法调用的，而不是`ref.method()`语法。
 
 ## 创建者模式（Builder Pattern）
 我们说我们需要我们的用户可以创建圆，不过我们只允许他们设置他们关心的属性。否则，`x`和`y`将是`0.0`，并且`radius`将是`1.0`。Rust 并没有方法重载，命名参数或者可变参数。我们利用创建者模式来代替。它看起像这样：

@@ -277,7 +277,7 @@ let result = f.write(buf);
 
 There’s one more restriction on implementing traits: either the trait or the type you’re implementing it for must be defined by you. Or more precisely, one of them must be defined in the same crate as the impl you're writing. For more on Rust's module and package system, see the chapter on crates and modules.
 
-关于trait的最后一点：带有trait限制的泛型函数是*单态*（*monomorphization*）（mono：单一，morph：形式）的，所以它是*静态分发*（*statically dispatched*）的。这是什么意思？查看[trait对象](Trait Objects trait 对象.md)来了解更多细节。
+关于trait的最后一点：带有trait限制的泛型函数是**单态**（*monomorphization*）（mono：单一，morph：形式）的，所以它是**静态分发**（*statically dispatched*）的。这是什么意思？查看[trait对象](Trait Objects trait 对象.md)来了解更多细节。
 
 ## 多 trait bound（Multiple trait bounds）
 

@@ -6,7 +6,7 @@
 
 现在我们写了一些函数，是时候学习一下注释了。注释是你帮助其他程序员理解你的代码的备注。编译器基本上会忽略它们。
 
-Rust有两种需要你了解的注释格式：*行注释*（*line comments*）和*文档注释*（*doc comments*）。
+Rust有两种需要你了解的注释格式：**行注释**（*line comments*）和**文档注释**（*doc comments*）。
 
 ```rust
 // Line comments are anything after ‘//’ and extend to the end of the line.

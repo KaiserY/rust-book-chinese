@@ -8,11 +8,11 @@
 
 `rustc`可以加载编译器插件，它是由用户提供的库用来扩充编译器的行为，例如新的语法扩展，lint检查等。
 
-一个插件是带有设计好的用来在`rustc`中注册扩展的*注册*（*registrar*）函数的一个动态库包装箱。其它包装箱可以使用`#![plugin(...)]`属性来装载这个扩展。查看[rustc::plugin](http://doc.rust-lang.org/rustc/plugin/)文档来获取更多关于定义和装载插件的机制。
+一个插件是带有设计好的用来在`rustc`中注册扩展的**注册**（*registrar*）函数的一个动态库包装箱。其它包装箱可以使用`#![plugin(...)]`属性来装载这个扩展。查看[rustc::plugin](http://doc.rust-lang.org/rustc/plugin/)文档来获取更多关于定义和装载插件的机制。
 
 如果属性存在的话，`#![plugin(foo(... args ...))]`传递的参数并不由`rustc`自身解释。它们被传递给插件的`Registry`[args方法](http://doc.rust-lang.org/rustc/plugin/registry/struct.Registry.html#method.args)。
 
-在绝大多数情况中，一个插件应该*只*通过`#![plugin]`而不通过`extern crate`来使用。链接一个插件会将`libsyntax`和`librustc`加入到你的包装箱的依赖中。基本上你不会希望如此除非你在构建另一个插件。`plugin_as_library`lint会检查这些原则。
+在绝大多数情况中，一个插件应该**只**通过`#![plugin]`而不通过`extern crate`来使用。链接一个插件会将`libsyntax`和`librustc`加入到你的包装箱的依赖中。基本上你不会希望如此除非你在构建另一个插件。`plugin_as_library`lint会检查这些原则。
 
 通常的做法是将插件放到它们自己的包装箱中，与任何那些会被库的调用者使用的`macro_rules!`宏或 Rust 代码分开。
 
