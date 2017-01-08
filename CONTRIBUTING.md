@@ -2,6 +2,7 @@
 
 *惯例排名不分先后*
 
+* [aakloxu](https://github.com/aakloxu)
 * [angusdwhite](https://github.com/angusdwhite)
 * [armink](https://github.com/armink)
 * [BingCheung](https://github.com/BingCheung)
