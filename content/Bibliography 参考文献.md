@@ -45,7 +45,7 @@
 * [编写高性能内存分配器（Composing High-Performance Memory Allocators）](http://people.cs.umass.edu/~emery/pubs/berger-pldi2001.pdf)
 * [对手动内存分配的思考（Reconsidering Custom Memory Allocation）](http://people.cs.umass.edu/~emery/pubs/berger-oopsla2002.pdf)
 
-## *关于* Rust 的论文
+## **关于** Rust 的论文
 
 * [Rust中的GPU编程（GPU programming in Rust）](http://www.cs.indiana.edu/~eholk/papers/hips2013.pdf)
 * [并行闭包：一个基于老观点的新做法（Parallel closures: a new twist on an old idea）](https://www.usenix.org/conference/hotpar12/parallel-closures-new-twist-old-idea) - 并不完全关于Rust，不过是Nicholas D. Matsakis写的
