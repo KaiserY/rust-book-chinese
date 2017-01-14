@@ -137,7 +137,7 @@ $ rustc --version
 
 如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中：`$ echo %PATH%`。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。如果你需要手动设置安装路径，你可以在在类似`"C:\Program Files\Rust stable GNU 1.x\bin"`这样的目录找到 Rust 的可执行文件
 
-Rust 并没有自己的连接器，所以你需要自己装一个。这根据你特定的系统而有所不同。对于基于 Linxu 的系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools（msvc）][msvbt]。他们并需要位于`%PATH%`中因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
+Rust 并没有自己的连接器，所以你需要自己装一个。这根据你特定的系统而有所不同。对于基于 Linux 的系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools（msvc）][msvbt]。他们并需要位于`%PATH%`中因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
 
 [msvbt]: http://landinghub.visualstudio.com/visual-cpp-build-tools
 
