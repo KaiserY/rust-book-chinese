@@ -4,7 +4,7 @@
 > <br>
 > commit 159d1ab540cd53f1e63db0e00a50180d535a8bce
 
-文档是任何软件项目中重要的一部分，并且它在Rust中是一级重要的。让我们讨论下Rust提供给我们编写项目文档的的工具。
+在任何软件项目中，文档都是重要的部分，其同样在Rust中是头等重要的。让我们讨论下Rust提供给我们的编写项目文档的工具。
 
 ## 关于`rustdoc`
 Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rustdoc`也可以在Cargo中通过`cargo doc`使用。
@@ -12,7 +12,7 @@ Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rus
 文档可以使用两种方法生成：从源代码，或者从单独的Markdown文件。
 
 ### 文档化源代码
-文档化Rust项目的主要方法是在源代码中添加注释。为了这个目标你可以这样使用文档注释：
+文档化Rust项目的主要方法是在源代码中添加注释。你可以使用文档注释以实现此目的：
 
 ~~~rust,ignore
 /// Constructs a new `Rc<T>`.
@@ -29,13 +29,13 @@ pub fn new(value: T) -> Rc<T> {
 }
 ~~~
 
-这段代码产生像[这样](http://doc.rust-lang.org/nightly/std/rc/struct.Rc.html#method.new)的文档。我忽略了函数的实现，而是留下了一个标准的注释。
+这段代码产生像[这样](http://doc.rust-lang.org/nightly/std/rc/struct.Rc.html#method.new)的文档。我忽略了函数的实现，而在此处留下了一个常规注释。
 
-第一个需要注意的地方是这个注释：它使用了`///`，而不是`//`。三斜线指示这是文档注释。
+这个注释首先需要注意的地方是它使用了`///`，而不是`//`。三条斜线表明这是文档注释。
 
 文档注释用Markdown语法编写。
 
-Rust会记录这些注释，并在生成文档时使用它们。这在文档化像枚举这样的结构时很重要：
+Rust会跟踪这些注释，并在生成文档时使用它们。这在文档化像枚举这样的结构时很重要：
 
 ```rust
 /// The `Option` type. See [the module level documentation](../) for more.
