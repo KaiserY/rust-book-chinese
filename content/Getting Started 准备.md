@@ -137,9 +137,15 @@ Rust 并没有自己的连接器，所以你需要自己装一个。做法因特
 
 [msvbt]: http://landinghub.visualstudio.com/visual-cpp-build-tools
 
-如果还是搞不定，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners,%23rust)访问[位于 irc.mozilla.org 的 #rust-beginners IRC频道](irc://irc.mozilla.org/#rust-beginners)和在[#rust IRC 频道](irc://irc.mozilla.org/rust)进行一般讨论。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
+如果还是搞不定，我们有许多可以获取帮助的地方。最简单的是 irc.mozilla.org 上的 IRC 频道 [#rust-beginners][irc-beginners] 和供一般讨论之用的 [#rust][irc]，我们可以使用 [Mibbit][mibbit] 访问之。然后我们就可以和其他能提供帮助的 Rustacean（我们这些人自称的愚蠢绰号）聊天了。其它给力的资源包括[用户论坛][users]和[Stack Overflow][stackoverflow]。
 
-安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。只需输入`rustup doc`即可！
+[irc-beginners]: irc://irc.mozilla.org/#rust-beginners
+[irc]: irc://irc.mozilla.org/#rust
+[mibbit]: http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners,%23rust
+[users]: https://users.rust-lang.org/
+[stackoverflow]: http://stackoverflow.com/questions/tagged/rust
+
+安装程序也会在本地安装一份文档拷贝，你可以离线阅读它们。只需输入`rustup doc`即可！
 
 # Hello, world!
 
@@ -168,8 +174,6 @@ $ cd hello_world
 
 现在，创建一个名叫*main.rs*的新文件。打开并输入如下代码：
 
-+[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%7D%0A)
-
 ```rust
 fn main() {
     println!("Hello, world!");
@@ -190,8 +194,6 @@ Hello, world!
 
 现在，让我们回过头来仔细看看你的“Hello, world!”程序到底发生了什么。这里是拼图的第一片：
 
-+[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%0A%7D%0A)
-
 ```rust
 fn main() {
 
@@ -203,8 +205,6 @@ fn main() {
 同时注意函数体被包裹在大括号（`{`和`}`）中。Rust 要求所有函数体都位于其中。将前一个大括号与函数声明置于一行，并留有一个空格被认为是一个好的代码风格。
 
 在`main()`函数中：
-
-+[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%20%20%20%20%0A%7D)
 
 ```rust
     println!("Hello, world!");
@@ -359,7 +359,7 @@ Cargo 检查任何项目文件是否被修改，并且只会在你上次构建�
 
 当你的项目准备好发布了，可以使用`cargo build --release`来优化编译项目。这些优化可以让 Rust 代码运行的更快，不过启用他们会让程序花更长的时间编译。这也是为何这是两种不同的配置，一个为了开发，另一个构建提供给用户的最终程序。
 
-### `Cargo.lock`是什么？
+### 那个`Cargo.lock`是什么？
 
 运行这个命令同时也会让 Cargo 创建一个叫做`Cargo.lock`的文件，它看起来像这样：
 
