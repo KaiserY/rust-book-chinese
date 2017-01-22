@@ -1,4 +1,4 @@
-# 准备
+% 准备
 
 > [getting-started.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/getting-started.md)
 > <br>
@@ -8,13 +8,91 @@
 
 我们将会展示很多使用终端的命令，并且这些行都以`$`开头。你并不需要真正输入`$`，在这里它们代表每行指令的开头。你会在网上看到很多使用这个惯例的教程和例子：`$`代表常规用户运行的命令，`#`代表以管理员身份运行的命令。
 
-## 安装 Rust
+# 安装 Rust
 
 使用 Rust 的第一步是安装它。总的来说，你需要联网执行本部分的命令，因为我们要从网上下载 Rust。
 
 Rust 编译器可运行在许多平台上，但在 Linux、Mac 和 Windows 上，以及 x86 和 x86-64 CPU 架构上的支持度最好。在不止这些平台上有 Rust 编译器和标准库的官方构建。[有关 Rust 平台支持的完整细节，请访问该网站][platform-support]。
 
 [platform-support]: https://forge.rust-lang.org/platform-support.html
+
+## 平台支持
+
+Rust 编译器编译并运行于很多平台之上，但不是所有的平台都被平等的支持。Rust 的平台支持水平可以被划分为三个等级，每一级都有不同的保证程度。
+
+每个平台都由他们的 "target triple" 标识，它是一个代表编译器会产生何种输出的字符串。下面的列代表特定平台是否支持相应的组件。
+
+### T1 科技（Tier 1）
+
+等级一平台可以被认为是“确保可以构建和工作的”。具体的他们将满足如下要求：
+
+* 为此平台建立了自动化测试
+* 向`rust-lang/rust`仓库的 master 分支提交的修改确保测试通过
+* 发布官方安装程序
+* 提供该平台下如何使用和构建的文档。
+
+|  Target                       | std |rustc|cargo| notes                      |
+|-------------------------------|-----|-----|-----|----------------------------|
+| `i686-apple-darwin`           |  ✓  |  ✓  |  ✓  | 32-bit OSX (10.7+, Lion+)  |
+| `i686-pc-windows-gnu`         |  ✓  |  ✓  |  ✓  | 32-bit MinGW (Windows 7+)  |
+| `i686-pc-windows-msvc`        |  ✓  |  ✓  |  ✓  | 32-bit MSVC (Windows 7+)   |
+| `i686-unknown-linux-gnu`      |  ✓  |  ✓  |  ✓  | 32-bit Linux (2.6.18+)     |
+| `x86_64-apple-darwin`         |  ✓  |  ✓  |  ✓  | 64-bit OSX (10.7+, Lion+)  |
+| `x86_64-pc-windows-gnu`       |  ✓  |  ✓  |  ✓  | 64-bit MinGW (Windows 7+)  |
+| `x86_64-pc-windows-msvc`      |  ✓  |  ✓  |  ✓  | 64-bit MSVC (Windows 7+)   |
+| `x86_64-unknown-linux-gnu`    |  ✓  |  ✓  |  ✓  | 64-bit Linux (2.6.18+)     |
+
+### T2 科技（Tier 2）
+
+等级二平台可以被认为是“保证能够构建的”。因为没有（保证）运行自动测试所以并不保证能产生可工作的构建，不过这些平台通常工作良好同时补丁是永远受欢迎的！具体的这些平台被要求将满足如下：
+
+* 设置了自动化测试，不过可能并没有运行
+* 向`rust-lang/rust`仓库的 master 分支提交的修改确保该平台**将被构建**。注意这意味着一些平台只编译了标准库，而有些将会运行整个 bootstrap。
+* 发布官方安装程序
+
+|  Target                       | std |rustc|cargo| notes                      |
+|-------------------------------|-----|-----|-----|----------------------------|
+| `aarch64-apple-ios`           |  ✓  |     |     | ARM64 iOS                  |
+| `aarch64-unknown-linux-gnu`   |  ✓  |  ✓  |  ✓  | ARM64 Linux (2.6.18+)      |
+| `arm-linux-androideabi`       |  ✓  |     |     | ARM Android                |
+| `arm-unknown-linux-gnueabi`   |  ✓  |  ✓  |  ✓  | ARM Linux (2.6.18+)        |
+| `arm-unknown-linux-gnueabihf` |  ✓  |  ✓  |  ✓  | ARM Linux (2.6.18+)        |
+| `armv7-apple-ios`             |  ✓  |     |     | ARM iOS                    |
+|`armv7-unknown-linux-gnueabihf`|  ✓  |  ✓  |  ✓  | ARMv7 Linux (2.6.18+)      |
+| `armv7s-apple-ios`            |  ✓  |     |     | ARM iOS                    |
+| `i386-apple-ios`              |  ✓  |     |     | 32-bit x86 iOS             |
+| `i586-pc-windows-msvc`        |  ✓  |     |     | 32-bit Windows w/o SSE     |
+| `mips-unknown-linux-gnu`      |  ✓  |     |     | MIPS Linux (2.6.18+)       |
+| `mips-unknown-linux-musl`     |  ✓  |     |     | MIPS Linux with MUSL       |
+| `mipsel-unknown-linux-gnu`    |  ✓  |     |     | MIPS (LE) Linux (2.6.18+)  |
+| `mipsel-unknown-linux-musl`   |  ✓  |     |     | MIPS (LE) Linux with MUSL  |
+| `powerpc-unknown-linux-gnu`   |  ✓  |     |     | PowerPC Linux (2.6.18+)    |
+| `powerpc64-unknown-linux-gnu` |  ✓  |     |     | PPC64 Linux (2.6.18+)      |
+|`powerpc64le-unknown-linux-gnu`|  ✓  |     |     | PPC64LE Linux (2.6.18+)    |
+| `x86_64-apple-ios`            |  ✓  |     |     | 64-bit x86 iOS             |
+| `x86_64-rumprun-netbsd`       |  ✓  |     |     | 64-bit NetBSD Rump Kernel  |
+| `x86_64-unknown-freebsd`      |  ✓  |  ✓  |  ✓  | 64-bit FreeBSD             |
+| `x86_64-unknown-linux-musl`   |  ✓  |     |     | 64-bit Linux with MUSL     |
+| `x86_64-unknown-netbsd`       |  ✓  |  ✓  |  ✓  | 64-bit NetBSD              |
+
+### T3 科技（Tier 3）（Tengu！！！）
+
+等级三平台代表 Rust 有提供支持，不过提交的修改并不保证能构建或通过测试。可运行的构建也可能是有 bug 的，因为它的可靠性通常由社区贡献来确定。另外并不提供官方发布文档和安装程序，不过在一些非官方地址可能会提供社区版本。
+
+|  Target                       | std |rustc|cargo| notes                      |
+|-------------------------------|-----|-----|-----|----------------------------|
+| `aarch64-linux-android`       |  ✓  |     |     | ARM64 Android              |
+| `armv7-linux-androideabi`     |  ✓  |     |     | ARM-v7a Android            |
+| `i686-linux-android`          |  ✓  |     |     | 32-bit x86 Android         |
+| `i686-pc-windows-msvc` (XP)   |  ✓  |     |     | Windows XP support         |
+| `i686-unknown-freebsd`        |  ✓  |  ✓  |  ✓  | 32-bit FreeBSD             |
+| `x86_64-pc-windows-msvc` (XP) |  ✓  |     |     | Windows XP support         |
+| `x86_64-sun-solaris`          |  ✓  |  ✓  |     | 64-bit Solaris/SunOS       |
+| `x86_64-unknown-bitrig`       |  ✓  |  ✓  |     | 64-bit Bitrig              |
+| `x86_64-unknown-dragonfly`    |  ✓  |  ✓  |     | 64-bit DragonFlyBSD        |
+| `x86_64-unknown-openbsd`      |  ✓  |  ✓  |     | 64-bit OpenBSD             |
+
+注意这个表格可能会随着时间而扩展，这将永远不会是等级三平台的完整列表！
 
 ## 安装 Rust
 
@@ -67,7 +145,7 @@ Rust 并没有自己的连接器，所以你需要自己装一个。做法因特
 
 安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。只需输入`rustup doc`即可！
 
-## Hello, world!
+# Hello, world!
 
 现在你已经安装好了 Rust，我们将帮助你编写你的第一个 Rust 程序。当学习一门新语言的时候编写一个在屏幕上打印 “Hello, world!” 文本的小程序是一个传统，而在这一部分，我们将遵循这个传统。
 
@@ -75,7 +153,7 @@ Rust 并没有自己的连接器，所以你需要自己装一个。做法因特
 
 > 注意：本书假设你熟悉基本的命令行操作。Rust 本身并不对你的编辑器，工具和你的代码存放在何处有什么特定的要求，所以如果你比起命令行更喜欢 IDE，这里也有一个选择。你可能想要试试[SolidOak](https://github.com/oakes/SolidOak)，它专为 Rust 而设计。在 Rust 社区里有许许多多正在开发中的 IDE 插件。Rust 团队也发布了[不同编辑器的插件](https://github.com/rust-lang/rust/blob/master/src/etc/CONFIGS.md)。 配置编辑器或 IDE 已超出本教程的范畴，所以请查看你特定设置的文档。
 
-### 创建一个项目文件
+## 创建一个项目文件
 
 首先，创建一个文件来编写 Rust 代码。Rust 并不关心你的代码存放在哪里，不过在本书中，我们建议在你的 home 目录创建一个存放项目的目录，并把你的所有项目放在这。打开一个终端并输入如下命令来为这个项目创建一个文件夹：
 
@@ -88,7 +166,7 @@ $ cd hello_world
 
 > 如果你使用 Windows 并且没有用 PowerShell，`~`可能不指向你的用户目录。可以查询所使用的 Shell 的相关文档以获取更多信息。
 
-### 编写并运行一个 Rust 程序
+## 编写并运行一个 Rust 程序
 
 我们需要为我们的 Rust 程序创建一个源文件。Rust 代码文件总是使用 `.rs` 后缀，并且如果我们用的 Rust 文件名由多个单词组成，我们使用下划线分隔它们；例如，使用*my_program.rs*而不是*myprogram.rs*。
 
@@ -112,7 +190,7 @@ Hello, world!
 
 在 Windows 下，使用`main.exe`而不是`main`。不管你使用何种系统，你应该在终端看到`Hello, world!`字符串。如果你做到了，那么恭喜你！你已经正式编写了一个 Rust 程序。这使你成为了一名 Rust 程序猿！欢迎入坑！
 
-### 分析一个 Rust 程序
+## 分析一个 Rust 程序
 
 现在，让我们回过头来仔细看看你的“Hello, world!”程序到底发生了什么。这里是拼图的第一片：
 
@@ -144,7 +222,7 @@ fn main() {
 
 这一行以一个分号结尾（`;`）。Rust是一门[**面向表达式**](Glossary 词汇表.md#面向表达式语言（expression-oriented-language）)的语言，也就是说大部分语句都是表达式。`;` 表示一个表达式的结束，另一个新表达式的开始。大部分 Rust 代码行以`;`结尾。
 
-### 编译和运行是两个步骤
+## 编译和运行是两个步骤
 
 在“编写并运行一个 Rust 程序”，我们展示了如何运行一个新创建的程序。现在我们将拆分并检查每一个操作。
 
@@ -181,7 +259,7 @@ $ ./main  # or .\main.exe on Windows
 
 仅仅使用`rustc`编译简单程序是没问题的，不过随着你的项目的增长，你将想要能够控制你项目拥有的所有选项，并易于分享你的代码给别人或别的项目。接下来，我们将介绍一个叫做 Cargo 的工具，它将帮助你编写现实生活中的 Rust 程序。
 
-## Hello, Cargo!
+# Hello, Cargo!
 
 Cargo 是 Rust 的构建系统和包管理工具，同时 Rustacean 们使用 Cargo 来管理它们的 Rust 项目。Cargo 负责三个工作：构建你的代码，下载你代码依赖的库并编译这些库。我们把你代码需要的库叫做“依赖（dependencies）”因为你的代码依赖他们。
 
@@ -195,7 +273,7 @@ $ cargo --version
 
 如果你看到了版本号，一切 OK！如果你一个类似“`command not found`”的错误，那么你应该去查看你安装 Rust 的系统的相关文档，来确定 Cargo 是否需要单独安装。
 
-### 转换到 Cargo
+## 转换到 Cargo
 
 让我们将 Hello World 程序迁移至 Cargo。为了 Cargo 化一个项目，需要做三件事：
 
@@ -245,7 +323,7 @@ authors = [ "Your name <you@example.com>" ]
 
 当你在`Cargo.toml`中添加完这些信息后，保存它来完成配置文件的创建。
 
-### 构建并运行一个 Cargo 项目
+## 构建并运行一个 Cargo 项目
 
 当`Cargo.toml`文件位于项目的根目录时，我们就准备好可以构建并运行 Hello World 程序了！为此，我们输入如下命令：
 
@@ -281,11 +359,11 @@ Cargo 检查任何项目文件是否被修改，并且只会在你上次构建�
 
 对于简单的项目，Cargo 并不比使用`rustc`要好多少，不过将来它会变得有用。这在你开始使用 crate 时显得尤为正确；（crate）在其他语言中有“库（library）”或“包（package）”这样的同义词。对于包含多个 crate 的项目，让 Cargo 来协调构建将会轻松很多。有了 Cargo，你可以运行`cargo build`，而一切将有条不紊的运行。
 
-### 发布构建（Building for Release）
+### 发布构建
 
 当你的项目准备好发布了，可以使用`cargo build --release`来优化编译项目。这些优化可以让 Rust 代码运行的更快，不过启用他们会让程序花更长的时间编译。这也是为何这是两种不同的配置，一个为了开发，另一个构建提供给用户的最终程序。
 
-### 那个`Cargo.lock`是什么？（What Is That `Cargo.lock`?）
+### `Cargo.lock`是什么？
 
 运行这个命令同时也会让 Cargo 创建一个叫做`Cargo.lock`的文件，它看起来像这样：
 
@@ -307,7 +385,7 @@ $ cd foo
 $ cargo build
 ```
 
-### 创建一个新 Cargo 项目的简单方法
+## 创建一个新 Cargo 项目的简单方法
 
 你并不需要每次都过一遍上面的操作来开始一个新的项目！Cargo 可以快速创建一个骨架项目目录这样你就可以立即开始开发了。
 
@@ -349,7 +427,7 @@ Cargo 已经为你生成了一个“Hello World！”，现在你已经准备好
 
 > 注意：如果你想要查看 Cargo 的详细信息，请查看官方的[Cargo 指导](http://doc.crates.io/guide.html)，它包含了所有这些功能。
 
-## 写在最后（Closing Thoughts）
+# 写在最后
 这个章节覆盖了将用于本书余下部分以及你之后 Rust 时光的基础知识。现在你获得了工具，我们将更多的介绍 Rust 语言本身。
 
 （接下来）你有两个选择：在 “[学习 Rust](Learn Rust 学习 Rust.md)” 中深入研究一个项目，或者自下而上地学习 “[语法和语义](Syntax and Semantics 语法和语义.md)”。来自系统级编程语言的同学，你们可能倾向于选择 “学习 Rust”，而来自动态编程语言的同学，请根据自己的喜好来选择吧。人各有别，适合自己的才是最好的。
