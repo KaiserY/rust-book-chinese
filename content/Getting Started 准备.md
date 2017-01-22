@@ -4,111 +4,35 @@
 > <br>
 > commit 6c0af7074f7306bc50764300534ecad3fe660146
 
-本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo，Rust 的构建系统以及包管理器。
+本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo —— Rust 的构建系统以及包管理器。
+
+我们将会展示很多使用终端的命令，并且这些行都以`$`开头。你并不需要真正输入`$`，在这里它们代表每行指令的开头。你会在网上看到很多使用这个惯例的教程和例子：`$`代表常规用户运行的命令，`#`代表以管理员身份运行的命令。
 
 ## 安装 Rust
 
-开始使用 Rust 的第一步是安装它。总的来说，你需要联网执行本部分的命令，因为我们将会从网上下载 Rust。
+使用 Rust 的第一步是安装它。总的来说，你需要联网执行本部分的命令，因为我们要从网上下载 Rust。
 
-我们将会展示很多使用终端的命令，并且这些行都以`$`开头。并不需要真正输入`$`，在这里它们代表每行指令的开头。你会在网上看到很多使用这个惯例的教程和例子：`$`代表常规用户运行的命令，`#`代表需要管理员用户运行的命令。
+Rust 编译器可运行在许多平台上，但在 Linux、Mac 和 Windows 上，以及 x86 和 x86-64 CPU 架构上的支持度最好。在不止这些平台上有 Rust 编译器和标准库的官方构建。[有关 Rust 平台支持的完整细节，请访问该网站][platform-support]。
 
-## 平台支持
-
-Rust 编译器编译并运行于很多平台之上，但不是所有的平台都被平等的支持。Rust 的平台支持水平可以被划分为三个等级，每一级都有不同的保证程度。
-
-每个平台都由他们的 "target triple" 标识，它是一个代表编译器会产生何种输出的字符串。下面的列代表特定平台是否支持相应的组件。
-
-### T1 科技（Tier 1）
-
-等级一平台可以被认为是“确保可以构建和工作的”。具体的他们将满足如下要求：
-
-* 为此平台建立了自动化测试
-* 向`rust-lang/rust`仓库的 master 分支提交的修改确保测试通过
-* 发布官方安装程序
-* 提供该平台下如何使用和构建的文档。
-
-|  Target                       | std |rustc|cargo| notes                      |
-|-------------------------------|-----|-----|-----|----------------------------|
-| `i686-apple-darwin`           |  ✓  |  ✓  |  ✓  | 32-bit OSX (10.7+, Lion+)  |
-| `i686-pc-windows-gnu`         |  ✓  |  ✓  |  ✓  | 32-bit MinGW (Windows 7+)  |
-| `i686-pc-windows-msvc`        |  ✓  |  ✓  |  ✓  | 32-bit MSVC (Windows 7+)   |
-| `i686-unknown-linux-gnu`      |  ✓  |  ✓  |  ✓  | 32-bit Linux (2.6.18+)     |
-| `x86_64-apple-darwin`         |  ✓  |  ✓  |  ✓  | 64-bit OSX (10.7+, Lion+)  |
-| `x86_64-pc-windows-gnu`       |  ✓  |  ✓  |  ✓  | 64-bit MinGW (Windows 7+)  |
-| `x86_64-pc-windows-msvc`      |  ✓  |  ✓  |  ✓  | 64-bit MSVC (Windows 7+)   |
-| `x86_64-unknown-linux-gnu`    |  ✓  |  ✓  |  ✓  | 64-bit Linux (2.6.18+)     |
-
-### T2 科技（Tier 2）
-
-等级二平台可以被认为是“保证能够构建的”。因为没有（保证）运行自动测试所以并不保证能产生可工作的构建，不过这些平台通常工作良好同时补丁是永远受欢迎的！具体的这些平台被要求将满足如下：
-
-* 设置了自动化测试，不过可能并没有运行
-* 向`rust-lang/rust`仓库的 master 分支提交的修改确保该平台**将被构建**。注意这意味着一些平台只编译了标准库，而有些将会运行整个 bootstrap。
-* 发布官方安装程序
-
-|  Target                       | std |rustc|cargo| notes                      |
-|-------------------------------|-----|-----|-----|----------------------------|
-| `aarch64-apple-ios`           |  ✓  |     |     | ARM64 iOS                  |
-| `aarch64-unknown-linux-gnu`   |  ✓  |  ✓  |  ✓  | ARM64 Linux (2.6.18+)      |
-| `arm-linux-androideabi`       |  ✓  |     |     | ARM Android                |
-| `arm-unknown-linux-gnueabi`   |  ✓  |  ✓  |  ✓  | ARM Linux (2.6.18+)        |
-| `arm-unknown-linux-gnueabihf` |  ✓  |  ✓  |  ✓  | ARM Linux (2.6.18+)        |
-| `armv7-apple-ios`             |  ✓  |     |     | ARM iOS                    |
-|`armv7-unknown-linux-gnueabihf`|  ✓  |  ✓  |  ✓  | ARMv7 Linux (2.6.18+)      |
-| `armv7s-apple-ios`            |  ✓  |     |     | ARM iOS                    |
-| `i386-apple-ios`              |  ✓  |     |     | 32-bit x86 iOS             |
-| `i586-pc-windows-msvc`        |  ✓  |     |     | 32-bit Windows w/o SSE     |
-| `mips-unknown-linux-gnu`      |  ✓  |     |     | MIPS Linux (2.6.18+)       |
-| `mips-unknown-linux-musl`     |  ✓  |     |     | MIPS Linux with MUSL       |
-| `mipsel-unknown-linux-gnu`    |  ✓  |     |     | MIPS (LE) Linux (2.6.18+)  |
-| `mipsel-unknown-linux-musl`   |  ✓  |     |     | MIPS (LE) Linux with MUSL  |
-| `powerpc-unknown-linux-gnu`   |  ✓  |     |     | PowerPC Linux (2.6.18+)    |
-| `powerpc64-unknown-linux-gnu` |  ✓  |     |     | PPC64 Linux (2.6.18+)      |
-|`powerpc64le-unknown-linux-gnu`|  ✓  |     |     | PPC64LE Linux (2.6.18+)    |
-| `x86_64-apple-ios`            |  ✓  |     |     | 64-bit x86 iOS             |
-| `x86_64-rumprun-netbsd`       |  ✓  |     |     | 64-bit NetBSD Rump Kernel  |
-| `x86_64-unknown-freebsd`      |  ✓  |  ✓  |  ✓  | 64-bit FreeBSD             |
-| `x86_64-unknown-linux-musl`   |  ✓  |     |     | 64-bit Linux with MUSL     |
-| `x86_64-unknown-netbsd`       |  ✓  |  ✓  |  ✓  | 64-bit NetBSD              |
-
-### T3 科技（Tier 3）（Tengu！！！）
-
-等级三平台代表 Rust 有提供支持，不过提交的修改并不保证能构建或通过测试。可运行的构建也可能是有 bug 的，因为它的可靠性通常由社区贡献来确定。另外并不提供官方发布文档和安装程序，不过在一些非官方地址可能会提供社区版本。
-
-|  Target                       | std |rustc|cargo| notes                      |
-|-------------------------------|-----|-----|-----|----------------------------|
-| `aarch64-linux-android`       |  ✓  |     |     | ARM64 Android              |
-| `armv7-linux-androideabi`     |  ✓  |     |     | ARM-v7a Android            |
-| `i686-linux-android`          |  ✓  |     |     | 32-bit x86 Android         |
-| `i686-pc-windows-msvc` (XP)   |  ✓  |     |     | Windows XP support         |
-| `i686-unknown-freebsd`        |  ✓  |  ✓  |  ✓  | 32-bit FreeBSD             |
-| `x86_64-pc-windows-msvc` (XP) |  ✓  |     |     | Windows XP support         |
-| `x86_64-sun-solaris`          |  ✓  |  ✓  |     | 64-bit Solaris/SunOS       |
-| `x86_64-unknown-bitrig`       |  ✓  |  ✓  |     | 64-bit Bitrig              |
-| `x86_64-unknown-dragonfly`    |  ✓  |  ✓  |     | 64-bit DragonFlyBSD        |
-| `x86_64-unknown-openbsd`      |  ✓  |  ✓  |     | 64-bit OpenBSD             |
-
-注意这个表格可能会随着时间而扩展，这将永远不会是等级三平台的完整列表！
+[platform-support]: https://forge.rust-lang.org/platform-support.html
 
 ## 安装 Rust
 
-> 译者：妖兽啦，强行 rustup 啊QAQ
-
-在 类 Unix 的 Linux 和 macOS 上所有你需要做的就是打开终端并输入：
+在 Unix 类系统如 Linux 和 macOS 上，你只需打开终端并输入：
 
 ```bash
 $ curl https://sh.rustup.rs -sSf | sh
 ```
 
-这将会下载一个脚本，并开始安装。如果一切顺利，你将会看到这些：
+这样会下载一个脚本并开始安装。如果一切顺利，你将会看到：
 
 ```text
 Rust is installed now. Great!
 ```
 
-在 Windows 上安装也同样简单：下载并运行[rustup-init.exe]。它会在一个终端开始安装并在成功时显示如上信息。
+在 Windows 上安装也同样简单：下载并运行[rustup-init.exe]。其会在终端中开始安装并在成功时显示以上信息。
 
-对于其他安装选项和信息，访问 Rust 官网的[install]页面。
+如需其他安装选项和信息，请访问 Rust 官网的[install]页面。
 
 [rustup-init.exe]: https://win.rustup.rs
 [install]: https://www.rust-lang.org/install.html
@@ -121,23 +45,21 @@ Rust is installed now. Great!
 $ rustup self uninstall
 ```
 
-## 疑难解答（Troubleshooting）
+## 疑难解答
 
-安装了 Rust 后，我们可以打开一个 shell，并输入：
+安装完 Rust 以后，我们可以打开 shell，并输入：
 
 ```bash
 $ rustc --version
 ```
 
-你应该看到版本号，提交的 hash 值和提交时间。
+你应该能看到版本号、提交的 hash 值和提交时间。
 
-如果你做到了，那么 Rust 已成功安装！恭喜你！（此处应有掌声）
+若如是，则 Rust 已成功安装！恭喜你！
 
-如果这不能工作并且你在使用 Windows，这可能意味着 `PATH` 系统变量并没有包含 Cargo 可执行程序的路径，在类 Unix 系统下是`~/.cargo/bin`，或者在 Windows 下是`%USERPROFILE%\.cargo\bin`。这是存放绝大多数 Rust 开发工具的路径，同时绝大多数 Rust 程序猿将它包含在`PATH`系统变量中，这样可以使在命令行运行`rustc`成为可能。由于操作系统，命令行的不用，以及安装程序的 bug，你可能需要重启 shell，注销系统，或者为你的操作系统环境手动配置合适的`PATH`。
+若无效，这可能意味着 `PATH` 环境变量并没有包含 Cargo 可执行程序的路径，其在类 Unix 系统下是`~/.cargo/bin`，在 Windows 下是`%USERPROFILE%\.cargo\bin`。这是存放 Rust 开发工具的路径，绝大多数 Rust 程序员将它放在 `PATH` 系统变量中，以便于在命令行运行 `rustc`。根据操作系统或命令行 shell 的不同，以及安装过程的 bug，你可能需要重启 shell，注销系统，或者为你的操作环境手动配置合适的 `PATH`。
 
-如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中：`$ echo %PATH%`。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。如果你需要手动设置安装路径，你可以在在类似`"C:\Program Files\Rust stable GNU 1.x\bin"`这样的目录找到 Rust 的可执行文件
-
-Rust 并没有自己的连接器，所以你需要自己装一个。这根据你特定的系统而有所不同。对于基于 Linux 的系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools（msvc）][msvbt]。他们并需要位于`%PATH%`中因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
+Rust 并没有自己的连接器，所以你需要自己装一个。做法因特定的系统而有所不同。对于 Linux 系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools][msvbt]。其并不需要位于`%PATH%`中，因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置，你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
 
 [msvbt]: http://landinghub.visualstudio.com/visual-cpp-build-tools
 
