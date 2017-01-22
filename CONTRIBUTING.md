@@ -24,6 +24,7 @@
 * [liubin](https://github.com/liubin)
 * [liuzhe0223](https://github.com/liuzhe0223)
 * [llluiop](https://github.com/llluiop)
+* [loulihto](https://github.com/loulihto)
 * [LuoZijun](https://github.com/LuoZijun)
 * [mapx](https://github.com/mapx)
 * [NemoAlex](https://github.com/NemoAlex)
