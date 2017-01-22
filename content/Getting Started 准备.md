@@ -1,4 +1,4 @@
-% 准备
+# 准备
 
 > [getting-started.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/getting-started.md)
 > <br>
@@ -291,7 +291,7 @@ $ rm main  # or 'del main.exe' on Windows
 
 Cargo 期望源文件位于 src 目录，所以先做这个。这样将项目顶级目录（在这里，是 hello_world）留给 README，license 信息和其他跟代码无关的文件。这样，Cargo 帮助你保持项目干净整洁。一切井井有条。
 
-现在，移动`main.rs`到`src`目录，并删除你用`rustc`创建的编译过的文件。一如既往，如果你使用 Windows 用`main.exe`代替`main`。
+现在，移动`main.rs`到`src`目录，并删除你用`rustc`创建的编译过的文件。像往常一样，如果你使用 Windows，用`main.exe`代替`main`。
 
 例子中我们继续使用`main.rs`作为源文件名是因为它创建了一个可执行文件。如果你想要创建一个库文件，使用`lib.rs`作为文件名。Cargo 使用这个约定来正确编译你的项目，不过如果你愿意的话也可以覆盖它。
 
@@ -313,11 +313,11 @@ version = "0.0.1"
 authors = [ "Your name <you@example.com>" ]
 ```
 
-第一行，`[package]`，表明下面的语句用来配置一个包。随着我们在这个文件增加更多的信息，我们会增加其他部分，不过现在，我们只有包配置。
+第一行的`[package]`表明下面的语句用来配置一个包。随着我们在这个文件增加更多的信息，我们会增加其他部分，不过现在，我们只有包配置。
 
 另外三行设置了 Cargo 编译你的程序所需要知道的三个配置：包的名字，版本，和作者。
 
-当你在`Cargo.toml`中添加完这些信息后，保存它来完成配置文件的创建。
+当你在`Cargo.toml`中添加完这些信息后，保存它以完成配置文件的创建。
 
 ## 构建并运行 Cargo 项目
 
