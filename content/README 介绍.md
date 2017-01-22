@@ -16,13 +16,13 @@
 * [词汇表][gl] - 书中使用的术语的参考。
 * [参考文献][bi] - 影响过 Rust 的文献，关于 Rust 的论文。
 
-[gs]: Getting Started 准备.html
-[gg]: Guessing Game 猜猜看.html
-[er]: Effective Rust 高效 Rust.html
-[ss]: Syntax and Semantics 语法和语义.html
-[nr]: Nightly Rust Rust 开发版.html
-[gl]: Glossary 词汇表.html
-[bi]: Bibliography 参考文献.html
+[gs]: Getting%20Started%20准备.html
+[gg]: Guessing%20Game%20猜猜看.html
+[er]: Effective%20Rust%20高效%20Rust.html
+[ss]: Syntax%20and%20Semantics%20语法和语义.html
+[nr]: Nightly%20Rust%20Rust%20开发版.html
+[gl]: Glossary%20词汇表.html
+[bi]: Bibliography%20参考文献.html
 
 ## 贡献
 
