@@ -4,27 +4,27 @@
 > <br>
 > commit 6c0af7074f7306bc50764300534ecad3fe660146
 
-本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo，Rust 的构建系统以及包管理器。
+本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo —— Rust 的构建系统以及包管理器。
 
-## 安装 Rust
+# 安装 Rust
 
-开始使用 Rust 的第一步是安装它。总的来说，你需要联网执行本部分的命令，因为我们将会从网上下载 Rust。
+使用 Rust 的第一步是安装它。总的来说，你需要联网执行本部分的命令，因为我们要从网上下载 Rust。
 
-我们将会展示很多使用终端的命令，并且这些行都以`$`开头。并不需要真正输入`$`，在这里它们代表每行指令的开头。你会在网上看到很多使用这个惯例的教程和例子：`$`代表常规用户运行的命令，`#`代表需要管理员用户运行的命令。
+我们将会展示很多使用终端的命令，并且这些行都以`$`开头。你并不需要真正输入`$`，在这里它们代表每行指令的开头。你会在网上看到很多使用这个惯例的教程和例子：`$`代表常规用户运行的命令，`#`代表以管理员身份运行的命令。
 
 ## 平台支持
 
-Rust 编译器编译并运行于很多平台之上，但不是所有的平台都被平等的支持。Rust 的平台支持水平可以被划分为三个等级，每一级都有不同的保证程度。
+Rust 编译器可以在很多平台上运行和编译，尽管各平台的支持程度不一。Rust 的支持水平可以划分为三个等级，每一级的保障程度不尽相同。
 
-每个平台都由他们的 "target triple" 标识，它是一个代表编译器会产生何种输出的字符串。下面的列代表特定平台是否支持相应的组件。
+每个平台都有其“target triple”标识，它是一个告知编译器应产生何种输出的字符串。下面的列表指明特定平台是否支持相应的组件。
 
-### T1 科技（Tier 1）
+### 一级
 
-等级一平台可以被认为是“确保可以构建和工作的”。具体的他们将满足如下要求：
+一级平台可以认为是“确保能够构建和工作的”。具体说来，其中每个平台都满足如下要求：
 
-* 为此平台建立了自动化测试
-* 向`rust-lang/rust`仓库的 master 分支提交的修改确保测试通过
-* 发布官方安装程序
+* 为此平台建立了自动化测试。
+* 向`rust-lang/rust`仓库的 master 分支提交的修改确保测试通过。
+* 发布官方安装程序。
 * 提供该平台下如何使用和构建的文档。
 
 |  Target                       | std |rustc|cargo| notes                      |
@@ -38,13 +38,13 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 | `x86_64-pc-windows-msvc`      |  ✓  |  ✓  |  ✓  | 64-bit MSVC (Windows 7+)   |
 | `x86_64-unknown-linux-gnu`    |  ✓  |  ✓  |  ✓  | 64-bit Linux (2.6.18+)     |
 
-### T2 科技（Tier 2）
+### 二级
 
-等级二平台可以被认为是“保证能够构建的”。因为没有（保证）运行自动测试所以并不保证能产生可工作的构建，不过这些平台通常工作良好同时补丁是永远受欢迎的！具体的这些平台被要求将满足如下：
+二级平台可以认为是“确保能够构建的”。自动化测试未运行，所以并不保证能产生可工作的构建，不过这些平台通常工作良好，同时补丁是永远受欢迎的！具体说来，这些平台需满足如下要求：
 
-* 设置了自动化测试，不过可能并没有运行
-* 向`rust-lang/rust`仓库的 master 分支提交的修改确保该平台**将被构建**。注意这意味着一些平台只编译了标准库，而有些将会运行整个 bootstrap。
-* 发布官方安装程序
+* 设置了自动化构建，不过可能并没有运行测试。
+* 向`rust-lang/rust`仓库的 master 分支提交的修改确保该平台**可以构建**。注意这意味着一些平台只编译了标准库，而有些会运行完整的引导。
+* 发布了官方安装程序。
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
@@ -71,9 +71,9 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 | `x86_64-unknown-linux-musl`   |  ✓  |     |     | 64-bit Linux with MUSL     |
 | `x86_64-unknown-netbsd`       |  ✓  |  ✓  |  ✓  | 64-bit NetBSD              |
 
-### T3 科技（Tier 3）（Tengu！！！）
+### 三级
 
-等级三平台代表 Rust 有提供支持，不过提交的修改并不保证能构建或通过测试。可运行的构建也可能是有 bug 的，因为它的可靠性通常由社区贡献来确定。另外并不提供官方发布文档和安装程序，不过在一些非官方地址可能会提供社区版本。
+三级平台代表 Rust 有提供支持，不过提交的修改并不保证能构建或通过测试。可运行的构建也可能是有 bug 的，因为它的可靠性通常由社区贡献来确定。另外并不提供官方发布文档和安装程序，不过在一些非官方地址可能会提供社区版本。
 
 |  Target                       | std |rustc|cargo| notes                      |
 |-------------------------------|-----|-----|-----|----------------------------|
@@ -88,30 +88,28 @@ Rust 编译器编译并运行于很多平台之上，但不是所有的平台都
 | `x86_64-unknown-dragonfly`    |  ✓  |  ✓  |     | 64-bit DragonFlyBSD        |
 | `x86_64-unknown-openbsd`      |  ✓  |  ✓  |     | 64-bit OpenBSD             |
 
-注意这个表格可能会随着时间而扩展，这将永远不会是等级三平台的完整列表！
+注意这个表格可能会随着时间而扩展，这永远不会是三级平台的完整列表！
 
 ## 安装 Rust
 
-> 译者：妖兽啦，强行 rustup 啊QAQ
-
-在 类 Unix 的 Linux 和 macOS 上所有你需要做的就是打开终端并输入：
+在 Unix 类系统如 Linux 和 macOS 上，你只需打开终端并输入：
 
 ```bash
 $ curl https://sh.rustup.rs -sSf | sh
 ```
 
-这将会下载一个脚本，并开始安装。如果一切顺利，你将会看到这些：
+这样会下载一个脚本并开始安装。如果一切顺利，你将会看到：
 
 ```text
 Rust is installed now. Great!
 ```
 
-在 Windows 上安装也同样简单：下载并运行[rustup-init.exe]。它会在一个终端开始安装并在成功时显示如上信息。
+在 Windows 上安装也同样简单：下载并运行[rustup-init.exe]。其会在终端中开始安装并在成功时显示以上信息。
 
-对于其他安装选项和信息，访问 Rust 官网的[install]页面。
+如需其他安装选项和信息，请访问 Rust 官网的[安装]页面。
 
 [rustup-init.exe]: https://win.rustup.rs
-[install]: https://www.rust-lang.org/install.html
+[安装]: https://www.rust-lang.org/install.html
 
 ## 卸载
 
@@ -121,31 +119,35 @@ Rust is installed now. Great!
 $ rustup self uninstall
 ```
 
-## 疑难解答（Troubleshooting）
+## 疑难解答
 
-安装了 Rust 后，我们可以打开一个 shell，并输入：
+安装完 Rust 以后，我们可以打开 shell，并输入：
 
 ```bash
 $ rustc --version
 ```
 
-你应该看到版本号，提交的 hash 值和提交时间。
+你应该能看到版本号、提交的 hash 值和提交时间。
 
-如果你做到了，那么 Rust 已成功安装！恭喜你！（此处应有掌声）
+若如是，则 Rust 已成功安装！恭喜你！
 
-如果这不能工作并且你在使用 Windows，这可能意味着 `PATH` 系统变量并没有包含 Cargo 可执行程序的路径，在类 Unix 系统下是`~/.cargo/bin`，或者在 Windows 下是`%USERPROFILE%\.cargo\bin`。这是存放绝大多数 Rust 开发工具的路径，同时绝大多数 Rust 程序猿将它包含在`PATH`系统变量中，这样可以使在命令行运行`rustc`成为可能。由于操作系统，命令行的不用，以及安装程序的 bug，你可能需要重启 shell，注销系统，或者为你的操作系统环境手动配置合适的`PATH`。
+若无效，这可能意味着 `PATH` 环境变量并没有包含 Cargo 可执行程序的路径，其在类 Unix 系统下是`~/.cargo/bin`，在 Windows 下是`%USERPROFILE%\.cargo\bin`。这是存放 Rust 开发工具的路径，绝大多数 Rust 程序员将它放在 `PATH` 系统变量中，以便于在命令行运行 `rustc`。根据操作系统或命令行 shell 的不同，以及安装过程的 bug，你可能需要重启 shell，注销系统，或者为你的操作环境手动配置合适的 `PATH`。
 
-如果这不能工作并且你在使用 Windows，检查 Rust 是否在你的`%PATH%`系统变量中：`$ echo %PATH%`。如果不是，再次运行安装程序，在“Change, repair, or remove installation”页面选择“Change”并确保“Add to PATH”指向本地硬盘。如果你需要手动设置安装路径，你可以在在类似`"C:\Program Files\Rust stable GNU 1.x\bin"`这样的目录找到 Rust 的可执行文件
-
-Rust 并没有自己的连接器，所以你需要自己装一个。这根据你特定的系统而有所不同。对于基于 Linux 的系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools（msvc）][msvbt]。他们并需要位于`%PATH%`中因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
+Rust 并没有自己的连接器，所以你需要自己装一个。做法因特定的系统而有所不同。对于 Linux 系统，Rust 会尝试调用`cc`进行连接。对于`windows-msvc`（在 Windows 上使用 Microsoft Visual Studio 构建的 Rust），则需要安装[Microsoft Visual C++ Build Tools][msvbt]。其并不需要位于`%PATH%`中，因为`rustc`会自动找到他们。一般来说，如果你的连接器位于一个不常见的位置，你需要调用`rustc linker=/path/to/cc`，其中`/path/to/cc`指向连接器的路径。
 
 [msvbt]: http://landinghub.visualstudio.com/visual-cpp-build-tools
 
-如果还是搞不定，有几个你可以获取帮助的地方。最简单的是通过[Mibbit](http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners,%23rust)访问[位于 irc.mozilla.org 的 #rust-beginners IRC频道](irc://irc.mozilla.org/#rust-beginners)和在[#rust IRC 频道](irc://irc.mozilla.org/rust)进行一般讨论。点击上面的链接，你就可以与其它Rustaceans（简单理解为Ruster吧）聊天，我们会帮助你。其它给力的资源包括[用户论坛](https://users.rust-lang.org/)和[Stack Overflow](http://stackoverflow.com/questions/tagged/rust)。
+如果还是搞不定，我们有许多可以获取帮助的地方。最简单的是 irc.mozilla.org 上的 IRC 频道 [#rust-beginners][irc-beginners] 和供一般讨论之用的 [#rust][irc]，我们可以使用 [Mibbit][mibbit] 访问之。然后我们就可以和其他能提供帮助的 Rustacean（我们这些人自称的愚蠢绰号）聊天了。其它给力的资源包括[用户论坛][users]和[Stack Overflow][stackoverflow]。
 
-安装程序（脚本）也会在本地安装一份文档拷贝，所以你可以离线阅读它们。只需输入`rustup doc`即可！
+[irc-beginners]: irc://irc.mozilla.org/#rust-beginners
+[irc]: irc://irc.mozilla.org/#rust
+[mibbit]: http://chat.mibbit.com/?server=irc.mozilla.org&channel=%23rust-beginners,%23rust
+[users]: https://users.rust-lang.org/
+[stackoverflow]: http://stackoverflow.com/questions/tagged/rust
 
-## Hello, world!
+安装程序也会在本地安装一份文档拷贝，你可以离线阅读它们。只需输入`rustup doc`即可！
+
+# Hello, world!
 
 现在你已经安装好了 Rust，我们将帮助你编写你的第一个 Rust 程序。当学习一门新语言的时候编写一个在屏幕上打印 “Hello, world!” 文本的小程序是一个传统，而在这一部分，我们将遵循这个传统。
 
@@ -153,7 +155,7 @@ Rust 并没有自己的连接器，所以你需要自己装一个。这根据你
 
 > 注意：本书假设你熟悉基本的命令行操作。Rust 本身并不对你的编辑器，工具和你的代码存放在何处有什么特定的要求，所以如果你比起命令行更喜欢 IDE，这里也有一个选择。你可能想要试试[SolidOak](https://github.com/oakes/SolidOak)，它专为 Rust 而设计。在 Rust 社区里有许许多多正在开发中的 IDE 插件。Rust 团队也发布了[不同编辑器的插件](https://github.com/rust-lang/rust/blob/master/src/etc/CONFIGS.md)。 配置编辑器或 IDE 已超出本教程的范畴，所以请查看你特定设置的文档。
 
-### 创建一个项目文件
+## 创建项目文件
 
 首先，创建一个文件来编写 Rust 代码。Rust 并不关心你的代码存放在哪里，不过在本书中，我们建议在你的 home 目录创建一个存放项目的目录，并把你的所有项目放在这。打开一个终端并输入如下命令来为这个项目创建一个文件夹：
 
@@ -166,13 +168,11 @@ $ cd hello_world
 
 > 如果你使用 Windows 并且没有用 PowerShell，`~`可能不指向你的用户目录。可以查询所使用的 Shell 的相关文档以获取更多信息。
 
-### 编写并运行一个 Rust 程序
+## 编写并运行 Rust 程序
 
 我们需要为我们的 Rust 程序创建一个源文件。Rust 代码文件总是使用 `.rs` 后缀，并且如果我们用的 Rust 文件名由多个单词组成，我们使用下划线分隔它们；例如，使用*my_program.rs*而不是*myprogram.rs*。
 
 现在，创建一个名叫*main.rs*的新文件。打开并输入如下代码：
-
-+[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%7D%0A)
 
 ```rust
 fn main() {
@@ -188,13 +188,11 @@ $ ./main
 Hello, world!
 ```
 
-在 Windows 下，使用`main.exe`而不是`main`。不管你使用何种系统，你应该在终端看到`Hello, world!`字符串。如果你做到了，那么恭喜你！你已经正式编写了一个 Rust 程序。这使你成为了一名 Rust 程序猿！欢迎入坑！
+在 Windows 下，使用`main.exe`而不是`main`。不管你使用何种系统，你应该在终端看到`Hello, world!`字符串。如果你做到了，那么恭喜你！你已经正式编写了一个 Rust 程序。你是一名 Rust 程序员了！欢迎入坑。
 
-### 分析一个 Rust 程序
+## 分析 Rust 程序
 
 现在，让我们回过头来仔细看看你的“Hello, world!”程序到底发生了什么。这里是拼图的第一片：
-
-+[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%0A%7D%0A)
 
 ```rust
 fn main() {
@@ -208,21 +206,19 @@ fn main() {
 
 在`main()`函数中：
 
-+[code](https://play.rust-lang.org/?code=fn%20main()%20%7B%0A%20%20%20%20%20%20%20%20println!(%22Hello%2C%20world!%22)%3B%0A%20%20%20%20%0A%7D)
-
 ```rust
     println!("Hello, world!");
 ```
 
 这行代码做了这个小程序的所有工作：它在屏幕上打印文本。这有很多重要的细节。第一个是使用 4 个空格缩进，而不是制表符。
 
-第二个重要的部分是`println!()`这一行。这是一个 Rust [宏](Macros 宏.md)，是 Rust 元编程的关键所在。相反如果我们调用一个函数的话，它应该看起来像这样：`println()`（木有 !）。我们将在后面更加详细的讨论 Rust 宏，不过现在你只需记住当看到符号 `!` 的时候，就代表调用了一个宏而不是一个普通的函数。
+第二个重要的部分是`println!()`这一行。这是一个 Rust [宏](Macros 宏.md)，是 Rust 元编程的关键所在。相反如果我们调用一个函数的话，它应该看起来像这样：`println()`（没有 !）。我们将在后面更加详细的讨论 Rust 宏，不过现在你只需记住当看到符号 `!` 的时候，就代表调用了一个宏而不是一个普通的函数。
 
 接下来，`"Hello, world!"` 是一个字符串。在一门系统级编程语言中，字符串是一个复杂得令人惊讶的话题。这是一个[静态分配](The Stack and the Heap 栈和堆.md)的字符串。这个语句将这个字符串作为参数传递给`println!` 宏，这个宏负责在屏幕（控制台）上打印字符串。是不是很简单啊(⊙o⊙)
 
 这一行以一个分号结尾（`;`）。Rust是一门[**面向表达式**](Glossary 词汇表.md#面向表达式语言（expression-oriented-language）)的语言，也就是说大部分语句都是表达式。`;` 表示一个表达式的结束，另一个新表达式的开始。大部分 Rust 代码行以`;`结尾。
 
-### 编译和运行是两个步骤
+## 编译和运行是两个步骤
 
 在“编写并运行一个 Rust 程序”，我们展示了如何运行一个新创建的程序。现在我们将拆分并检查每一个操作。
 
@@ -259,7 +255,7 @@ $ ./main  # or .\main.exe on Windows
 
 仅仅使用`rustc`编译简单程序是没问题的，不过随着你的项目的增长，你将想要能够控制你项目拥有的所有选项，并易于分享你的代码给别人或别的项目。接下来，我们将介绍一个叫做 Cargo 的工具，它将帮助你编写现实生活中的 Rust 程序。
 
-## Hello, Cargo!
+# Hello, Cargo!
 
 Cargo 是 Rust 的构建系统和包管理工具，同时 Rustacean 们使用 Cargo 来管理它们的 Rust 项目。Cargo 负责三个工作：构建你的代码，下载你代码依赖的库并编译这些库。我们把你代码需要的库叫做“依赖（dependencies）”因为你的代码依赖他们。
 
@@ -273,7 +269,7 @@ $ cargo --version
 
 如果你看到了版本号，一切 OK！如果你一个类似“`command not found`”的错误，那么你应该去查看你安装 Rust 的系统的相关文档，来确定 Cargo 是否需要单独安装。
 
-### 转换到 Cargo
+## 转换到 Cargo
 
 让我们将 Hello World 程序迁移至 Cargo。为了 Cargo 化一个项目，需要做三件事：
 
@@ -283,7 +279,7 @@ $ cargo --version
 
 让我们开始吧！
 
-### 创建一个源文件目录并移除旧的可执行文件
+### 创建源文件目录并移除旧的可执行文件
 
 首先，回到你的终端，移动到你的`hello_world`目录，并输入如下命令：
 
@@ -295,11 +291,11 @@ $ rm main  # or 'del main.exe' on Windows
 
 Cargo 期望源文件位于 src 目录，所以先做这个。这样将项目顶级目录（在这里，是 hello_world）留给 README，license 信息和其他跟代码无关的文件。这样，Cargo 帮助你保持项目干净整洁。一切井井有条。
 
-现在，移动`main.rs`到`src`目录，并删除你用`rustc`创建的编译过的文件。一如既往，如果你使用 Windows 用`main.exe`代替`main`。
+现在，移动`main.rs`到`src`目录，并删除你用`rustc`创建的编译过的文件。像往常一样，如果你使用 Windows，用`main.exe`代替`main`。
 
-例子中我们继续使用`main.rs`作为源文件名是因为它创建了一个可执行文件。如果你想要创建一个库文件，使用`lib.rs`作为文件名。Cargo 使用这个约定来正确编译你的项目，不过如果你想的话你也可以覆盖它。
+例子中我们继续使用`main.rs`作为源文件名是因为它创建了一个可执行文件。如果你想要创建一个库文件，使用`lib.rs`作为文件名。Cargo 使用这个约定来正确编译你的项目，不过如果你愿意的话也可以覆盖它。
 
-### 创建一个配置文件
+### 创建配置文件
 
 下一步，在`hello_world`目录创建一个文件，叫做`Cargo.toml`。
 
@@ -317,13 +313,13 @@ version = "0.0.1"
 authors = [ "Your name <you@example.com>" ]
 ```
 
-第一行，`[package]`，表明下面的语句用来配置一个包。随着我们在这个文件增加更多的信息，我们会增加其他部分，不过现在，我们只有包配置。
+第一行的`[package]`表明下面的语句用来配置一个包。随着我们在这个文件增加更多的信息，我们会增加其他部分，不过现在，我们只有包配置。
 
 另外三行设置了 Cargo 编译你的程序所需要知道的三个配置：包的名字，版本，和作者。
 
-当你在`Cargo.toml`中添加完这些信息后，保存它来完成配置文件的创建。
+当你在`Cargo.toml`中添加完这些信息后，保存它以完成配置文件的创建。
 
-### 构建并运行一个 Cargo 项目
+## 构建并运行 Cargo 项目
 
 当`Cargo.toml`文件位于项目的根目录时，我们就准备好可以构建并运行 Hello World 程序了！为此，我们输入如下命令：
 
@@ -359,11 +355,11 @@ Cargo 检查任何项目文件是否被修改，并且只会在你上次构建�
 
 对于简单的项目，Cargo 并不比使用`rustc`要好多少，不过将来它会变得有用。这在你开始使用 crate 时显得尤为正确；（crate）在其他语言中有“库（library）”或“包（package）”这样的同义词。对于包含多个 crate 的项目，让 Cargo 来协调构建将会轻松很多。有了 Cargo，你可以运行`cargo build`，而一切将有条不紊的运行。
 
-### 发布构建（Building for Release）
+### 发布构建
 
 当你的项目准备好发布了，可以使用`cargo build --release`来优化编译项目。这些优化可以让 Rust 代码运行的更快，不过启用他们会让程序花更长的时间编译。这也是为何这是两种不同的配置，一个为了开发，另一个构建提供给用户的最终程序。
 
-### 那个`Cargo.lock`是什么？（What Is That `Cargo.lock`?）
+### 那个`Cargo.lock`是什么？
 
 运行这个命令同时也会让 Cargo 创建一个叫做`Cargo.lock`的文件，它看起来像这样：
 
@@ -385,7 +381,7 @@ $ cd foo
 $ cargo build
 ```
 
-### 创建一个新 Cargo 项目的简单方法
+## 创建新 Cargo 项目的简单方法
 
 你并不需要每次都过一遍上面的操作来开始一个新的项目！Cargo 可以快速创建一个骨架项目目录这样你就可以立即开始开发了。
 
@@ -423,11 +419,11 @@ fn main() {
 }
 ```
 
-Cargo 已经为你生成了一个“Hello World！”，现在你已经准备好开始撸代码了！
+Cargo 已经为你生成了一个“Hello World!”，现在你已经准备好开始撸代码了！
 
 > 注意：如果你想要查看 Cargo 的详细信息，请查看官方的[Cargo 指导](http://doc.crates.io/guide.html)，它包含了所有这些功能。
 
-## 写在最后（Closing Thoughts）
-这个章节覆盖了将用于本书余下部分以及你之后 Rust 时光的基础知识。现在你获得了工具，我们将更多的介绍 Rust 语言本身。
+# 写在最后
+本章涵盖了将用于本书余下部分以及你之后 Rust 时光的基础知识。现在你获得了工具，我们将更多地介绍 Rust 语言本身。
 
-（接下来）你有两个选择：在 “[学习 Rust](Learn Rust 学习 Rust.md)” 中深入研究一个项目，或者自下而上地学习 “[语法和语义](Syntax and Semantics 语法和语义.md)”。来自系统级编程语言的同学，你们可能倾向于选择 “学习 Rust”，而来自动态编程语言的同学，请根据自己的喜好来选择吧。人各有别，适合自己的才是最好的。
+接下来你有两个选择：在 “[学习 Rust](Learn Rust 学习 Rust.md)” 中深入研究一个项目，或者自下而上地学习 “[语法和语义](Syntax and Semantics 语法和语义.md)”。来自系统级编程语言的同学，你们可能倾向于选择 “学习 Rust”，而来自动态编程语言的同学，请根据自己的喜好来选择吧。人各有别，适合自己的才是最好的。
