@@ -28,6 +28,7 @@
 * [LuoZijun](https://github.com/LuoZijun)
 * [mapx](https://github.com/mapx)
 * [NemoAlex](https://github.com/NemoAlex)
+* [newbienewbie](https://github.com/newbienewbie)
 * [opticaline](https://github.com/opticaline)
 * [peng1999](https://github.com/peng1999)
 * [qiuyesuifeng](https://github.com/qiuyesuifeng)
