@@ -1,6 +1,6 @@
 # 关联常量
 
-> [associated-constants.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/associated-constants.md)
+> [associated-constants.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/associated-constants.md)
 > <br>
 > commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
 

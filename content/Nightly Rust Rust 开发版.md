@@ -1,6 +1,6 @@
 # Rust开发版
 
-> [nightly-rust.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/nightly-rust.md)
+> [nightly-rust.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/nightly-rust.md)
 > <br>
 > commit eb1c7161dd79b55e022cd0c661f9018d406b3fe4
 

@@ -1,8 +1,8 @@
 # 基准测试
 
-> [benchmark-tests.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/benchmark-tests.md)
+> [benchmark-tests.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/benchmark-tests.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 也支持基准测试，它可以测试代码的性能。让我们把`src/lib.rs`修改成这样（省略注释）：
 
@@ -92,7 +92,7 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 1 measured
 # struct X;
 # impl X { fn iter<T, F>(&self, _: F) where F: FnMut() -> T {} } let b = X;
 b.iter(|| {
-    // note lack of `;` (could also use an explicit `return`).
+    // Note lack of `;` (could also use an explicit `return`).
     (0..1000).fold(0, |old, new| old ^ new)
 });
 ```

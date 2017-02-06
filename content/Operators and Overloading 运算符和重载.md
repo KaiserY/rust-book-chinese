@@ -1,8 +1,8 @@
 # 运算符与重载
 
-> [operators-and-overloading.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/operators-and-overloading.md)
+> [operators-and-overloading.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/operators-and-overloading.md)
 > <br>
-> commit c9517189d7f0e851347859e437fc796411008e66
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 允许有限形式的运算符重载。特定的运算符可以被重载。要支持一个类型间特定的运算符，你可以实现一个的特定的重载运算符的trait。
 
@@ -60,7 +60,7 @@ impl Add<i32> for Point {
     type Output = f64;
 
     fn add(self, rhs: i32) -> f64 {
-        // add an i32 to a Point and get an f64
+        // Add an i32 to a Point and get an f64.
 # 1.0
     }
 }

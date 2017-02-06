@@ -1,8 +1,8 @@
 # 编译器插件
 
-> [compiler-plugins.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/compiler-plugins.md)
+> [compiler-plugins.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/compiler-plugins.md)
 > <br>
-> commit bf22a7a71ab47a7d2074134b02b02df1d6ce497e
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 ## 介绍
 
@@ -33,7 +33,7 @@ extern crate rustc_plugin;
 use syntax::parse::token;
 use syntax::tokenstream::TokenTree;
 use syntax::ext::base::{ExtCtxt, MacResult, DummyResult, MacEager};
-use syntax::ext::build::AstBuilder;  // trait for expr_usize
+use syntax::ext::build::AstBuilder;  // A trait for expr_usize.
 use syntax::ext::quote::rt::Span;
 use rustc_plugin::Registry;
 

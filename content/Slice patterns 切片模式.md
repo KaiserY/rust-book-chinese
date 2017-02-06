@@ -1,6 +1,6 @@
 # 切片模式
 
-> [slice-patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/slice-patterns.md)
+> [slice-patterns.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/slice-patterns.md)
 > <br>
 > commit 5cf4139d21073731fa7f7226d941349dbacc16d6
 

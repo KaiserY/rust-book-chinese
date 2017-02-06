@@ -1,6 +1,6 @@
 # 链接进阶
 
-> [advanced-linking.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/advanced-linking.md)
+> [advanced-linking.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/advanced-linking.md)
 > <br>
 > commit 226bcdf7d1e774f5967f92b0bd0bf237179f95c9
 

@@ -1,8 +1,8 @@
 # 模式
 
-> [patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/patterns.md)
+> [patterns.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/patterns.md)
 > <br>
-> commit 18565c63db1982b927b291b9597368efc615d91c
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配表达式](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
 
@@ -144,7 +144,7 @@ match some_value {
 
 ```rust
 fn coordinate() -> (i32, i32, i32) {
-    // generate and return some sort of triple tuple
+    // Generate and return some sort of triple tuple.
 # (1, 2, 3)
 }
 
@@ -161,7 +161,7 @@ let tuple: (u32, String) = (5, String::from("five"));
 // Here, tuple is moved, because the String moved:
 let (x, _s) = tuple;
 
-// The next line would give "error: use of partially moved value: `tuple`"
+// The next line would give "error: use of partially moved value: `tuple`".
 // println!("Tuple is: {:?}", tuple);
 
 // However,

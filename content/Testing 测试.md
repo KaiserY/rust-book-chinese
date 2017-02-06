@@ -1,8 +1,8 @@
 # 测试
 
-> [testing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/testing.md)
+> [testing.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/testing.md)
 > <br>
-> commit 956d44fb171aed08c87db60208e7f2c85f8a72fb
+> commit d950ca175ab5e7a9827353f9fb7d9d6e3f6e7658
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 
@@ -26,6 +26,10 @@ $ cd adder
 在你创建一个新项目时 Cargo 会自动生成一个简单的测试。下面是`src/lib.rs`的内容：
 
 ```rust
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 #[cfg(test)]
 mod tests {
     #[test]
@@ -34,15 +38,28 @@ mod tests {
 }
 ```
 
+现在暂时去掉`mod`那部分，只关注函数：
+
+```rust
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
+#[test]
+fn it_works() {
+}
+```
+
 注意这个`#[test]`。这个属性表明这是一个测试函数。它现在没有函数体。它肯定能编译通过！让我们用`cargo test`运行测试：
 
 ```bash
 $ cargo test
    Compiling adder v0.1.0 (file:///home/you/projects/adder)
-     Running target/debug/deps/adder-91b3e234d4ed382a
+    Finished debug [unoptimized + debuginfo] target(s) in 0.15 secs
+     Running target/debug/deps/adder-941f01916ca4a642
 
 running 1 test
-test tests::it_works ... ok
+test it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -59,10 +76,12 @@ Cargo 编译和运行了我们的测试。这里有两部分输出：一个是�
 test tests::it_works ... ok
 ```
 
-注意那个`it_works`。这是我们函数的名字：
+注意那个`tests::it_works`。这是我们函数的名字：
 
 ```rust
+# fn main() {
 fn it_works() {
+}
 # }
 ```
 
@@ -75,32 +94,36 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 那么为啥我们这个啥都没干的测试通过了呢？任何没有`panic!`的测试通过，`panic!`的测试失败。让我们的测试失败：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 #[test]
 fn it_works() {
     assert!(false);
 }
 ```
 
-`assert!`是Rust提供的一个宏，它接受一个参数：如果参数是`true`，啥也不会发生。如果参数是`false`，它会`panic!`。让我们再次运行我们的测试：
+`assert!`是 Rust 提供的一个宏，它接受一个参数：如果参数是`true`，啥也不会发生。如果参数是`false`，它会`panic!`。让我们再次运行我们的测试：
 
 ```bash
 $ cargo test
    Compiling adder v0.1.0 (file:///home/you/projects/adder)
-     Running target/debug/deps/adder-91b3e234d4ed382a
+    Finished debug [unoptimized + debuginfo] target(s) in 0.17 secs
+     Running target/debug/deps/adder-941f01916ca4a642
 
 running 1 test
-test tests::it_works ... FAILED
+test it_works ... FAILED
 
 failures:
 
----- test::it_works stdout ----
-        thread 'tests::it_works' panicked at 'assertion failed: false', src/lib.rs:5
-
+---- it_works stdout ----
+        thread 'it_works' panicked at 'assertion failed: false', src/lib.rs:5
+note: Run with `RUST_BACKTRACE=1` for a backtrace.
 
 
 failures:
-    tests::it_works
+    it_works
 
 test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured
 
@@ -110,7 +133,7 @@ error: test failed
 Rust指出我们的测试失败了：
 
 ```text
-test tests::it_works ... FAILED
+test it_works ... FAILED
 ```
 
 这反映在了总结行上：
@@ -119,7 +142,7 @@ test tests::it_works ... FAILED
 test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured
 ```
 
-我们也得到了一个非0的状态码.我们在 OS X和 Linux 中使用`$?`：
+我们也得到了一个非 0 的状态码.我们在 OS X和 Linux 中使用`$?`：
 
 ```bash
 $ echo $?
@@ -144,7 +167,10 @@ $ echo $?
 我们可以使用另一个属性反转我们的失败的测试：`should_panic`：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 #[test]
 #[should_panic]
 fn it_works() {
@@ -157,10 +183,11 @@ fn it_works() {
 ```bash
 $ cargo test
    Compiling adder v0.1.0 (file:///home/you/projects/adder)
-     Running target/debug/deps/adder-91b3e234d4ed382a
+    Finished debug [unoptimized + debuginfo] target(s) in 0.17 secs
+     Running target/debug/deps/adder-941f01916ca4a642
 
 running 1 test
-test tests::it_works ... ok
+test it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -174,7 +201,10 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 Rust提供了另一个宏，`assert_eq!`用来比较两个参数：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 #[test]
 #[should_panic]
 fn it_works() {
@@ -187,10 +217,11 @@ fn it_works() {
 ```bash
 $ cargo test
    Compiling adder v0.1.0 (file:///home/you/projects/adder)
-     Running target/debug/deps/adder-91b3e234d4ed382a
+    Finished debug [unoptimized + debuginfo] target(s) in 0.21 secs
+     Running target/debug/deps/adder-941f01916ca4a642
 
 running 1 test
-test tests::it_works ... ok
+test it_works ... ok
 
 test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured
 
@@ -204,7 +235,10 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 `should_panic`测试是脆弱的，因为很难保证测试是否会因什么不可预测原因并未失败。为了解决这个问题，`should_panic`属性可以添加一个可选的`expected`参数。这个参数可以确保失败信息中包含我们提供的文字。下面是我们例子的一个更安全的版本：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 #[test]
 #[should_panic(expected = "assertion failed")]
 fn it_works() {
@@ -215,7 +249,10 @@ fn it_works() {
 这就是全部的基础内容！让我们写一个“真实”的测试：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -233,7 +270,14 @@ fn it_works() {
 有时一些特定的测试可能非常耗时。这时可以通过`ignore`属性来默认禁用：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
+pub fn add_two(a: i32) -> i32 {
+    a + 2
+}
+
 #[test]
 fn it_works() {
     assert_eq!(4, add_two(2));
@@ -242,7 +286,7 @@ fn it_works() {
 #[test]
 #[ignore]
 fn expensive_test() {
-    // code that takes an hour to run
+    // Code that takes an hour to run...
 }
 ```
 
@@ -251,7 +295,8 @@ fn expensive_test() {
 ```bash
 $ cargo test
    Compiling adder v0.1.0 (file:///home/you/projects/adder)
-     Running target/debug/deps/adder-91b3e234d4ed382a
+    Finished debug [unoptimized + debuginfo] target(s) in 0.20 secs
+     Running target/debug/deps/adder-941f01916ca4a642
 
 running 2 tests
 test expensive_test ... ignored
@@ -270,7 +315,8 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 
 ```bash
 $ cargo test -- --ignored
-     Running target/debug/deps/adder-91b3e234d4ed382a
+    Finished debug [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running target/debug/deps/adder-941f01916ca4a642
 
 running 1 test
 test expensive_test ... ok
@@ -294,7 +340,10 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 一个比较惯用的做法应该是如下的：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -315,7 +364,10 @@ mod tests {
 第二个变化是`use`声明。因为我们在一个内部模块中，我们需要把我们要测试的函数导入到当前空间中。如果你有一个大型模块的话这会非常烦人，所以这里有经常使用一个`glob`功能。让我们修改我们的`src/lib.rs`来使用这个：
 
 ```rust
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 pub fn add_two(a: i32) -> i32 {
     a + 2
 }
@@ -360,13 +412,18 @@ test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 每一个`tests/*.rs`文件都被当作一个独立的 crate。因此，为了进行集成测试，让我们创建一个`tests`目录，然后放一个`tests/integration_test.rs`文件进去，输入如下内容：
 
 ```rust
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
+# // Sadly, this code will not work in play.rust-lang.org, because we have no
+# // crate adder to import. You'll need to try this part on your own machine.
 extern crate adder;
 
-# fn main() {}
 #[test]
 fn it_works() {
     assert_eq!(4, adder::add_two(2));
-}   
+}
 ```
 
 这看起来与我们刚才的测试很像，不过有些许的不同。我们现在有一行`extern crate adder`在开头。这是因为在`tests`目录中的每个测试（文件）是一个完全不同的 crate，所以我们需要导入我们的库。这也是为什么`tests`是一个写集成测试的好地方：它们就像其它程序一样使用我们的库。
@@ -409,7 +466,10 @@ Cargo （不？）会忽略`tests/`目录的子目录的文件。因此在集成
 没有什么是比带有例子的文档更好的了。当然也没有什么比不能工作的例子更糟的，因为文档完成之后代码已经被改写。为此，Rust支持自动运行你文档中的例子（**注意：**这只在库 crate中有用，而在二进制 crate 中没用）。这是一个完整的有例子的`src/lib.rs`：
 
 ~~~rust,ignore
-# fn main() {}
+# // The next line exists to trick play.rust-lang.org into running our code as a
+# // test:
+# // fn main
+#
 //! The `adder` crate provides functions that add numbers to other numbers.
 //!
 //! # Examples
@@ -475,3 +535,32 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured
 现在我们运行了3种测试！注意文档测试的名称：`_0`生成为模块测试，而`add_two_0`函数测试。如果你添加更多用例的话它们会像`add_two_1`这样自动加一。
 
 我们还没有讲到所有编写文档测试的所有细节。关于更多，请看[文档章节](Documentation 文档.md)。
+
+## 测试与并发
+
+在编写测试时需要注意的一个重要的情况是它们可能使用线程来并发的运行。为此需要注意要以一种测试之间不会相互依赖的方式编写，亦不能有任何共享的状态。“共享状态”可以包括运行环境，例如当前工作目录（cwd），或者环境变量。
+
+如果这样做有问题控制这些并发也是可能的，要么设置环境变量`RUST_TEST_THREADS`，或者向测试传递`--test-threads`用来比较两个参数：
+
+```bash
+$ RUST_TEST_THREADS=1 cargo test   # Run tests with no concurrency
+...
+$ cargo test -- --test-threads=1   # Same as above
+...
+```
+
+## 测试输出
+
+默认 Rust 测试标准库捕获并将输出丢弃到标准输出/错误中。例如来自`println!()`的输出。这也可以通过环境变量或者参数来控制：
+
+```bash
+$ RUST_TEST_NOCAPTURE=1 cargo test   # Preserve stdout/stderr
+...
+$ cargo test -- --nocapture          # Same as above
+...
+```
+
+然而一个避免输出被捕获的更好的方式是采用日志而不是使用原始的输出。Rust 有一个 [standard logging API][log]，它提供了一个多种日志实现的前端。这可以被用来与默认的 [env_logger] 相结合，以一种可以在运行时控制的方式输出任何调试信息。
+
+[log]: https://crates.io/crates/log
+[env_logger]: https://crates.io/crates/env_logger

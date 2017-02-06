@@ -1,8 +1,8 @@
 # `Deref`强制多态
 
-> [deref-coercions.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/deref-coercions.md)
+> [deref-coercions.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/deref-coercions.md)
 > <br>
-> commit 0d3bdc6c3ec9b237f986bd4b233764f36b8c5bda
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 标准库提供了一个特殊的特性，[`Deref`](http://doc.rust-lang.org/stable/std/ops/trait.Deref.html)。它一般用来重载`*`，解引用运算符：
 
@@ -31,13 +31,13 @@ fn main() {
 
 ```rust
 fn foo(s: &str) {
-    // borrow a string for a second
+    // Borrow a string for a second.
 }
 
-// String implements Deref<Target=str>
+// String implements Deref<Target=str>.
 let owned = "Hello".to_string();
 
-// therefore, this works:
+// Therefore, this works:
 foo(&owned);
 ```
 
@@ -49,14 +49,14 @@ foo(&owned);
 use std::rc::Rc;
 
 fn foo(s: &str) {
-    // borrow a string for a second
+    // Borrow a string for a second.
 }
 
-// String implements Deref<Target=str>
+// String implements Deref<Target=str>.
 let owned = "Hello".to_string();
 let counted = Rc::new(owned);
 
-// therefore, this works:
+// Therefore, this works:
 foo(&counted);
 ```
 
@@ -66,10 +66,10 @@ foo(&counted);
 
 ```rust
 fn foo(s: &[i32]) {
-    // borrow a slice for a second
+    // Borrow a slice for a second.
 }
 
-// Vec<T> implements Deref<Target=[T]>
+// Vec<T> implements Deref<Target=[T]>.
 let owned = vec![1, 2, 3];
 
 foo(&owned);

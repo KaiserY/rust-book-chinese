@@ -1,6 +1,6 @@
 # 包装箱和模块
 
-> [crates-and-modules.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/crates-and-modules.md)
+> [crates-and-modules.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/crates-and-modules.md)
 > <br>
 > commit 98c6770a231d9bbaede40bbcf659218995958d6a
 
@@ -98,7 +98,7 @@ build  deps  examples  libphrases-a7448e02a0468eaa.rlib  native
 
 ```rust
 mod english {
-    // contents of our module go here
+    // Contents of our module go here.
 }
 ```
 

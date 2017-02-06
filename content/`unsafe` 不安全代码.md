@@ -1,8 +1,8 @@
 # 不安全代码
 
-> [unsafe.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/unsafe.md)
+> [unsafe.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/unsafe.md)
 > <br>
-> commit 565474aadda4d2b866396f87df1626a0a63f80f0
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust主要魅力是它强大的静态行为保障。不过安全检查天性保守：有些程序实际上是安全的，不过编译器不能验证它是否是真的。为了写这种类型的程序，我们需要告诉编译器稍微放松它的限制。为此，Rust有一个关键字，`unsafe`。使用`unsafe`的代码比正常代码有更少的限制。
 
@@ -10,7 +10,7 @@ Rust主要魅力是它强大的静态行为保障。不过安全检查天性保�
 
 ```rust
 unsafe fn danger_will_robinson() {
-    // scary stuff
+    // Scary stuff...
 }
 ```
 
@@ -18,7 +18,7 @@ unsafe fn danger_will_robinson() {
 
 ```rust
 unsafe {
-    // scary stuff
+    // Scary stuff...
 }
 ```
 

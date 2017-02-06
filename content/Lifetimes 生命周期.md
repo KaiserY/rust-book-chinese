@@ -1,8 +1,8 @@
 # 生命周期
 
-> [lifetimes.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/lifetimes.md)
+> [lifetimes.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/lifetimes.md)
 > <br>
-> commit cb90723f90ca68093e6030b1d4f94e8e9e5062ee
+> commit ce57c66f5ca6120345bfc0828ebddd1b2f1d615e
 
 这篇教程是现行 3 个 Rust 所有权系统章节的第三部分。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
@@ -32,13 +32,13 @@ Rust 注重安全和速度。它通过很多**零开销抽象**（*zero-cost abs
 噢！你的引用指向一个无效的资源。这叫做**悬垂指针**（*dangling pointer*）或者“释放后使用”，如果这个资源是内存的话。这种状况的一个小例子像这样：
 
 ```rust
-let r;              // Introduce reference: r
+let r;              // Introduce reference: `r`.
 {
-    let i = 1;      // Introduce scoped value: i
-    r = &i;         // Store reference of i in r
-}                   // i goes out of scope and is dropped.
+    let i = 1;      // Introduce scoped value: `i`.
+    r = &i;         // Store reference of `i` in `r`.
+}                   // `i` goes out of scope and is dropped.
 
-println!("{}", r);  // r still refers to i
+println!("{}", r);  // `r` still refers to `i`.
 ```
 
 要修正这个问题的话，我们必须确保第四步永远也不在第三步之后发生。在上面的小例子中 Rust 编译器能够报告问题因为它能识别出函数中不同变量的生命周期。
@@ -56,9 +56,9 @@ let lang = "en";
 
 let v;
 {
-    let p = format!("lang:{}=", lang);  // -+ p goes into scope
+    let p = format!("lang:{}=", lang);  // -+ `p` comes into scope.
     v = skip_prefix(line, p.as_str());  //  |
-}                                       // -+ p goes out of scope
+}                                       // -+ `p` goes out of scope.
 println!("{}", v);
 ```
 
@@ -123,7 +123,7 @@ struct Foo<'a> {
 }
 
 fn main() {
-    let y = &5; // this is the same as `let _y = 5; let y = &_y;`
+    let y = &5; // This is the same as `let _y = 5; let y = &_y;`.
     let f = Foo { x: y };
 
     println!("{}", f.x);
@@ -162,7 +162,7 @@ impl<'a> Foo<'a> {
 }
 
 fn main() {
-    let y = &5; // this is the same as `let _y = 5; let y = &_y;`
+    let y = &5; // This is the same as `let _y = 5; let y = &_y;`.
     let f = Foo { x: y };
 
     println!("x is: {}", f.x());
@@ -196,11 +196,11 @@ fn x_or_y<'a, 'b>(x: &'a str, y: &'b str) -> &'a str {
 
 ```rust
 fn main() {
-    let y = &5;     // -+ y goes into scope
+    let y = &5;     // -+ `y` comes into scope.
                     //  |
-    // stuff        //  |
+    // Stuff...     //  |
                     //  |
-}                   // -+ y goes out of scope
+}                   // -+ `y` goes out of scope.
 ```
 
 加入我们的`Foo`：
@@ -211,11 +211,11 @@ struct Foo<'a> {
 }
 
 fn main() {
-    let y = &5;           // -+ y goes into scope
-    let f = Foo { x: y }; // -+ f goes into scope
-    // stuff              //  |
+    let y = &5;           // -+ `y` comes into scope.
+    let f = Foo { x: y }; // -+ `f` comes into scope.
+    // Stuff...           //  |
                           //  |
-}                         // -+ f and y go out of scope
+}                         // -+ `f` and `y` go out of scope.
 ```
 
 我们的`f`生存在`y`的作用域之中，所以一切正常。那么如果不是呢？下面的代码不能工作：
@@ -226,16 +226,16 @@ struct Foo<'a> {
 }
 
 fn main() {
-    let x;                    // -+ x goes into scope
+    let x;                    // -+ `x` comes into scope.
                               //  |
     {                         //  |
-        let y = &5;           // ---+ y goes into scope
-        let f = Foo { x: y }; // ---+ f goes into scope
-        x = &f.x;             //  | | error here
-    }                         // ---+ f and y go out of scope
+        let y = &5;           // ---+ `y` comes into scope.
+        let f = Foo { x: y }; // ---+ `f` comes into scope.
+        x = &f.x;             //  | | This causes an error.
+    }                         // ---+ `f` and y go out of scope.
                               //  |
     println!("{}", x);        //  |
-}                             // -+ x goes out of scope
+}                             // -+ `x` goes out of scope.
 ```
 
 噢！就像你在这里看到的一样，`f`和`y`的作用域小于`x`的作用域。不过当我们尝试`x = &f.x`时，我们让`x`引用一些将要离开作用域的变量。

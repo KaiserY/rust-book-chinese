@@ -1,6 +1,6 @@
 # `Borrow` 和 `AsRef`
 
-> [borrow-and-asref.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/borrow-and-asref.md)
+> [borrow-and-asref.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/borrow-and-asref.md)
 > <br>
 > commit 6976991569977e8097da5f7660a31a42d11e48d2
 

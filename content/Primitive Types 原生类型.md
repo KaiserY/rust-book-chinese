@@ -1,8 +1,8 @@
 # 原生类型
 
-> [primitive-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/primitive-types.md)
+> [primitive-types.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/primitive-types.md)
 > <br>
-> commit 77aeb7b6f1c9ac0f019ccced357d5f5ff7af40c8
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust有一系列被认为是“原生”的类型。这意味着它们是内建在语言中的。Rust被构建为在标准库中也提供了一些建立在这些类型之上的有用的类型，不过它们也大部分是原生的。
 
@@ -39,9 +39,9 @@ Rust有一些分类的大量数字类型：有符号和无符号，定长和变�
 如果一个数字常量没有推断它类型的条件，它采用默认类型：
 
 ```rust
-let x = 42; // x has type i32
+let x = 42; // `x` has type `i32`.
 
-let y = 1.0; // y has type f64
+let y = 1.0; // `y` has type `f64`.
 ```
 
 这里有一个不同数字类型的列表，以及它们在标注库中的文档：
@@ -120,8 +120,8 @@ println!("The second name is: {}", names[1]);
 
 ```rust
 let a = [0, 1, 2, 3, 4];
-let complete = &a[..]; // A slice containing all of the elements in a
-let middle = &a[1..4]; // A slice of a: just the elements 1, 2, and 3
+let complete = &a[..]; // A slice containing all of the elements in `a`.
+let middle = &a[1..4]; // A slice of `a`: only the elements `1`, `2`, and `3`.
 ```
 
 片段拥有`&[T]`类型。当我们涉及到[泛型](Generics 泛型.md)时会讨论这个`T`。

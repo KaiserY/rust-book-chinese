@@ -1,8 +1,8 @@
 # 类型转换
 
-> [casting-between-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/casting-between-types.md)
+> [casting-between-types.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/casting-between-types.md)
 > <br>
-> commit 345626f088bc2abac5257346f3f044376d7bac0b
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust，和它对安全的关注，提供了两种不同的在不同类型间转换的方式。第一个，`as`，用于安全转换。相反，`transmute`允许任意的转换，而这是 Rust 中最危险的功能之一！
 
@@ -83,7 +83,7 @@ let two_hundred = -56i8 as u8;
 你也许会惊讶，[裸指针](Raw Pointers 裸指针.md)与整型之间的转换是安全的，而且不同类型的指针之间的转换遵循一些限制。只有解引用指针是不安全的：
 
 ```rust
-let a = 300 as *const char; // a pointer to location 300
+let a = 300 as *const char; // `a` is a pointer to location 300.
 let b = a as u32;
 ```
 
@@ -104,14 +104,14 @@ let b = a as u32;
 ```rust
 let a = [0u8, 0u8, 0u8, 0u8];
 
-let b = a as u32; // four u8s makes a u32
+let b = a as u32; // Four u8s makes a u32.
 ```
 
 这个错误为：
 
 ```text
 error: non-scalar cast: `[u8; 4]` as `u32`
-let b = a as u32; // four u8s makes a u32
+let b = a as u32; // Four u8s makes a u32.
         ^~~~~~~~
 ```
 
@@ -129,7 +129,7 @@ fn main() {
         let a = [0u8, 1u8, 0u8, 0u8];
         let b = mem::transmute::<[u8; 4], u32>(a);
         println!("{}", b); // 256
-        // or, more concisely:
+        // Or, more concisely:
         let c: u32 = mem::transmute(a);
         println!("{}", c); // 256
     }

@@ -1,6 +1,6 @@
 # 迭代器
 
-> [iterators.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/iterators.md)
+> [iterators.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/iterators.md)
 > <br>
 > commit 15a8a296b724599a1eda807c3057338b11cb94bf
 

@@ -1,8 +1,8 @@
 # 引用和借用
 
-> [references-and-borrowing.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/references-and-borrowing.md)
+> [references-and-borrowing.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/references-and-borrowing.md)
 > <br>
-> commit 22ce98d0e7aa573c5418bdf62d46c0444c60e2ab
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 这篇教程是现行 3 个 Rust 所有权系统章节的第二部分。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
@@ -26,9 +26,9 @@ Rust 注重安全和速度。它通过很多**零开销抽象**（*zero-cost abs
 
 ```rust
 fn foo(v1: Vec<i32>, v2: Vec<i32>) -> (Vec<i32>, Vec<i32>, i32) {
-    // do stuff with v1 and v2
+    // Do stuff with `v1` and `v2`.
 
-    // hand back ownership, and the result of our function
+    // Hand back ownership, and the result of our function.
     (v1, v2, 42)
 }
 
@@ -42,9 +42,9 @@ let (v1, v2, answer) = foo(v1, v2);
 
 ```rust
 fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
-    // do stuff with v1 and v2
+    // Do stuff with `v1` and `v2`.
 
-    // return the answer
+    //  Return the answer.
     42
 }
 
@@ -53,7 +53,7 @@ let v2 = vec![1, 2, 3];
 
 let answer = foo(&v1, &v2);
 
-// we can use v1 and v2 here!
+// We can use `v1` and `v2` here!
 ```
 
 一个更具体的例子：
@@ -67,10 +67,10 @@ fn main() {
     // Borrow two vectors and sum them.
     // This kind of borrowing does not allow mutation through the borrowed reference.
     fn foo(v1: &Vec<i32>, v2: &Vec<i32>) -> i32 {
-        // do stuff with v1 and v2
+        // Do stuff with `v1` and `v2`.
         let s1 = sum_vec(v1);
         let s2 = sum_vec(v2);
-        // return the answer
+        // Return the answer.
         s1 + s2
     }
 
@@ -198,12 +198,12 @@ fn main() {
 fn main() {
     let mut x = 5;
 
-    let y = &mut x;    // -+ &mut borrow of x starts here
+    let y = &mut x;    // -+ &mut borrow of `x` starts here.
                        //  |
     *y += 1;           //  |
                        //  |
-    println!("{}", x); // -+ - try to borrow x here
-}                      // -+ &mut borrow of x ends here
+    println!("{}", x); // -+ - Try to borrow `x` here.
+}                      // -+ &mut borrow of `x` ends here.
 ```
 
 这些作用域冲突了：我们不能在`y`在作用域中时生成一个`&x`。
@@ -214,11 +214,11 @@ fn main() {
 let mut x = 5;
 
 {
-    let y = &mut x; // -+ &mut borrow starts here
+    let y = &mut x; // -+ &mut borrow starts here.
     *y += 1;        //  |
-}                   // -+ ... and ends here
+}                   // -+ ... and ends here.
 
-println!("{}", x);  // <- try to borrow x here
+println!("{}", x);  // <- Try to borrow `x` here.
 ```
 
 这就没有问题了。我们的可变借用在我们创建一个不可变引用之前离开了作用域。不过作用域是看清一个借用持续多久的关键。

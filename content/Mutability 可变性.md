@@ -1,14 +1,14 @@
 # 可变性
 
-> [mutability.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/mutability.md)
+> [mutability.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/mutability.md)
 > <br>
-> commit 6a85183e6f7c29777e1058a88f328e05137abb4d
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
 ```rust
 let x = 5;
-x = 6; // error!
+x = 6; // Error!
 ```
 
 我们可以使用`mut`关键字来引入可变性：
@@ -16,7 +16,7 @@ x = 6; // error!
 ```rust
 let mut x = 5;
 
-x = 6; // no problem!
+x = 6; // No problem!
 ```
 
 这是一个可变的[变量绑定](Variable Bindings 变量绑定.md)。当一个绑定是可变的，它意味着你可以改变它指向的内容。所以在上面的例子中，`x`的值并没有多大的变化，不过这个绑定从一个`i32`变成了另外一个。
@@ -101,7 +101,7 @@ let z = x.borrow_mut();
 ```rust
 struct Point {
     x: i32,
-    mut y: i32, // nope
+    mut y: i32, // Nope.
 }
 ```
 
@@ -119,7 +119,7 @@ a.x = 10;
 
 let b = Point { x: 5, y: 6};
 
-b.x = 10; // error: cannot assign to immutable field `b.x`
+b.x = 10; // Error: cannot assign to immutable field `b.x`
 ```
 
 然而，通过使用`Cell<T>`，你可以模拟字段级别的可变性：

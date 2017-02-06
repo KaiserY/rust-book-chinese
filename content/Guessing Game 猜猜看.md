@@ -1,8 +1,8 @@
 # 猜猜看
 
-> [guessing-game.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/guessing-game.md)
+> [guessing-game.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/guessing-game.md)
 > <br>
-> commit 9cc98612d70cb2dca1d1f5782648f434645fc7d6
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 让我学习一些 Rust！作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是太大了还是太小了。猜对了，它会祝贺我们。听起来如何？
 
@@ -13,6 +13,7 @@
 ```bash
 $ cd ~/projects
 $ cargo new guessing_game --bin
+     Created binary (application) `guessing_game` project
 $ cd guessing_game
 ```
 
@@ -43,6 +44,7 @@ fn main() {
 ```bash
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.53 secs
 ```
 
 很好！再次打开你的`src/main.rs`文件。我们会将所有代码写在这个文件里。稍后我们会讲到多文件项目。
@@ -52,6 +54,7 @@ $ cargo build
 ```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.0 secs
      Running `target/debug/guessing_game`
 Hello, world!
 ```
@@ -180,10 +183,13 @@ io::stdin()
 ```bash
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
-src/main.rs:10:5: 10:39 warning: unused result which must be used,
-#[warn(unused_must_use)] on by default
-src/main.rs:10     io::stdin().read_line(&mut guess);
-                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+warning: unused result which must be used, #[warn(unused_must_use)] on by default
+  --> src/main.rs:10:5
+   |
+10 |     io::stdin().read_line(&mut guess);
+   |     ^
+
+    Finished debug [unoptimized + debuginfo] target(s) in 0.42 secs
 ```
 
 Rust警告我们我们并未使用`Result`的值。这个警告来自`io::Result`的一个特殊注解。Rust 尝试告诉你你并未处理一个可能的错误。阻止错误的正确方法是老实编写错误处理。幸运的是，如果我们只是想如果这有一个问题就崩溃的话，我们可以用这两个小方法。如果我们想从错误中恢复什么的，我们得做点别的，不过我们会把它留给接下来的项目。
@@ -204,13 +210,14 @@ let y = 10;
 println!("x and y: {} and {}", x, y);
 ```
 
-简单加愉快。
+轻松加愉快。
 
 总而言之，这只是一个观光。我们可以用`cargo run`运行我们写的：
 
 ```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.44 secs
      Running `target/debug/guessing_game`
 Guess the number!
 Please input your guess.
@@ -255,6 +262,7 @@ $ cargo build
 
 ```bash
 $ cargo build
+    Finished debug [unoptimized + debuginfo] target(s) in 0.0 secs
 ```
 
 没错，没有输出！Cargo 知道我们的项目被构建了，并且所有它的依赖也被构建了，所以没有理由再做一遍所有这些。没有事情做，它简单地退出了。如果我们再打开`src/main.rs`，做一个无所谓的修改，然后接着再保存，我们就会看到一行：
@@ -262,13 +270,14 @@ $ cargo build
 ```bash
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.45 secs
 ```
 
-所以，我们告诉Cargo我们需要任何`0.3.x`版本的`rand`，并且因此它获取在本文被编写时的最新版，`v0.3.8`。不过你瞧瞧当下一周，`v0.3.9`出来了，带有一个重要的 bug 修改吗？虽然 bug 修改很重要，不过如果`0.3.9`版本包含破坏我们代码的回归呢？
+所以，我们告诉Cargo我们需要任何`0.3.x`版本的`rand`，并且因此它获取在本文被编写时的最新版，`v0.3.14`。不过你瞧瞧当下一周，`v0.3.15`出来了，带有一个重要的 bug 修改吗？虽然 bug 修改很重要，不过如果`0.3.15`版本包含破坏我们代码的回归缺陷（regression）呢？
 
 这个问题的回答是现在你会在你项目目录中找到的`Cargo.lock`。当你第一次构建你的项目的时候，Cargo 查明所有符合你的要求的版本，并接着把它们写到了`Cargo.lock`文件里。当你在未来构建你的项目的时候，Cargo 会注意到`Cargo.lock`的存在，并接着使用指定的版本而不是再次去做查明版本的所有工作。这让你有了一个可重复的自动构建。换句话说，我们会保持在`0.3.8`直到我们显式的升级，这对任何使用我们共享的代码的人同样有效，感谢锁文件。
 
-当我们**确实**想要使用`v0.3.9`怎么办？Cargo 有另一个命令，`update`，它代表“忽略锁，搞清楚所有我们指定的最新版本。如果这能工作，将这些版本写入锁文件”。不过，默认，Cargo 只会寻找大于`0.3.0`小于`0.4.0`的版本。如果你想要移动到`0.4.x`，我们不得不直接更新`Cargo.toml`文件。当我们这么做，下一次我们`cargo build`，Cargo会更新索引并重新计算我们的`rand`要求。
+当我们**确实**想要使用`v0.3.15`怎么办？Cargo 有另一个命令，`update`，它代表“忽略锁，搞清楚所有我们指定的最新版本。如果这能工作，将这些版本写入锁文件”。不过，默认，Cargo 只会寻找大于`0.3.0`小于`0.4.0`的版本。如果你想要移动到`0.4.x`，我们不得不直接更新`Cargo.toml`文件。当我们这么做，下一次我们`cargo build`，Cargo会更新索引并重新计算我们的`rand`要求。
 
 关于[Cargo](http://doc.crates.io/)和[它的生态系统](http://doc.crates.io/specifying-dependencies.html)有很多东西要说，不过眼下，这是我们需要知道的一切。Cargo让重用库变得真正的简单，并且Rustacean们可以编写更小的由很多子包组装成的项目。
 
@@ -319,6 +328,7 @@ fn main() {
 ```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.55 secs
      Running `target/debug/guessing_game`
 Guess the number!
 The secret number is: 7
@@ -326,6 +336,7 @@ Please input your guess.
 4
 You guessed: 4
 $ cargo run
+    Finished debug [unoptimized + debuginfo] target(s) in 0.0 secs
      Running `target/debug/guessing_game`
 Guess the number!
 The secret number is: 83
@@ -408,15 +419,20 @@ match guess.cmp(&secret_number) {
 ```bash
 $ cargo build
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
-src/main.rs:28:21: 28:35 error: mismatched types:
- expected `&collections::string::String`,
-    found `&_`
-(expected struct `collections::string::String`,
-    found integral variable) [E0308]
-src/main.rs:28     match guess.cmp(&secret_number) {
-                                   ^~~~~~~~~~~~~~
+error[E0308]: mismatched types
+  --> src/main.rs:23:21
+   |
+23 |     match guess.cmp(&secret_number) {
+   |                     ^^^^^^^^^^^^^^ expected struct `std::string::String`, found integral variable
+   |
+   = note: expected type `&std::string::String`
+   = note:    found type `&{integer}`
+
 error: aborting due to previous error
-Could not compile `guessing_game`.
+
+error: Could not compile `guessing_game`.
+
+To learn more, run the command again with --verbose.
 ```
 
 噢！这是一个大错误。它的核心是我们有“不匹配的类型”。Rust 有一个强大的静态类型系统。然而，它也有类型推断。当我们写`let guess = String::new()`，Rust能够推断出`guess`应该是一个`String`，并因此不需要我们写出类型。而我们的`secret_number`，这有很多类型可以有从`1`到`100`的值：`i32`，一个 32 位数，或者`u32`，一个无符号的32位值，或者`i64`，一个 64 位值。或者其它什么的。目前为止，这并不重要，所以 Rust 默认为`i32`。然而，这里，Rust 并不知道如何比较`guess`和`secret_number`。它们必须是相同的类型。最终，我们想要我们作为输入读到的`String`转换为一个真正的数字类型，来进行比较。我们可以用额外 3 行来搞定它。这是我们的新程序：
@@ -455,7 +471,7 @@ fn main() {
 }
 ```
 
-新的 3 行是：
+新的两行是：
 
 ```rust
     let guess: u32 = guess.trim().parse()
@@ -479,6 +495,7 @@ guess.trim().parse()
 ```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.57 secs
      Running `target/guessing_game`
 Guess the number!
 The secret number is: 58
@@ -493,6 +510,7 @@ Too big!
 现在我们让游戏大体上能玩了，不过我们只能猜一次。让我们增加循环来改变它！
 
 ## 循环
+
 `loop`关键字给我们一个无限循环。让我们加上它：
 
 ```rust
@@ -531,11 +549,12 @@ fn main() {
 }
 ```
 
-并试试看。不过稍等，难道我们仅仅加上一个无限循环吗？是的。记得我们我们关于`parse()`的讨论吗？如果我们给出一个非数字回答，明显我们会`return`并退出：
+并试试看。不过稍等，难道我们仅仅加上一个无限循环吗？是的。记得我们我们关于`parse()`的讨论吗？如果我们给出一个非数字回答，明显我们会`panic!`并退出：
 
 ```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.58 secs
      Running `target/guessing_game`
 Guess the number!
 The secret number is: 59
@@ -656,6 +675,7 @@ let guess: u32 = match guess.trim().parse() {
 ```bash
 $ cargo run
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 0.57 secs
      Running `target/guessing_game`
 Guess the number!
 The secret number is: 61

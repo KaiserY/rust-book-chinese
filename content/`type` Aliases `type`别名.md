@@ -1,6 +1,6 @@
 # type 别名
 
-> [type-aliases.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/type-aliases.md)
+> [type-aliases.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/type-aliases.md)
 > <br>
 > commit 1eb36b80a43154107729da3e496d0b3fb9e57259
 

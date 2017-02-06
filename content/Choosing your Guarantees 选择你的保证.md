@@ -1,8 +1,8 @@
 # 选择你的保证
 
-> [choosing-your-guarantees.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/choosing-your-guarantees.md)
+> [choosing-your-guarantees.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/choosing-your-guarantees.md)
 > <br>
-> commit 658253d30c124b67c964904400c4dc58a1b557b2
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 的一个重要特性是允许我们控制一个程序的开销和（安全）保证。
 
@@ -19,7 +19,7 @@ Rust 标准库中有多种“wrapper 类型”的抽象，他们代表了大量�
 ```rust
 let x = Box::new(1);
 let y = x;
-// x no longer accessible here
+// `x` is no longer accessible here.
 ```
 
 这里，装箱被**移动**进了`y`。因为`x`不再拥有它，此后编译器不再允许程序猿使用`x`。相似的一个函数可以通过返回装箱来**移出**函数。
@@ -183,9 +183,9 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 ```rust
 {
     let guard = mutex.lock();
-    // guard dereferences mutably to the inner type
+    // `guard` dereferences mutably to the inner type.
     *guard += 1;
-} // lock released when destructor runs
+} // Lock is released when destructor runs.
 ```
 
 `RwLock`对多线程读有额外的效率优势。只要没有writer，对于共享的数据总是可以安全的拥有多个reader；同时`RwLock`让reader们获取一个“读取锁”。这样的锁可以并发的获取并通过引用计数记录。writer必须获取一个“写入锁”，它只有在所有reader都离开作用域时才能获取。

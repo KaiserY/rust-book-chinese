@@ -1,8 +1,8 @@
 # 闭包
 
-> [closures.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/closures.md)
+> [closures.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/closures.md)
 > <br>
-> commit c0bc35a3640cb22c690169bffa2a3cb1a84523a9
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 有时为了整洁和复用打包一个函数和**自由变量**（*free variables*）是很有用的。自由变量是指被用在函数中来自函数内部作用域并只用于函数内部的变量。对此，我们用一个新名字“闭包”而且 Rust 提供了大量关于他们的实现，正如我们将看到的。
 
@@ -97,7 +97,7 @@ let mut num = 5;
 {
     let plus_num = |x: i32| x + num;
 
-} // plus_num goes out of scope, borrow of num ends
+} // `plus_num` goes out of scope; borrow of `num` ends.
 
 let y = &mut num;
 ```

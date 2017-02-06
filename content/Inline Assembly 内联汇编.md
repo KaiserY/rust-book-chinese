@@ -1,8 +1,8 @@
 # 内联汇编
 
-> [inline-assembly.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/inline-assembly.md)
+> [inline-assembly.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/inline-assembly.md)
 > <br>
-> commit 8aaf0f894bfbbc8e1135e42ce7cb9258d55f41cc
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 为了极端底层操作和性能要求，你可能希望直接控制 CPU。Rust 通过`asm!`宏来支持使用内联汇编。
 
@@ -32,7 +32,7 @@ fn foo() {
     }
 }
 
-// other platforms
+// Other platforms:
 #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
 fn foo() { /* ... */ }
 
@@ -118,7 +118,7 @@ result
 # #![feature(asm)]
 # #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 # fn main() { unsafe {
-// Put the value 0x200 in eax
+// Put the value 0x200 in eax:
 asm!("mov $$0x200, %eax" : /* no outputs */ : /* no inputs */ : "eax");
 # } }
 # #[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]

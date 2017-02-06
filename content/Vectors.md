@@ -1,8 +1,8 @@
 # Vectors
 
-> [vectors.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/vectors.md)
+> [vectors.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/vectors.md)
 > <br>
-> commit c81c75076c05990af6f71e56ccc12d7b196ee25c
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 “Vector”是一个动态或“可增长”的数组，被实现为标准库类型[`Vec<T>`](http://doc.rust-lang.org/std/vec/)（其中`<T>`是一个[泛型](Generics 泛型.md)语句）。vector总是在堆上分配数据。vector与切片就像`String`与`&str`一样。你可以使用`vec!`宏来创建它：
 
@@ -39,10 +39,10 @@ let v = vec![1, 2, 3, 4, 5];
 let i: usize = 0;
 let j: i32 = 0;
 
-// works
+// Works:
 v[i];
 
-// doesn’t
+// Doesn’t:
 v[j];
 ```
 

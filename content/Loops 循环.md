@@ -1,6 +1,6 @@
 # 循环
 
-> [loops.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/loops.md)
+> [loops.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/loops.md)
 > <br>
 > commit 3b5d71e0cfb2d81f588a0b8929e796f3b68488e0
 
@@ -174,8 +174,8 @@ for x in 0..10 {
 ```rust
 'outer: for x in 0..10 {
     'inner: for y in 0..10 {
-        if x % 2 == 0 { continue 'outer; } // continues the loop over x
-        if y % 2 == 0 { continue 'inner; } // continues the loop over y
+        if x % 2 == 0 { continue 'outer; } // Continues the loop over `x`.
+        if y % 2 == 0 { continue 'inner; } // Continues the loop over `y`.
         println!("x: {}, y: {}", x, y);
     }
 }

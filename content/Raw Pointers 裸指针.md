@@ -1,8 +1,8 @@
 # 裸指针
 
-> [raw-pointers.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/raw-pointers.md)
+> [raw-pointers.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/raw-pointers.md)
 > <br>
-> commit 565474aadda4d2b866396f87df1626a0a63f80f0
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 的标准库中有一系列不同的智能指针类型，不过这有两个类型是十分特殊的。Rust的安全大多来源于编译时检查，不过裸指针并没有这样的保证，使用它们是[`unsafe`](`unsafe` 不安全代码.md)的。
 
@@ -70,11 +70,11 @@ println!("raw points at {}", points_at);
 推荐的转换方法是
 
 ```rust
-// explicit cast
+// Explicit cast:
 let i: u32 = 1;
 let p_imm: *const u32 = &i as *const u32;
 
-// implicit coercion
+// Implicit coercion:
 let mut m: u32 = 2;
 let p_mut: *mut u32 = &mut m;
 

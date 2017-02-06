@@ -1,8 +1,8 @@
 # 枚举
 
-> [enums.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/enums.md)
+> [enums.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/enums.md)
 > <br>
-> commit 31e39cd05c9b28c78b087aa9314f246b0b0b5cfa
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 中的一个`enum`是一个代表数个可能变量的数据的类型。每个变量都可选是否关联数据：
 
@@ -37,9 +37,9 @@ let y: BoardGameTurn = BoardGameTurn::Move { squares: 1 };
 
 枚举类型的一个值包含它是哪个变量的信息，以及任何与变量相关的数据。这有时被作为一个“标记的联合”被提及。因为数据包括一个“标签”表明它的类型是什么。编译器使用这个信息来确保安全的访问枚举中的数据。例如，我们不能简单的尝试解构一个枚举值，就像它是其中一个可能的变体那样：
 
-```rust
+```rust,ignore
 fn process_color_change(msg: Message) {
-    let Message::ChangeColor(r, g, b) = msg; // compile-time error
+    let Message::ChangeColor(r, g, b) = msg; // This causes a compile-time error.
 }
 ```
 

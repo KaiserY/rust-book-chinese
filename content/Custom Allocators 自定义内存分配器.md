@@ -1,8 +1,8 @@
 # 自定义内存分配器
 
-> [custom-allocators.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/custom-allocators.md)
+> [custom-allocators.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/custom-allocators.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 分配内存并不总是最简单的事情，同时通常 Rust 默认会负责它，不过经常自定义内存分配会变得必要。编译器和标准库目前允许在编译时切换目前默认使用的全局分配器。设计目前称作[RFC 1183](https://github.com/rust-lang/rfcs/blob/master/text/1183-swap-out-jemalloc.md)不过这里我们会教你如何获取你自己的分配器并运行起来。
 
@@ -24,7 +24,7 @@
 extern crate alloc_system;
 
 fn main() {
-    let a = Box::new(4); // allocates from the system allocator
+    let a = Box::new(4); // Allocates from the system allocator.
     println!("{}", a);
 }
 ```
@@ -38,7 +38,7 @@ fn main() {
 extern crate alloc_jemalloc;
 
 pub fn foo() {
-    let a = Box::new(4); // allocates from jemalloc
+    let a = Box::new(4); // Allocates from jemalloc.
     println!("{}", a);
 }
 # fn main() {}
@@ -49,11 +49,11 @@ pub fn foo() {
 有时甚至 jemalloc 与系统分配器之间的选择都是不够的并需要一个新的自定义的分配器。这种情况你要编写你自己实现了分配器 API（例如与`alloc_system`和`alloc_jemallo`相同）的 crate。作为一个例子，让我们看看一个简单的和声明化的`alloc_system`版本：
 
 ```rust
-# // only needed for rustdoc --test down below
+# // Only needed for rustdoc --test down below.
 # #![feature(lang_items)]
 // The compiler needs to be instructed that this crate is an allocator in order
 // to realize that when this is linked in another allocator like jemalloc should
-// not be linked in
+// not be linked in.
 #![feature(allocator)]
 #![allocator]
 
@@ -62,7 +62,7 @@ pub fn foo() {
 // however, can use all of libcore.
 #![no_std]
 
-// Let's give a unique name to our custom allocator
+// Let's give a unique name to our custom allocator:
 #![crate_name = "my_allocator"]
 #![crate_type = "rlib"]
 
@@ -103,7 +103,7 @@ pub extern fn __rust_reallocate(ptr: *mut u8, _old_size: usize, size: usize,
 #[no_mangle]
 pub extern fn __rust_reallocate_inplace(_ptr: *mut u8, old_size: usize,
                                         _size: usize, _align: usize) -> usize {
-    old_size // this api is not supported by libc
+    old_size // This api is not supported by libc.
 }
 
 #[no_mangle]
@@ -111,7 +111,7 @@ pub extern fn __rust_usable_size(size: usize, _align: usize) -> usize {
     size
 }
 
-# // just needed to get rustdoc to test this
+# // Only needed to get rustdoc to test this:
 # fn main() {}
 # #[lang = "panic_fmt"] fn panic_fmt() {}
 # #[lang = "eh_personality"] fn eh_personality() {}
@@ -126,7 +126,7 @@ pub extern fn __rust_usable_size(size: usize, _align: usize) -> usize {
 extern crate my_allocator;
 
 fn main() {
-    let a = Box::new(8); // allocates memory via our custom allocator crate
+    let a = Box::new(8); // Allocates memory via our custom allocator crate.
     println!("{}", a);
 }
 ```

@@ -1,8 +1,8 @@
 # 注释
 
-> [comments.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/comments.md)
+> [comments.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/comments.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 现在我们写了一些函数，是时候学习一下注释了。注释是你帮助其他程序员理解你的代码的备注。编译器基本上会忽略它们。
 
@@ -11,14 +11,14 @@ Rust有两种需要你了解的注释格式：**行注释**（*line comments*）
 ```rust
 // Line comments are anything after ‘//’ and extend to the end of the line.
 
-let x = 5; // this is also a line comment.
+let x = 5; // This is also a line comment.
 
 // If you have a long explanation for something, you can put line comments next
 // to each other. Put a space between the // and your comment so that it’s
 // more readable.
 ```
 
-另一种注释是文档注释。文档注释使用`///`而不是`//`，并且内建Markdown标记支持：
+另一种注释是文档注释。文档注释使用`///`而不是`//`，并且内建 Markdown 标记支持：
 
 ~~~rust
 /// Adds one to the number given.

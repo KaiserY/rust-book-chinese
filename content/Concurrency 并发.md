@@ -1,8 +1,8 @@
 # 并发
 
-> [concurrency.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/concurrency.md)
+> [concurrency.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/concurrency.md)
 > <br>
-> commit 335d393114da99c1716eb1dfb0af8c4efcb51b8a
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 并发与并行是计算机科学中相当重要的两个主题，并且在当今生产环境中也十分热门。计算机正拥有越来越多的核心，然而很多程序员还没有准备好去完全的利用它们。
 
@@ -152,10 +152,10 @@ fn main() {
     let mut data = Rc::new(vec![1, 2, 3]);
 
     for i in 0..3 {
-        // create a new owned reference
+        // Create a new owned reference:
         let data_ref = data.clone();
 
-        // use it in a thread
+        // Use it in a thread:
         thread::spawn(move || {
             data_ref[0] += i;
         });
@@ -293,8 +293,8 @@ use std::sync::mpsc;
 fn main() {
     let data = Arc::new(Mutex::new(0));
 
-    // `tx` is the "transmitter" or "sender"
-    // `rx` is the "receiver"
+    // `tx` is the "transmitter" or "sender".
+    // `rx` is the "receiver".
     let (tx, rx) = mpsc::channel();
 
     for _ in 0..10 {

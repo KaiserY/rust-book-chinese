@@ -1,6 +1,6 @@
 # const 和 static
 
-> [const-and-static.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/const-and-static.md)
+> [const-and-static.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/const-and-static.md)
 > <br>
 > commit d001e8ad179b2d0b57272d1c875d93099fc347cb
 

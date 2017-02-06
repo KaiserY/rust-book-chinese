@@ -1,8 +1,8 @@
 # 变量绑定
 
-> [variable-bindings.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/variable-bindings.md)
+> [variable-bindings.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/variable-bindings.md)
 > <br>
-> commit 73e5a98e71f1f4fa948f0f2111b4c5688c0ee6dc
+> commit 49c6b3c23f686448d1ac888739d76b11cbe6355e
 
 事实上每一个非“Hello World” Rust 程序都用了**变量绑定**。他们将一些值绑定到一个名字上，这样可以在之后使用他们。`let`被用来声明一个绑定，像这样：
 
@@ -144,7 +144,7 @@ fn main() {
         let y: i32 = 3;
         println!("The value of x is {} and value of y is {}", x, y);
     }
-    println!("The value of x is {} and value of y is {}", x, y); // This won't work
+    println!("The value of x is {} and value of y is {}", x, y); // This won't work.
 }
 ```
 
@@ -154,7 +154,7 @@ fn main() {
 $ cargo build
    Compiling hello v0.1.0 (file:///home/you/projects/hello_world)
 main.rs:7:62: 7:63 error: unresolved name `y`. Did you mean `x`? [E0425]
-main.rs:7     println!("The value of x is {} and value of y is {}", x, y); // This won't work
+main.rs:7     println!("The value of x is {} and value of y is {}", x, y); // This won't work.
                                                                        ^
 note: in expansion of format_args!
 <std macros>:2:25: 2:56 note: expansion site
@@ -174,13 +174,13 @@ To learn more, run the command again with --verbose.
 ```rust
 let x: i32 = 8;
 {
-    println!("{}", x); // Prints "8"
+    println!("{}", x); // Prints "8".
     let x = 12;
-    println!("{}", x); // Prints "12"
+    println!("{}", x); // Prints "12".
 }
-println!("{}", x); // Prints "8"
+println!("{}", x); // Prints "8".
 let x =  42;
-println!("{}", x); // Prints "42"
+println!("{}", x); // Prints "42".
 ```
 
 隐藏和可变绑定可能表现为同一枚硬币的两面，他们是两个不同的概念，不能互换使用。举个例子，隐藏允许我们将一个名字重绑定为不同的类型。它也可以改变一个绑定的可变性。注意隐藏并不改变和销毁被绑定的值，这个值会在离开作用域之前继续存在，即便无法通过任何手段访问到它。
@@ -188,8 +188,8 @@ println!("{}", x); // Prints "42"
 ```rust
 let mut x: i32 = 1;
 x = 7;
-let x = x; // x is now immutable and is bound to 7
+let x = x; // `x` is now immutable and is bound to `7`
 
 let y = 4;
-let y = "I can also be bound to text!"; // y is now of a different type
+let y = "I can also be bound to text!"; // `y` is now of a different type
 ```

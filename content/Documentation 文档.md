@@ -1,8 +1,8 @@
 # 文档
 
-> [documentation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/documentation.md)
+> [documentation.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/documentation.md)
 > <br>
-> commit 159d1ab540cd53f1e63db0e00a50180d535a8bce
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 在任何软件项目中，文档都是重要的部分，其同样在Rust中是头等重要的。让我们讨论下Rust提供给我们的编写项目文档的工具。
 
@@ -25,7 +25,7 @@ Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rus
 /// let five = Rc::new(5);
 /// ```
 pub fn new(value: T) -> Rc<T> {
-    // implementation goes here
+    // Implementation goes here.
 }
 ~~~
 
@@ -407,7 +407,7 @@ mod foo {
 ```rust
 //! A module for using `foo`s.
 //!
-//! The `foo` module contains a lot of useful functionality blah blah blah
+//! The `foo` module contains a lot of useful functionality blah blah blah...
 ```
 
 ### Crate 文档

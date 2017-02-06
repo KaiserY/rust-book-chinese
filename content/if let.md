@@ -1,6 +1,6 @@
 # if let
 
-> [if-let.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/if-let.md)
+> [if-let.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/if-let.md)
 > <br>
 > commit 797a0bd1c13175398aa0e2e45f6dbb61bcb8c329
 

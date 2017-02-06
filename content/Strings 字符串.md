@@ -1,8 +1,8 @@
 # 字符串
 
-> [strings.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/strings.md)
+> [strings.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/strings.md)
 > <br>
-> commit 565474aadda4d2b866396f87df1626a0a63f80f0
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 对于每一个程序，字符串都是需要掌握的重要内容。由于Rust主要着眼于系统编程，所以它的字符串处理系统与其它语言有些许区别。每当你碰到一个可变大小的数据结构时，情况都会变得很微妙，而字符串正是可变大小的数据结构。这也就是说，Rust的字符串与一些像C这样的系统编程语言也不相同。
 
@@ -64,10 +64,10 @@ fn main() {
 ```rust
 use std::net::TcpStream;
 
-TcpStream::connect("192.168.0.1:3000"); // &str parameter
+TcpStream::connect("192.168.0.1:3000"); // Parameter is of type &str.
 
 let addr_string = "192.168.0.1:3000".to_string();
-TcpStream::connect(&*addr_string); // convert addr_string to &str
+TcpStream::connect(&*addr_string); // Convert `addr_string` to &str.
 ```
 
 把`String`转换为`&str`的代价很小，不过从`&str`转换到`String`涉及到分配内存。除非必要，没有理由这样做！
@@ -113,7 +113,7 @@ println!("");
 
 ```rust
 # let hachiko = "忠犬ハチ公";
-let dog = hachiko.chars().nth(1); // kinda like hachiko[1]
+let dog = hachiko.chars().nth(1); // Kinda like `hachiko[1]`.
 ```
 
 这强调了我们不得不遍历整个`char`的列表。

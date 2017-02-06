@@ -1,6 +1,6 @@
 # 匹配
 
-> [match.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/match.md)
+> [match.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/match.md)
 > <br>
 > commit ccafdae9a11925cbc79c6ea4446688ef71bae1a1
 

@@ -1,6 +1,6 @@
 # 固有功能
 
-> [intrinsics.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/intrinsics.md)
+> [intrinsics.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/intrinsics.md)
 > <br>
 > commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
 

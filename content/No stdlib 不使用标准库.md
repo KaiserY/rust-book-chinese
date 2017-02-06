@@ -1,8 +1,8 @@
 # 不使用标准库
 
-> [no-stdlib.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/no-stdlib.md)
+> [no-stdlib.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/no-stdlib.md)
 > <br>
-> commit e586d2174bd732bcc4a430266f371fbb82b39398
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 的标准库提供了很多有用的功能，不过它假设它的 host 系统的多种功能的支持：线程，网络，堆分配和其他功能。有些系统并没有这些功能，不过，Rust也能在这些系统上工作。为此，我们可以通过一个属性来告诉 Rust 我们不想使用标准库：`#![no_std]`。
 
@@ -32,10 +32,10 @@ libc = { version = "0.2.14", default-features = false }
 #![feature(start)]
 #![no_std]
 
-// Pull in the system libc library for what crt0.o likely requires
+// Pull in the system libc library for what crt0.o likely requires.
 extern crate libc;
 
-// Entry point for this program
+// Entry point for this program.
 #[start]
 fn start(_argc: isize, _argv: *const *const u8) -> isize {
     0
@@ -72,10 +72,10 @@ pub extern fn rust_begin_panic(_msg: core::fmt::Arguments,
 #![no_std]
 #![no_main]
 
-// Pull in the system libc library for what crt0.o likely requires
+// Pull in the system libc library for what crt0.o likely requires.
 extern crate libc;
 
-// Entry point for this program
+// Entry point for this program.
 #[no_mangle] // ensure that this symbol is called `main` in the output
 pub extern fn main(_argc: i32, _argv: *const *const u8) -> i32 {
     0

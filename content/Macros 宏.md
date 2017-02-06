@@ -1,8 +1,8 @@
 # 宏
 
-> [macros.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/macros.md)
+> [macros.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/macros.md)
 > <br>
-> commit 66a2578064c2572a355f87f2405859a1c347b590
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 到目前为止你已经学到了不少Rust提供的抽象和重用代码的工具了。这些代码重用单元有丰富的语义结构。例如，函数有类型签名，类型参数有特性限制并且能重载的函数必须属于一个特定的特性。
 
@@ -397,33 +397,33 @@ extern crate baz;
 ```rust
 macro_rules! m1 { () => (()) }
 
-// visible here: m1
+// Visible here: `m1`.
 
 mod foo {
-    // visible here: m1
+    // Visible here: `m1`.
 
     #[macro_export]
     macro_rules! m2 { () => (()) }
 
-    // visible here: m1, m2
+    // Visible here: `m1`, `m2`.
 }
 
-// visible here: m1
+// Visible here: `m1`.
 
 macro_rules! m3 { () => (()) }
 
-// visible here: m1, m3
+// Visible here: `m1`, `m3`.
 
 #[macro_use]
 mod bar {
-    // visible here: m1, m3
+    // Visible here: `m1`, `m3`.
 
     macro_rules! m4 { () => (()) }
 
-    // visible here: m1, m3, m4
+    // Visible here: `m1`, `m3`, `m4`.
 }
 
-// visible here: m1, m3, m4
+// Visible here: `m1`, `m3`, `m4`.
 # fn main() { }
 ```
 
@@ -490,7 +490,7 @@ macro_rules! bct {
     (1, $p:tt, $($ps:tt),* ; $($ds:tt),*)
         => (bct!($($ps),*, 1, $p ; $($ds),*));
 
-    // halt on empty data string
+    // Halt on empty data string:
     ( $($ps:tt),* ; )
         => (());
 }
@@ -530,7 +530,7 @@ let v = vec![0; 100];
 assert!(true);
 assert_eq!(5, 3 + 2);
 
-// nope :(
+// Nope :(
 
 assert!(5 < 3);
 assert_eq!(5, 3);

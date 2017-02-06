@@ -1,8 +1,8 @@
 # 外部函数接口(FFI)
 
-> [ffi.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/ffi.md)
+> [ffi.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/ffi.md)
 > <br>
-> commit aadbcffb7c59718834c63c20ab7ce6276aef430c
+> commit 614b74c24bb80e17230e58a74ef5a4725972f84a
 
 ## 介绍
 
@@ -242,7 +242,7 @@ extern {
 fn main() {
     unsafe {
         register_callback(callback);
-        trigger_callback(); // Triggers the callback
+        trigger_callback(); // Triggers the callback.
     }
 }
 ```
@@ -259,7 +259,7 @@ int32_t register_callback(rust_callback callback) {
 }
 
 void trigger_callback() {
-  cb(7); // Will call callback(7) in Rust
+  cb(7); // Will call callback(7) in Rust.
 }
 ```
 
@@ -277,13 +277,13 @@ Rust代码：
 #[repr(C)]
 struct RustObject {
     a: i32,
-    // other members
+    // Other members...
 }
 
 extern "C" fn callback(target: *mut RustObject, a: i32) {
     println!("I'm called from C with value {0}", a);
     unsafe {
-        // Update the value in RustObject with the value received from the callback
+        // Update the value in RustObject with the value received from the callback:
         (*target).a = a;
     }
 }
@@ -296,7 +296,7 @@ extern {
 }
 
 fn main() {
-    // Create the object that will be referenced in the callback
+    // Create the object that will be referenced in the callback:
     let mut rust_object = Box::new(RustObject { a: 5 });
 
     unsafe {
@@ -320,7 +320,7 @@ int32_t register_callback(void* callback_target, rust_callback callback) {
 }
 
 void trigger_callback() {
-  cb(cb_target, 7); // Will call callback(&rustObject, 7) in Rust
+  cb(cb_target, 7); // Will call callback(&rustObject, 7) in Rust.
 }
 ```
 
@@ -478,7 +478,7 @@ use libc::c_int;
 
 # #[cfg(hidden)]
 extern "C" {
-    /// Register the callback.
+    /// Registers the callback.
     fn register(cb: Option<extern "C" fn(Option<extern "C" fn(c_int) -> c_int>, c_int) -> c_int>);
 }
 # unsafe fn register(_: Option<extern "C" fn(Option<extern "C" fn(c_int) -> c_int>,
@@ -529,24 +529,28 @@ pub extern fn hello_rust() -> *const u8 {
 
 ### FFI 和 panic
 
-当使用 FFI 时留意`panic!`是很重要的。一个跨越FFI边界的`panic!`是未定义行为。如果你的代码可能panic，你应该在另一个线程运行它，这样panic不会出现在C代码中：
+当使用 FFI 时留意`panic!`是很重要的。一个跨越FFI边界的`panic!`是未定义行为。如果你在编写可能 panic 的代码，你应该使用 [`catch_unwind()`] 在一个闭包中运行它：
 
 ```rust
-use std::thread;
+use std::panic::catch_unwind;
 
 #[no_mangle]
 pub extern fn oh_no() -> i32 {
-    let h = thread::spawn(|| {
+    let result = catch_unwind(|| {
         panic!("Oops!");
     });
 
-    match h.join() {
-        Ok(_) => 1,
-        Err(_) => 0,
+    match result {
+        Ok(_) => 0,
+        Err(_) => 1,
     }
 }
-# fn main() {}
+fn main() {}
 ```
+
+注意 [`catch_unwind()`] 只捕获那些不严重的（unwinding） panic，不是那些会终止进程的。查看 [`catch_unwind()`] 的文档来获取更多信息。
+
+[`catch_unwind()`]: https://doc.rust-lang.org/std/panic/fn.catch_unwind.html
 
 ### 表示 opaque 结构体
 

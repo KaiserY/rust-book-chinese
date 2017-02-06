@@ -1,8 +1,8 @@
 # 结构体
 
-> [structs.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/structs.md)
+> [structs.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/structs.md)
 > <br>
-> commit 74e96299a22ef1629d7ea8268815fc2b82c7e194
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 结构体是一个创建更复杂数据类型的方法。例如，如果我们正在进行涉及到 2D 空间坐标的计算，我们将需要一个`x`和一个`y`值：
 
@@ -53,9 +53,9 @@ fn main() {
 
 Rust 在语言级别不支持字段可变性，所以你不能像这么写：
 
-```rust
+```rust,ignore
 struct Point {
-    mut x: i32,
+    mut x: i32, // This causes an error.
     y: i32,
 }
 ```
@@ -73,9 +73,9 @@ fn main() {
 
     point.x = 5;
 
-    let point = point; // now immutable
+    let point = point; // `point` is now immutable.
 
-    point.y = 6; // this causes an error
+    point.y = 6; // This causes an error.
 }
 ```
 
@@ -200,10 +200,10 @@ struct Point {
 你可以定义一个没有任何成员的结构体：
 
 ```rust
-struct Electron {} // use empty braces...
-struct Proton;     // ...or just a semicolon
+struct Electron {} // Use empty braces...
+struct Proton;     // ...or just a semicolon.
 
-// whether you declared the struct with braces or not, do the same when creating one
+// Whether you declared the struct with braces or not, do the same when creating one.
 let x = Electron {};
 let y = Proton;
 ```

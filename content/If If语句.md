@@ -1,6 +1,6 @@
-# If语句
+# If 语句
 
-> [if.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/if.md)
+> [if.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/if.md)
 > <br>
 > commit 56ab2a1cdefec1ddee00ee99d3fb710906714d1b
 

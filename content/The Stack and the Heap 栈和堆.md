@@ -1,6 +1,6 @@
 # 栈和堆
 
-> [the-stack-and-the-heap.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/the-stack-and-the-heap.md)
+> [the-stack-and-the-heap.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/the-stack-and-the-heap.md)
 > <br>
 > commit d90c16625f932a4e08a56c1f2f131d8c5ce1214c
 

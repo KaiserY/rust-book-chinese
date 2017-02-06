@@ -1,8 +1,8 @@
 # Traits
 
-> [traits.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/traits.md)
+> [traits.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/traits.md)
 > <br>
-> commit 5cab9525ae12a18ec0583ee1ddba3a9eb31a5cfd
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 
@@ -217,33 +217,29 @@ impl<T: PartialEq> Rectangle<T> { ... }
 
 ## 实现 trait 的规则（Rules for implementing traits）
 
-目前为止，我们只在结构体上添加 trait 实现，不过你可以为任何类型实现一个 trait。所以从技术上讲，你可以在`i32`上实现`HasArea`：
+目前为止，我们只在结构体上添加 trait 实现，不过你可以为任何类型实现一个 trait，比如`f32`。
 
 ```rust
-trait HasArea {
-    fn area(&self) -> f64;
+trait ApproxEqual {
+    fn approx_equal(&self, other: &Self) -> bool;
 }
-
-impl HasArea for i32 {
-    fn area(&self) -> f64 {
-        println!("this is silly");
-
-        *self as f64
+impl ApproxEqual for f32 {
+    fn approx_equal(&self, other: &Self) -> bool {
+        // Appropriate for `self` and `other` being close to 1.0.
+        (self - other).abs() <= ::std::f32::EPSILON
     }
 }
 
-5.area();
+println!("{}", 1.0.approx_equal(&1.00000001));
 ```
-
-在基本类型上实现方法被认为是不好的设计，即便这是可以的。
 
 这看起来有点像狂野西部（Wild West），不过这还有两个限制来避免情况失去控制。第一是如果 trait 并不定义在你的作用域，它并不能实现。这是个例子：为了进行文件I/O，标准库提供了一个[`Write`](http://doc.rust-lang.org/nightly/std/io/trait.Write.html)trait来为`File`增加额外的功能。默认，`File`并不会有这个方法：
 
 ```rust
 let mut f = std::fs::File::create("foo.txt").ok().expect("Couldn’t create foo.txt");
-let buf = b"whatever"; // byte string literal. buf: &[u8; 8]
+let buf = b"whatever"; // buf: &[u8; 8], a byte string literal.
 let result = f.write(buf);
-# result.unwrap(); // ignore the error
+# result.unwrap(); // Ignore the error.
 ```
 
 这里是错误：
@@ -262,7 +258,7 @@ use std::io::Write;
 let mut f = std::fs::File::create("foo.txt").expect("Couldn’t create foo.txt");
 let buf = b"whatever";
 let result = f.write(buf);
-# result.unwrap(); // ignore the error
+# result.unwrap(); // Ignore the error.
 ```
 
 这样就能无错误的编译了。
@@ -369,14 +365,14 @@ impl ConvertTo<i64> for i32 {
     fn convert(&self) -> i64 { *self as i64 }
 }
 
-// can be called with T == i32
+// Can be called with T == i32.
 fn normal<T: ConvertTo<i64>>(x: &T) -> i64 {
     x.convert()
 }
 
-// can be called with T == i64
+// Can be called with T == i64.
 fn inverse<T>(x: i32) -> T
-        // this is using ConvertTo as if it were "ConvertTo<i64>"
+        // This is using ConvertTo as if it were "ConvertTo<i64>".
         where i32: ConvertTo<T> {
     x.convert()
 }
@@ -423,15 +419,15 @@ impl Foo for OverrideDefault {
 
     fn is_invalid(&self) -> bool {
         println!("Called OverrideDefault.is_invalid!");
-        true // overrides the expected value of is_invalid()
+        true // Overrides the expected value of is_invalid()
     }
 }
 
 let default = UseDefault;
-assert!(!default.is_invalid()); // prints "Called UseDefault.is_valid."
+assert!(!default.is_invalid()); // Prints "Called UseDefault.is_valid."
 
 let over = OverrideDefault;
-assert!(over.is_invalid()); // prints "Called OverrideDefault.is_invalid!"
+assert!(over.is_invalid()); // Prints "Called UseDefault.is_valid."
 ```
 
 ## 继承（Inheritance）

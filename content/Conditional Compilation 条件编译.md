@@ -1,6 +1,6 @@
 # 条件编译
 
-> [conditional-compilation.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/conditional-compilation.md)
+> [conditional-compilation.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/conditional-compilation.md)
 > <br>
 > commit d30662f3e78ddc65f6ecafd20e4b6ecd3033e466
 

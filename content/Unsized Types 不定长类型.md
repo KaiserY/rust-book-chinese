@@ -1,6 +1,6 @@
 # 不定长类型
 
-> [unsized-types.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/unsized-types.md)
+> [unsized-types.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/unsized-types.md)
 > <br>
 > commit 71af58accf8f773a7d410cf947940487f65ae70f
 

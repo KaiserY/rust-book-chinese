@@ -1,8 +1,8 @@
 # 所有权
 
-> [ownership.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/ownership.md)
+> [ownership.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/ownership.md)
 > <br>
-> commit b67a8439f92e6a24b5baa3c6d1b0492bbe86400e
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 这篇教程是现行 3 个 Rust 所有权系统章节的第一部分。所有权系统是Rust最独特且最引人入胜的特性之一，也是作为Rust开发者应该熟悉的。Rust所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 
@@ -67,7 +67,7 @@ println!("v[0] is: {}", v[0]);
 
 ```rust
 fn take(v: Vec<i32>) {
-    // what happens here isn’t important.
+    // What happens here isn’t important.
 }
 
 let v = vec![1, 2, 3];
@@ -170,9 +170,9 @@ println!("{}", a);
 
 ```rust
 fn foo(v: Vec<i32>) -> Vec<i32> {
-    // do stuff with v
+    // Do stuff with `v`.
 
-    // hand back ownership
+    // // Hand back ownership.
     v
 }
 ```
@@ -181,9 +181,9 @@ fn foo(v: Vec<i32>) -> Vec<i32> {
 
 ```rust
 fn foo(v1: Vec<i32>, v2: Vec<i32>) -> (Vec<i32>, Vec<i32>, i32) {
-    // do stuff with v1 and v2
+    // Do stuff with `v1` and `v2`.
 
-    // hand back ownership, and the result of our function
+    // Hand back ownership, and the result of our function.
     (v1, v2, 42)
 }
 

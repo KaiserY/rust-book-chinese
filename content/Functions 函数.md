@@ -1,8 +1,8 @@
 # 函数
 
-> [functions.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/functions.md)
+> [functions.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/functions.md)
 > <br>
-> commit fb0d9acf36df408883930026073304bca1cce0dd
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 到目前为止你应该见过一个函数，`main`函数：
 
@@ -128,7 +128,7 @@ let x = (let y = 5); // expected identifier, found keyword `let`
 ```rust
 let mut y = 5;
 
-let x = (y = 6);  // x has the value `()`, not `6`
+let x = (y = 6);  // `x` has the value `()`, not `6`.
 ```
 
 Rust中第二种语句是**表达式语句**。它的目的是把任何表达式变为语句。在实践环境中，Rust 语法期望语句后跟其它语句。这意味着你用分号来分隔各个表达式。这意味着Rust看起来很像大部分其它使用分号做为语句结尾的语言，并且你会看到分号出现在几乎每一行你看到的 Rust 代码。

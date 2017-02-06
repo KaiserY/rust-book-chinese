@@ -1,6 +1,6 @@
 # 词汇表
 
-> [glossary.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/glossary.md)
+> [glossary.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/glossary.md)
 > <br>
 > commit 2d7abe88bfa6b36be6ba020f87a1f391c7266daa
 

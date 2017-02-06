@@ -1,6 +1,6 @@
 # 方法语法
 
-> [method-syntax.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/method-syntax.md)
+> [method-syntax.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/method-syntax.md)
 > <br>
 > commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
 

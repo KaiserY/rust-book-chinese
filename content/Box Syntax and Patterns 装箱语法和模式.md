@@ -1,6 +1,6 @@
 # 装箱语法和模式
 
-> [box-syntax-and-patterns.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/box-syntax-and-patterns.md)
+> [box-syntax-and-patterns.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/box-syntax-and-patterns.md)
 > <br>
 > commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
 
@@ -36,7 +36,7 @@ fn main() {
 struct BigStruct {
     one: i32,
     two: i32,
-    // etc
+    // Etc.
     one_hundred: i32,
 }
 
@@ -65,7 +65,7 @@ fn main() {
 struct BigStruct {
     one: i32,
     two: i32,
-    // etc
+    // Etc.
     one_hundred: i32,
 }
 

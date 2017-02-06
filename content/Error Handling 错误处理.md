@@ -1,8 +1,8 @@
 # 错误处理
 
-> [error-handling.md](https://github.com/rust-lang/rust/blob/master/src/doc/book/error-handling.md)
+> [error-handling.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/error-handling.md)
 > <br>
-> commit e6cc4c5d13f8819c72568f9675e84c1d17368c67
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 就像大多数编程语言，Rust 鼓励程序猿以特定的方式处理错误。一般来讲，错误处理被分割为两个大类：异常和返回值。Rust 选择了返回值。
 
@@ -52,7 +52,7 @@ Rust 的错误处理天生是冗长而烦人的。这一部分将会探索这些
 
 ```rust
 // Guess a number between 1 and 10.
-// If it matches the number we had in mind, return true. Else, return false.
+// If it matches the number we had in mind, return `true`. Else, return `false`.
 fn guess(n: i32) -> bool {
     if n < 1 || n > 10 {
         panic!("Invalid number: {}", n);
@@ -269,7 +269,7 @@ fn file_path_ext_explicit(file_path: &str) -> Option<&str> {
 }
 
 fn file_name(file_path: &str) -> Option<&str> {
-  // implementation elided
+  // Implementation elided.
   unimplemented!()
 }
 ```
@@ -278,7 +278,7 @@ fn file_name(file_path: &str) -> Option<&str> {
 
 ```rust,ignore
 fn file_path_ext(file_path: &str) -> Option<&str> {
-    file_name(file_path).map(|x| extension(x)) //Compilation error
+    file_name(file_path).map(|x| extension(x)) // This causes a compilation error.
 }
 ```
 
@@ -872,11 +872,11 @@ use std::fs;
 use std::io;
 use std::num;
 
-// We have to jump through some hoops to actually get error values.
+// We have to jump through some hoops to actually get error values:
 let io_err: io::Error = io::Error::last_os_error();
 let parse_err: num::ParseIntError = "not a number".parse::<i32>().unwrap_err();
 
-// OK, here are the conversions.
+// OK, here are the conversions:
 let err1: Box<Error> = From::from(io_err);
 let err2: Box<Error> = From::from(parse_err);
 ```
@@ -1155,7 +1155,7 @@ fn main() {
     let data_path = &matches.free[0];
     let city: &str = &matches.free[1];
 
-    // Do stuff with information
+    // Do stuff with information.
 }
 ```
 
@@ -1252,7 +1252,7 @@ fn main() {
 use std::path::Path;
 
 struct Row {
-    // unchanged
+    // This struct remains unchanged.
 }
 
 struct PopulationCount {
@@ -1274,7 +1274,7 @@ fn search<P: AsRef<Path>>(file_path: P, city: &str) -> Vec<PopulationCount> {
     for row in rdr.decode::<Row>() {
         let row = row.unwrap();
         match row.population {
-            None => { } // skip it
+            None => { } // Skip it.
             Some(count) => if row.city == city {
                 found.push(PopulationCount {
                     city: row.city,
@@ -1324,7 +1324,7 @@ fn main() {
 ```rust
 use std::error::Error;
 
-// The rest of the code before this is unchanged
+// The rest of the code before this is unchanged.
 
 fn search<P: AsRef<Path>>
          (file_path: P, city: &str)
@@ -1335,7 +1335,7 @@ fn search<P: AsRef<Path>>
     for row in rdr.decode::<Row>() {
         let row = try!(row);
         match row.population {
-            None => { } // skip it
+            None => { } // Skip it.
             Some(count) => if row.city == city {
                 found.push(PopulationCount {
                     city: row.city,
@@ -1437,7 +1437,7 @@ fn print_usage(program: &str, opts: Options) {
 ```rust
 use std::io;
 
-// The rest of the code before this is unchanged
+// The rest of the code before this is unchanged.
 
 fn search<P: AsRef<Path>>
          (file_path: &Option<P>, city: &str)
@@ -1537,7 +1537,7 @@ fn search<P: AsRef<Path>>
     for row in rdr.decode::<Row>() {
         let row = try!(row);
         match row.population {
-            None => { } // skip it
+            None => { } // Skip it.
             Some(count) => if row.city == city {
                 found.push(PopulationCount {
                     city: row.city,
