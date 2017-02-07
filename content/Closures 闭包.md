@@ -170,7 +170,7 @@ assert_eq!(5, num);
 
 ## 闭包实现
 
-Rust 的闭包实现与其它语言有些许不用。它们实际上是trait的语法糖。在此之前你可能要确定已经读过[trait章节](Traits.md)和[trait对象](Trait Objects trait 对象.md)。
+Rust 的闭包实现与其它语言有些许不同。它们实际上是trait的语法糖。在此之前你可能要确定已经读过[trait章节](Traits.md)和[trait对象](Trait Objects trait 对象.md)。
 
 都读过了？很好。
 
