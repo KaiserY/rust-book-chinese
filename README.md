@@ -2,14 +2,26 @@
 
 本作品采用 [知识共享署名 - 相同方式共享 4.0 国际许可协议](https://creativecommons.org/licenses/by-sa/4.0/) 进行许可。
 
-# Rust 程序设计语言 中文版
+# Rust 程序设计语言（第一版） 简体中文版
 本文档为 [*The Rust Programming Language*](https://doc.rust-lang.org/book/) 的中文翻译。  
 欢迎为本翻译文档做出贡献。
+
+## 关于版本
+
+本书是 Rust 程序设计语言（第一版）的翻译
+
+Rust 程序设计语言（第二版）还在施工中，不过大体已经完成。
+
+Rust 程序设计语言（第二版）官方仓库：[https://github.com/rust-lang/book](https://github.com/rust-lang/book)
+
+Rust 程序设计语言（第二版）翻译仓库：[https://github.com/KaiserY/trpl-zh-cn](https://github.com/KaiserY/trpl-zh-cn)
+
+Rust 程序设计语言（第二版）翻译阅读：[https://kaisery.github.io/trpl-zh-cn](https://kaisery.github.io/trpl-zh-cn)
 
 ## 墙内地址
 [rustbook.cn](http://rustbook.cn/) 由[掘金](http://gold.xitu.io/)赞助
 
-## 版本
+## Rust 版本
 1.15.0-stable
 
 ## 国内镜像
