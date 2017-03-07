@@ -5,6 +5,7 @@
 * [aakloxu](https://github.com/aakloxu)
 * [angusdwhite](https://github.com/angusdwhite)
 * [armink](https://github.com/armink)
+* [ARwMq9b6](https://github.com/ARwMq9b6)
 * [BingCheung](https://github.com/BingCheung)
 * [Bluek404](https://github.com/Bluek404)
 * [davidwudv](https://github.com/davidwudv)
