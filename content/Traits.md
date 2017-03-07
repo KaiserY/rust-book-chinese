@@ -427,7 +427,7 @@ let default = UseDefault;
 assert!(!default.is_invalid()); // Prints "Called UseDefault.is_valid."
 
 let over = OverrideDefault;
-assert!(over.is_invalid()); // Prints "Called UseDefault.is_valid."
+assert!(over.is_invalid()); // Prints "Called OverrideDefault.is_valid."
 ```
 
 ## 继承（Inheritance）
