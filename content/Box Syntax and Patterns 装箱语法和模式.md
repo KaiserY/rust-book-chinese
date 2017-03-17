@@ -2,7 +2,7 @@
 
 > [box-syntax-and-patterns.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/box-syntax-and-patterns.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 目前唯一稳定的创建`Box`的方法是通过`Box::new`方法。并且不可能在一个模式匹配中稳定的析构一个`Box`。不稳定的`box`关键字可以用来创建和析构`Box`。下面是一个用例：
 

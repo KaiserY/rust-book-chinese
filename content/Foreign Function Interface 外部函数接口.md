@@ -2,7 +2,7 @@
 
 > [ffi.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/ffi.md)
 > <br>
-> commit 614b74c24bb80e17230e58a74ef5a4725972f84a
+> commit 5cdf128410e465fd5c0338daa48366ea5200bc32
 
 ## 介绍
 
@@ -460,6 +460,30 @@ Rust拥有的装箱（`Box<T>`）使用非空指针作为指向他包含的对�
 向量和字符串共享同样基础的内存布局，`vec`和`str`模块中可用的功能可以操作 C API。然而，字符串不是`\0`结尾的。如果你需要一个NUL结尾的字符串来与 C 交互，你需要使用`std::ffi`模块中的`CString`类型。
 
 标准库中的`libc`模块包含类型别名和 C 标准库中的函数定义，Rust 默认链接`libc`和`libm`。
+
+## 可变参数函数
+
+在 C 语言中，函数是“可变参数的”，这意味着它可以接受可变数量的参数。在 Rust 中可以通过在外部函数声明中指定`...`来实现：
+
+```rust
+extern {
+    fn foo(x: i32, ...);
+}
+
+fn main() {
+    unsafe {
+        foo(10, 20, 30, 40, 50);
+    }
+}
+```
+
+普通的 Rust 不能是可变参数的：
+
+```rust
+// This will not compile
+
+fn foo(x: i32, ...) { }
+```
 
 ## “可空指针优化”（The "nullable pointer optimization"）
 

@@ -2,7 +2,7 @@
 
 > [crates-and-modules.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/crates-and-modules.md)
 > <br>
-> commit 98c6770a231d9bbaede40bbcf659218995958d6a
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 当一个项目变大以后，良好的软件工程实践是把它分为一堆较小的部分，再把它们装配到一起。定义良好的接口也非常重要，以使有些功能是私有的，而有些是公有的。Rust 有一个模块系统来帮助我们处理这些工作。
 

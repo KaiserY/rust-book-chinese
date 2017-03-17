@@ -2,11 +2,12 @@
 
 > [loops.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/loops.md)
 > <br>
-> commit 3b5d71e0cfb2d81f588a0b8929e796f3b68488e0
+> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
 
 Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`while`和`for`。每种方法都有自己的用途。
 
 ## loop
+
 无限`loop`是 Rust 提供的最简单的循环。使用`loop`关键字，Rust 提供了一个直到一些终止语句被执行的循环方法。Rust 的无限`loop`看起来像这样：
 
 ```rust
@@ -16,6 +17,7 @@ loop {
 ```
 
 ## while
+
 Rust 也有一个`while`循环。它看起来像：
 
 ```rust

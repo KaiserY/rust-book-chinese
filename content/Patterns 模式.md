@@ -2,7 +2,7 @@
 
 > [patterns.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/patterns.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 0dad9dcf9ec7284283ef97dd0f192060a70cfad5
 
 模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配表达式](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
 
@@ -21,7 +21,34 @@ match x {
 
 这会打印出`one`。
 
-有一个模式的陷阱：就像任何引入一个新绑定的语句，他们会引入隐藏。例如：
+可以在任何分支创建值的绑定：
+
+```rust
+let x = 1;
+
+match x {
+    y => println!("x: {} y: {}", x, y),
+}
+```
+
+这会打印出：
+
+```text
+x: 1 y: 1
+```
+
+注意在同一匹配块中同时拥有捕获全部的`_`和捕获全部的绑定会产生错误：
+
+```rust
+let x = 1;
+
+match x {
+    y => println!("x: {} y: {}", x, y),
+    _ => println!("anything"), // this causes an error as it is unreachable
+}
+```
+
+这里有一个模式的陷阱：就像任何引入一个新绑定的语句，他们会引入隐藏。例如：
 
 ```rust
 let x = 1;

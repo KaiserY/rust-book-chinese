@@ -2,7 +2,7 @@
 
 > [lang-items.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/lang-items.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 893f42a83466cf02b6fd6d3c82d5419cdad47474
 
 > **注意**：语言项通常由 Rust 发行版的 crate 提供，并且它自身有一个不稳定的接口。建议使用官方发布的 crate 而不是定义自己的版本。
 
@@ -11,14 +11,11 @@
 例如，`Box`指针需要两个语言项，一个用于分配，一个用于释放。下面是一个独立的程序使用`Box`语法糖进行动态分配，通过`malloc`和`free`：
 
 ```rust,ignore
-#![feature(lang_items, box_syntax, start, libc)]
+#![feature(lang_items, box_syntax, start, libc, core_intrinsics)]
 #![no_std]
+use core::intrinsics;
 
 extern crate libc;
-
-extern {
-    fn abort() -> !;
-}
 
 #[lang = "owned_box"]
 pub struct Box<T>(*mut T);
@@ -29,7 +26,7 @@ unsafe fn allocate(size: usize, _align: usize) -> *mut u8 {
 
     // Check if `malloc` failed:
     if p as usize == 0 {
-        abort();
+        intrinsics::abort();
     }
 
     p
@@ -53,7 +50,7 @@ fn main(argc: isize, argv: *const *const u8) -> isize {
 }
 
 #[lang = "eh_personality"] extern fn rust_eh_personality() {}
-#[lang = "panic_fmt"] extern fn rust_begin_panic() -> ! { loop {} }
+#[lang = "panic_fmt"] extern fn rust_begin_panic() -> ! { unsafe { intrinsics::abort() }
 # #[lang = "eh_unwind_resume"] extern fn rust_eh_unwind_resume() {}
 # #[no_mangle] pub extern fn rust_eh_register_frames () {}
 # #[no_mangle] pub extern fn rust_eh_unregister_frames () {}

@@ -2,7 +2,7 @@
 
 > [lifetimes.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/lifetimes.md)
 > <br>
-> commit ce57c66f5ca6120345bfc0828ebddd1b2f1d615e
+> commit ee2abe85a6ed9dacd03c4113445053b9bde1ccaf
 
 这篇教程是现行 3 个 Rust 所有权系统章节的第三部分。所有权系统是 Rust 最独特且最引人入胜的特性之一，也是作为 Rust 开发者应该熟悉的。Rust 所追求最大的目标 -- 内存安全，关键在于所有权。所有权系统有一些不同的概念，每个概念独自成章：
 

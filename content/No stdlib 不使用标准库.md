@@ -2,7 +2,7 @@
 
 > [no-stdlib.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/no-stdlib.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 893f42a83466cf02b6fd6d3c82d5419cdad47474
 
 Rust 的标准库提供了很多有用的功能，不过它假设它的 host 系统的多种功能的支持：线程，网络，堆分配和其他功能。有些系统并没有这些功能，不过，Rust也能在这些系统上工作。为此，我们可以通过一个属性来告诉 Rust 我们不想使用标准库：`#![no_std]`。
 
@@ -28,9 +28,10 @@ libc = { version = "0.2.14", default-features = false }
 被标记为`#[start]`的函数传递的参数格式与 C 一致：
 
 ```rust
-#![feature(lang_items)]
+#![feature(lang_items, core_intrinsics)]
 #![feature(start)]
 #![no_std]
+use core::intrinsics;
 
 // Pull in the system libc library for what crt0.o likely requires.
 extern crate libc;
@@ -60,17 +61,18 @@ pub extern fn rust_eh_unwind_resume() {
 pub extern fn rust_begin_panic(_msg: core::fmt::Arguments,
                                _file: &'static str,
                                _line: u32) -> ! {
-    loop {}
+    unsafe { intrinsics::abort() }
 }
 ```
 
 要 override 编译器插入的`main` shim，你必须使用`#![no_main]`禁用它并通过正确的 ABI 和正确的名字来创建合适的函数，这也需要需要覆盖编译器的命名改编：
 
 ```rust
-#![feature(lang_items)]
+#![feature(lang_items, core_intrinsics)]
 #![feature(start)]
 #![no_std]
 #![no_main]
+use core::intrinsics;
 
 // Pull in the system libc library for what crt0.o likely requires.
 extern crate libc;
@@ -100,7 +102,7 @@ pub extern fn rust_eh_unwind_resume() {
 pub extern fn rust_begin_panic(_msg: core::fmt::Arguments,
                                _file: &'static str,
                                _line: u32) -> ! {
-    loop {}
+    unsafe { intrinsics::abort() }
 }
 ```
 

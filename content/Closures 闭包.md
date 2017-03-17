@@ -2,7 +2,7 @@
 
 > [closures.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/closures.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 57b53fdd9ef34bf4015b4fd7a202dfa485773c96
 
 有时为了整洁和复用打包一个函数和**自由变量**（*free variables*）是很有用的。自由变量是指被用在函数中来自函数内部作用域并只用于函数内部的变量。对此，我们用一个新名字“闭包”而且 Rust 提供了大量关于他们的实现，正如我们将看到的。
 

@@ -2,7 +2,7 @@
 
 > [syntax-index.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/syntax-index.md)
 > <br>
-> commit 1e9aad752beb789df4f2232adf6b9a24efbdac8d
+> commit 4093bafe636bb711228e76d780d520626df28921
 
 ## 关键词（Keywords）
 
@@ -49,7 +49,7 @@
 * `%` (`expr % expr`): 算数取余。可重载（`Rem`）。
 * `%=` (`var %= expr`): 算数取余并赋值。可重载（`RemAssign`）。
 * `&` (`expr & expr`): 位计算和。可重载（`BitAnd`）。
-* `&` (`&expr`): 借用。详见[引用和借用](References and Borrowing 引用和借用.md)。
+* `&` (`&expr`, `&mut expr`): 借用。详见[引用和借用](References and Borrowing 引用和借用.md)。
 * `&` (`&type`, `&mut type`, `&'a type`, `&'a mut type`): 借用指针类型。详见[引用和借用](References and Borrowing 引用和借用.md)。
 * `&=` (`var &= expr`): 位计算和并赋值。可重载（`BitAndAssign`）。
 * `&&` (`expr && expr`): 逻辑和。

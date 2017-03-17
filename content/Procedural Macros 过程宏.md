@@ -2,7 +2,7 @@
 
 > [procedural-macros.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/procedural-macros.md)
 > <br>
-> commit 2cb7a60ef6bdc38c8ca9dcf26c170c46d67e1b1d
+> commit 3075c1f65e08e0b52dcf872588358daffef8b47c
 
 在本书接下来的部分，你将看到 Rust 提供了一个叫做“导出（derive）”的机制来轻松的实现 trait。例如，
 

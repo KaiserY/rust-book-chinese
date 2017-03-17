@@ -2,7 +2,7 @@
 
 > [match.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/match.md)
 > <br>
-> commit ccafdae9a11925cbc79c6ea4446688ef71bae1a1
+> commit e7d60c00c68e72fa954bcff311bc92e1c445823c
 
 一个简单的[`if`](If If语句.md)/`else`往往是不够的，因为你可能有两个或更多个选项。这样`else`也会变得异常复杂。Rust 有一个`match`关键字，它可以让你有效的取代复杂的`if`/`else`组。看看下面的代码：
 
@@ -65,7 +65,7 @@ fn process_message(msg: Message) {
     match msg {
         Message::Quit => quit(),
         Message::ChangeColor(r, g, b) => change_color(r, g, b),
-        Message::Move { x: x, y: y } => move_cursor(x, y),
+        Message::Move { x, y: new_name_for_y } => move_cursor(x, new_name_for_y),
         Message::Write(s) => println!("{}", s),
     };
 }

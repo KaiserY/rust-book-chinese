@@ -2,7 +2,7 @@
 
 > [testing.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/testing.md)
 > <br>
-> commit d950ca175ab5e7a9827353f9fb7d9d6e3f6e7658
+> commit c4c86dd04ccf6e9a6ac9282ecb9bb42e13ea5dad
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 
@@ -538,7 +538,7 @@ test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured
 
 ## 测试与并发
 
-在编写测试时需要注意的一个重要的情况是它们可能使用线程来并发的运行。为此需要注意要以一种测试之间不会相互依赖的方式编写，亦不能有任何共享的状态。“共享状态”可以包括运行环境，例如当前工作目录（cwd），或者环境变量。
+特别需要注意的是测试使用线程来并发的运行。为此需要注意测试之间不能相互依赖也不能依赖任何共享状态。“共享状态”可以包括运行环境，例如当前工作目录（cwd），或者环境变量。
 
 如果这样做有问题控制这些并发也是可能的，要么设置环境变量`RUST_TEST_THREADS`，或者向测试传递`--test-threads`用来比较两个参数：
 

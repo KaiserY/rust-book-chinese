@@ -2,7 +2,7 @@
 
 > [strings.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/strings.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit d83fff3b3b9dd0fd6eef862e97f883d171367041
 
 对于每一个程序，字符串都是需要掌握的重要内容。由于Rust主要着眼于系统编程，所以它的字符串处理系统与其它语言有些许区别。每当你碰到一个可变大小的数据结构时，情况都会变得很微妙，而字符串正是可变大小的数据结构。这也就是说，Rust的字符串与一些像C这样的系统编程语言也不相同。
 
@@ -137,8 +137,8 @@ let hachi = &dog[0..2];
 给出如下错误：
 
 ```text
-thread 'main' panicked at 'index 0 and/or 2 in `忠犬ハチ公` do not lie on
-character boundary'
+thread 'main' panicked at 'byte index 2 is not a char boundary; it is inside '忠'
+(bytes 0..3) of `忠犬ハチ公`'
 ```
 
 ## 连接（Concatenation）

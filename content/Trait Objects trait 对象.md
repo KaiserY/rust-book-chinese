@@ -2,7 +2,7 @@
 
 > [trait-objects.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/trait-objects.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit c7b092b47d8e50b58c975040af0a84a544f7fa7a
 
 当涉及到多态的代码时，我们需要一个机制来决定哪个具体的版本应该得到执行。这叫做“分发”（dispatch）。大体上有两种形式的分发：静态分发和动态分发。虽然 Rust 喜欢静态分发，不过它也提供了一个叫做“trait 对象”的机制来支持动态分发。
 
@@ -203,7 +203,7 @@ static Foo_for_String_vtable: FooVtable = FooVtable {
 };
 ```
 
-在每个虚表中的`destructor`字段指向一个会清理虚表类型的任何资源的函数，对于`u8`是普通的，不过对于`String`它会释放内存。这对于像`Box<Foo>`这类有所有权的trait对象来说是必要的，它需要在离开作用域后清理`Box`以及它内部的类型所分配的。`size`和`align`字段储存需要清除类型的大小和它的对齐情况；它们原理上是无用的因为这些信息已经嵌入了析构函数中，不过在将来会被使用到，因为 trait 对象正日益变得更灵活。
+在每个虚表中的`destructor`字段指向一个会清理虚表类型的任何资源的函数，对于`u8`是普通的，不过对于`String`它会释放内存。这对于像`Box<Foo>`这类有所有权的trait对象来说是必要的，它需要在离开作用域后清理`Box`以及它内部的类型所分配的。`size`和`align`字段储存需要清除类型的大小和它的对齐需求。
 
 假设我们有一些实现了`Foo`的值，那么显式的创建和使用`Foo`trait对象可能看起来有点像这个（忽略不匹配的类型，它们只是指针而已）：
 
