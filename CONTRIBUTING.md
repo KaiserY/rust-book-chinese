@@ -23,6 +23,7 @@
 * [leqinotes](https://github.com/leqinotes)
 * [linjx](https://github.com/linjx)
 * [liubin](https://github.com/liubin)
+* [liuchong](https://github.com/liuchong)
 * [liuzhe0223](https://github.com/liuzhe0223)
 * [llluiop](https://github.com/llluiop)
 * [loulihto](https://github.com/loulihto)
