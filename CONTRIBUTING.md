@@ -35,6 +35,7 @@
 * [peng1999](https://github.com/peng1999)
 * [qiuyesuifeng](https://github.com/qiuyesuifeng)
 * [quxiaolong1504](https://github.com/quxiaolong1504)
+* [rod-lin](https://github.com/rod-lin)
 * [tinunkai](https://github.com/tinunkai)
 * [t123yh](https://github.com/t123yh)
 * [ustcscgy](https://github.com/ustcscgy)
