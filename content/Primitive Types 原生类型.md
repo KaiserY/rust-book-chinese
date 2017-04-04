@@ -105,7 +105,7 @@ let names = ["Graydon", "Brian", "Niko"]; // names: [&str; 3]
 println!("The second name is: {}", names[1]);
 ```
 
-就跟大部分编程语言一个样，下标从0开始，所以第一个元素是`names[0]`，第二个是`names[1]`。上面的例子会打印出`The second name is: Brian`。如果你尝试使用一个不在数组中的下标，你会得到一个错误：数组访问会在运行时进行边界检查。这种不适当的访问时其它系统编程语言中很多bug的根源。
+就跟大部分编程语言一个样，下标从0开始，所以第一个元素是`names[0]`，第二个是`names[1]`。上面的例子会打印出`The second name is: Brian`。如果你尝试使用一个不在数组中的下标，你会得到一个错误：数组访问会在运行时进行边界检查。这种不适当的访问是其它系统编程语言中很多bug的根源。
 
 你可以在[标准库文档](http://doc.rust-lang.org/stable/std/primitive.array.html)中找到更多关于`array`的文档。
 
