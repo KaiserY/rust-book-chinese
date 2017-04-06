@@ -39,6 +39,7 @@
 * [tinunkai](https://github.com/tinunkai)
 * [t123yh](https://github.com/t123yh)
 * [ustcscgy](https://github.com/ustcscgy)
+* [vra](https://github.com/vra)
 * [weaming](https://github.com/weaming)
 * [wzv5](https://github.com/wzv5)
 * [yqylovy](https://github.com/yqylovy)
