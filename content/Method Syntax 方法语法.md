@@ -1,8 +1,8 @@
 # 方法语法
 
-> [method-syntax.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/method-syntax.md)
+> [method-syntax.md](https://github.com/rust-lang/book/blob/master/first-edition/src/method-syntax.md)
 > <br>
-> commit 6ba952020fbc91bad64be1ea0650bfba52e6aab4
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 函数是伟大的，不过如果你在一些数据上调用了一堆函数，这将是令人尴尬的。
 考虑下面代码：
@@ -101,6 +101,7 @@ impl Circle {
 ```
 
 ## 链式方法调用（Chaining method calls）
+
 现在我们知道如何调用方法了，例如`foo.bar()`。那么我们最开始的那个例子呢，`foo.bar().baz()`？我们称这个为“方法链”，我们可以通过返回`self`来做到这点。
 
 ```rust
@@ -141,7 +142,8 @@ fn grow(&self, increment: f64) -> Circle {
 我们看到我们返回了一个`Circle`。通过这个函数，我们可以增长一个圆的面积到任意大小。
 
 ## 关联函数（Associated functions）
-我们也可以定义一个不带`self`参数的关联函数。这是一个Rust代码中非常常见的模式：
+
+我们也可以定义一个不带`self`参数的关联函数。这是一个 Rust 代码中非常常见的模式：
 
 ```rust
 struct Circle {
@@ -168,6 +170,7 @@ fn main() {
 这个**关联函数**（*associated function*）为我们构建了一个新的`Circle`。注意静态函数是通过`Struct::method()`语法调用的，而不是`ref.method()`语法。
 
 ## 创建者模式（Builder Pattern）
+
 我们说我们需要我们的用户可以创建圆，不过我们只允许他们设置他们关心的属性。否则，`x`和`y`将是`0.0`，并且`radius`将是`1.0`。Rust 并没有方法重载，命名参数或者可变参数。我们利用创建者模式来代替。它看起像这样：
 
 ```rust

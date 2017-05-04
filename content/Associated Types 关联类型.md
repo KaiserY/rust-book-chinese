@@ -1,10 +1,10 @@
 # 关联类型
 
-> [associated-types.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/associated-types.md)
+> [associated-types.md](https://github.com/rust-lang/book/blob/master/first-edition/src/associated-types.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
-关联类型是Rust类型系统中非常强大的一部分。它涉及到‘类型族’的概念，换句话说，就是把多种类型归于一类。这个描述可能比较抽象，所以让我们深入研究一个例子。如果你想编写一个`Graph`trait，你需要泛型化两个类型：点类型和边类型。所以你可能会像这样写一个trait，`Graph<N, E>`：
+关联类型是 Rust 类型系统中非常强大的一部分。它涉及到‘类型族’的概念，换句话说，就是把多种类型归于一类。这个描述可能比较抽象，所以让我们深入研究一个例子。如果你想编写一个`Graph` trait，你需要泛型化两个类型：点类型和边类型。所以你可能会像这样写一个 trait，`Graph<N, E>`：
 
 ```rust
 trait Graph<N, E> {
@@ -46,6 +46,7 @@ fn distance<G: Graph>(graph: &G, start: &G::N, end: &G::N) -> uint { ... }
 让我们更详细的回顾一下。
 
 ## 定义关联类型
+
 让我们构建一个`Graph`trait。这里是定义：
 
 ```rust

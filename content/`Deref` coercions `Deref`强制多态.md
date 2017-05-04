@@ -1,8 +1,8 @@
 # `Deref`强制多态
 
-> [deref-coercions.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/deref-coercions.md)
+> [deref-coercions.md](https://github.com/rust-lang/book/blob/master/first-edition/src/deref-coercions.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit bd8d27beb54ef2a7bb4162d43006792f9ceae361
 
 标准库提供了一个特殊的特性，[`Deref`](http://doc.rust-lang.org/stable/std/ops/trait.Deref.html)。它一般用来重载`*`，解引用运算符：
 
@@ -60,7 +60,7 @@ let counted = Rc::new(owned);
 foo(&counted);
 ```
 
-我们所做的一切就是把我们的`String`封装到了一个`Rc<T>`里。不过现在我们可以传递`Rc<String>`给任何我们有一个`String`的地方。`foo`的签名并无变化，不过它对这两个类型都能正常工作。这个例子有两个转换：`&Rc<String>`转换为`&String`接着是`&String`转换为`&str`。只要类型匹配Rust将可以做任意多次这样的转换。
+我们所做的一切就是把我们的`String`封装到了一个`Rc<T>`里。不过现在我们可以传递`Rc<String>`给任何我们有一个`String`的地方。`foo`的签名并无变化，不过它对这两个类型都能正常工作。这个例子有两个转换：`&Rc<String>`转换为`&String`接着是`&String`转换为`&str`。只要类型匹配 Rust 将可以做任意多次这样的转换。
 
 标准库提供的另一个非常通用的实现是：
 
@@ -78,6 +78,7 @@ foo(&owned);
 向量可以`Deref`为一个切片。
 
 ## `Deref`和方法调用
+
 当调用一个方法时`Deref`也会出现。考虑下面的例子：
 
 ```rust

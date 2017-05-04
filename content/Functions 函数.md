@@ -1,8 +1,8 @@
 # 函数
 
-> [functions.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/functions.md)
+> [functions.md](https://github.com/rust-lang/book/blob/master/first-edition/src/functions.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 到目前为止你应该见过一个函数，`main`函数：
 
@@ -69,7 +69,7 @@ expected one of `!`, `:`, or `@`, found `)`
 fn print_sum(x, y) {
 ```
 
-这是一个有意为之的设计决定。即使像 Haskell 这样的能够全程序推断的语言，注明类型也经常作为一个最佳实践被建议。我们认为即使允许在在函数体中推断，也要强制函数声明参数类型。这是一个全推断与无推断的最佳平衡。
+这是一个有意为之的设计决定。即使像 Haskell 这样的能够全程序推断的语言，注明类型也经常作为一个最佳实践而被建议。我们认为即使允许在在函数体中推断，也要强制函数声明参数类型。这是一个全推断与无推断的最佳平衡。
 
 如果我们要一个返回值呢？下面这个函数给一个整数加一：
 
@@ -105,6 +105,7 @@ help: consider removing this semicolon:
 这揭露了关于 Rust 两个有趣的地方：它是一个基于表达式的语言，并且分号与其它基于“大括号和分号”的语言不同。这两个方面是相关的。
 
 ## 表达式 VS 语句
+
 Rust 主要是一个基于表达式的语言。只有两种语句，其它的一切都是表达式。
 
 然而这又有什么区别呢？表达式返回一个值，而语句不是。这就是为什么这里我们以“不是所有控制路径都返回一个值”结束：`x + 1;`语句不返回一个值。Rust 中有两种类型的语句：“声明语句”和“表达式语句”。其余的一切是表达式。让我们先讨论下声明语句。
@@ -166,6 +167,7 @@ fn foo(x: i32) -> i32 {
 如果你之前没有使用过基于表达式的语言，那么前面的没有`return`的定义可能看起来有点奇怪。不过它随着时间的推移它会变得直观。
 
 ## 发散函数（Diverging functions）
+
 Rust有些特殊的语法叫“发散函数”，这些函数并不返回：
 
 ```rust

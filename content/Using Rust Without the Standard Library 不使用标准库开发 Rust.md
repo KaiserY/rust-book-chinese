@@ -1,8 +1,8 @@
 # 不使用标准库开发 Rust
 
-> [no-stdlib.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/using-rust-without-the-standard-library.md)
+> [no-stdlib.md](https://github.com/rust-lang/book/blob/master/first-edition/src/using-rust-without-the-standard-library.md)
 > <br>
-> commit 658253d30c124b67c964904400c4dc58a1b557b2
+> commit 98b18fabddaa942c6bbbb44509b7c00f4b07915f
 
 Rust 的标准库提供了很多有用的功能，不过它假设它的 host 系统的多种功能的支持：线程，网络，堆分配和其他功能。有些系统并没有这些功能，不过，Rust也能在这些系统上工作。为此，我们可以通过一个属性来告诉 Rust 我们不想使用标准库：`#![no_std]`。
 

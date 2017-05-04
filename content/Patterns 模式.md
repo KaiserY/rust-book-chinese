@@ -1,8 +1,8 @@
 # 模式
 
-> [patterns.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/patterns.md)
+> [patterns.md](https://github.com/rust-lang/book/blob/master/first-edition/src/patterns.md)
 > <br>
-> commit 0dad9dcf9ec7284283ef97dd0f192060a70cfad5
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 模式在Rust中十分常见。我们在[变量绑定](Variable Bindings 变量绑定.md)，[匹配表达式](Match 匹配.md)和其它一些地方使用它们。让我们开始一个快速的关于模式可以干什么的教程！
 
@@ -87,6 +87,7 @@ match x {
 这会输出`one or two`。
 
 ## 解构（Destructuring）
+
 如果你有一个复合数据类型，例如一个[结构体](Structs 结构体.md)，你可以在模式中解构它：
 
 ```rust
@@ -229,6 +230,7 @@ match x {
 这会打印`Got a tuple!`。
 
 ## `ref`和`ref mut`
+
 如果你想要一个引用，使用`ref`关键字：
 
 ```rust
@@ -323,6 +325,7 @@ match x {
 ```
 
 ## 守卫（Guards）
+
 你可以用`if`来引入**匹配守卫**（*match guards*）：
 
 ```rust
@@ -367,6 +370,7 @@ match x {
 ```
 
 ## 混合与匹配（Mix and Match）
+
 (口哨)！根据你的需求，你可以对上面的多种匹配方法进行组合：
 
 ```rust

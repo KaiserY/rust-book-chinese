@@ -1,22 +1,22 @@
 # 发布途径
 
-> [release-channels.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/release-channels.md)
+> [release-channels.md](https://github.com/rust-lang/book/blob/master/first-edition/src/release-channels.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
-Rust 项目使用一个叫做“发布途径”的概念来管理发布。理解这个选择你的项目应该使用哪个版本的Rust的过程是很重要的。
+Rust 项目使用一个叫做“发布途径”的概念来管理发布。理解这个选择你的项目应该使用哪个版本的 Rust 的过程是很重要的。
 
 ## 概览
 
-Rust 发布有3种途径：
+Rust 发布有 3 种途径：
 
 * 开发版（Nightly）
 * 测试版（Beta）
 * 稳定版（Stable）
 
-新的开发发布每天创建一次。每6个星期，最后的开发版被提升为“测试版”。在这时，它将只会收到修改重大错误的补丁。6个星期之后，测试版被提升为“稳定版”，而成为下一个版本的`1.x`发布。
+新的开发发布每天创建一次。每 6 个星期，最后的开发版被提升为“测试版”。在这时，它将只会收到修改重大错误的补丁。6 个星期之后，测试版被提升为“稳定版”，而成为下一个版本的`1.x`发布。
 
-这个过程并行发生。所以每6个星期，在同一天，开发变测试，测试变稳定。当`1.x`发布时的同时，`1.(x + 1)-beta`被发布，而开发版变为第一版的`1.(x + 2)-nightly`。
+这个过程并行发生。所以每 6 个星期，在同一天，开发变测试，测试变稳定。当`1.x`发布时的同时，`1.(x + 1)-beta`被发布，而开发版变为第一版的`1.(x + 2)-nightly`。
 
 ## 选择一个版本
 
@@ -26,11 +26,11 @@ Rust 发布有3种途径：
 
 ## 通过持续集成（CI）改善生态系统
 
-那么测试版怎么样呢？我们鼓励所有使用稳定发布途径的Rust用户在他们的持续集成系统中也针对测试途径进行测试。这会帮助警告团队以防出现一个意外的退步（regression）。
+那么测试版怎么样呢？我们鼓励所有使用稳定发布途径的 Rust 用户在他们的持续集成系统中也针对测试途径进行测试。这会帮助警告团队以防出现一个意外的退步（regression）。
 
 另外，针对开发版测试能够更快的捕获退步，因此如果你不介意一个第三种构建（环境），我们也会感激你针对开发版进行测试。
 
-作为一个例子，很多Rust程序猿使用[Travis](https://travis-ci.org/)来测试他们的crate，这是一个开源的免费项目。Travis[直接支持Rust](http://docs.travis-ci.com/user/languages/rust/)，并且你可以用类似这样的一个`.travis.yml`文件来测试所有的版本：
+作为一个例子，很多 Rust 程序猿使用[Travis](https://travis-ci.org/)来测试他们的 crate，这是一个开源的免费项目。Travis[直接支持Rust](http://docs.travis-ci.com/user/languages/rust/)，并且你可以用类似这样的一个`.travis.yml`文件来测试所有的版本：
 
 ```yaml
 language: rust
@@ -44,4 +44,4 @@ matrix:
     - rust: nightly
 ```
 
-通过这个配置，Travis将会测试所有三个版本，不过如果有什么东西在开发版中失败了，你的构建将不会失败。建议你在任何 CI 系统中使用类似的配置，查看你正在使用的CI系统的文档来获取更多细节。
+通过这个配置，Travis 将会测试所有三个版本，不过如果有什么东西在开发版中失败了，你的构建将不会失败。建议你在任何 CI 系统中使用类似的配置，查看你正在使用的 CI 系统的文档来获取更多细节。

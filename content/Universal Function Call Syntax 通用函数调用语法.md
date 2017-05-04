@@ -1,8 +1,8 @@
 # 通用函数调用语法
 
-> [ufcs.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/ufcs.md)
+> [ufcs.md](https://github.com/rust-lang/book/blob/master/first-edition/src/ufcs.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 有时，函数可能有相同的名字。就像下面这些代码：
 
@@ -72,15 +72,16 @@ Foo::
 Bar::
 ```
 
-调用的这一半是两个traits的类型：`Foo`和`Bar`。这样实际上就区分了这两者：Rust调用你使用的trait里面的方法。
+调用的这一半是两个 trait 的类型：`Foo`和`Bar`。这样实际上就区分了这两者：Rust 调用你使用的 trait 里面的方法。
 
 ```rust
 f(&b)
 ```
 
-当我们使用[方法语法](Method Syntax 方法语法.md)调用像`b.f()`这样的方法时，如果`f()`需要`&self`，Rust实际上会自动地把`b`借用为`&self`。而在这个例子中，Rust并不会这么做，所以我们需要显式地传递一个`&b`。
+当我们使用[方法语法](Method Syntax 方法语法.md)调用像`b.f()`这样的方法时，如果`f()`需要`&self`，Rust 实际上会自动地把`b`借用为`&self`。而在这个例子中，Rust 并不会这么做，所以我们需要显式地传递一个`&b`。
 
 ## 尖括号形式（Angle-bracket Form）
+
 我们刚才讨论的通用函数调用语法的形式：
 
 ```rust
@@ -122,4 +123,4 @@ fn main() {
 }
 ```
 
-使用尖括号语法让你可以调用指定trait的方法而不是继承到的那个。
+使用尖括号语法让你可以调用指定 trait 的方法而不是继承到的那个。

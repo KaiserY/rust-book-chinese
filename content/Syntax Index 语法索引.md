@@ -1,8 +1,8 @@
 # 语法索引
 
-> [syntax-index.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/syntax-index.md)
+> [syntax-index.md](https://github.com/rust-lang/book/blob/master/first-edition/src/syntax-index.md)
 > <br>
-> commit 4093bafe636bb711228e76d780d520626df28921
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 ## 关键词（Keywords）
 

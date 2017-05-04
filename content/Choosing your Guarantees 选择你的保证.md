@@ -1,14 +1,14 @@
 # 选择你的保证
 
-> [choosing-your-guarantees.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/choosing-your-guarantees.md)
+> [choosing-your-guarantees.md](https://github.com/rust-lang/book/blob/master/first-edition/src/choosing-your-guarantees.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 Rust 的一个重要特性是允许我们控制一个程序的开销和（安全）保证。
 
 Rust 标准库中有多种“wrapper 类型”的抽象，他们代表了大量在开销，工程学和安全保证之间的权衡。很多让你在运行时和编译时增强之间选择。这一部分将会详细解释一些特定的抽象。
 
-在开始之前，强烈建议你阅读Rust的[所有权](Ownership 所有权.md)和[借用](References and Borrowing 引用和借用.md)。
+在开始之前，强烈建议你阅读 Rust 的[所有权](Ownership 所有权.md)和[借用](References and Borrowing 引用和借用.md)。
 
 ## 基础指针类型
 
@@ -41,6 +41,7 @@ let y = x;
 他们在构建像`Vec<T>`这样的安全，低开销抽象时是有用的，不过应该避免在安全代码中使用。
 
 ### `Rc<T>`
+
 这是第一个我们将会介绍到的有运行时开销的包装类型。
 
 [Rc\<T\>](http://doc.rust-lang.org/stable/std/rc/struct.Rc.html)是一个引用计数指针。换句话说，这让我们拥有相同数据的多个“有所有权”的指针，并且数据在所有指针离开作用域后将被释放（析构函数将会执行）。
@@ -141,9 +142,9 @@ let x = RefCell::new(vec![1,2,3,4]);
 
 与`Cell`相似，它主要用于难以或不可能满足借用检查的情况。大体上我们知道这样的改变不会发生在一个嵌套的形式中，不过检查一下是有好处的。
 
-对于大型的，复杂的程序，把一些东西放入`RefCell`来将事情变简单是有用的。例如，Rust编译器内部的[`ctxt`结构体](http://doc.rust-lang.org/stable/rustc/middle/ty/struct.ctxt.html)中的很多map都在这个封装中。他们只会在创建时被修改一次（但并不是正好在初始化后），或者在明显分开的地方多次多次修改。然而，因为这个结构体被广泛的用于各个地方，有效的组织可变和不可变的指针将会是困难的（也许是不可能的），并且可能产生大量的难以扩展的`&`指针。换句话说，`RefCell`提供了一个廉价（并不是零开销）的方式来访问它。之后，如果有人增加一些代码来尝试修改一个已经被借用的cell时，这将会产生（通常是决定性的）一个恐慌，并会被追溯到那个可恶的借用上。
+对于大型的，复杂的程序，把一些东西放入`RefCell`来将事情变简单是有用的。例如，Rust 编译器内部的[`ctxt`结构体](http://doc.rust-lang.org/stable/rustc/middle/ty/struct.ctxt.html)中的很多 map 都在这个封装中。他们只会在创建时被修改一次（但并不是正好在初始化后），或者在明显分开的地方多次多次修改。然而，因为这个结构体被广泛的用于各个地方，有效的组织可变和不可变的指针将会是困难的（也许是不可能的），并且可能产生大量的难以扩展的`&`指针。换句话说，`RefCell`提供了一个廉价（并不是零开销）的方式来访问它。之后，如果有人增加一些代码来尝试修改一个已经被借用的 cell 时，这将会产生（通常是决定性的）一个恐慌，并会被追溯到那个可恶的借用上。
 
-相似的，在Servo的DOM中有很多可变量，大部分对于一个DOM类型都是本地的，不过有一些交错在DOM中并修改了很多内容。使用`RefCell`和`Cell`来保护所有的变化可以让我们免于担心到处都是的可变性，并且同时也表明了何处**正在**发生变化。
+相似的，在 Servo 的 DOM 中有很多可变量，大部分对于一个 DOM 类型都是本地的，不过有一些交错在 DOM 中并修改了很多内容。使用`RefCell`和`Cell`来保护所有的变化可以让我们免于担心到处都是的可变性，并且同时也表明了何处**正在**发生变化。
 
 注意如果是一个能用`&`指针的非常简单的情形应该避免使用`RefCell`。
 
@@ -158,6 +159,7 @@ let x = RefCell::new(vec![1,2,3,4]);
 在运行时每次借用产生一次引用计数的修改/检查。
 
 ## 同步类型（Synchronous types）
+
 上面的很多类型不能以一种线程安全的方式使用。特别是`Rc<T>`和`RefCell<T>`，他们都使用非原子的引用计数（**原子**引用计数可以在不引起数据竞争的情况下在多个线程中递增），不能在多线程中使用。这让他们使用起来更廉价，不过我们也需要这两个类型的线程安全版本。他们以`Arc<T>`和`Mutex<T>`/`RWLock<T>`的形式存在。
 
 注意非线程安全的类型**不能**在线程间传递，并且这是在编译时检查的。
@@ -178,7 +180,7 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 ### `Mutex<T>`和`RwLock<T>`
 
-[Mutex\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.Mutex.html)和[RwLock\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.RwLock.html)通过RAII guard（guard是一类直到析构函数被调用时能保持一些状态的对象）提供了互斥功能。对于这两个类型，mutex直到我们调用`lock()`之前它都是无效的，此时直到我们获取锁这个线程都会被阻塞，同时它会返回一个guard。这个guard可以被用来访问它的内部数据（可变的），而当guard离开作用域锁将被释放。
+[Mutex\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.Mutex.html)和[RwLock\<T\>](http://doc.rust-lang.org/stable/std/sync/struct.RwLock.html)通过 RAII guard（guard 是一类直到析构函数被调用时能保持一些状态的对象）提供了互斥功能。对于这两个类型，mutex 直到我们调用`lock()`之前它都是无效的，此时直到我们获取锁这个线程都会被阻塞，同时它会返回一个 guard。这个 guard 可以被用来访问它的内部数据（可变的），而当 guard 离开作用域锁将被释放。
 
 ```rust
 {
@@ -188,7 +190,7 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 } // Lock is released when destructor runs.
 ```
 
-`RwLock`对多线程读有额外的效率优势。只要没有writer，对于共享的数据总是可以安全的拥有多个reader；同时`RwLock`让reader们获取一个“读取锁”。这样的锁可以并发的获取并通过引用计数记录。writer必须获取一个“写入锁”，它只有在所有reader都离开作用域时才能获取。
+`RwLock`对多线程读有额外的效率优势。只要没有 writer，对于共享的数据总是可以安全的拥有多个 reader；同时`RwLock`让reader们获取一个“读取锁”。这样的锁可以并发的获取并通过引用计数记录。writer 必须获取一个“写入锁”，它只有在所有 reader 都离开作用域时才能获取。
 
 #### 保证
 
@@ -200,15 +202,15 @@ C++的`shared_ptr`与`Arc`类似，然而C++的情况中它的内部数据总是
 
 ## 组合（Composition）
 
-阅读Rust代码时的一个常见的痛苦之处是遇到形如`Rc<RefCell<Vec<T>>>`这样的类型（或者诸如此类的更复杂的组合）。这些组合式干什么的，和为什么作者会选这么一个类型（以及何时你应该在自己的代码中使用这样一个类型）的理由并不总是显而易见的。
+阅读 Rust 代码时的一个常见的痛苦之处是遇到形如`Rc<RefCell<Vec<T>>>`这样的类型（或者诸如此类的更复杂的组合）。这些组合式干什么的，和为什么作者会选这么一个类型（以及何时你应该在自己的代码中使用这样一个类型）的理由并不总是显而易见的。
 
 通常，将你需要的保证组合到一起是一个例子，而不为无关紧要的东西产生开销。
 
-例如，`Rc<RefCell<T>>`就是一个这样的组合。`Rc<T>`自身并不能可变的解引用；因为`Rc<T>`可以共享，而共享的可变性可以导致不安全的行为，所以我们在其中放入`RefCell<T>`来获得可以动态验证的共享可变性。现在我们有了共享的可变数据，不过它只能以只有一个writer（没有reader）或多个reader的方式共享。
+例如，`Rc<RefCell<T>>`就是一个这样的组合。`Rc<T>`自身并不能可变的解引用；因为`Rc<T>`可以共享，而共享的可变性可以导致不安全的行为，所以我们在其中放入`RefCell<T>`来获得可以动态验证的共享可变性。现在我们有了共享的可变数据，不过它只能以只有一个 writer（没有 reader）或多个 reader 的方式共享。
 
 现在，我们可以更进一步，并拥有`Rc<RefCell<Vec<T>>>`或`Rc<Vec<RefCell<T>>>`，他们都是可共享可改变的vector，不过他们并不一样。
 
-前者，`RefCell<T>`封装了`Vec<T>`，所以`Vec<T>`整体是可变的。与此同时，同一时刻只能有一个整个`Vec`的可变借用。这意味着你的代码不能同时通过不同的`Rc`句柄来操作vector的不同元素。然而，我们可以随意的从`Vec<T>`中加入或取出元素。这类似于一个有运行时借用检查的`&mut Vec<T>`。
+前者，`RefCell<T>`封装了`Vec<T>`，所以`Vec<T>`整体是可变的。与此同时，同一时刻只能有一个整个`Vec`的可变借用。这意味着你的代码不能同时通过不同的`Rc`句柄来操作 vector 的不同元素。然而，我们可以随意的从`Vec<T>`中加入或取出元素。这类似于一个有运行时借用检查的`&mut Vec<T>`。
 
 后者，借用作用于单独的元素，不过vector整体是不可变的。因此，我们可以独立的借用不同的元素，不过我们对vector加入或取出元素。这类似于`&mut [T]`[^2]，不过同样会在运行时做借用检查。
 

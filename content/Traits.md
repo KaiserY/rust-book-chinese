@@ -1,8 +1,8 @@
 # Traits
 
-> [traits.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/traits.md)
+> [traits.md](https://github.com/rust-lang/book/blob/master/first-edition/src/traits.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 47f4de574df32c32b4b14081e5d6e90275b08ed3
 
 trait 是一个告诉 Rust 编译器一个类型必须提供哪些功能语言特性。
 
@@ -80,7 +80,7 @@ fn print_area<T>(shape: T) {
 }
 ```
 
-Rust抱怨道：
+Rust 抱怨道：
 
 ```text
 error: no method named `area` found for type `T` in the current scope
@@ -270,10 +270,7 @@ let result = f.write(buf);
 所以，我们可以为`i32`实现`HasArea`trait，因为`HasArea`在我们的包装箱中。不过如果我们想为`i32`实现`Float`trait，它是由 Rust 提供的，则无法做到，因为这个 trait 和类型都不在我们的包装箱中。
 
 
-
-There’s one more restriction on implementing traits: either the trait or the type you’re implementing it for must be defined by you. Or more precisely, one of them must be defined in the same crate as the impl you're writing. For more on Rust's module and package system, see the chapter on crates and modules.
-
-关于trait的最后一点：带有trait限制的泛型函数是**单态**（*monomorphization*）（mono：单一，morph：形式）的，所以它是**静态分发**（*statically dispatched*）的。这是什么意思？查看[trait对象](Trait Objects trait 对象.md)来了解更多细节。
+关于 trait 的最后一点：带有 trait 限制的泛型函数是**单态**（*monomorphization*）（mono：单一，morph：形式）的，所以它是**静态分发**（*statically dispatched*）的。这是什么意思？查看[trait 对象](Trait Objects trait 对象.md)来了解更多细节。
 
 ## 多 trait bound（Multiple trait bounds）
 
@@ -378,11 +375,11 @@ fn inverse<T>(x: i32) -> T
 }
 ```
 
-这突显出了`where`从句的额外的功能：它允许限制的左侧可以是任意类型（在这里是`i32`），而不仅仅是一个类型参数（比如`T`）。
+这突显出了`where`从句的额外的功能：它允许限制的左侧可以是任意类型（在这里是`i32`），而不仅仅是一个类型参数（比如`T`）。在这个例子中，`i32`必须实现`ConvertTo<T>`。不同于定义`i32`是什么（因为这是很明显的），这里的`where`从句限制了`T`。
 
 ## 默认方法（Default methods）
 
-关于trait还有最后一个我们需要讲到的功能。它简单到只需我们展示一个例子：
+默认方法可以增加在 trait 定义中，如果已经知道通常的实现会定义这个方法。例如，`is_invalid()`定义为与`is_valid()`相反：
 
 ```rust
 trait Foo {
@@ -392,7 +389,7 @@ trait Foo {
 }
 ```
 
-`Foo`trait的实现者需要实现`is_valid()`，不过并不需要实现`is_invalid()`。它会使用默认的行为。你也可以选择覆盖默认行为：
+`Foo` trait 的实现者需要实现`is_valid()`，不过并不需要实现`is_invalid()`。它会使用默认的行为。你也可以选择覆盖默认行为：
 
 ```rust
 # trait Foo {
@@ -431,6 +428,7 @@ assert!(over.is_invalid()); // Prints "Called OverrideDefault.is_valid."
 ```
 
 ## 继承（Inheritance）
+
 有时，实现一个trait要求实现另一个trait：
 
 ```rust
@@ -463,7 +461,7 @@ impl FooBar for Baz {
 }
 ```
 
-如果我们忘了实现`Foo`，Rust会告诉我们：
+如果我们忘了实现`Foo`，Rust 会告诉我们：
 
 ```text
 error: the trait bound `main::Baz : main::Foo` is not satisfied [E0277]

@@ -1,10 +1,10 @@
 # 属性
 
-> [attributes.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/attributes.md)
+> [attributes.md](https://github.com/rust-lang/book/blob/master/first-edition/src/attributes.md)
 > <br>
-> commit 024aa9a345e92aa1926517c4d9b16bd83e74c10d
+> commit bd8d27beb54ef2a7bb4162d43006792f9ceae361
 
-在Rust中声明可以用“属性”标注，它们看起来像：
+在 Rust 中声明可以用“属性”标注，它们看起来像：
 
 ```rust
 #[test]
@@ -59,4 +59,4 @@ mod macos_only {
 # }
 ```
 
-Rust属性被用在一系列不同的地方。在[参考手册](http://doc.rust-lang.org/nightly/reference.html#attributes)中有一个属性的全表。目前，你不能创建你自己的属性，Rust编译器定义了它们。
+Rust属性被用在一系列不同的地方。在[参考手册](http://doc.rust-lang.org/nightly/reference.html#attributes)中有一个属性的全表。目前，你不能创建你自己的属性，Rust 编译器定义了它们。

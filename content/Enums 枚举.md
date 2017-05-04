@@ -1,10 +1,10 @@
 # 枚举
 
-> [enums.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/enums.md)
+> [enums.md](https://github.com/rust-lang/book/blob/master/first-edition/src/enums.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
-Rust 中的一个`enum`是一个代表数个可能变量的数据的类型。每个变量都可选是否关联数据：
+Rust 中的一个`enum`是一个代表数个可能变量的数据的类型。`enum`中的每个变量都可选是否关联数据：
 
 ```rust
 enum Message {
@@ -46,6 +46,7 @@ fn process_color_change(msg: Message) {
 不支持这些操作（比较操作）可能看起来更像限制。不过这是一个我们可以克服的限制。有两种方法：我们自己实现相等（比较），或通过[`match` ](Match 匹配.md)表达式模式匹配变量，你会在下一部分学到它。我们还不够了解Rust如何实现相等，不过我们会在[特性](Traits.md)找到它们。
 
 ## 构造器作为函数（Constructors as functions）
+
 一个枚举的构造器总是可以像函数一样使用。例如：
 
 ```rust

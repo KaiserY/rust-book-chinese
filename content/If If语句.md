@@ -1,8 +1,8 @@
 # If 语句
 
-> [if.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/if.md)
+> [if.md](https://github.com/rust-lang/book/blob/master/first-edition/src/if.md)
 > <br>
-> commit 56ab2a1cdefec1ddee00ee99d3fb710906714d1b
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 Rust 的 `if` 并不是特别复杂，不过你会发现它更像动态类型语言而不是更传统的系统语言。所以让我来说说它，以便你能把握这些细节。
 

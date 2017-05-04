@@ -1,8 +1,8 @@
 # 闭包
 
-> [closures.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/closures.md)
+> [closures.md](https://github.com/rust-lang/book/blob/master/first-edition/src/closures.md)
 > <br>
-> commit 57b53fdd9ef34bf4015b4fd7a202dfa485773c96
+> commit 59f76f1a2919641f246da62751eee620b4736acf
 
 有时为了整洁和复用打包一个函数和**自由变量**（*free variables*）是很有用的。自由变量是指被用在函数中来自函数内部作用域并只用于函数内部的变量。对此，我们用一个新名字“闭包”而且 Rust 提供了大量关于他们的实现，正如我们将看到的。
 
@@ -51,6 +51,7 @@ let plus_one_v3 = |x: i32|          x + 1  ;
 有些小区别，不过仍然是相似的。
 
 ## 闭包及环境
+
 之所以把它称为“闭包”是因为它们“包含在环境中”（close over their environment）。这看起来像：
 
 ```rust
@@ -118,12 +119,12 @@ println!("{:?}", nums);
 note: `nums` moved into closure environment here because it has type
   `[closure(()) -> collections::vec::Vec<i32>]`, which is non-copyable
 let takes_nums = || nums;
-                    ^~~~~~~
 ```
 
 `Vec<T>`拥有它内容的所有权，而且由于这个原因，当我们在闭包中引用它时，我们必须取得`nums`的所有权。这与我们传递`nums`给一个取得它所有权的函数一样。
 
 ## `move`闭包
+
 我们可以使用`move`关键字强制使我们的闭包取得它环境的所有权：
 
 ```rust
@@ -174,26 +175,11 @@ Rust 的闭包实现与其它语言有些许不同。它们实际上是trait的�
 
 都读过了？很好。
 
-理解闭包底层是如何工作的关键有点奇怪：使用`()`调用函数，像`foo()`，是一个可重载的运算符。到此，其它的一切都会明了。在Rust中，我们使用trait系统来重载运算符。调用函数也不例外。我们有三个trait来分别重载：
+理解闭包底层是如何工作的关键有点奇怪：使用`()`调用函数，像`foo()`，是一个可重载的运算符。到此，其它的一切都会明了。在Rust中，我们使用trait系统来重载运算符。调用函数也不例外。我们有三个 trait 来分别重载：
 
-```rust
-# #![feature(unboxed_closures)]
-# mod foo {
-pub trait Fn<Args> : FnMut<Args> {
-    extern "rust-call" fn call(&self, args: Args) -> Self::Output;
-}
-
-pub trait FnMut<Args> : FnOnce<Args> {
-    extern "rust-call" fn call_mut(&mut self, args: Args) -> Self::Output;
-}
-
-pub trait FnOnce<Args> {
-    type Output;
-
-    extern "rust-call" fn call_once(self, args: Args) -> Self::Output;
-}
-# }
-```
+* `Fn`
+* `FnMut`
+* `FnOnce`
 
 你会注意到这些 trait 之间的些许区别，不过一个大的区别是`self`：`Fn`获取`&self`，`FnMut`获取`&mut self`，而`FnOnce`获取`self`。这包含了所有3种通过通常函数调用语法的`self`。不过我们将它们分在 3 个 trait 里，而不是单独的 1 个。这给了我们大量的对于我们可以使用哪种闭包的控制。
 
@@ -266,7 +252,7 @@ fn call_with_ref<F>(some_closure:F) -> i32
 
 通常你可以指定闭包的参数的生命周期。我们可以在函数声明上指定它：
 
-```rust,ignore
+```rust
 fn call_with_ref<'a, F>(some_closure:F) -> i32
     where F: Fn(&'a i32) -> i32 {
 ```

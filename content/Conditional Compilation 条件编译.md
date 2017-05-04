@@ -1,10 +1,10 @@
 # 条件编译
 
-> [conditional-compilation.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/conditional-compilation.md)
+> [conditional-compilation.md](https://github.com/rust-lang/book/blob/master/first-edition/src/conditional-compilation.md)
 > <br>
-> commit d30662f3e78ddc65f6ecafd20e4b6ecd3033e466
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
-Rust有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编译器的标记编译代码。它有两种形式：
+Rust 有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编译器的标记编译代码。它有两种形式：
 
 ```rust
 #[cfg(foo)]
@@ -34,19 +34,16 @@ Rust有一个特殊的属性，`#[cfg]`，它允许你基于一个传递给编�
 # fn foo() {}
 ```
 
-至于如何启用和禁用这些开关，如果你使用Cargo的话，它们可以在你`Cargo.toml`中的[`[features]`部分](http://doc.crates.io/manifest.html#the-%5Bfeatures%5D-section)设置：
+至于如何启用和禁用这些开关，如果你使用 Cargo 的话，它们可以在你`Cargo.toml`中的[`[features]`部分](http://doc.crates.io/manifest.html#the-%5Bfeatures%5D-section)设置：
 
 ```toml
 [features]
 # no features by default
 default = []
 
-# Add feature "foo" here, then you can use it.
+# Add feature "foo" here, then you can use it. 
 # Our "foo" feature depends on nothing else.
 foo = []
-
-# The “secure-password” feature depends on the bcrypt package.
-# secure-password = ["bcrypt"]
 ```
 
 当你这么做的时候，Cargo传递给`rustc`一个标记：
@@ -66,6 +63,7 @@ mod foo {
 如果你用`cargo build --features "foo"`编译，他会向`rustc`传递`--cfg feature="foo"`标记，并且输出中将会包含`mod foo`。如果我们使用常规的`cargo build`编译，则不会传递额外的标记，因此，（输出）不会存在`foo`模块。
 
 ## cfg_attr
+
 你也可以通过一个基于`cfg`变量的`cfg_attr`来设置另一个属性：
 
 ```rust
@@ -76,6 +74,7 @@ mod foo {
 如果`a`通过`cfg`属性设置了的话这与`#[b]`相同，否则不起作用。
 
 # cfg!
+
 `cfg!`[语法扩展](Compiler Plugins 编译器插件.md)也让你可以在你的代码中使用这类标记：
 
 ```rust

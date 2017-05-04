@@ -1,8 +1,8 @@
 # 匹配
 
-> [match.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/match.md)
+> [match.md](https://github.com/rust-lang/book/blob/master/first-edition/src/match.md)
 > <br>
-> commit e7d60c00c68e72fa954bcff311bc92e1c445823c
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 一个简单的[`if`](If If语句.md)/`else`往往是不够的，因为你可能有两个或更多个选项。这样`else`也会变得异常复杂。Rust 有一个`match`关键字，它可以让你有效的取代复杂的`if`/`else`组。看看下面的代码：
 
@@ -47,6 +47,7 @@ let number = match x {
 有时，这是一个把一种类型的数据转换为另一个类型的好方法。
 
 ## 匹配枚举（Matching on enums）
+
 `match`的另一个重要的作用是处理枚举的可能变量：
 
 ```rust

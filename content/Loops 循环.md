@@ -1,8 +1,8 @@
 # 循环
 
-> [loops.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/loops.md)
+> [loops.md](https://github.com/rust-lang/book/blob/master/first-edition/src/loops.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 549270d4e66cc77b1f02cea13aaad9c90f150524
 
 Rust 目前提供 3 种方法来进行一些迭代操作。他们是`loop`，`while`和`for`。每种方法都有自己的用途。
 
@@ -77,16 +77,17 @@ for var in expression {
 }
 ```
 
-这个表达式是一个[迭代器](Iterators 迭代器.md).迭代器返回一系列的元素。每个元素是循环中的一次重复。然后它的值与`var`绑定，它在循环体中有效。每当循环体执行完后，我们从迭代器中取出下一个值，然后我们再重复一遍。当迭代器中不再有值时，`for`循环结束。
+这个表达式是一个[迭代器](Iterators 迭代器.md).迭代器返回一系列的元素。每次迭代循环中的一个元素。然后它的值与`var`绑定，它在循环体中有效。每当循环体执行完后，我们从迭代器中取出下一个值，然后我们再重复一遍。当迭代器中不再有值时，`for`循环结束。
 
 在我们的例子中，`0..10`表达式取一个开始和结束的位置，然后给出一个含有这之间值得迭代器。当然它不包括上限值，所以我们的循环会打印`0`到`9`，而不是到`10`。
 
 Rust 没有使用“C语言风格”的`for`循环是有意为之的。即使对于有经验的 C 语言开发者来说，要手动控制要循环的每个元素也都是复杂并且易于出错的。
 
-## Enumerate方法
+## Enumerate 方法
+
 当你需要记录你已经循环了多少次了的时候，你可以使用`.enumerate()`函数。
 
-### 对范围（On ranges）：
+### 对于范围（On ranges）：
 
 ```rust
 for (index, value) in (5..10).enumerate() {
@@ -106,7 +107,7 @@ index = 4 and value = 9
 
 别忘了在范围外面加上括号。
 
-### 对迭代器（On iterators）:
+### 对于迭代器（On iterators）:
 
 ```rust
 let lines = "hello\nworld".lines();
@@ -123,6 +124,7 @@ for (linenumber, line) in lines.enumerate() {
 1: world
 ```
 ## 提早结束迭代（Ending iteration early）
+
 让我们再看一眼之前的`while`循环：
 
 ```rust
@@ -171,6 +173,7 @@ for x in 0..10 {
 `break`和`continue`在`while`循环和[`for`循环](#for)中都有效。
 
 ## 循环标签（Loop labels）
+
 你也许会遇到这样的情形，当你有嵌套的循环而希望指定你的哪一个`break`或`continue`该起作用。就像大多数语言，默认`break`或`continue`将会作用于最内层的循环。当你想要一个`break`或`continue`作用于一个外层循环，你可以使用标签来指定你的`break`或`continue`语句作用的循环。如下代码只会在`x`和`y`都为奇数时打印他们：
 
 ```rust

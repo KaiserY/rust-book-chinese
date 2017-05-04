@@ -1,12 +1,13 @@
 # trait对象
 
-> [trait-objects.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/trait-objects.md)
+> [trait-objects.md](https://github.com/rust-lang/book/blob/master/first-edition/src/trait-objects.md)
 > <br>
-> commit c7b092b47d8e50b58c975040af0a84a544f7fa7a
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 当涉及到多态的代码时，我们需要一个机制来决定哪个具体的版本应该得到执行。这叫做“分发”（dispatch）。大体上有两种形式的分发：静态分发和动态分发。虽然 Rust 喜欢静态分发，不过它也提供了一个叫做“trait 对象”的机制来支持动态分发。
 
 ## 背景
+
 在本章接下来的内容中，我们需要一个 trait 和一些实现。让我们来创建一个简单的`Foo`。它有一个返回`String`的方法。
 
 ```rust
@@ -15,7 +16,7 @@ trait Foo {
 }
 ```
 
-我们也在`u8`和`String`上实现了这个trait：
+我们也在`u8`和`String`上实现了这个 trait：
 
 ```rust
 # trait Foo { fn method(&self) -> String; }

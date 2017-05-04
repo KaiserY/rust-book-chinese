@@ -1,8 +1,8 @@
 # 测试
 
-> [testing.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/testing.md)
+> [testing.md](https://github.com/rust-lang/book/blob/master/first-edition/src/testing.md)
 > <br>
-> commit c4c86dd04ccf6e9a6ac9282ecb9bb42e13ea5dad
+> commit d7376702d21ad31bdbea2f41bc701d7cac837183
 
 > Program testing can be a very effective way to show the presence of bugs, but it is hopelessly inadequate for showing their absence.
 
@@ -12,7 +12,7 @@
 
 > Edsger W. Dijkstra，【谦卑的程序员】（1972）
 
-让我们讨论一下如何测试Rust代码。在这里我们不会讨论什么是测试Rust代码的正确方法。有很多关于写测试好坏方法的流派。所有的这些途径都使用相同的基本工具，所以我们会向你展示他们的语法。
+让我们讨论一下如何测试 Rust 代码。在这里我们不会讨论什么是测试 Rust 代码的正确方法。有很多关于写测试好坏方法的流派。所有的这些途径都使用相同的基本工具，所以我们会向你展示他们的语法。
 
 ## `test`属性（The test attribute）
 
@@ -130,7 +130,7 @@ test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured
 error: test failed
 ```
 
-Rust指出我们的测试失败了：
+Rust 指出我们的测试失败了：
 
 ```text
 test it_works ... FAILED
@@ -198,7 +198,7 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured
 ```
 
-Rust提供了另一个宏，`assert_eq!`用来比较两个参数：
+Rust 提供了另一个宏，`assert_eq!`用来比较两个参数：
 
 ```rust
 # // The next line exists to trick play.rust-lang.org into running our code as a
@@ -463,6 +463,7 @@ Cargo （不？）会忽略`tests/`目录的子目录的文件。因此在集成
 让我们最后看看第三部分：文档测试。
 
 ## 文档测试
+
 没有什么是比带有例子的文档更好的了。当然也没有什么比不能工作的例子更糟的，因为文档完成之后代码已经被改写。为此，Rust支持自动运行你文档中的例子（**注意：**这只在库 crate中有用，而在二进制 crate 中没用）。这是一个完整的有例子的`src/lib.rs`：
 
 ~~~rust,ignore
@@ -502,7 +503,7 @@ mod tests {
 }
 ~~~
 
-注意模块级的文档以`//!`开头然后函数级的文档以`///`开头。Rust文档在注释中支持Markdown语法，所以它支持3个反单引号代码块语法。想上面例子那样，加入一个`# Examples`部分被认为是一个惯例。
+注意模块级的文档以`//!`开头然后函数级的文档以`///`开头。Rust文档在注释中支持 Markdown 语法，所以它支持 3 个反单引号代码块语法。想上面例子那样，加入一个`# Examples`部分被认为是一个惯例。
 
 让我们再次运行测试：
 

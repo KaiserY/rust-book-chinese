@@ -1,18 +1,20 @@
 # 文档
 
-> [documentation.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/documentation.md)
+> [documentation.md](https://github.com/rust-lang/book/blob/master/first-edition/src/documentation.md)
 > <br>
-> commit d8ee0745f734231edb16441776a60c33dae317c2
+> commit d7376702d21ad31bdbea2f41bc701d7cac837183
 
-在任何软件项目中，文档都是重要的部分，其同样在Rust中是头等重要的。让我们讨论下Rust提供给我们的编写项目文档的工具。
+在任何软件项目中，文档都是重要的部分，其同样在 Rust 中是头等重要的。让我们讨论下 Rust 提供给我们的编写项目文档的工具。
 
 ## 关于`rustdoc`
-Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rustdoc`也可以在Cargo中通过`cargo doc`使用。
 
-文档可以使用两种方法生成：从源代码，或者从单独的Markdown文件。
+Rust发行版中包含了一个工具，`rustdoc`，它可以生成文档。`rustdoc`也可以在 Cargo 中通过`cargo doc`使用。
+
+文档可以使用两种方法生成：从源代码，或者从单独的 Markdown 文件。
 
 ### 文档化源代码
-文档化Rust项目的主要方法是在源代码中添加注释。你可以使用文档注释以实现此目的：
+
+文档化 Rust 项目的主要方法是在源代码中添加注释。你可以使用文档注释以实现此目的：
 
 ~~~rust,ignore
 /// Constructs a new `Rc<T>`.
@@ -33,9 +35,9 @@ pub fn new(value: T) -> Rc<T> {
 
 这个注释首先需要注意的地方是它使用了`///`，而不是`//`。三条斜线表明这是文档注释。
 
-文档注释用Markdown语法编写。
+文档注释用 Markdown 语法编写。
 
-Rust会跟踪这些注释，并在生成文档时使用它们。这在文档化像枚举这样的结构时很重要：
+Rust 会跟踪这些注释，并在生成文档时使用它们。这在文档化像枚举这样的结构时很重要：
 
 ```rust
 /// The `Option` type. See [the module level documentation](../) for more.
@@ -97,7 +99,7 @@ hello.rs:4 }
 # fn foo() {}
 ```
 
-Rust中不可恢复的函数滥用（如程序错误）通常用恐慌（panics）表示，它至少也要杀死整个当前线程。如果你的函数有这样一个非凡的契约，需要识别或者强制引发恐慌，记录文档是非常重要的。
+Rust 中不可恢复的函数滥用（如程序错误）通常用恐慌（panics）表示，它至少也要杀死整个当前线程。如果你的函数有这样一个非凡的契约，需要识别或者强制引发恐慌，记录文档是非常重要的。
 
 ```rust
 /// # Errors
@@ -390,7 +392,8 @@ $ cargo test
 `no_run`属性会编译你的代码，但是不运行它。这对像如“如何开始一个网络服务”这样的例子很重要，你会希望确保它能够编译，不过它可能会在一个没有网络连接的测试环境中运行。
 
 ### 文档化模块
-Rust有另一种文档注释，`//!`。这种注释并不文档化接下来的内容，而是包围它的内容。换句话说：
+
+Rust 有另一种文档注释，`//!`。这种注释并不文档化接下来的内容，而是包围它的内容。换句话说：
 
 ```rust
 mod foo {
@@ -441,7 +444,7 @@ Crate 文档可以通过在 crate 根文件，也就是`lib.rs`，的开头放�
 # fn foo() {}
 ~~~
 
-在一个Markdown文件中，就是：
+在一个 Markdown 文件中，就是：
 
 ~~~markdown
 # Examples
@@ -464,6 +467,7 @@ This is the example documentation.
 `%`行需要放在文件的第一行。
 
 ## `doc`属性
+
 在更底层，文档注释是文档属性的语法糖：
 
 ```rust
@@ -534,7 +538,8 @@ struct Hidden;
 ```
 
 ## 控制 HTML
-你可以通过`#![doc]`属性控制`rustdoc`生成的THML文档的几个地方：
+
+你可以通过`#![doc]`属性控制`rustdoc`生成的 HTML 文档的几个地方：
 
 ```rust
 #![doc(html_logo_url = "https://www.rust-lang.org/logos/rust-logo-128x128-blk-v2.png",
@@ -555,6 +560,7 @@ struct Hidden;
 这允许示例中存在未使用的变量，但其他 lint 警告抛出仍会使测试失败。
 
 ## 生成选项
+
 `rustdoc`也提供了一些其他命令行选项，以便进一步定制：
 
 * `--html-in-header FILE`：在`<head>...</head>`部分的末尾加上`FILE`内容
@@ -562,7 +568,8 @@ struct Hidden;
 * `--html-after-content FILE`：在所有渲染内容之后加上`FILE`内容
 
 ## 安全事项
-文档注释中的Markdown会被不加以处理地放置于最终的网页中。注意原始的HTML文本：
+
+文档注释中的 Markdown 会被不加以处理地放置于最终的网页中。注意原始的 HTML 文本：
 
 ```rust
 /// <script>alert(document.cookie)</script>

@@ -1,8 +1,8 @@
 # 运算符与重载
 
-> [operators-and-overloading.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/operators-and-overloading.md)
+> [operators-and-overloading.md](https://github.com/rust-lang/book/blob/master/first-edition/src/operators-and-overloading.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 Rust 允许有限形式的运算符重载。特定的运算符可以被重载。要支持一个类型间特定的运算符，你可以实现一个的特定的重载运算符的trait。
 
@@ -51,7 +51,7 @@ pub trait Add<RHS = Self> {
 # }
 ```
 
-这里总共涉及到3个类型：你`impl Add`的类型，`RHS`，它默认是`Self`，和`Output`。对于一个表达式`let z = x + y`，`x`是`Self`类型的，`y`是`RHS`，而`z`是`Self::Output`类型。
+这里总共涉及到 3 个类型：你`impl Add`的类型，`RHS`，它默认是`Self`，和`Output`。对于一个表达式`let z = x + y`，`x`是`Self`类型的，`y`是`RHS`，而`z`是`Self::Output`类型。
 
 ```rust
 # struct Point;

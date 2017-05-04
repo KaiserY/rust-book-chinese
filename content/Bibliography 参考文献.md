@@ -1,8 +1,8 @@
 # 参考文献
 
-> [bibliography.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/bibliography.md)
+> [bibliography.md](https://github.com/rust-lang/book/blob/master/first-edition/src/bibliography.md)
 > <br>
-> commit c158fd93b81f9dd5b4f28723f256760b21eab44f
+> commit 090fcb88b1c7353e480ce3aff0028832e9bb696b
 
 这是一个与 Rust 相关的材料的阅读列表。这包含了曾经影响过 Rust 先验研究，以及关于 Rust 的出版物。
 

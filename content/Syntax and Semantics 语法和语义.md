@@ -1,8 +1,8 @@
 # 语法和语义
 
-> [syntax-and-semantics.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/syntax-and-semantics.md)
+> [syntax-and-semantics.md](https://github.com/rust-lang/book/blob/master/first-edition/src/syntax-and-semantics.md)
 > <br>
-> commit 3a6dbb30a21be8d237055479af613e30415b0c56
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 这一部分将 Rust 拆成小的部分，每一部分对应一个概念。
 

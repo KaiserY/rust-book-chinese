@@ -1,8 +1,8 @@
 # 过程宏（和自定义导出）
 
-> [procedural-macros.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/procedural-macros.md)
+> [procedural-macros.md](https://github.com/rust-lang/book/blob/master/first-edition/src/procedural-macros.md)
 > <br>
-> commit 3075c1f65e08e0b52dcf872588358daffef8b47c
+> commit 399708cf7bb12f593ad4bb403e94466d146e743e
 
 在本书接下来的部分，你将看到 Rust 提供了一个叫做“导出（derive）”的机制来轻松的实现 trait。例如，
 
@@ -105,7 +105,7 @@ pub fn hello_world(input: TokenStream) -> TokenStream {
     let s = input.to_string();
     
     // Parse the string representation
-    let ast = syn::parse_macro_input(&s).unwrap();
+    let ast = syn::parse_derive_input(&s).unwrap();
 
     // Build the impl
     let gen = impl_hello_world(&ast);
@@ -117,7 +117,7 @@ pub fn hello_world(input: TokenStream) -> TokenStream {
 
 这里有很多内容。我们引入了两个新的 crate：[`syn`]和[`quote`]。你可能注意到了，`input: TokenSteam`直接就被转换成了一个`String`。这个字符串是我们要导出的`HelloWorld`Rust 代码的字符串形式。现在，能对`TokenStream`做的唯一的事情就是把它转换为一个字符串。将来会有更丰富的 API。
 
-所以我们真正需要做的是能够把 Rust 代码_解析_成有用的东西。这正是`syn`出场机会。`syn`是一个解析 Rust 代码的 crate。我们引入的另外一个 crate 是`quote`。它本质上与`syn`是成双成对的，因为它可以轻松的生成 Rust 代码。也可以自己编写这些功能，不过使用这些库会更加轻松。编写一个完整 Rust 代码解析器可不是一个简单的工作。
+所以我们真正需要做的是能够把 Rust 代码**解析**成有用的东西。这正是`syn`出场机会。`syn`是一个解析 Rust 代码的 crate。我们引入的另外一个 crate 是`quote`。它本质上与`syn`是成双成对的，因为它可以轻松的生成 Rust 代码。也可以自己编写这些功能，不过使用这些库会更加轻松。编写一个完整 Rust 代码解析器可不是一个简单的工作。
 
 [`syn`]: https://crates.io/crates/syn
 [`quote`]: https://crates.io/crates/quote
@@ -148,7 +148,8 @@ fn impl_hello_world(ast: &syn::MacroInput) -> quote::Tokens {
 ```toml
 [dependencies]
 syn = "0.10.5"
-quote = "
+quote = "0.3.10"
+```
 
 这样就 OK 了。尝试编译`hello-world`。
 
@@ -175,4 +176,74 @@ Hello, World! My name is FrenchToast
 Hello, World! My name is Waffles
 ```
 
-本小节到此为止！
+我们成功了！
+
+## 自定义 attribute（Custom Attributes）
+
+在一些情况下允许用户进行一些配置是合理的。例如，用户可能想要重载`hello_world()`方法打印出的名字的值。
+
+这可以通过自定义 attribute 来实现：
+
+```rust
+#[derive(HelloWorld)]
+#[HelloWorldName = "the best Pancakes"]
+struct Pancakes;
+
+fn main() {
+    Pancakes::hello_world();
+}
+```
+
+但是如果我们尝试编译它，编译器会返回一个错误：
+
+```bash
+error: The attribute `HelloWorldName` is currently unknown to the compiler and may have meaning added to it in the future (see issue #29642)
+```
+
+编译器需要知道我们处理了这个 attribute 才能不返回错误。这可以通过在`hello-world-derive` crate 中对`proc_macro_derive` attribute 增加`attributes`来实现：
+
+```rust,ignore
+#[proc_macro_derive(HelloWorld, attributes(HelloWorldName))]
+pub fn hello_world(input: TokenStream) -> TokenStream 
+```
+
+可以一同样的方式指定多个 attribute。
+
+## 引发错误
+
+让我们假设我们并不希望在我们的自定义导出方法中接受枚举作为输入。
+
+这个条件可以通过`syn`轻松的进行检查。不过我们如何告诉用户，我们并不接受枚举呢？在过程宏中报告错误的传统做法是 panic：
+
+```rust
+fn impl_hello_world(ast: &syn::MacroInput) -> quote::Tokens {
+    let name = &ast.ident;
+    // Check if derive(HelloWorld) was specified for a struct
+    if let syn::Body::Struct(_) = ast.body {
+        // Yes, this is a struct
+        quote! {
+            impl HelloWorld for #name {
+                fn hello_world() {
+                    println!("Hello, World! My name is {}", stringify!(#name));
+                }
+            }
+        }
+    } else {
+        //Nope. This is an Enum. We cannot handle these!
+       panic!("#[derive(HelloWorld)] is only defined for structs, not for enums!");
+    }
+}
+```
+
+如果用户尝试从一个枚举导出`HelloWorld`，他们会收到如下希望有帮助的错误信息：
+
+
+```bash
+error: custom derive attribute panicked
+  --> src/main.rs
+   |
+   | #[derive(HelloWorld)]
+   |          ^^^^^^^^^^
+   |
+   = help: message: #[derive(HelloWorld)] is only defined for structs, not for enums!
+```

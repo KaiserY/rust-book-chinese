@@ -1,10 +1,10 @@
 # 可变性
 
-> [mutability.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/mutability.md)
+> [mutability.md](https://github.com/rust-lang/book/blob/master/first-edition/src/mutability.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
-可变性，可以改变事物的能力，用在Rust中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
+可变性，可以改变事物的能力，用在 Rust 中与其它语言有些许不同。可变性的第一方面是它并非默认状态：
 
 ```rust
 let x = 5;
@@ -51,6 +51,7 @@ fn foo(mut x: i32) {
 注意这里`x`是可变的，`y`不是。
 
 ## 内部可变性 VS 外部可变性（Interior vs. Exterior Mutability）
+
 然而，当我们谈到 Rust 中什么是“不可变”的时候，它并不意味着它不能被改变：这里是指它的“外部可变性”是不可变的。例如，考虑下[`Arc<T>`](http://doc.rust-lang.org/nightly/std/sync/struct.Arc.html)：
 
 ```rust
@@ -65,7 +66,7 @@ let y = x.clone();
 为了解释这些，我们不得不回到Rust指导哲学的核心，内存安全，和Rust用以保证它的机制，[所有权](Ownership 所有权.md)系统，和更具体的[借用](Borrow and AsRef Borrow 和 AsRef.md#borrow)：
 
 > 你可以拥有这两种类型借用的其中一个，但不能同时拥有：
-
+>
 > * 拥有 1 个或多个不可变引用（&T）
 > * 只有 1 个可变引用（&mut T）
 
@@ -96,6 +97,7 @@ let z = x.borrow_mut();
 事实上这会在运行时引起恐慌。`RefCell`是这样工作的：它在运行时强制使用Rust的借用规则，并且如果有违反就会`panic!`。这让我们绕开了Rust可变性规则的另一方面。让我们先讨论一下它。
 
 ## 字段级别可变性（Field-level mutability）
+
 可变性是借用（`&mut`）或者绑定（`let mut`）的属性之一。这意味着，例如，你不能让一个[结构体](Structs 结构体.md)的一些字段可变而另一些字段不可变：
 
 ```rust
@@ -122,7 +124,7 @@ let b = Point { x: 5, y: 6};
 b.x = 10; // Error: cannot assign to immutable field `b.x`
 ```
 
-然而，通过使用`Cell<T>`，你可以模拟字段级别的可变性：
+然而，通过使用[`Cell<T>`][cell]，你可以模拟字段级别的可变性：
 
 ```rust
 use std::cell::Cell;
@@ -138,5 +140,7 @@ point.y.set(7);
 
 println!("y: {:?}", point.y);
 ```
+
+[cell]: http://doc.rust-lang.org/std/cell/struct.Cell.html
 
 这会打印`y: Cell { value: 7 }`。我们成功的更新了`y`。

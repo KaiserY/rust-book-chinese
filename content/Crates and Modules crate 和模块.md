@@ -1,12 +1,13 @@
 # 包装箱和模块
 
-> [crates-and-modules.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/crates-and-modules.md)
+> [crates-and-modules.md](https://github.com/rust-lang/book/blob/master/first-edition/src/crates-and-modules.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 573222ed32fff4e0cb27be940a97344f339ab98b
 
 当一个项目变大以后，良好的软件工程实践是把它分为一堆较小的部分，再把它们装配到一起。定义良好的接口也非常重要，以使有些功能是私有的，而有些是公有的。Rust 有一个模块系统来帮助我们处理这些工作。
 
 # 基础术语：包装箱和模块
+
 Rust 有两个不同的术语与模块系统有关：**包装箱**（*crate*）和**模块**（*module*）。包装箱是其它语言中**库**（*library*）或**包**（*package*）的同义词。因此，“Cargo”则是 Rust 包管理工具的名字：你通过 Cargo 把你的包装箱交付给别人。包装箱可以根据项目的不同，生成可执行文件或库文件。
 
 每个包装箱有一个隐含的**根模块**（*root module*）包含了该包装箱的代码。你可以在根模块下定义一个子模块树。模块让你可以在包装箱内部为代码分区。
@@ -92,6 +93,7 @@ build  deps  examples  libphrases-a7448e02a0468eaa.rlib  native
 `libphrases-<hash>.rlib`是构建好的包装箱。在我们了解如何使用这个包装箱之前，先让我们把它拆分为多个文件。
 
 # 多文件包装箱
+
 如果每个包装箱只能有一个文件，这些文件将会变得非常庞大。把包装箱分散到多个文件也非常简单，Rust支持两种方法。
 
 除了这样定义一个模块外：
@@ -145,14 +147,26 @@ mod english;
 mod japanese;
 ```
 
-这两个定义告诉Rust去寻找`src/english.rs`和`src/japanese.rs`，或者`src/english/mod.rs`和`src/japanese/mod.rs`，具体根据你的偏好。在我们的例子中，因为我们的模块含有子模块，所以我们选择第二种方式。`src/english/mod.rs`和`src/japanese/mod.rs`都看起来像这样：
+这两个定义告诉 Rust 去寻找
+
+- `src/english.rs`或`src/english/mod.rs`
+- `src/japanese.rs`或`src/japanese/mod.rs`
+
+具体根据你的偏好。在我们的例子中，因为我们的模块含有子模块，所以我们选择第二种方式。`src/english/mod.rs`和`src/japanese/mod.rs`都看起来像这样：
 
 ```rust
 mod greetings;
 mod farewells;
 ```
 
-再一次，这些定义告诉Rust去寻找`src/english/greetings.rs`和`src/japanese/greetings.rs`，或者`src/english/farewells/mod.rs`和`src/japanese/farewells/mod.rs`。因为这些子模块没有自己的子模块，我们选择`src/english/greetings.rs`和`src/japanese/farewells.rs`。
+再一次，这些定义告诉 Rust 去寻找
+
+- `src/english/greetings.rs`或`src/english/greetings/mod.rs`
+- `src/english/farewells.rs`或`src/english/farewells/mod.rs`
+- `src/japanese/greetings.rs`或`src/japanese/greetings/mod.rs`
+- `src/japanese/farewells.rs`或`src/japanese/farewells/mod.rs`
+
+因为这些子模块没有自己的子模块，我们选择`src/english/greetings.rs`和`src/japanese/farewells.rs`。
 
 现在`src/english/greetings.rs`和`src/japanese/farewells.rs`都是空的。让我们添加一些函数。
 
@@ -195,6 +209,7 @@ fn goodbye() -> String {
 现在我们在包装箱中添加了一些函数，让我们尝试在别的包装箱中使用它。
 
 # 导入外部的包装箱
+
 我们有了一个库包装箱。让我们创建一个可执行的包装箱来导入和使用我们的库。
 
 创建一个`src/main.rs`文件然后写入如下：（现在它还不能编译）
@@ -217,7 +232,7 @@ fn main() {
 
 另外，Cargo假设`src/main.rs`是二进制包装箱的根，而不是库包装箱的。现在我们的包中有两个包装箱：`src/lib.rs`和`src/main.rs`。这种模式在可执行包装箱中非常常见：大部分功能都在库包装箱中，而可执行包装箱使用这个库。这样，其它程序可以只使用我们的库，另外这也是各司其职的良好分离。
 
-现在它还不能很好的工作。我们会得到4个错误，它们看起来像：
+现在它还不能很好的工作。我们会得到 4 个错误，它们看起来像：
 
 ```bash
 $ cargo build
@@ -236,7 +251,8 @@ phrases/src/main.rs:4:5: 4:76 note: expansion site
 Rust 默认一切都是私有的。让我们深入了解一下这个。
 
 # 导出公用接口
-Rust允许你严格的控制你的接口哪部分是公有的，所以它们默认都是私有的。你需要使用`pub`关键字，来公开它。让我们先关注`english`模块，所以让我们像这样减少`src/main.rs`的内容：
+
+Rust 允许你严格的控制你的接口哪部分是公有的，所以它们默认都是私有的。你需要使用`pub`关键字，来公开它。让我们先关注`english`模块，所以让我们像这样减少`src/main.rs`的内容：
 
 ```rust
 extern crate phrases;
@@ -295,9 +311,10 @@ Hello in English: Hello!
 Goodbye in English: Goodbye.
 ```
 
-现在我们的函数是公有的了，我们可以使用它们。好的！然而，`phrases::english::greetings::hello()`非常长并且重复。Rust有另一个关键字用来导入名字到当前空间中，这样我们就可以用更短的名字来引用它们。让我们聊聊`use`。
+现在我们的函数是公有的了，我们可以使用它们。好的！然而，`phrases::english::greetings::hello()`非常长并且重复。Rust 有另一个关键字用来导入名字到当前空间中，这样我们就可以用更短的名字来引用它们。让我们聊聊`use`。
 
 # 用`use`导入模块
+
 Rust有一个`use`关键字，它允许我们导入名字到我们本地的作用域中。让我们把`src/main.rs`改成这样：
 
 ```rust
@@ -365,6 +382,7 @@ use phrases::english::{greetings, farewells};
 ```
 
 ## 使用`pub use`重导出
+
 你不仅可以用`use`来简化标识符。你也可以在包装箱内用它重导出函数到另一个模块中。这意味着你可以展示一个外部接口可能并不直接映射到内部代码结构。
 
 让我们看个例子。修改`src/main.rs`让它看起来像这样：

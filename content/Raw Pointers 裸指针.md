@@ -1,12 +1,12 @@
 # 裸指针
 
-> [raw-pointers.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/raw-pointers.md)
+> [raw-pointers.md](https://github.com/rust-lang/book/blob/master/first-edition/src/raw-pointers.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
-Rust 的标准库中有一系列不同的智能指针类型，不过这有两个类型是十分特殊的。Rust的安全大多来源于编译时检查，不过裸指针并没有这样的保证，使用它们是[`unsafe`](`unsafe` 不安全代码.md)的。
+Rust 的标准库中有一系列不同的智能指针类型，不过这有两个类型是十分特殊的。Rust 的安全大多来源于编译时检查，不过裸指针并没有这样的保证，使用它们是[`unsafe`](`unsafe` 不安全代码.md)的。
 
-`*const T`和`*mut T`在Rust中被称为“裸指针”。有时当编写特定类型的库时，为了某些原因你需要绕过Rust的安全保障。在这种情况下，你可以使用裸指针来实现你的库，同时暴露一个安全的接口给你的用户。例如，`*`指针允许别名，允许用来写共享所有权类型，甚至是内存安全的共享内存类型（`Rc<T>`和`Arc<T>`类型都是完全用Rust实现的）。
+`*const T`和`*mut T`在 Rust 中被称为“裸指针”。有时当编写特定类型的库时，为了某些原因你需要绕过 Rust 的安全保障。在这种情况下，你可以使用裸指针来实现你的库，同时暴露一个安全的接口给你的用户。例如，`*`指针允许别名，允许用来写共享所有权类型，甚至是内存安全的共享内存类型（`Rc<T>`和`Arc<T>`类型都是完全用 Rust 实现的）。
 
 有一些你需要记住的裸指针不同于其它指针的地方。它们是：
 
@@ -60,9 +60,11 @@ println!("raw points at {}", points_at);
 关于裸指针的更多操作，查看[它们的API文档](http://doc.rust-lang.org/stable/std/primitive.pointer.html)。
 
 ## FFI
+
 裸指针在FFI中很有用：Rust的`*const T`和`*mut T`分别与C中的`const T*`和`T*`类似。关于它们的应用，查看[FFI章节](Foreign Function Interface 外部函数接口.md)。
 
 ## 引用和裸指针
+
 在运行时，指向一份相同数据的裸指针`*`和引用有相同的表现。事实上，在安全代码中`&T`引用会隐式的转换为一个`*const T`同时它们的`mut`变体也有类似的行为（这两种转换都可以显式执行，分别为`value as *const T`和`value as *mut T`）。
 
 反其道而行之，从`*const`到`&`引用，是不安全的。一个`&T`总是有效的，所以，最少，`*const T`裸指针必须指向一个`T`的有效实例。进一步，结果指针必须满足引用的别名和可变性法则。编译器假设这些属性对任何引用都是有效的，不管它们是如何创建的，因而所以任何从裸指针来的转换都断言它们成立。程序员**必须**保证它。

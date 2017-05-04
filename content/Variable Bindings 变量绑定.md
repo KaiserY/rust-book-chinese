@@ -1,8 +1,8 @@
 # 变量绑定
 
-> [variable-bindings.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/variable-bindings.md)
+> [variable-bindings.md](https://github.com/rust-lang/book/blob/master/first-edition/src/variable-bindings.md)
 > <br>
-> commit 20abf050e7f5698cd1012de00295ec805143735a
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 事实上每一个非“Hello World” Rust 程序都用了**变量绑定**。他们将一些值绑定到一个名字上，这样可以在之后使用他们。`let`被用来声明一个绑定，像这样：
 

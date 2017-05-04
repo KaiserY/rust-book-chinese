@@ -1,8 +1,8 @@
 # type 别名
 
-> [type-aliases.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/type-aliases.md)
+> [type-aliases.md](https://github.com/rust-lang/book/blob/master/first-edition/src/type-aliases.md)
 > <br>
-> commit 1eb36b80a43154107729da3e496d0b3fb9e57259
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 `type`关键字让你定义另一个类型的别名：
 
@@ -18,7 +18,7 @@ type Name = String;
 let x: Name = "Hello".to_string();
 ```
 
-然而要注意的是，这一个**别名**，完全不是一个新的类型。换句话说，因为Rust是强类型的，你可以预期两个不同类型的比较会失败：
+然而要注意的是，这一个**别名**，完全不是一个新的类型。换句话说，因为 Rust 是强类型的，你可以预期两个不同类型的比较会失败：
 
 ```rust
 let x: i32 = 5;

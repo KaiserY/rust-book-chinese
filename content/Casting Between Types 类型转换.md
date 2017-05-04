@@ -1,8 +1,8 @@
 # 类型转换
 
-> [casting-between-types.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/casting-between-types.md)
+> [casting-between-types.md](https://github.com/rust-lang/book/blob/master/first-edition/src/casting-between-types.md)
 > <br>
-> commit 40b9352aa371d5984c7e84cad5e2f597dbecf177
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 Rust，和它对安全的关注，提供了两种不同的在不同类型间转换的方式。第一个，`as`，用于安全转换。相反，`transmute`允许任意的转换，而这是 Rust 中最危险的功能之一！
 
@@ -119,7 +119,7 @@ let b = a as u32; // Four u8s makes a u32.
 
 `transmute`函数由[编译器固有功能](Intrinsics 固有功能.md)提供，它做的工作非常简单，不过非常可怕。它告诉Rust对待一个类型的值就像它是另一个类型一样。它这样做并不管类型检查系统，并完全信任你。
 
-在我们之前的例子中，我们知道一个有4个`u8`的数组可以正常代表一个`u32`，并且我们想要进行转换。使用`transmute`而不是`as`，Rust允许我们：
+在我们之前的例子中，我们知道一个有 4 个`u8`的数组可以正常代表一个`u32`，并且我们想要进行转换。使用`transmute`而不是`as`，Rust 允许我们：
 
 ```rust
 use std::mem;

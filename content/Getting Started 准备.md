@@ -1,8 +1,8 @@
 # 准备
 
-> [getting-started.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/getting-started.md)
+> [getting-started.md](https://github.com/rust-lang/book/blob/master/first-edition/src/getting-started.md)
 > <br>
-> commit 7550e321462e9a0590ded68c2984ddc645b877fb
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 本书的第一部分将带领大家了解 Rust 及其工具。在安装 Rust 之后，我们将开始编写经典的“Hello World”程序。最后将介绍 Cargo —— Rust 的构建系统以及包管理器。
 
@@ -30,9 +30,9 @@ $ curl https://sh.rustup.rs -sSf | sh
 Rust is installed now. Great!
 ```
 
-在 Windows 上安装也同样简单：下载并运行[rustup-init.exe]。其会在终端中开始安装并在成功时显示以上信息。
+在 Windows 上安装也同样简单：下载并运行 [rustup-init.exe]。其会在终端中开始安装并在成功时显示以上信息。
 
-如需其他安装选项和信息，请访问 Rust 官网的[install]页面。
+如需其他安装选项和信息，请访问 Rust 官网的 [install] 页面。
 
 [rustup-init.exe]: https://win.rustup.rs
 [install]: https://www.rust-lang.org/install.html
@@ -350,6 +350,7 @@ Cargo 已经为你生成了一个“Hello World!”，现在你已经准备好�
 > 注意：如果你想要查看 Cargo 的详细信息，请查看官方的[Cargo 指导](http://doc.crates.io/guide.html)，它包含了所有这些功能。
 
 # 写在最后
+
 本章涵盖了将用于本书余下部分以及你之后 Rust 时光的基础知识。现在你获得了工具，我们将更多地介绍 Rust 语言本身。
 
 接下来你有两个选择：在 “[学习 Rust](Learn Rust 学习 Rust.md)” 中深入研究一个项目，或者自下而上地学习 “[语法和语义](Syntax and Semantics 语法和语义.md)”。来自系统级编程语言的同学，你们可能倾向于选择 “学习 Rust”，而来自动态编程语言的同学，请根据自己的喜好来选择吧。人各有别，适合自己的才是最好的。

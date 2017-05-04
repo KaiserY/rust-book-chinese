@@ -1,8 +1,8 @@
 # 泛型
 
-> [generics.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/generics.md)
+> [generics.md](https://github.com/rust-lang/book/blob/master/first-edition/src/generics.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 有时，当你编写函数或数据类型时，我们可能会希望它能处理多种类型的参数。幸运的是，Rust有一个能给我们更好选择的功能：泛型。泛型在类型理论中叫做**参数多态**（*parametric polymorphism*），它意味着它们是对于给定参数（parametric）能够有多种形式（`poly`是多，`morph`是形态）的函数或类型。
 
@@ -56,11 +56,12 @@ enum Result<A, Z> {
 }
 ```
 
-如果你想这么做的话。惯例告诉我们第一个泛型参数应该是`T`，代表`type`，然后我们用`E`来代表`error`。然而，Rust并不管这些。
+如果你想这么做的话。惯例告诉我们第一个泛型参数应该是`T`，代表`type`，然后我们用`E`来代表`error`。然而，Rust 并不管这些。
 
 `Result<T, E>`意图作为计算的返回值，并为了能够在不能工作时返回一个错误。
 
 ## 泛型函数
+
 我们可以用熟悉的语法编写一个获取泛型参数的函数：
 
 ```rust
@@ -88,6 +89,7 @@ fn takes_two_things<T, U>(x: T, y: U) {
 ```
 
 ## 泛型结构体（Generic structs）
+
 你也可以在一个`struct`中储存泛型类型：
 
 ```rust
@@ -118,3 +120,44 @@ impl<T> Point<T> {
 ```
 
 目前为止你已经见过了支持几乎任何类型的泛型。他们在很多地方都是有用的：你已经见过了`Option<T>`，接下来你还将见到像[`Vec<T>`](http://doc.rust-lang.org/std/vec/struct.Vec.html)这样的通用容器类型。另一方面，通常你想要用灵活性去换取更强的表现力。阅读[trait bound](Traits.md#泛型函数的-trait-bound（trait-bounds-on-generic-functions）)章节来了解为什么和如何做。
+
+## 消除歧义（Resolving ambiguities）
+
+大部分时候当涉及到泛型时，编译器可以自动推断出泛型参数：
+
+```rust
+// v must be a Vec<T> but we don't know what T is yet
+let mut v = Vec::new();
+// v just got a bool value, so T must be bool!
+v.push(true);
+// Debug-print v
+println!("{:?}", v);
+```
+
+但是有的时候，编译器需要一些帮助。例如，如下如果省略最后一行的毒啊，会得到一个编译错误：
+
+```rust,ignore
+let v = Vec::new();
+//      ^^^^^^^^ cannot infer type for `T`
+//
+// note: type annotations or generic parameter binding required
+println!("{:?}", v);
+```
+
+我们要么可以使用一个类型注解来解决它：
+
+```rust
+let v: Vec<bool> = Vec::new();
+println!("{:?}", v);
+```
+
+要么通过一个叫做[‘turbofish’][turbofish] `::<>` 的语法来绑定泛型参数`T`：
+
+```rust
+let v = Vec::<bool>::new();
+println!("{:?}", v);
+```
+
+第二种方法在我们并不想要将结果绑定到一个变量时很有用。它也可以用来在函数和方法中绑定泛型参数。查看[迭代器与消费者](iterators.html#consumers) 章节来获取一个例子。
+
+[turbofish]: http://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect

@@ -1,8 +1,8 @@
 # if let
 
-> [if-let.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/if-let.md)
+> [if-let.md](https://github.com/rust-lang/book/blob/master/first-edition/src/if-let.md)
 > <br>
-> commit 797a0bd1c13175398aa0e2e45f6dbb61bcb8c329
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 `if let`允许你合并`if`和`let`来减少特定类型模式匹配的开销。
 

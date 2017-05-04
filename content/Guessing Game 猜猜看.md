@@ -1,10 +1,10 @@
 # 猜猜看
 
-> [guessing-game.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/guessing-game.md)
+> [guessing-game.md](https://github.com/rust-lang/book/blob/master/first-edition/src/guessing-game.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 602fa7c6eba1b0fbeca0847fe295d9137e9a0243
 
-让我学习一些 Rust！作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是太大了还是太小了。猜对了，它会祝贺我们。听起来如何？
+让我们学习一些 Rust！作为第一个项目，我们来实现一个经典新手编程问题：猜猜看游戏。它是这么工作的：程序将会随机生成一个 1 到 100 之间的随机数。它接着会提示猜一个数。当我们猜了一个数之后，它会告诉我们是太大了还是太小了。猜对了，它会祝贺我们。听起来如何？
 
 ## 准备
 
@@ -62,6 +62,7 @@ Hello, world!
 很好！我们的小游戏恰恰是`run`命令大显身手的这类程序：我们需要在进行下一步之前快速测试每次迭代。
 
 ## 处理一次猜测
+
 让我们开始吧！我们需要做的第一件事是让我们的玩家输入一个猜测。把这些放入你的`src/main.rs`：
 
 ```rust
@@ -212,7 +213,7 @@ println!("x and y: {} and {}", x, y);
 
 轻松加愉快。
 
-总而言之，这只是一个观光。我们可以用`cargo run`运行我们写的：
+总而言之，这只是一个观光。我们可以用`cargo run`运行代码：
 
 ```bash
 $ cargo run
@@ -228,6 +229,7 @@ You guessed: 6
 好的！我们的第一部分完成了：我们可以从键盘获取输入，并把它打印回去。
 
 ## 生成一个秘密数字
+
 接下来，我们要生成一个秘密数字。Rust标准库中还未包含随机数功能。然而，Rust 团队确实提供了一个[`rand` crate](https://crates.io/crates/rand)。一个“包装箱”（crate）是一个 Rust 代码的包。我们已经构建了一个”二进制包装箱“，它是一个可执行文件。`rand`是一个”库包装箱“，它包含被认为应该被其它程序使用的代码。
 
 使用外部包装箱是 Cargo 的亮点。在我们使用`rand`编写代码之前，我们需要修改我们的`Cargo.toml`。打开它，并在末尾增加这几行：
@@ -235,21 +237,22 @@ You guessed: 6
 ```toml
 [dependencies]
 
-rand="0.3.0"
+rand = "0.3.0"
 ```
 
-`Cargo.toml`的`[dependencies]`部分就像`[package]`部分：所有之后的东西都是它的一部分，直到下一个部分开始。Cargo使用依赖部分来知晓你用的外部包装箱的依赖，和你要求的版本。在这个例子中，我们用了`0.3.0`版本。Cargo理解[语义化版本](http://semver.org/lang/zh-CN/)，它是一个编写版本号的标准。像上面只有数字的版本事实上是`^0.3.0`的简写，代表“任何兼容 0.3.0 的版本”。如果你只想使用`0.3.0`版本，你可以使用`rand="=0.3.0"`（注意那两个双引号）。我们也可以指定一个版本范围。[Cargo文档](http://doc.crates.io/specifying-dependencies.html)包含更多细节。
+`Cargo.toml`的`[dependencies]`部分就像`[package]`部分：所有之后的东西都是它的一部分，直到下一个部分开始。Cargo使用依赖部分来知晓你用的外部包装箱的依赖，和你要求的版本。在这个例子中，我们用了`0.3.0`版本。Cargo理解[语义化版本](http://semver.org/lang/zh-CN/)，它是一个编写版本号的标准。像上面只有数字的版本事实上是`^0.3.0`的简写，代表“任何兼容 0.3.0 的版本”。如果你只想使用`0.3.0`版本，你可以使用`rand = "=0.3.0"`（注意那两个双引号）。我们也可以指定一个版本范围。[Cargo文档](http://doc.crates.io/specifying-dependencies.html)包含更多细节。
 
 现在，在不修改任何我们代码的情况下，让我们构建我们的项目：
 
 ```bash
 $ cargo build
     Updating registry `https://github.com/rust-lang/crates.io-index`
- Downloading rand v0.3.8
- Downloading libc v0.1.6
-   Compiling libc v0.1.6
-   Compiling rand v0.3.8
+ Downloading rand v0.3.14
+ Downloading libc v0.2.17
+   Compiling libc v0.2.17
+   Compiling rand v0.3.14
    Compiling guessing_game v0.1.0 (file:///home/you/projects/guessing_game)
+    Finished debug [unoptimized + debuginfo] target(s) in 5.88 secs
 ```
 
 （当然，你可能会看到不同的版本）
@@ -348,6 +351,7 @@ You guessed: 5
 好的！接下来：让我们比较我们的猜测和秘密数字。
 
 ## 比较猜测
+
 现在我们得到了用户输入，让我们比较我们的猜测和随机值。这是我们的下一步，虽然它还不能正常工作：
 
 ```rust

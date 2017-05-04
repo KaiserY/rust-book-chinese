@@ -1,8 +1,8 @@
 # 错误处理
 
-> [error-handling.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/error-handling.md)
+> [error-handling.md](https://github.com/rust-lang/book/blob/master/first-edition/src/error-handling.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit e89eee11744dee6dd13ff146817cdd4075952a0a
 
 就像大多数编程语言，Rust 鼓励程序猿以特定的方式处理错误。一般来讲，错误处理被分割为两个大类：异常和返回值。Rust 选择了返回值。
 
@@ -864,7 +864,7 @@ impl<'a, E: Error + 'a> From<E> for Box<Error + 'a>
 
 这个实现说任何实现了`Error`的类型，我们可以把它转换一个 trait 对象`Box<Error>`。这可能看起来并不怎么令人吃惊，不过它在泛型环境中很有用。
 
-记的我们之前处理的两个错误吗？`io::Error`和`num::ParseIntError`。因为他们都实现了`Error`，他们也能用于`From`：
+记得我们之前处理的两个错误吗？`io::Error`和`num::ParseIntError`。因为他们都实现了`Error`，他们也能用于`From`：
 
 ```rust
 use std::error::Error;
@@ -950,9 +950,9 @@ fn file_double<P: AsRef<Path>>(file_path: P) -> Result<i32, Box<Error>> {
 
 我们已经非常接近理想的错误处理了。我们的代码处理错误只造成了很小的成本，因为`try!`宏同时封装了三个东西：
 
-* case analysis。
-* 控制流。
-* 错误类型转换。
+1. case analysis。
+2. 控制流。
+3. 错误类型转换。
 
 当结合所有这些东西，我们的代码不再受组合、`unwrap`调用或 case analysis 的困扰了。
 
@@ -1562,7 +1562,7 @@ fn search<P: AsRef<Path>>
 编写泛型代码是很好的，因为泛用性是很酷的，并且之后会变得很有用。不过有时并不值得这么做。看看我们上一部分我们是怎么做的：
 
 1. 定义了一个新的错误类型。
-2.增加`Error`，`Display`和两个`From`实现。
+2. 增加`Error`，`Display`和两个`From`实现。
 
 这里最大的缺点是我们的程序并没有改进多少。这里仍然有很多用`enum`代表错误的额外操作，特别是在这样短小的程序里。
 

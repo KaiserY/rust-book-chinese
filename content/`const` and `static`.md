@@ -1,8 +1,8 @@
 # const 和 static
 
-> [const-and-static.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/const-and-static.md)
+> [const-and-static.md](https://github.com/rust-lang/book/blob/master/first-edition/src/const-and-static.md)
 > <br>
-> commit d001e8ad179b2d0b57272d1c875d93099fc347cb
+> commit ccb1d87d6faa9ff528d22b96595a0e2cbb16c0f2
 
 Rust 有一个用`const`关键字定义常量的方法：
 
@@ -33,6 +33,7 @@ static NAME: &'static str = "Steve";
 ```
 
 ## 可变性
+
 你可以用`mut`关键字引入可变性：
 
 ```rust
@@ -57,6 +58,7 @@ unsafe {
 `const`和`static`都要求赋予它们一个值。它们必须只能被赋予一个常量表达式的值。换句话说，你不能用一个函数调用的返回值或任何相似的复合值或在运行时赋值。
 
 ## 我应该用哪个？（Which construct should I use?）
+
 几乎所有时候，如果你可以在两者之间选择，选择`const`。实际上你很少需要你的常量关联一个内存位置，而且使用`const`允许你不止在在自己的包装箱还可以在下游包装箱中使用像常数扩散这样的优化。
 
-一个常量可以看作一个C中的`#define`：它有元数据开销但无运行时开销。“我应该在C中用一个#define还是一个static呢？”大体上与在Rust你应该用常量还是静态量是一个问题。
+一个常量可以看作一个 C 中的`#define`：它有元数据开销但无运行时开销。“我应该在 C 中用一个 #define 还是一个 static 呢？”大体上与在 Rust 你应该用常量还是静态量是一个问题。

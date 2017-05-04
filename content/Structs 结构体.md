@@ -1,8 +1,8 @@
 # 结构体
 
-> [structs.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/structs.md)
+> [structs.md](https://github.com/rust-lang/book/blob/master/first-edition/src/structs.md)
 > <br>
-> commit 28548db57d0acbc00ee80b43816953dbe31d53ba
+> commit 59e5e65270259666422e51721cc42f261f827386
 
 结构体是一个创建更复杂数据类型的方法。例如，如果我们正在进行涉及到 2D 空间坐标的计算，我们将需要一个`x`和一个`y`值：
 
@@ -108,6 +108,7 @@ fn main() {
 ```
 
 ## 更新语法（Update syntax）
+
 一个包含`..`的`struct`表明你想要使用一些其它结构体的拷贝的一些值。例如：
 
 ```rust
@@ -134,6 +135,7 @@ let point = Point3d { z: 1, x: 2, .. origin };
 ```
 
 ## 元组结构体
+
 Rust 有像另一个[元组](Primitive Types 原生类型.md#tuples)和结构体的混合体的数据类型。元组结构体有一个名字，不过它的字段没有。他们用`struct`关键字声明，并元组前面带有一个名字：
 
 ```rust
@@ -194,18 +196,20 @@ struct Point {
 }
 ```
 
-现在，我们有了名字，而不是位置。好的名字是很重要的，使用结构体，我们就可以设置名字。
+好的名字是很重要的，同时元组结构体中的值也可以使用点语法被引用，`struct`提供了真实的名字，而不仅仅是位置。
 
 ## 类单元结构体（Unit-like structs）
+
 你可以定义一个没有任何成员的结构体：
 
 ```rust
 struct Electron {} // Use empty braces...
 struct Proton;     // ...or just a semicolon.
 
-// Whether you declared the struct with braces or not, do the same when creating one.
+// Use the same notation when creating an instance.
 let x = Electron {};
 let y = Proton;
+let z = Electron; // Error
 ```
 
 这样的结构体叫做“类单元”因为它与一个空元组类似，`()`，这有时叫做“单元”。就像一个元组结构体，它定义了一个新类型。

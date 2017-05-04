@@ -22,7 +22,7 @@ Rust 程序设计语言（第二版）翻译阅读：[https://kaisery.github.io/
 [rustbook.cn](http://rustbook.cn/) 由[掘金](http://gold.xitu.io/)赞助
 
 ## Rust 版本
-1.16.0-stable
+1.17.0
 
 ## 国内镜像
 请参考[中文 Wiki](https://wiki.rust-china.org/%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F)上的说明

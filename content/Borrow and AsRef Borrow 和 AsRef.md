@@ -1,8 +1,8 @@
 # `Borrow` 和 `AsRef`
 
-> [borrow-and-asref.md](https://github.com/rust-lang/rust/blob/stable/src/doc/book/borrow-and-asref.md)
+> [borrow-and-asref.md](https://github.com/rust-lang/book/blob/master/first-edition/src/borrow-and-asref.md)
 > <br>
-> commit 6976991569977e8097da5f7660a31a42d11e48d2
+> commit 23a7a7bdb6a6a43cd7efdd9176b1d3f75d9d0e70
 
 [`Borrow`](http://doc.rust-lang.org/std/borrow/trait.Borrow.html)和[`AsRef`](http://doc.rust-lang.org/std/convert/trait.AsRef.html)特性非常相似。这是一个快速的关于这两个特性意义的复习。
 
@@ -56,6 +56,7 @@ foo(&mut i);
 这会打印出`a is borrowed: 5`两次。
 
 ## `AsRef`
+
 `AsRef`特性是一个转换特性。它用来在泛型中把一些值转换为引用。像这样：
 
 ```rust
@@ -67,6 +68,7 @@ fn foo<T: AsRef<str>>(s: T) {
 ```
 
 ## 我应该用哪个？
+
 我们可以看到它们有些相似：它们都处理一些类型的自我拥有和借用版本。然而，它们还是有些不同。
 
 选择`Borrow`当你想要抽象不同类型的借用，或者当你创建一个数据结构它把自我拥有和借用的值看作等同的，例如哈希和比较。
