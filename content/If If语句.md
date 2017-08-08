@@ -1,4 +1,4 @@
-# If 语句
+# If
 
 > [if.md](https://github.com/rust-lang/book/blob/master/first-edition/src/if.md)
 > <br>
