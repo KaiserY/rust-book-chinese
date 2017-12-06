@@ -226,7 +226,7 @@ fn main() {
 }
 ```
 
-`extern crate`声明告诉Rust我们需要编译和链接`phrases`包装箱。然后我们就可以在这里使用`phrases`的模块了。就想我们之前提到的，你可以用双冒号引用子模块和之中的函数。
+`extern crate`声明告诉Rust我们需要编译和链接`phrases`包装箱。然后我们就可以在这里使用`phrases`的模块了。就像我们之前提到的，你可以用双冒号引用子模块和之中的函数。
 
 （注意：当导入像“like-this”名字中包含连字符的 crate时，这样的名字并不是一个有效的 Rust 标识符，它可以通过将连字符变为下划线来转换，所以你应该写成`extern crate like_this;`）
 
