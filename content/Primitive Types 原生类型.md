@@ -46,7 +46,7 @@ let x = 42; // `x` has type `i32`.
 let y = 1.0; // `y` has type `f64`.
 ```
 
-这里有一个不同数字类型的列表，以及它们在标注库中的文档：
+这里有一个不同数字类型的列表，以及它们在标准库中的文档：
 
 * [i8](http://doc.rust-lang.org/nightly/std/primitive.i8.html)
 * [i16](http://doc.rust-lang.org/nightly/std/primitive.i16.html)
