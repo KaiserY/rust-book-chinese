@@ -18,6 +18,8 @@ Rust 程序设计语言（第二版）翻译仓库：[https://github.com/KaiserY
 
 Rust 程序设计语言（第二版）翻译阅读：[https://kaisery.github.io/trpl-zh-cn](https://kaisery.github.io/trpl-zh-cn)
 
+Rust 程序设计语言（第二版）翻译阅读：[上海站点加速查看站点http://rustdoc.saigao.fun](http://rustdoc.saigao.fun)
+
 ## Rust 版本
 1.17.0
 
